@@ -1,0 +1,88 @@
+From: Mikhail Khalilov <miharulidze@gmail.com>
+Subject: [PATCH] register suet provider in libfabric build
+
+Adds the five hook-up sites required to compile and load the suet
+provider as part of libfabric:
+
+  - Makefile.am:           include prov/suet/Makefile.include
+  - configure.ac:          FI_PROVIDER_SETUP([suet])
+  - include/ofi_prov.h:    SUET_INI / SUET_INIT macro block
+  - src/fabric.c:          ofi_register_provider(SUET_INIT, NULL)
+  - include/rdma/fabric.h: FI_PROTO_UET enumerator
+
+The suet provider source itself is expected to be present at
+prov/suet/ before this patch is applied.
+
+---
+ Makefile.am           |  1 +
+ configure.ac          |  1 +
+ include/ofi_prov.h    | 11 +++++++++++
+ include/rdma/fabric.h |  1 +
+ src/fabric.c          |  1 +
+ 5 files changed, 15 insertions(+)
+
+diff --git a/Makefile.am b/Makefile.am
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -494,6 +494,7 @@ include prov/rxd/Makefile.include
+ include prov/opx/Makefile.include
+ include prov/shm/Makefile.include
+ include prov/sm2/Makefile.include
++include prov/suet/Makefile.include
+ include prov/tcp/Makefile.include
+ include prov/ucx/Makefile.include
+ include prov/lpp/Makefile.include
+diff --git a/configure.ac b/configure.ac
+--- a/configure.ac
++++ b/configure.ac
+@@ -1149,6 +1149,7 @@ FI_PROVIDER_SETUP([tcp])
+ FI_PROVIDER_SETUP([rxm])
+ FI_PROVIDER_SETUP([mrail])
+ FI_PROVIDER_SETUP([rxd])
++FI_PROVIDER_SETUP([suet])
+ FI_PROVIDER_SETUP([shm])
+ FI_PROVIDER_SETUP([sm2])
+ FI_PROVIDER_SETUP([ucx])
+diff --git a/include/ofi_prov.h b/include/ofi_prov.h
+--- a/include/ofi_prov.h
++++ b/include/ofi_prov.h
+@@ -178,6 +178,17 @@ RXD_INI ;
+ #  define RXD_INIT NULL
+ #endif
+
++#if (HAVE_SUET) && (HAVE_SUET_DL)
++#  define SUET_INI FI_EXT_INI
++#  define SUET_INIT NULL
++#elif (HAVE_SUET)
++#  define SUET_INI INI_SIG(fi_suet_ini)
++#  define SUET_INIT fi_suet_ini()
++SUET_INI ;
++#else
++#  define SUET_INIT NULL
++#endif
++
+ #if (HAVE_SHM) && (HAVE_SHM_DL)
+ #  define SHM_INI FI_EXT_INI
+ #  define SHM_INIT NULL
+diff --git a/include/rdma/fabric.h b/include/rdma/fabric.h
+--- a/include/rdma/fabric.h
++++ b/include/rdma/fabric.h
+@@ -329,6 +329,7 @@ enum {
+ 	FI_PROTO_NETWORKDIRECT,
+ 	FI_PROTO_PSMX2,
+ 	FI_PROTO_SHM,
++	FI_PROTO_UET,
+ 	FI_PROTO_MRAIL,
+ 	FI_PROTO_RSTREAM,
+ 	FI_PROTO_RDMA_CM_IB_XRC,
+diff --git a/src/fabric.c b/src/fabric.c
+--- a/src/fabric.c
++++ b/src/fabric.c
+@@ -993,6 +993,7 @@ void fi_ini(void)
+ 	ofi_register_provider(UDP_INIT, NULL);
+ 	ofi_register_provider(SOCKETS_INIT, NULL);
+ 	ofi_register_provider(TCP_INIT, NULL);
++	ofi_register_provider(SUET_INIT, NULL);
+
+ 	ofi_register_provider(LNX_INIT, NULL);
+ 	ofi_register_provider(HOOK_PERF_INIT, NULL);

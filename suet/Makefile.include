@@ -1,0 +1,33 @@
+_suet_files = \
+	prov/suet/src/suet_attr.c		\
+	prov/suet/src/suet_init.c		\
+	prov/suet/src/suet_fabric.c	\
+	prov/suet/src/suet_domain.c	\
+	prov/suet/src/suet_av.c		\
+	prov/suet/src/suet_cq.c		\
+	prov/suet/src/suet_cntr.c		\
+	prov/suet/src/suet_ep.c		\
+	prov/suet/src/suet_pds.c	\
+	prov/suet/src/suet_ses.c	\
+	prov/suet/src/suet_msg.c		\
+	prov/suet/src/suet_tagged.c	\
+	prov/suet/src/suet_rma.c		\
+	prov/suet/src/suet_atomic.c	\
+	prov/suet/src/suet_mr.c		\
+	prov/suet/src/suet.h		\
+	prov/suet/src/suet_proto.h
+
+if HAVE_SUET
+
+if HAVE_SUET_DL
+pkglib_LTLIBRARIES += libsuet-fi.la
+libsuet_fi_la_SOURCES = $(_suet_files) $(common_srcs)
+libsuet_fi_la_LIBADD = $(linkback) $(suet_shm_LIBS)
+libsuet_fi_la_LDFLAGS = -module -avoid-version -shared -export-dynamic
+libsuet_fi_la_DEPENDENCIES = $(linkback)
+else !HAVE_SUET_DL
+src_libfabric_la_SOURCES += $(_suet_files)
+src_libfabric_la_LIBADD += $(suet_shm_LIBS)
+endif !HAVE_SUET_DL
+
+endif HAVE_SUET
