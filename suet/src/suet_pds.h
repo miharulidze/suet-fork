@@ -38,7 +38,7 @@
 #include "suet_pds_dgram_api.h"
 #include "suet_ses_pds_api.h"
 
-/* PDS-only reliability state and in-flight/out-of-order queue membership. */
+/* PDS-only reliability state and in-flight queue membership. */
 struct suet_pds_pkt_entry {
 	struct dlist_entry entry;
 	struct suet_pkt_entry *pkt;
@@ -113,7 +113,7 @@ struct suet_ipdc {
 
 /*
  * Target-side PDC — created on first SYN from a remote FEP.
- * Tracks RX reliability state: expected PSN, OOO buffer.
+ * Tracks RX reliability state: expected PSN.
  * Currently, only one per remote FEP, shared by all EPs on this domain.
  */
 struct suet_tpdc {
@@ -133,7 +133,6 @@ struct suet_tpdc {
 				       * drives ACK coalescing */
 	enum suet_pdc_state state;
 	void *ses_ctx; /* opaque SES receive context */
-	struct dlist_entry ooo_pkts;
 	struct dlist_entry
 		gtd_del_list; /* saved SES responses awaiting CLEAR_PSN;
 			       * entries are ordered by ascending PSN. */

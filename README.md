@@ -107,7 +107,7 @@ dependencies in the SUET provider.
 - Zero-RTT PDC establishment
 - Zero-copy send path, per-packet memcpy at the receiver
 - Unexpected message buffering
-- Go-Back-N reliability
+- Go-Back-N reliability (always enabled; `FI_SUET_RETRY` is no longer supported)
 
 Many of the UET specification features are not yet supported, including but not limited to:
 - RUD PDC, SR-based reliability and endpoint congestion control

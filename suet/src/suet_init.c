@@ -43,7 +43,6 @@
 
 struct suet_env suet_env = {
 	.spin_count = 1000,
-	.retry = 1,
 	.max_peers = 1024,
 	.max_unacked = 128,
 	.max_eps = 256,
@@ -61,7 +60,6 @@ struct suet_env suet_env = {
 static void suet_init_env(void)
 {
 	fi_param_get_int(&suet_prov, "spin_count", &suet_env.spin_count);
-	fi_param_get_bool(&suet_prov, "retry", &suet_env.retry);
 	fi_param_get_int(&suet_prov, "max_peers", &suet_env.max_peers);
 	fi_param_get_int(&suet_prov, "max_unacked", &suet_env.max_unacked);
 	fi_param_get_int(&suet_prov, "max_eps", &suet_env.max_eps);
@@ -198,8 +196,6 @@ SUET_INI
 	fi_param_define(
 		&suet_prov, "spin_count", FI_PARAM_INT,
 		"Number of iterations to receive packets (0 - infinite)");
-	fi_param_define(&suet_prov, "retry", FI_PARAM_BOOL,
-			"Toggle packet retrying (default: yes)");
 	fi_param_define(&suet_prov, "max_peers", FI_PARAM_INT,
 			"Maximum number of peers to track (default: 1024)");
 	fi_param_define(
@@ -234,7 +230,7 @@ SUET_INI
 		"(clamped to [1, SUET_CQ_MAX_BATCH=64]). (default: 16)");
 	fi_param_define(&suet_prov, "max_pkt_retry", FI_PARAM_INT,
 			"Maximum per-packet RTO retries before the owning ipdc "
-			"is force-closed (only with retry=1). (default: 100)");
+			"is force-closed. (default: 100)");
 	fi_param_define(
 		&suet_prov, "max_gtd_del_resp_pool_size", FI_PARAM_INT,
 		"Maximum number of guaranteed-delivery SES responses the "

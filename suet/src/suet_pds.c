@@ -34,7 +34,7 @@
 
 /*
  * PDS (Packet Delivery Sublayer) reliability code: ipdc/tpdc lifecycle,
- * ACK/NACK/CTRL handlers, retransmit, OOO buffering, PDC teardown.
+ * ACK/NACK/CTRL handlers, retransmit, PDC teardown.
  */
 
 #include "suet_pds.h"
@@ -423,72 +423,11 @@ send_resp:
 	return nack_code ? -FI_ENOMEM : 0;
 }
 
-static void suet_pds_progress_ooo_rx_pkts(struct suet_domain *domain,
-					  struct suet_tpdc *tpdc)
-{
-	struct suet_pds_pkt_entry *pkt_entry;
-	struct pds_req_hdr *pds;
-	struct suet_ses_rx_packet ses;
-
-	while (!dlist_empty(&tpdc->ooo_pkts)) {
-		pkt_entry = container_of(tpdc->ooo_pkts.next,
-					 struct suet_pds_pkt_entry, entry);
-		pds = &((struct suet_req_pkt *) pkt_entry->pkt->pkt)->pds;
-		if (pds_req_get_psn(pds) != tpdc->expected_rx_psn)
-			return;
-
-		/* Release PDS queue membership before handing the packet to
-		 * SES. */
-		dlist_remove_init(&pkt_entry->entry);
-
-		if (!suet_pds_parse_ses(domain, pkt_entry, &ses)) {
-			suet_pds_pkt_free(pkt_entry);
-			continue;
-		}
-
-		if (suet_pds_dispatch_req_to_ses_in_order(domain, tpdc,
-							  pkt_entry, &ses)) {
-			/* Save failed; expected_rx_psn was NOT advanced. Stop
-			 * draining -- subsequent OOO pkts would just stack up
-			 * behind this unmade resp_slot. */
-			return;
-		}
-	}
-}
-
-static int suet_pds_compare_pkt_psn_fn(struct dlist_entry *item,
-				       const void *arg)
-{
-	struct suet_pds_pkt_entry *list_entry, *new_entry;
-	struct pds_req_hdr *list_hdr, *new_hdr;
-
-	list_entry = container_of(item, struct suet_pds_pkt_entry, entry);
-	list_hdr = &((struct suet_req_pkt *) list_entry->pkt->pkt)->pds;
-
-	new_entry = container_of((struct dlist_entry *) arg,
-				 struct suet_pds_pkt_entry, entry);
-	new_hdr = &((struct suet_req_pkt *) new_entry->pkt->pkt)->pds;
-
-	/* Wrap-safe ordering (Spec 3.5.12 serial-number arithmetic). The
-	 * in-flight window is bounded by max_unacked, so the unsigned form
-	 * is correct in practice; pds_psn_before keeps it correct under any
-	 * future bound. */
-	return pds_psn_before(pds_req_get_psn(list_hdr),
-			      pds_req_get_psn(new_hdr));
-}
-
 static void suet_pds_dispatch_req_to_ses_ooo(
 	struct suet_domain *domain, struct suet_tpdc *tpdc,
 	struct suet_pds_pkt_entry *pkt_entry, struct pds_req_hdr *pds_hdr,
 	const struct suet_ses_rx_packet *ses)
 {
-	if (!suet_env.retry) {
-		/* This works only with *lossless* out-of-order transport! */
-		dlist_insert_order(&tpdc->ooo_pkts,
-				   &suet_pds_compare_pkt_psn_fn,
-				   &pkt_entry->entry);
-		return;
-	}
 
 	/* Duplicate of an already-delivered packet: our previous
 	 * cumulative ACK must have been lost (or the sender RTO'd
@@ -576,12 +515,8 @@ static void suet_pds_process_rx_req(struct suet_domain *domain,
 		return;
 	}
 
-	/* In-order; if successful, current packet might fill the gap */
-	if (!suet_pds_dispatch_req_to_ses_in_order(domain, tpdc, pkt_entry,
-						   &ses) &&
-	    !suet_env.retry && !dlist_empty(&tpdc->ooo_pkts)) {
-		suet_pds_progress_ooo_rx_pkts(domain, tpdc);
-	}
+	(void) suet_pds_dispatch_req_to_ses_in_order(domain, tpdc, pkt_entry,
+						     &ses);
 }
 
 /* SES interprets semantic response codes and owns application errors. */
@@ -844,18 +779,6 @@ void suet_pds_tx_done(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 static void suet_pds_free_tpdc(struct suet_domain *domain,
 			       struct suet_tpdc *tpdc)
 {
-	struct suet_pds_pkt_entry *pkt_entry;
-	struct dlist_entry *tmp;
-
-	if (!suet_env.retry) {
-		dlist_foreach_container_safe (&tpdc->ooo_pkts,
-					      struct suet_pds_pkt_entry,
-					      pkt_entry, entry, tmp) {
-			dlist_remove_init(&pkt_entry->entry);
-			suet_pds_pkt_free(pkt_entry);
-		}
-	}
-
 	suet_ses_rx_close(tpdc->ses_ctx);
 
 	/* Drain any saved guaranteed-delivery responses; the peer is gone
@@ -917,8 +840,7 @@ static void suet_pds_process_cp(struct suet_domain *domain,
 
 		/* Spec 3.5.8.3: Close Cmd implicitly clears all forward PSNs.
 		 * Diagnostic: non-empty rx state on close => CLOSE_IN_ERR. */
-		if (suet_ses_rx_busy(tpdc->ses_ctx) ||
-		    !dlist_empty(&tpdc->ooo_pkts)) {
+		if (suet_ses_rx_busy(tpdc->ses_ctx)) {
 			FI_WARN(&suet_prov, FI_LOG_EP_CTRL,
 				"Close Cmd on non-idle tpdc pdcid=%u\n",
 				tpdc->local_pdcid);
@@ -976,7 +898,6 @@ static struct suet_tpdc *suet_pds_allocate_tpdc(struct suet_domain *domain,
 	tpdc->pkts_since_last_ack = 0;
 	tpdc->state = SUET_PDC_ESTABLISHED;
 
-	dlist_init(&tpdc->ooo_pkts);
 	dlist_init(&tpdc->gtd_del_list);
 
 	if (ofi_idm_set(&domain->pds.local_pdcid_to_tpdc_idm,
@@ -1570,13 +1491,11 @@ void suet_pds_progress(struct suet_domain *domain)
 
 	dlist_foreach_container_safe (&domain->pds.active_ipdc_list,
 				      struct suet_ipdc, ipdc, entry, tmp) {
-		if (suet_env.retry) {
-			suet_pds_ipdc_progress_tx_pkt_list(domain, ipdc);
-			if (suet_pds_free_ipdc_if_retry_exhausted(domain, ipdc))
-				continue;
-			if (dlist_empty(&ipdc->in_flight_pkts))
-				suet_pds_ipdc_progress_tx_list(ipdc);
-		}
+		suet_pds_ipdc_progress_tx_pkt_list(domain, ipdc);
+		if (suet_pds_free_ipdc_if_retry_exhausted(domain, ipdc))
+			continue;
+		if (dlist_empty(&ipdc->in_flight_pkts))
+			suet_pds_ipdc_progress_tx_list(ipdc);
 		suet_pds_ipdc_progress_teardown(domain, ipdc);
 	}
 }

@@ -88,7 +88,6 @@
 
 struct suet_env {
 	int spin_count;
-	int retry;
 	int max_peers;
 	int max_unacked;
 	int max_eps;
