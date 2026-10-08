@@ -109,6 +109,8 @@ struct suet_ipdc {
 	uint32_t close_psn;
 	struct suet_rel_tx rel;
 	struct suet_cc cc;
+	uint32_t peer_window;
+	uint32_t mpr_cack;
 	struct suet_pds_pkt_entry **tx_pkts; /* indexed by reliability slot */
 	bool teardown_pending; /* close requested; defer QUIESCE until
 				  ESTABLISHED */
@@ -140,7 +142,7 @@ struct suet_tpdc {
 	void *ses_ctx; /* opaque SES receive context */
 	struct dlist_entry
 		gtd_del_list; /* saved SES responses awaiting CLEAR_PSN;
-			       * entries are ordered by ascending PSN. */
+			       * entries may be created out of PSN order. */
 };
 
 struct suet_tpdc_syn_key {

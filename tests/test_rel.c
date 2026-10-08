@@ -42,7 +42,7 @@ static void check_windows(uint32_t capacity, uint32_t base)
 	struct suet_rel_retired retired;
 	uint32_t i, round, psn = base, slot, previous_slot;
 
-	assert(!suet_rel_tx_init(&tx, base, capacity, 100));
+	assert(!suet_rel_tx_init(&tx, base, capacity, 100, SUET_REL_GBN));
 	for (round = 0; round < 4 * capacity; round++) {
 		for (i = 0; i < capacity; i++) {
 			assert(can_track(&tx, psn + i));
@@ -83,7 +83,7 @@ static void check_hole_and_retry(void)
 	uint32_t cursor, psn, retry;
 	uint64_t now = 0, delay;
 
-	assert(!suet_rel_tx_init(&tx, 100, 4, 100));
+	assert(!suet_rel_tx_init(&tx, 100, 4, 100, SUET_REL_GBN));
 	track(&tx, 100);
 	attempt(&tx, 100, 0);
 	track(&tx, 102);
@@ -127,7 +127,7 @@ static void check_rx(void)
 	struct suet_rel_rx rx;
 	uint32_t base = UINT32_MAX - 1;
 
-	assert(!suet_rel_rx_init(&rx, base, 3));
+	assert(!suet_rel_rx_init(&rx, base, 3, SUET_REL_GBN));
 	assert(suet_rel_rx_record(&rx, base + 1, false) == SUET_REL_RX_GAP);
 	assert(suet_rel_rx_cack(&rx) == base - 1);
 	assert(suet_rel_rx_record(&rx, base, false) == SUET_REL_RX_NEW);
@@ -163,7 +163,7 @@ static void check_ack_ranges(uint32_t capacity)
 	struct suet_rel_retired retired;
 	uint32_t base = UINT32_MAX - 100, hole, i, count;
 
-	assert(!suet_rel_tx_init(&tx, base, capacity, 100));
+	assert(!suet_rel_tx_init(&tx, base, capacity, 100, SUET_REL_GBN));
 	/* Every missing bit position, at every physical head, including partial
 	 * words and PSN wrap. An invalid CACK must preserve the whole window.
 	 */
@@ -193,11 +193,75 @@ static void check_ack_ranges(uint32_t capacity)
 	suet_rel_tx_cleanup(&tx);
 }
 
+static void check_selective_repeat(void)
+{
+	struct suet_rel_tx tx;
+	struct suet_rel_rx rx;
+	struct suet_rel_retired retired;
+	uint32_t base = UINT32_MAX - 31, cursor, psn;
+	uint64_t sack;
+
+	assert(!suet_rel_tx_init(&tx, base, 128, 10, SUET_REL_SR));
+	assert(!suet_rel_rx_init(&rx, base, 128, SUET_REL_SR));
+	for (uint32_t i = 0; i < 128; i++) {
+		track(&tx, base + i);
+		attempt(&tx, base + i, 0);
+	}
+	/* Deliver in reverse order, with a hole at zero. Receipt cannot imply
+	 * CACK advancement or semantic success across that hole.
+	 */
+	for (uint32_t i = 127; i; i--) {
+		assert(suet_rel_rx_record(&rx, base + i, false) ==
+		       SUET_REL_RX_NEW);
+		assert(suet_rel_rx_cack(&rx) == base - 1);
+		suet_rel_rx_commit(&rx, base + i);
+		assert(suet_rel_rx_record(&rx, base + i, true) ==
+		       SUET_REL_RX_REPLAY);
+		assert(suet_rel_rx_record(&rx, base + i, false) ==
+		       SUET_REL_RX_DROP);
+	}
+	sack = suet_rel_rx_sack(&rx, base);
+	assert(sack == (UINT64_MAX ^ 1));
+	assert(suet_rel_tx_sack(&tx, base, sack) == 63);
+	assert(suet_rel_tx_sack(&tx, base, 0) == 0);
+	assert(suet_rel_tx_sack(&tx, base, sack) == 0);
+	assert(suet_rel_tx_sack(&tx, base + 64,
+				suet_rel_rx_sack(&rx, base + 64)) == 64);
+	assert(suet_rel_tx_cack(&tx) == base - 1 && tx.tracked == 128);
+	cursor = 0;
+	assert(retry_next(&tx, 1, &cursor, &psn) && psn == base);
+	assert(!retry_next(&tx, 1, &cursor, &psn));
+	/* Refused semantic dispatch must not appear in SACK. */
+	assert(suet_rel_rx_record(&rx, base, true) == SUET_REL_RX_NEW);
+	suet_rel_rx_cancel(&rx, base);
+	assert(suet_rel_rx_sack(&rx, base) == sack);
+	assert(suet_rel_rx_record(&rx, base, true) == SUET_REL_RX_NEW);
+	suet_rel_rx_commit(&rx, base);
+	assert(suet_rel_rx_cack(&rx) == base + 127);
+	assert(suet_rel_tx_ack(&tx, base + 127, &retired) ==
+	       SUET_REL_ACK_ADVANCED);
+	assert(retired.count == 128 && retired.newly_acked == 1);
+	assert(suet_rel_tx_sack(&tx, base, UINT64_MAX) == 0);
+	assert(suet_rel_tx_sack(&tx, base + 128, UINT64_MAX) == 0);
+	/* An unexpired earlier packet must not hide an expired later packet. */
+	base += 128;
+	track(&tx, base);
+	track(&tx, base + 1);
+	attempt(&tx, base, 10);
+	attempt(&tx, base + 1, 0);
+	cursor = 0;
+	assert(retry_next(&tx, 10, &cursor, &psn) && psn == base + 1);
+	assert(!retry_next(&tx, 10, &cursor, &psn));
+	suet_rel_tx_cleanup(&tx);
+	suet_rel_rx_cleanup(&rx);
+}
+
 int main(void)
 {
 	struct suet_rel_tx tx;
-	assert(suet_rel_tx_init(&tx, 0, 0, 0) < 0);
-	assert(suet_rel_tx_init(&tx, 0, UINT32_C(0x80000000), 0) < 0);
+	assert(suet_rel_tx_init(&tx, 0, 0, 0, SUET_REL_GBN) < 0);
+	assert(suet_rel_tx_init(&tx, 0, UINT32_C(0x80000000), 0, SUET_REL_GBN) <
+	       0);
 	check_windows(1, UINT32_MAX);
 	check_windows(3, UINT32_MAX - 2);
 	check_windows(65, UINT32_MAX - 32);
@@ -206,6 +270,7 @@ int main(void)
 	check_ack_ranges(129);
 	check_hole_and_retry();
 	check_rx();
+	check_selective_repeat();
 	puts("Reliability windows, wraparound, feedback and GBN recovery: "
 	     "PASS");
 	return 0;

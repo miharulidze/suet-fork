@@ -63,6 +63,11 @@ trigger id 2 oneshot
             ('random_loss', ['-drop_per_mille', '25']),
             ('burst_loss', ['-burst_every', '19', '-burst_length', '2']),
         ):
-            run(pdc + '_' + condition, traffic, ['-pdc', pdc, *opts])
+            for sr in ('0', '1'):
+                env['FI_OFI_SUET_SELECTIVE_REPEAT'] = sr
+                result = run(pdc + '_sr' + sr + '_' + condition, traffic, ['-pdc', pdc, *opts])
+                if pdc == 'rud' and sr == '1' and condition == 'reorder':
+                    assert int(re.search(r'sacks (\d+)', result[1])[1]) > 0, result
+    env.pop('FI_OFI_SUET_SELECTIVE_REPEAT', None)
     run('timeout', one, ['-end', '0.01'], expected=2)
 print('All simulator integration checks passed', flush=True)

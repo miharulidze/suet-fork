@@ -95,10 +95,10 @@ index through `suet_rel_slot()`. ACK processing returns the retired slot range;
 PDS detaches those pointers before progressing new transmissions. Packets still
 borrowed by datagram remain on PDS's lifetime list until local completion.
 
-ROD delivery ordering stays in PDS. Its receive pointer array can retain packets
-admitted ahead of the delivery position by another reliability implementation.
-The GBN implementation currently discards future PSNs, independently of the
-PDC delivery type. This separation does not add RUD wire or SES support.
+ROD delivery ordering stays in PDS and discards packets beyond a gap without
+retaining packet buffers. RUD dispatches admitted packets directly to SES.
+The GBN implementation discards future PSNs independently of the PDC type;
+selective repeat admits them and leaves delivery policy to PDS.
 Replacing the reliability implementation does not require a function-pointer
 table or per-packet allocation. Existing PSN-range message completion, semantic
 response replay and connection lifecycle remain in PDS.
@@ -188,3 +188,19 @@ When running on top of Verbs datagram provider, SUET reaches ~7.5 GB/s/core on m
 ## License
 
 SUET is available under BSD or GPLv2 licenses, similar to the upstream libfabric. For more details see: [https://github.com/ofiwg/libfabric/blob/main/COPYING](https://github.com/ofiwg/libfabric/blob/main/COPYING)
+
+Selective repeat can be selected independently of endpoint ordering with
+`FI_OFI_SUET_SELECTIVE_REPEAT=1` (Go-Back-N remains the default). ROD drops
+out-of-order requests without buffering; RUD processes admitted fragments by
+semantic message ID. A continuation received before its SOM is rejected and
+retried, without consuming receive-buffer space. Both algorithms preserve
+local datagram buffer lifetime and the existing cumulative message completion
+rule.
+
+Selective repeat emits the specification's 32-byte ACK_CC header with a
+64-bit SACK bitmap, an eight-PSN-aligned base, signed offsets, and MPR. ACK_CC
+and ACK_CCX are accepted by both algorithms. Positive SACK evidence is
+monotonic and does not imply a default SES response or message completion.
+The selective-repeat window is bounded to 128–32640 packets to fit MPR and
+signed ACK offsets. The existing guaranteed-response/CLEAR handling is
+retained; this is not a claim of full UET protocol conformance.

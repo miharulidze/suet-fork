@@ -146,8 +146,8 @@ void suet_pds_rx_release(void *handle);
 void suet_ses_default_response(const struct ses_req_hdr *hdr,
 			       struct suet_ses_resp *resp);
 
-/* Reserve is called during in-order SES dispatch. PDS records the current
- * request PSN and num_pkts as the replay range.
+/* Reserve records the opaque request handle's PSN and num_pkts as the
+ * replay range, independent of delivery order.
  * A reserved response has one SES reference and one PDS retention reference.
  * Complete consumes the SES reference and sends the response if the route is
  * still live. Cancel consumes it without sending. PDC close invalidates the
@@ -155,7 +155,8 @@ void suet_ses_default_response(const struct ses_req_hdr *hdr,
  */
 struct suet_pds_ses_resp_entry *
 suet_pds_response_reserve(struct suet_domain *domain, void *pds_ctx,
-			  const struct suet_ses_resp *resp, uint16_t num_pkts);
+			  const struct suet_ses_resp *resp, uint16_t num_pkts,
+			  void *request);
 void suet_pds_response_complete(struct suet_pds_ses_resp_entry *response,
 				const struct suet_ses_resp *resp);
 void suet_pds_response_cancel(struct suet_pds_ses_resp_entry *response);

@@ -111,6 +111,7 @@ struct Host {
 };
 
 struct NetworkStats {
+    uint64_t sacks = 0, retransmits = 0;
     uint64_t sent = 0, received = 0, dropped = 0, receive_drops = 0, in_flight = 0;
 };
 class FabricPacket : public Packet {
@@ -317,7 +318,12 @@ class Simulation : public EventSource {
         while ((ret = htsim_dgram_take_tx(&frame)) > 0) {
             if (frame.size >= 2) {
                 unsigned type = frame.data[0] >> 3;
+                if (type == 8 && frame.size >= 32) {
+                    for (size_t i = 16; i < 24; i++)
+                        if (frame.data[i]) { stats.sacks++; break; }
+                }
                 if (type == 2 || type == 3) {
+                    if (frame.data[1] & 0x10) stats.retransmits++;
                     if (type != (ordered ? 3U : 2U))
                         throw std::runtime_error("incorrect PDC wire type");
                 }
@@ -464,6 +470,7 @@ int main(int argc, char **argv) {
         std::cout << "SUET result: " << simulation.completed() << '/' << simulation.total()
                   << " messages; packets " << simulation.stats.sent << " received "
                   << simulation.stats.received << " network_drops " << simulation.stats.dropped
+                  << " sacks " << simulation.stats.sacks << " retransmits " << simulation.stats.retransmits
                   << " receive_drops " << simulation.stats.receive_drops << " elapsed_us "
                   << timeAsUs(events.now()) << '\n';
         if (!complete) {

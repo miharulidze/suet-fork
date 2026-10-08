@@ -74,6 +74,7 @@ struct suet_ses_tx_entry {
 struct suet_ses_rx_entry {
 	struct dlist_entry entry;
 	uint16_t rx_id;
+	uint16_t message_id;
 	uint64_t bytes_copied;
 	uint32_t pkts_received;
 	uint32_t num_pkts;
@@ -90,7 +91,10 @@ struct suet_ses_rx_entry {
 
 struct suet_ses_unexp_msg {
 	struct dlist_entry entry;
+	struct dlist_entry rx_entry;
 	struct dlist_entry pkt_list;
+	uint32_t pkts_received;
+	uint32_t num_pkts;
 	int peer_idx; /* AV peer index for directed-recv matching */
 	struct suet_pds_ses_resp_entry *gtd_del_resp;
 	void *ses_ctx;
@@ -115,6 +119,7 @@ struct suet_ses_rx_ctx {
 	uint16_t curr_rx_id;
 	struct suet_ses_unexp_msg *curr_unexp;
 	struct dlist_entry rx_list;
+	struct dlist_entry unexp_list;
 };
 
 struct suet_ses_msg_match_attr {

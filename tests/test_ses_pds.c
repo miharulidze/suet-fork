@@ -338,11 +338,14 @@ static void check_response_retention(void)
 	dlist_init(&tpdc.gtd_del_list);
 	tpdc.expected_rx_psn = UINT32_MAX - 1;
 	memcpy(&before, &placeholder, sizeof(before));
-	saved = suet_pds_response_reserve(&domain, &tpdc, &placeholder, 3);
+	struct suet_pds_pkt_entry request_ctx = {.psn = tpdc.expected_rx_psn};
+	saved = suet_pds_response_reserve(&domain, &tpdc, &placeholder, 3,
+					  &request_ctx);
 	assert(saved);
 	assert(saved->psn == UINT32_MAX - 1 && saved->num_pkts == 3);
 	assert(!memcmp(&placeholder, &before, sizeof(before)));
-	assert(!suet_pds_response_reserve(&domain, &tpdc, &placeholder, 3));
+	assert(!suet_pds_response_reserve(&domain, &tpdc, &placeholder, 3,
+					  &request_ctx));
 
 	/* A full response pool must reject unexpected intake without retaining
 	 * its packet or advancing receive state. SES returns no wire NACK code.
@@ -356,6 +359,7 @@ static void check_response_retention(void)
 	assert(rx);
 	ses_req_init(&request.ses, UET_SEND, 1, 0, 1, 0, 7, 0, 0, 0, 141, 0, 0);
 	packet.hdr = &request.ses;
+	packet.handle = &request_ctx;
 	memset(&result, 0xa5, sizeof(result));
 	suet_ses_receive(rx, NULL, &packet, &result);
 	assert(result.status == -FI_ENOMEM);
@@ -373,6 +377,7 @@ static void check_response_retention(void)
 	held_packet = ofi_buf_alloc(tx_pool);
 	assert(held_packet);
 	tpdc.expected_rx_psn = 1;
+	request_ctx.psn = 1;
 	memcpy(&before, &reply, sizeof(before));
 	suet_pds_response_complete(saved, &reply);
 	assert(!memcmp(&reply, &before, sizeof(before)));
@@ -387,7 +392,8 @@ static void check_response_retention(void)
 	assert(dlist_empty(&tpdc.gtd_del_list));
 
 	/* Releasing a retained response makes capacity available again. */
-	saved = suet_pds_response_reserve(&domain, &tpdc, &placeholder, 1);
+	saved = suet_pds_response_reserve(&domain, &tpdc, &placeholder, 1,
+					  &request_ctx);
 	assert(saved && saved->psn == 1 && saved->num_pkts == 1);
 	suet_pds_response_cancel(saved);
 	ofi_buf_free(held_packet);

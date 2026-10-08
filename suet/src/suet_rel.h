@@ -17,7 +17,14 @@ struct suet_rel_window {
 	uint64_t *present;
 };
 
+enum suet_rel_algorithm {
+	SUET_REL_GBN,
+	SUET_REL_SR,
+};
+
 struct suet_rel_tx {
+	enum suet_rel_algorithm algorithm;
+	uint64_t *sacked;
 	struct suet_rel_window window;
 	uint64_t *attempt_time;
 	uint32_t tracked;
@@ -26,9 +33,12 @@ struct suet_rel_tx {
 };
 
 struct suet_rel_rx {
+	enum suet_rel_algorithm algorithm;
 	struct suet_rel_window window;
 	uint64_t *accepted;
 	uint32_t since_ack;
+	uint32_t sack_base;
+	uint32_t max_psn;
 };
 
 /* Slots occupied before ACK processing. Consume every pointer in this range
@@ -39,6 +49,7 @@ struct suet_rel_retired {
 	uint32_t first_psn;
 	uint32_t first_slot;
 	uint32_t count;
+	uint32_t newly_acked;
 };
 
 enum suet_rel_ack_result {
@@ -55,10 +66,11 @@ enum suet_rel_rx_result {
 };
 
 int suet_rel_tx_init(struct suet_rel_tx *tx, uint32_t base_psn,
-		     uint32_t capacity, uint32_t max_retries);
+		     uint32_t capacity, uint32_t max_retries,
+		     enum suet_rel_algorithm algorithm);
 void suet_rel_tx_cleanup(struct suet_rel_tx *tx);
 int suet_rel_rx_init(struct suet_rel_rx *rx, uint32_t base_psn,
-		     uint32_t capacity);
+		     uint32_t capacity, enum suet_rel_algorithm algorithm);
 void suet_rel_rx_cleanup(struct suet_rel_rx *rx);
 bool suet_rel_slot(const struct suet_rel_window *window, uint32_t psn,
 		   uint32_t *slot);
@@ -70,6 +82,9 @@ void suet_rel_tx_track(struct suet_rel_tx *tx, uint32_t slot);
 void suet_rel_tx_attempt(struct suet_rel_tx *tx, uint32_t slot, uint64_t now);
 enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 					 struct suet_rel_retired *retired);
+/* Positive receipt evidence only; zeros never revoke previous evidence. */
+uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits);
+uint64_t suet_rel_rx_sack(const struct suet_rel_rx *rx, uint32_t base);
 uint32_t suet_rel_tx_cack(const struct suet_rel_tx *tx);
 /* NACK PSN validity is checked here. Current GBN recovers via timeout;
  * NACK reception intentionally does not schedule an immediate retry.

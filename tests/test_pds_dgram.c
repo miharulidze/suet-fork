@@ -272,8 +272,8 @@ static void check_ses_retention(void)
 	struct suet_ep ep = {0};
 	struct suet_ep *ep_table[] = {&ep};
 	struct suet_tpdc tpdc = {0};
-	struct suet_pkt_entry *packets[2];
-	struct suet_pds_pkt_entry saved[2];
+	struct suet_pkt_entry *packets[4];
+	struct suet_pds_pkt_entry saved[4];
 	struct suet_ses_rx_dispatch_result result;
 	struct fi_cq_msg_entry comp = {0};
 	struct suet_ses_unexp_msg *unexp;
@@ -298,7 +298,7 @@ static void check_ses_retention(void)
 	assert(!suet_pds_init(&domain));
 	rx = suet_ses_rx_open(&domain, &tpdc, 0);
 	assert(rx);
-	for (i = 0; i < 2; i++) {
+	for (i = 0; i < 4; i++) {
 		struct suet_dgram_pkt_entry *dgram;
 		struct suet_pds_pkt_entry *pds;
 		struct suet_ses_pkt_entry *ses;
@@ -322,9 +322,9 @@ static void check_ses_retention(void)
 		memcpy(&saved[i], pds, sizeof(*pds));
 		wire = received->pkt;
 		memset(wire, 0, sizeof(*wire) + 64);
-		ses_req_init(&wire->ses, UET_SEND, !i, !!i, 1, 0, 7, 0, 0, 0,
+		ses_req_init(&wire->ses, UET_SEND, !(i % 2), !!(i % 2), 1, 0, 7, 0, 0, 0,
 			     128, 0, 0);
-		if (i)
+		if (i % 2)
 			ses_hd_set_cont(&wire->ses, 64, 64);
 		assert(suet_ses_rx_parse(
 			&domain, UET_HDR_REQUEST_STD, &wire->ses,
@@ -344,7 +344,15 @@ static void check_ses_retention(void)
 	       &((struct suet_ses_pkt_entry *) packets[0]->ses_ctx)->entry);
 	assert(unexp->pkt_list.prev ==
 	       &((struct suet_ses_pkt_entry *) packets[1]->ses_ctx)->entry);
-	for (i = 0; i < 2; i++)
+	/* The sender can reuse an ID after all packets are ACKed while the
+	 * older complete unexpected message is still waiting for a receive.
+	 */
+	unexp = container_of(unexp->entry.next, struct suet_ses_unexp_msg, entry);
+	assert(unexp->pkt_list.next ==
+	       &((struct suet_ses_pkt_entry *) packets[2]->ses_ctx)->entry);
+	assert(unexp->pkt_list.prev ==
+	       &((struct suet_ses_pkt_entry *) packets[3]->ses_ctx)->entry);
+	for (i = 0; i < 4; i++)
 		assert(!memcmp(packets[i]->pds_ctx, &saved[i],
 			       sizeof(saved[i])));
 	suet_ses_unexp_msg_list_cleanup(&ep.unexp_list);
@@ -401,7 +409,7 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 	ipdc.tx_seq_no = 100;
 	suet_cc_init(&ipdc.cc, suet_env.max_unacked);
 	assert(!suet_rel_tx_init(&ipdc.rel, 100, suet_env.max_unacked,
-				 suet_env.max_pkt_retry));
+				 suet_env.max_pkt_retry, SUET_REL_GBN));
 	ipdc.tx_pkts = calloc(suet_env.max_unacked, sizeof(*ipdc.tx_pkts));
 	assert(ipdc.tx_pkts);
 	ipdc.last_tx_clear_psn = 99;
@@ -494,6 +502,25 @@ static void inject_cack(struct suet_domain *domain, uint16_t pdcid,
 	suet_pds_receive(domain, pkt, 9);
 }
 
+static void inject_sack(struct suet_domain *domain, uint16_t id, uint64_t bits,
+			bool short_header)
+{
+	struct suet_pkt_entry *pkt = suet_dgram_pkt_alloc(domain);
+	/* Golden ACK_CC bytes: type 8, CACK 0xfffffffe, SACK base 0xfffffff8,
+	 * signed offset -6; bitmap bit 7 acknowledges PSN 0xffffffff.
+	 */
+	const unsigned char wire[32] = {
+		0x40, 0, 0, 0, 0xff, 0xff, 0xff, 0xfe,
+		0,    8, 0, 7, 0,    0,	   0xff, 0xfa,
+	};
+	memcpy(pkt->pkt, wire, sizeof(wire));
+	struct pds_ack_cc_hdr *ack = pkt->pkt;
+	pds_ack_set_dpdcid(&ack->ack, id);
+	ack->sack_bitmap = htonll(bits);
+	pkt->pkt_size = short_header ? 31 : sizeof(wire);
+	suet_pds_receive(domain, pkt, 9);
+}
+
 static void check_bitmap_retirement(void)
 {
 	struct suet_domain domain = {0};
@@ -523,7 +550,8 @@ static void check_bitmap_retirement(void)
 	send_status = 0;
 	assert(!suet_dgram_init_pkt_entry_pools(&domain));
 	assert(!suet_pds_init(&domain));
-	assert(!suet_rel_tx_init(&ipdc.rel, UINT32_MAX - 1, 3, 100));
+	assert(!suet_rel_tx_init(&ipdc.rel, UINT32_MAX - 1, 3, 100,
+				 SUET_REL_GBN));
 	suet_cc_init(&ipdc.cc, 3);
 	ipdc.tx_pkts = calloc(3, sizeof(*ipdc.tx_pkts));
 	assert(ipdc.tx_pkts);
@@ -589,6 +617,16 @@ static void check_bitmap_retirement(void)
 	assert(suet_rel_tx_cack(&ipdc.rel) == UINT32_MAX - 1);
 	assert(!packets[1]->acked && !packets[2]->acked);
 	assert(ipdc.cc.in_flight == 3);
+	/* A stale CACK may carry new SACK evidence. Keep packet pointers and
+	 * semantic completion state, and return congestion credit only once.
+	 */
+	inject_sack(&domain, 7, UINT64_C(1) << 7, true);
+	assert(ipdc.cc.in_flight == 3);
+	inject_sack(&domain, 7, UINT64_C(1) << 7, false);
+	assert(ipdc.cc.in_flight == 2 && ipdc.tx_pkts[1] == packets[1]);
+	inject_sack(&domain, 7, UINT64_C(1) << 7, false);
+	inject_sack(&domain, 7, 0, false);
+	assert(ipdc.cc.in_flight == 2);
 	inject_cack(&domain, 7, 0);
 	assert(!ipdc.tx_pkts[1] && !ipdc.tx_pkts[2]);
 	assert(packets[1]->acked && packets[2]->acked);

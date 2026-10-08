@@ -65,7 +65,8 @@ static void suet_rel_advance(struct suet_rel_window *window, uint32_t count)
 }
 
 int suet_rel_tx_init(struct suet_rel_tx *tx, uint32_t base_psn,
-		     uint32_t capacity, uint32_t max_retries)
+		     uint32_t capacity, uint32_t max_retries,
+		     enum suet_rel_algorithm algorithm)
 {
 	int ret;
 
@@ -74,16 +75,19 @@ int suet_rel_tx_init(struct suet_rel_tx *tx, uint32_t base_psn,
 	if (ret)
 		return ret;
 	tx->attempt_time = calloc(capacity, sizeof(*tx->attempt_time));
-	if (!tx->attempt_time) {
+	tx->sacked = calloc(suet_rel_words(capacity), sizeof(uint64_t));
+	if (!tx->attempt_time || !tx->sacked) {
 		suet_rel_tx_cleanup(tx);
 		return -ENOMEM;
 	}
 	tx->max_retries = max_retries;
+	tx->algorithm = algorithm;
 	return 0;
 }
 
 void suet_rel_tx_cleanup(struct suet_rel_tx *tx)
 {
+	free(tx->sacked);
 	free(tx->attempt_time);
 	free(tx->window.present);
 	memset(tx, 0, sizeof(*tx));
@@ -100,6 +104,7 @@ void suet_rel_tx_track(struct suet_rel_tx *tx, uint32_t slot)
 {
 	assert(slot < tx->window.capacity &&
 	       !suet_rel_bit(tx->window.present, slot));
+	suet_rel_clear(tx->sacked, slot);
 	suet_rel_set(tx->window.present, slot);
 	tx->tracked++;
 }
@@ -145,6 +150,8 @@ enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 {
 	struct suet_rel_window *window = &tx->window;
 	uint32_t count = cack - window->base_psn + 1;
+	uint32_t slot, n, left, shift;
+	uint64_t mask;
 
 	memset(retired, 0, sizeof(*retired));
 	if ((int32_t) (cack - window->base_psn) < 0)
@@ -157,11 +164,59 @@ enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 	retired->first_psn = window->base_psn;
 	retired->first_slot = window->head;
 	retired->count = count;
+	retired->newly_acked = count;
+	slot = window->head;
+	left = count;
+	while (left) {
+		shift = slot % 64;
+		n = 64 - shift;
+		if (n > window->capacity - slot)
+			n = window->capacity - slot;
+		if (n > left)
+			n = left;
+		mask = (UINT64_MAX >> (64 - n)) << shift;
+		retired->newly_acked -=
+			__builtin_popcountll(tx->sacked[slot / 64] & mask);
+		tx->sacked[slot / 64] &= ~mask;
+		left -= n;
+		slot += n;
+		if (slot == window->capacity)
+			slot = 0;
+	}
 	suet_rel_range(window, count, true);
 	tx->tracked -= count;
 	suet_rel_advance(window, count);
 	tx->retry_count = 0;
 	return SUET_REL_ACK_ADVANCED;
+}
+
+uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits)
+{
+	uint32_t count = 0, slot, bit;
+
+	while (bits) {
+		bit = __builtin_ctzll(bits);
+		bits &= bits - 1;
+		if (!suet_rel_slot(&tx->window, base + bit, &slot) ||
+		    !suet_rel_bit(tx->window.present, slot) ||
+		    suet_rel_bit(tx->sacked, slot))
+			continue;
+		suet_rel_set(tx->sacked, slot);
+		count++;
+	}
+	return count;
+}
+
+uint64_t suet_rel_rx_sack(const struct suet_rel_rx *rx, uint32_t base)
+{
+	uint64_t bits = 0;
+	uint32_t slot;
+
+	for (uint32_t i = 0; i < 64; i++)
+		if (suet_rel_slot(&rx->window, base + i, &slot) &&
+		    suet_rel_bit(rx->accepted, slot))
+			bits |= UINT64_C(1) << i;
+	return bits;
 }
 
 uint32_t suet_rel_tx_cack(const struct suet_rel_tx *tx)
@@ -190,11 +245,16 @@ bool suet_rel_tx_retry_next(const struct suet_rel_tx *tx, uint64_t now,
 	while (*cursor < window->capacity) {
 		offset = (*cursor)++;
 		slot = (window->head + offset) % window->capacity;
-		if (!suet_rel_bit(window->present, slot))
+		if (!suet_rel_bit(window->present, slot) ||
+		    (tx->algorithm == SUET_REL_SR &&
+		     suet_rel_bit(tx->sacked, slot)))
 			continue;
 		if (now < tx->attempt_time[slot] ||
-		    now - tx->attempt_time[slot] < timeout)
-			return false;
+		    now - tx->attempt_time[slot] < timeout) {
+			if (tx->algorithm == SUET_REL_GBN)
+				return false;
+			continue;
+		}
 		*retry_slot = slot;
 		*psn = window->base_psn + offset;
 		return true;
@@ -214,7 +274,7 @@ bool suet_rel_tx_failed(const struct suet_rel_tx *tx)
 }
 
 int suet_rel_rx_init(struct suet_rel_rx *rx, uint32_t base_psn,
-		     uint32_t capacity)
+		     uint32_t capacity, enum suet_rel_algorithm algorithm)
 {
 	int ret;
 
@@ -222,6 +282,9 @@ int suet_rel_rx_init(struct suet_rel_rx *rx, uint32_t base_psn,
 	ret = suet_rel_window_init(&rx->window, base_psn, capacity);
 	if (ret)
 		return ret;
+	rx->algorithm = algorithm;
+	rx->sack_base = base_psn - 1;
+	rx->max_psn = base_psn - 1;
 	rx->accepted = calloc(suet_rel_words(capacity), sizeof(uint64_t));
 	if (!rx->accepted) {
 		suet_rel_rx_cleanup(rx);
@@ -248,12 +311,14 @@ enum suet_rel_rx_result suet_rel_rx_record(struct suet_rel_rx *rx, uint32_t psn,
 	 * type. A selective algorithm may instead record these slots and return
 	 * NEW; ordering before SES dispatch is the PDC's responsibility.
 	 */
-	if (psn != rx->window.base_psn)
+	if (rx->algorithm == SUET_REL_GBN && psn != rx->window.base_psn)
 		return SUET_REL_RX_GAP;
 	if (!suet_rel_slot(&rx->window, psn, &slot))
 		return SUET_REL_RX_GAP;
 	if (suet_rel_bit(rx->window.present, slot))
-		return SUET_REL_RX_DROP;
+		return retransmit && suet_rel_bit(rx->accepted, slot) ?
+			       SUET_REL_RX_REPLAY :
+			       SUET_REL_RX_DROP;
 	suet_rel_set(rx->window.present, slot);
 	return SUET_REL_RX_NEW;
 }
@@ -270,6 +335,10 @@ void suet_rel_rx_commit(struct suet_rel_rx *rx, uint32_t psn)
 	assert(!suet_rel_bit(rx->accepted, slot));
 	suet_rel_set(rx->accepted, slot);
 	rx->since_ack++;
+	if ((int32_t) (psn - rx->max_psn) > 0)
+		rx->max_psn = psn;
+	if ((int32_t) (psn - rx->sack_base) < 0)
+		rx->sack_base = psn;
 	while (suet_rel_bit(rx->accepted, window->head)) {
 		suet_rel_clear(rx->accepted, window->head);
 		suet_rel_clear(window->present, window->head);
@@ -302,6 +371,8 @@ bool suet_rel_rx_ack_needed(const struct suet_rel_rx *rx, bool requested)
 void suet_rel_rx_ack_sent(struct suet_rel_rx *rx)
 {
 	rx->since_ack = 0;
+	if ((int32_t) (rx->max_psn - (rx->sack_base + 63)) > 0)
+		rx->sack_base += 64;
 }
 
 void suet_rel_rx_reset(struct suet_rel_rx *rx, uint32_t base_psn)
@@ -312,5 +383,7 @@ void suet_rel_rx_reset(struct suet_rel_rx *rx, uint32_t base_psn)
 	       suet_rel_words(rx->window.capacity) * sizeof(uint64_t));
 	rx->window.base_psn = base_psn;
 	rx->window.head = 0;
+	rx->sack_base = base_psn - 1;
+	rx->max_psn = base_psn - 1;
 	rx->since_ack = 0;
 }

@@ -150,3 +150,12 @@ every physical head in 65- and 129-slot windows. Invalid ACKs must preserve
 all submitted slots; full retirement must work across word and PSN wrap.
 ROD has no out-of-order packet buffer. Endpoint ordering selects ROD when
 ordering is requested and RUD otherwise; PDC lookup separates the two modes.
+
+Selective-repeat tests cover reversed arrivals, a missing base packet,
+positive-only SACK merging, duplicate feedback, credit accounting, refused
+semantic dispatch, PSN wrap, and an expired packet behind an unexpired one.
+The PDS test injects golden ACK_CC bytes with a negative SACK offset and checks
+short-header rejection, stale-CACK/new-SACK handling, retained packet pointers,
+and exactly-once credit release. The htsim suite runs both algorithms with
+both PDC types under reordering and random/burst loss, and requires nonzero
+wire SACK evidence in the RUD selective-repeat reordering case.

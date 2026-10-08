@@ -126,17 +126,31 @@ struct __attribute__((packed)) pds_ack_hdr {
     uint16_t dpdcid;     /* destination PDCID */
 };
 
+/* ACK_CC / ACK_CCX: Spec Tables 3-36 and 3-37. Network byte order. */
+struct __attribute__((packed)) pds_ack_cc_hdr {
+	struct pds_ack_hdr ack;
+	uint8_t cc_type_flags;
+	uint8_t mpr;
+	int16_t sack_psn_offset;
+	uint64_t sack_bitmap;
+	uint64_t ack_cc_state;
+};
+
 /* PDS packet type codes -- pds.type prologue field (Section 3.5.10.2, Table 3-32).
  * RUD and ROD share a single Control Packet type (PDS_CP); the RUD/ROD
  * distinction is carried per-CP in the isrod flag (only meaningful for
  * NOOP and Negotiation CPs per Table 3-38). The CP subtype lives in the
  * prologue's next_hdr nibble as ctl_type. */
 enum pds_pkt_type {
-    PDS_RUD_REQ = 2,  /* RUD Request: carries SES payload (Table 3-33) */
-    PDS_ROD_REQ = 3,  /* ROD Request: carries SES payload (Table 3-33) */
-    PDS_ACK = 7,      /* Acknowledgement: cumulative ack + SES response (Table 3-35) */
-    PDS_NACK = 10,    /* Negative Acknowledgement (Table 3-32) */
-    PDS_CP = 11,      /* Control Packet (Section 3.5.10.8 / 3.5.16); subtype in ctl_type */
+	PDS_RUD_REQ = 2, /* RUD Request: carries SES payload (Table 3-33) */
+	PDS_ROD_REQ = 3, /* ROD Request: carries SES payload (Table 3-33) */
+	PDS_ACK = 7, /* Acknowledgement: cumulative ack + SES response (Table
+			3-35) */
+	PDS_ACK_CC = 8,
+	PDS_ACK_CCX = 9,
+	PDS_NACK = 10, /* Negative Acknowledgement (Table 3-32) */
+	PDS_CP = 11, /* Control Packet (Section 3.5.10.8 / 3.5.16); subtype in
+			ctl_type */
 };
 
 static inline const char *pds_pkt_type_name(int type)

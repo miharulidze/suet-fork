@@ -80,6 +80,13 @@ static void suet_init_env(void)
 		suet_env.cq_read_batch_size = 1;
 	if (suet_env.cq_read_batch_size > SUET_CQ_MAX_BATCH)
 		suet_env.cq_read_batch_size = SUET_CQ_MAX_BATCH;
+	fi_param_get_bool(&suet_prov, "selective_repeat",
+			  &suet_env.selective_repeat);
+	if (suet_env.selective_repeat) {
+		/* ACK offsets are signed 16-bit; MPR uses 128-packet units. */
+		suet_env.max_unacked =
+			MAX(128, MIN(suet_env.max_unacked, 32640));
+	}
 	fi_param_get_int(&suet_prov, "max_pkt_retry", &suet_env.max_pkt_retry);
 	if (suet_env.max_pkt_retry < 0)
 		suet_env.max_pkt_retry = 0;
@@ -199,6 +206,9 @@ struct fi_provider suet_prov = {.name = OFI_UTIL_PREFIX "suet",
 
 SUET_INI
 {
+	fi_param_define(
+		&suet_prov, "selective_repeat", FI_PARAM_BOOL,
+		"Use selective repeat instead of Go-Back-N (default: false)");
 	fi_param_define(
 		&suet_prov, "spin_count", FI_PARAM_INT,
 		"Number of iterations to receive packets (0 - infinite)");
