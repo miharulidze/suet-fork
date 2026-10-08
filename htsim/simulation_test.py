@@ -31,6 +31,7 @@ with tempfile.TemporaryDirectory(prefix='suet-htsim-') as tmp:
     one = 'Nodes 16\nConnections 1\n0->13 start 0 size 65537\n'
     first = run('segmented', one)
     assert run('deterministic', one) == first
+    assert 'data_evs 1 ' in first[1], first
     baseline_fct = float(re.search(r'fct_us ([\d.]+)', first[0][0])[1])
     slow = run('slower_link', one, ['-linkspeed', '10'])
     assert float(re.search(r'fct_us ([\d.]+)', slow[0][0])[1]) > baseline_fct
@@ -84,6 +85,24 @@ trigger id 2 oneshot
             for last in ('0', '1'):
                 run(pdc + '_sr' + sr + '_trim_injection' + last, traffic,
                     ['-pdc', pdc, '-trim_every', '13', '-trim_lasthop', last])
+    # Spraying composes with every delivery/reliability combination, including faults.
+    env['FI_OFI_SUET_SPRAY_PATHS'] = '16'
+    for pdc in ('rod', 'rud'):
+        for sr in ('0', '1'):
+            env['FI_OFI_SUET_SELECTIVE_REPEAT'] = sr
+            for condition, opts in (
+                ('normal', []),
+                ('reorder', ['-reorder_every', '7']),
+                ('random_loss', ['-drop_per_mille', '25']),
+                ('burst_loss', ['-burst_every', '19', '-burst_length', '2']),
+                ('trim', ['-trim_every', '13']),
+            ):
+                result = run(pdc + '_sr' + sr + '_spray_' + condition, one,
+                             ['-pdc', pdc, *opts])
+                assert 'data_evs 16 ' in result[1], result
+            run(pdc + '_sr' + sr + '_spray_congested', incast,
+                ['-pdc', pdc, '-q', '16384', '-trim_queues', '1'])
+    env.pop('FI_OFI_SUET_SPRAY_PATHS', None)
     env.pop('FI_OFI_SUET_SELECTIVE_REPEAT', None)
     env.pop('FI_OFI_SUET_ECN', None)
     run('timeout', one, ['-end', '0.01'], expected=2)

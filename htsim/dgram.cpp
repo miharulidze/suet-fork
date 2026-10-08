@@ -39,6 +39,7 @@ struct Av {
 };
 struct Completion {
     fi_cq_msg_entry entry{};
+    uint16_t ev = 0;
     fi_addr_t source = FI_ADDR_NOTAVAIL;
     int error = 0;
     size_t overflow = 0;
@@ -48,6 +49,7 @@ struct Cq {
     fid_cq fid{};
     Domain *domain;
     size_t refs = 0, capacity;
+    fi_cq_format format;
     std::deque<Completion> entries;
     sockaddr_in last_source{};
 };
@@ -92,7 +94,8 @@ fi_ops_cm cm_api{};
 fi_ops_msg msg_api{};
 fi_ops_mr mr_api{};
 const uint64_t caps =
-    FI_MSG | FI_SEND | FI_RECV | FI_SOURCE | FI_SOURCE_ERR | FI_LOCAL_COMM | FI_REMOTE_COMM;
+    FI_MSG | FI_SEND | FI_RECV | FI_SOURCE | FI_SOURCE_ERR | FI_LOCAL_COMM |
+    FI_REMOTE_COMM | FI_SENDMSG_EV;
 
 template <class R, class... Args> R unsupported(Args...) { return -FI_ENOSYS; }
 
@@ -245,7 +248,8 @@ const char *straddr_av(fid_av *, const void *raw, char *buf, size_t *len) {
     return buf;
 }
 int open_cq(fid_domain *f, fi_cq_attr *attr, fid_cq **out, void *context) {
-    if (!attr || (attr->format != FI_CQ_FORMAT_MSG && attr->format != FI_CQ_FORMAT_UNSPEC) ||
+    if (!attr || (attr->format != FI_CQ_FORMAT_MSG && attr->format != FI_CQ_FORMAT_DATA &&
+                  attr->format != FI_CQ_FORMAT_UNSPEC) ||
         attr->wait_obj != FI_WAIT_NONE || attr->flags)
         return -FI_EINVAL;
     auto *cq = new (std::nothrow) Cq;
@@ -254,6 +258,7 @@ int open_cq(fid_domain *f, fi_cq_attr *attr, fid_cq **out, void *context) {
     cq->domain = reinterpret_cast<Domain *>(f);
     cq->domain->refs++;
     cq->capacity = attr->size ? attr->size : queue_size;
+    cq->format = attr->format;
     cq->fid.fid = {FI_CLASS_CQ, context, &cq_fid_ops};
     cq->fid.ops = &cq_api;
     *out = &cq->fid;
@@ -271,7 +276,12 @@ ssize_t readfrom_cq(fid_cq *f, void *buf, size_t count, fi_addr_t *sources) {
         auto &c = cq->entries.front();
         if (c.error)
             return n ? static_cast<ssize_t>(n) : -FI_EAVAIL;
-        entries[n] = c.entry;
+        if (cq->format == FI_CQ_FORMAT_DATA) {
+            auto *data = static_cast<fi_cq_data_entry *>(buf);
+            data[n] = {c.entry.op_context, c.entry.flags, c.entry.len, nullptr, c.ev};
+        } else {
+            entries[n] = c.entry;
+        }
         if (sources)
             sources[n] = c.source;
         cq->entries.pop_front();
@@ -294,6 +304,7 @@ ssize_t readerr_cq(fid_cq *f, fi_cq_err_entry *out, uint64_t flags) {
     out->op_context = c.entry.op_context;
     out->flags = c.entry.flags;
     out->len = c.entry.len;
+    out->data = c.ev;
     out->olen = c.overflow;
     out->err = c.error;
     out->prov_errno = c.error;
@@ -389,7 +400,7 @@ ssize_t recv_ep(fid_ep *f, void *buf, size_t len, void *desc, fi_addr_t src, voi
     iovec iov{buf, len};
     return recvv_ep(f, &iov, &desc, 1, src, context);
 }
-ssize_t sendmsg_ep(fid_ep *f, const fi_msg *msg, uint64_t flags) {
+ssize_t sendmsg_common(fid_ep *f, const fi_msg *msg, uint64_t flags, uint16_t ev, bool has_ev) {
     auto *ep = reinterpret_cast<Endpoint *>(f);
     if (!ep->enabled)
         return -FI_EOPBADSTATE;
@@ -403,6 +414,8 @@ ssize_t sendmsg_ep(fid_ep *f, const fi_msg *msg, uint64_t flags) {
     Transmit tx{};
     tx.context = msg->context;
     tx.completion = !(flags & FI_INJECT) || (flags & FI_COMPLETION);
+    tx.frame.ev = ev;
+    tx.frame.rx_metadata = has_ev ? FI_SUET_DGRAM_EV : 0;
     tx.frame.src = ep->address;
     tx.frame.dst = ep->av->addresses[msg->addr].addr;
     for (size_t i = 0; i < msg->iov_count; i++) {
@@ -421,6 +434,14 @@ ssize_t sendmsg_ep(fid_ep *f, const fi_msg *msg, uint64_t flags) {
         return -FI_ENOMEM;
     }
     return 0;
+}
+ssize_t sendmsg_ep(fid_ep *f, const fi_msg *msg, uint64_t flags) {
+    return sendmsg_common(f, msg, flags, 0, false);
+}
+ssize_t sendmsg_ev_ep(fid_ep *f, const fi_msg_ev *msg, uint64_t flags) {
+    if (!msg)
+        return -FI_EINVAL;
+    return sendmsg_common(f, &msg->msg, flags, msg->ev, true);
 }
 ssize_t sendv_ep(fid_ep *f, const iovec *iov, void **desc, size_t count, fi_addr_t dst,
                  void *context) {
@@ -582,7 +603,7 @@ int getinfo(uint32_t, const char *node, const char *service, uint64_t flags, con
         memcpy(info->dest_addr, &addr, sizeof(addr));
         info->dest_addrlen = sizeof(addr);
     }
-    info->tx_attr->caps = FI_MSG | FI_SEND;
+    info->tx_attr->caps = FI_MSG | FI_SEND | FI_SENDMSG_EV;
     info->rx_attr->caps = FI_MSG | FI_RECV | FI_SOURCE | FI_SOURCE_ERR;
     info->tx_attr->size = info->rx_attr->size = queue_size;
     info->tx_attr->iov_limit = info->rx_attr->iov_limit = 8;
@@ -673,6 +694,10 @@ extern "C" int htsim_dgram_deliver(const htsim_dgram_frame *frame) {
         Completion c;
         c.entry = {rx->context, FI_RECV | FI_MSG |
                    (frame->rx_metadata & FI_SUET_DGRAM_METADATA_MASK), copied};
+        if (ep->rx_cq->format == FI_CQ_FORMAT_DATA && (c.entry.flags & FI_SUET_DGRAM_EV))
+            c.ev = frame->ev;
+        else
+            c.entry.flags &= ~FI_SUET_DGRAM_EV;
         c.source = source;
         if (copied != frame->size) {
             c.error = FI_ETRUNC;
@@ -809,6 +834,7 @@ extern "C" __attribute__((visibility("default"))) fi_provider *fi_prov_ini() {
     msg_api.send = send_ep;
     msg_api.sendv = sendv_ep;
     msg_api.sendmsg = sendmsg_ep;
+    msg_api.sendmsg_ev = sendmsg_ev_ep;
     msg_api.inject = [](fid_ep *f, const void *buf, size_t len, fi_addr_t addr) -> ssize_t {
         iovec iov{const_cast<void *>(buf), len};
         fi_msg m{};

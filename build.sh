@@ -176,6 +176,17 @@ else
     exit 1
 fi
 
+# Per-packet entropy is optional at runtime, but its public API is needed to build.
+EV_PATCH="$SCRIPT_DIR/patches/0002-sendmsg-ev.patch"
+if git apply --check "$EV_PATCH" 2>/dev/null; then
+    git apply "$EV_PATCH"
+elif git apply --reverse --check "$EV_PATCH" 2>/dev/null; then
+    log "sendmsg EV extension already present"
+else
+    echo "sendmsg EV patch does not match $LIBFABRIC_REF" >&2
+    exit 1
+fi
+
 # ---- 6. build libfabric --------------------------------------------------
 log "building libfabric (-> $INSTALL)"
 ./autogen.sh

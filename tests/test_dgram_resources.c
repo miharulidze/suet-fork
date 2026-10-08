@@ -188,7 +188,7 @@ static void check_peers(struct suet_domain *domain)
 	struct suet_av_addr raw[3] = {0};
 	struct insert_args args[2] = {0};
 	struct fi_cq_err_entry err = {0};
-	struct fi_cq_msg_entry comp = {0};
+	struct fi_cq_data_entry comp = {0};
 	fi_addr_t addr[3], other, backend;
 	pthread_t threads[2];
 	int peer, errors[3], i;
@@ -226,10 +226,11 @@ static void check_peers(struct suet_domain *domain)
 	err.op_context = &err;
 	err.len = 73;
 	err.flags = FI_RECV;
+	err.data = 54321;
 	assert(!suet_dgram_av_handle_addr_notavail(domain, &err, &comp,
 						   &backend));
 	assert(comp.op_context == &err && comp.len == 73 &&
-	       comp.flags == FI_RECV);
+	       comp.flags == FI_RECV && comp.data == 54321);
 	peer = suet_dgram_av_get_peer_idx_by_addr(domain, backend);
 	assert(peer);
 	assert(suet_av_insert(&av[0].util_av.av_fid, &raw[2], 1, &other, 0,

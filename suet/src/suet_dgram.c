@@ -405,7 +405,7 @@ nomem:
 
 static int suet_dgram_av_handle_addr_notavail(struct suet_domain *domain,
 					      struct fi_cq_err_entry *err,
-					      struct fi_cq_msg_entry *comp,
+					      struct fi_cq_data_entry *comp,
 					      fi_addr_t *dgram_av_addr)
 {
 	int peer_idx;
@@ -440,6 +440,7 @@ static int suet_dgram_av_handle_addr_notavail(struct suet_domain *domain,
 	comp->op_context = err->op_context;
 	comp->flags = err->flags;
 	comp->len = err->len;
+	comp->data = err->data;
 
 	return 0;
 }
@@ -563,6 +564,7 @@ struct suet_pkt_entry *suet_dgram_pkt_alloc(struct suet_domain *domain)
 	dlist_init(&entry->entry);
 	entry->pkt.zc_pld_iov_count = 0;
 	entry->pkt.rx_flags = 0;
+	entry->pkt.ev = 0;
 	return &entry->pkt;
 }
 
@@ -694,29 +696,34 @@ ssize_t suet_dgram_send(struct suet_domain *domain, struct suet_pkt_entry *pkt)
 	struct suet_dgram_pkt_entry *entry =
 		container_of(pkt, struct suet_dgram_pkt_entry, pkt);
 	size_t prefix_size = domain->dgram.tx_prefix_size;
+	struct iovec iov[SUET_IOV_LIMIT + 1];
+	struct fi_msg_ev msg = {0};
 	ssize_t ret;
 
 	assert(!entry->in_use);
+	msg.msg.msg_iov = iov;
+	msg.msg.addr = pkt->dgram_av_addr;
+	msg.msg.context = &entry->context;
+	msg.ev = pkt->ev;
 	if (pkt->zc_pld_iov_count) {
-		/* PDS supplies the wire header in slot zero and payload in the
-		 * rest. Use a local header view so retransmits never accumulate
-		 * prefixes.
+		/* Keep prefixes in a local view, including on retransmission.
 		 */
-		struct iovec iov[SUET_IOV_LIMIT + 1];
-
 		memcpy(iov, pkt->zc_pld_iov,
 		       (pkt->zc_pld_iov_count + 1) * sizeof(*iov));
 		iov[0].iov_base = (char *) pkt->pkt - prefix_size;
 		iov[0].iov_len += prefix_size;
 		pkt->zc_pld_desc[0] = entry->desc;
-		ret = fi_sendv(domain->dgram.ep, iov, pkt->zc_pld_desc,
-			       pkt->zc_pld_iov_count + 1, pkt->dgram_av_addr,
-			       &entry->context);
+		msg.msg.desc = pkt->zc_pld_desc;
+		msg.msg.iov_count = pkt->zc_pld_iov_count + 1;
 	} else {
-		ret = fi_send(domain->dgram.ep, (char *) pkt->pkt - prefix_size,
-			      pkt->pkt_size + prefix_size, entry->desc,
-			      pkt->dgram_av_addr, &entry->context);
+		iov[0].iov_base = (char *) pkt->pkt - prefix_size;
+		iov[0].iov_len = pkt->pkt_size + prefix_size;
+		msg.msg.desc = &entry->desc;
+		msg.msg.iov_count = 1;
 	}
+	ret = domain->dgram.sendmsg_ev ?
+		      fi_sendmsg_ev(domain->dgram.ep, &msg, 0) :
+		      fi_sendmsg(domain->dgram.ep, &msg.msg, 0);
 	if (ret) {
 		FI_WARN(&suet_prov, FI_LOG_EP_CTRL,
 			"error sending packet: %d (%s)\n", (int) ret,
@@ -763,7 +770,7 @@ static void suet_dgram_tx_complete(struct suet_domain *domain, void *context,
 }
 
 static void suet_dgram_rx_complete(struct suet_domain *domain,
-				   struct fi_cq_msg_entry *comp,
+				   struct fi_cq_data_entry *comp,
 				   fi_addr_t src_addr)
 {
 	struct suet_dgram_pkt_entry *entry = container_of(
@@ -777,6 +784,9 @@ static void suet_dgram_rx_complete(struct suet_domain *domain,
 		return;
 	}
 	entry->pkt.rx_flags = 0;
+	entry->pkt.ev = 0;
+	if (flags & FI_SUET_DGRAM_EV)
+		entry->pkt.ev = (uint16_t) comp->data;
 	if (flags & FI_SUET_DGRAM_ECN)
 		entry->pkt.rx_flags |= SUET_DGRAM_RX_ECN;
 	if (flags & FI_SUET_DGRAM_TRIMMED)
@@ -794,7 +804,7 @@ static void suet_dgram_rx_complete(struct suet_domain *domain,
  * cq_entry/dgram_av_addr as a normal RX completion; negative otherwise.
  */
 static int suet_dgram_rx_cq_handle_error(struct suet_domain *domain,
-					 struct fi_cq_msg_entry *cq_entry,
+					 struct fi_cq_data_entry *cq_entry,
 					 fi_addr_t *dgram_av_addr)
 {
 	struct fi_cq_err_entry err = {0};
@@ -938,22 +948,26 @@ static int suet_dgram_rx_cq_poll(struct suet_domain *domain)
 {
 	ssize_t ret;
 	int i;
+	struct fi_cq_data_entry comp = {0};
+	bool ev = domain->dgram.rx_metadata & FI_SUET_DGRAM_EV;
 
-	ret = fi_cq_readfrom(domain->dgram.rx_cq, domain->dgram.rx_cq_entries,
+	ret = fi_cq_readfrom(domain->dgram.rx_cq, &domain->dgram.rx_cq_entries,
 			     domain->dgram.cq_read_batch_size,
 			     domain->dgram.rx_cq_addrs);
 	if (ret < 0) {
 		if (ret == -FI_EAVAIL) {
 			/* Error applies to a single completion; recover or
 			 * bail. On recovery the handler populates
-			 * rx_cq_entries[0]/rx_cq_addrs[0] with the real
+			 * comp/rx_cq_addrs[0] with the real
 			 * entry. */
 			if (suet_dgram_rx_cq_handle_error(
-				    domain, &domain->dgram.rx_cq_entries[0],
+				    domain, &comp,
 				    &domain->dgram.rx_cq_addrs[0]) < 0)
 				return 0;
-			ret = 1;
-			goto process_cqes;
+			suet_dgram_ep_recv_pkt(domain);
+			suet_dgram_rx_complete(domain, &comp,
+					       domain->dgram.rx_cq_addrs[0]);
+			return 1;
 		}
 		if (ret != -FI_EAGAIN)
 			FI_WARN(&suet_prov, FI_LOG_CQ,
@@ -962,12 +976,20 @@ static int suet_dgram_rx_cq_poll(struct suet_domain *domain)
 		return 0;
 	}
 
-process_cqes:
 	for (i = 0; i < ret; i++)
 		suet_dgram_ep_recv_pkt(domain);
-	for (i = 0; i < ret; i++)
-		suet_dgram_rx_complete(domain, &domain->dgram.rx_cq_entries[i],
+	for (i = 0; i < ret; i++) {
+		if (ev) {
+			comp = domain->dgram.rx_cq_entries.data[i];
+		} else {
+			comp.op_context =
+				domain->dgram.rx_cq_entries.msg[i].op_context;
+			comp.flags = domain->dgram.rx_cq_entries.msg[i].flags;
+			comp.len = domain->dgram.rx_cq_entries.msg[i].len;
+		}
+		suet_dgram_rx_complete(domain, &comp,
 				       domain->dgram.rx_cq_addrs[i]);
+	}
 
 	return (int) ret;
 }
@@ -1062,6 +1084,7 @@ int suet_dgram_init(struct suet_domain *suet_domain, struct fid_fabric *fabric,
 	if (ret)
 		goto err;
 
+	suet_domain->dgram.sendmsg_ev = !!(dgram_info->caps & FI_SENDMSG_EV);
 	suet_domain->dgram.rx_metadata = 0;
 	if (fi_get_val(&suet_domain->dgram.domain->fid,
 		       FI_SUET_DGRAM_RX_METADATA,
@@ -1112,6 +1135,8 @@ int suet_dgram_init(struct suet_domain *suet_domain, struct fid_fabric *fabric,
 	if (ret)
 		goto err;
 
+	if (suet_domain->dgram.rx_metadata & FI_SUET_DGRAM_EV)
+		cq_attr.format = FI_CQ_FORMAT_DATA;
 	cq_attr.size = dgram_info->rx_attr->size;
 	ret = fi_cq_open(suet_domain->dgram.domain, &cq_attr,
 			 &suet_domain->dgram.rx_cq, suet_domain);

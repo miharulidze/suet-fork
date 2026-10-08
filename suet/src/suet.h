@@ -99,6 +99,7 @@ struct suet_env {
 	int max_pkt_retry;
 	int selective_repeat;
 	int ecn;
+	int spray_paths;
 	int max_gtd_del_resp_pool_size;
 	int unexp_msg_pool_size;
 	size_t zc_mr_reg_threshold;

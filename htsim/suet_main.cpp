@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <random>
+#include <set>
 #include <rdma/fabric.h>
 #include <rdma/fi_cm.h>
 #include <rdma/fi_domain.h>
@@ -112,6 +113,7 @@ struct Host {
 };
 
 struct NetworkStats {
+    std::set<uint16_t> data_evs;
     uint64_t sacks = 0, retransmits = 0, ecn_marks = 0, ack_marks = 0, trims = 0, trim_nacks = 0;
     uint64_t sent = 0, received = 0, dropped = 0, receive_drops = 0, in_flight = 0;
 };
@@ -125,7 +127,11 @@ class FabricPacket : public Packet {
         unsigned type = frame.data[0] >> 3;
         _is_header = type != 2 && type != 3;
         set_dst(htsim_dgram_host(&data.dst));
-        set_pathid(htsim_dgram_host(&data.src) * 2654435761U + dst());
+        // Same entropy-to-ECMP input as UecSrc::send_packet: Packet::pathid.
+        set_pathid((data.rx_metadata & FI_SUET_DGRAM_EV) ? data.ev :
+                   htsim_dgram_host(&data.src) * 2654435761U + dst());
+        if (!_is_header && (data.rx_metadata & FI_SUET_DGRAM_EV))
+            stats.data_evs.insert(data.ev);
         stats.in_flight++;
     }
     PktPriority priority() const override { return header_only() ? PRIO_HI : PRIO_LO; }
@@ -504,6 +510,7 @@ int main(int argc, char **argv) {
         std::cout << "SUET result: " << simulation.completed() << '/' << simulation.total()
                   << " messages; packets " << simulation.stats.sent << " received "
                   << simulation.stats.received << " network_drops " << simulation.stats.dropped
+                  << " data_evs " << simulation.stats.data_evs.size()
                   << " sacks " << simulation.stats.sacks << " retransmits " << simulation.stats.retransmits
                   << " ecn_marks " << simulation.stats.ecn_marks << " ack_marks " << simulation.stats.ack_marks
                   << " trims " << simulation.stats.trims << " trim_nacks " << simulation.stats.trim_nacks

@@ -36,6 +36,7 @@
 #define _SUET_PDS_H_
 
 #include "suet_cc.h"
+#include "suet_lb.h"
 #include "suet_pds_dgram_api.h"
 #include "suet_rel.h"
 #include "suet_ses_pds_api.h"
@@ -109,6 +110,7 @@ struct suet_ipdc {
 	uint32_t close_psn;
 	struct suet_rel_tx rel;
 	struct suet_cc cc;
+	struct suet_lb lb;
 	uint32_t peer_window;
 	uint32_t mpr_cack;
 	struct suet_pds_pkt_entry **tx_pkts; /* indexed by reliability slot */
@@ -134,6 +136,7 @@ struct suet_tpdc {
 	/* --- tpdc_syn_key_handle: key end --- */
 	uint16_t local_pdcid;
 	enum suet_pdc_type type;
+	uint16_t ack_ev; /* triggering request entropy */
 	uint8_t ack_flags; /* feedback for the current dispatch */
 	uint32_t expected_rx_psn; /* next expected PSN */
 	uint32_t last_rx_clear_psn; /* highest CLEAR_PSN received in
@@ -169,6 +172,7 @@ struct suet_pds_ses_resp_entry {
 	struct dlist_entry entry;
 	uint32_t psn; /* first request PSN covered by this response */
 	uint16_t num_pkts; /* replay range; one packet unless reserved at SOM */
+	uint16_t ev; /* request entropy for deferred SES response */
 	bool reserved;
 };
 

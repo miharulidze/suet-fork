@@ -51,13 +51,17 @@ struct suet_domain;
 /* Underlying datagram-provider resources shared by the SUET domain. */
 struct suet_dgram_resources {
 	uint64_t rx_metadata;
+	bool sendmsg_ev;
 	struct fid_domain *domain;
 	struct fid_ep *ep;
 	struct fid_cq *tx_cq;
 	struct fid_cq *rx_cq;
 	int cq_read_batch_size;
 	struct fi_cq_msg_entry tx_cq_entries[SUET_CQ_MAX_BATCH];
-	struct fi_cq_msg_entry rx_cq_entries[SUET_CQ_MAX_BATCH];
+	union {
+		struct fi_cq_msg_entry msg[SUET_CQ_MAX_BATCH];
+		struct fi_cq_data_entry data[SUET_CQ_MAX_BATCH];
+	} rx_cq_entries;
 	fi_addr_t rx_cq_addrs[SUET_CQ_MAX_BATCH];
 
 	struct fid_av *av;

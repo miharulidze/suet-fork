@@ -199,3 +199,39 @@ The test matrix covers both PDC types with both algorithms, reordering,
 random/burst loss, actual queue CE marking, 16 KiB trimming queues, and injected
 trimming with both NACK codes. It checks payloads, wire SACKs, echoed CE marks,
 and trim NACK counts. All four CTests include the independent CC unit test.
+
+## Entropy and oblivious packet spraying
+
+The build applies `patches/0002-sendmsg-ev.patch` to libfabric alongside the
+provider-registration patch. An existing install used with `--htsim-only`
+must have this API extension too.
+
+`FI_SENDMSG_EV` in the DGRAM provider's `fi_getinfo` capabilities enables
+`fi_sendmsg_ev(ep, &msg, flags)`, where `struct fi_msg_ev` contains an embedded
+`struct fi_msg msg` and a host-order `uint16_t ev`. Only htsim advertises this
+capability. SUET uses ordinary `fi_sendmsg()` for backends without it, including
+UDP. The extension is local to this project, not an upstream libfabric API.
+
+Set `FI_OFI_SUET_SPRAY_PATHS=16` to cycle through 16 entropy values per PDC.
+The default is 1 (stable EV); values are clamped to 1..65536. `suet_lb.c/h`
+implements the direct-call policy independently of CC, reliability and PDC
+ordering. Requests and retransmissions each obtain an EV; ACKs and NACKs echo
+the triggering request's EV, including deferred SES responses. There are no
+per-packet allocations or additional function-pointer dispatch in this layer.
+Spraying has no effect on a backend without `FI_SENDMSG_EV`.
+
+htsim maps EV to `Packet::pathid`, the same ECMP input used by built-in
+`UecSrc`. Switch hashing determines the physical route: 16 EVs do not promise
+16 distinct paths. The bridge preserves endpoint addresses and SUET packet
+bytes. EV is separate simulator metadata, not an extra SUET header or a
+change to UDP endpoint ports. On receive, the negotiated
+`FI_SUET_DGRAM_RX_METADATA` contract supplies EV in `FI_CQ_FORMAT_DATA`'s data
+field when `FI_SUET_DGRAM_EV` is set, including source-discovery CQ errors;
+it never uses `FI_REMOTE_CQ_DATA`.
+
+`data_evs` in the result reports distinct request EVs observed, not distinct
+physical routes. The integration suite exercises spraying with both ROD/RUD
+and GBN/selective repeat under reordering, random/burst loss, trimming and
+congested incast. ROD still rejects out-of-order requests, so spraying can
+increase its retransmissions; select unordered delivery (`-pdc rud`) when the
+application permits it.

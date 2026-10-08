@@ -16,6 +16,8 @@ struct htsim_dgram_frame {
     struct sockaddr_in src, dst;
     size_t size;
     uint64_t rx_metadata;
+    uint16_t
+	    ev; /* path entropy, separate from the endpoint address and bytes */
     unsigned char data[HTSIM_DGRAM_MTU];
 };
 

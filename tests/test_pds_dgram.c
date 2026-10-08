@@ -28,6 +28,8 @@ static void *send_context, *recv_context;
 static unsigned char sent[256];
 static size_t sent_len, prefix_size;
 static bool ep_closed, dispatch_pds_tx;
+static bool sent_ev;
+static uint16_t last_ev;
 
 void test_pds_receive(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 		      fi_addr_t src_addr)
@@ -77,6 +79,25 @@ static ssize_t mock_sendv(struct fid_ep *ep, const struct iovec *iov,
 	return send_status;
 }
 
+static ssize_t mock_sendmsg(struct fid_ep *ep, const struct fi_msg *msg,
+			    uint64_t flags)
+{
+	assert(!flags && !msg->data);
+	sent_ev = false;
+	return mock_sendv(ep, msg->msg_iov, msg->desc, msg->iov_count,
+			  msg->addr, msg->context);
+}
+
+static ssize_t mock_sendmsg_ev(struct fid_ep *ep, const struct fi_msg_ev *msg,
+			       uint64_t flags)
+{
+	ssize_t ret = mock_sendmsg(ep, &msg->msg, flags);
+
+	sent_ev = true;
+	last_ev = msg->ev;
+	return ret;
+}
+
 static ssize_t mock_recv(struct fid_ep *ep, void *buf, size_t len, void *desc,
 			 fi_addr_t src, void *context)
 {
@@ -103,25 +124,30 @@ static int mock_close(fid_t fid)
 }
 
 static struct fi_ops_msg msg_ops = {
+	.size = sizeof(struct fi_ops_msg),
+	.sendmsg = mock_sendmsg,
+	.sendmsg_ev = mock_sendmsg_ev,
 	.send = mock_send,
 	.sendv = mock_sendv,
 	.recv = mock_recv,
 };
 static struct fi_ops ep_ops = {.close = mock_close};
 
-static void check_datagram(size_t prefix)
+static void check_datagram(size_t prefix, bool ev)
 {
 	struct suet_domain domain = {0};
 	struct fid_ep ep = {.fid = {.ops = &ep_ops, .context = &domain},
 			    .msg = &msg_ops};
 	struct suet_pkt_entry *pkt;
 	struct suet_pds_pkt_entry *pds;
-	struct fi_cq_msg_entry comp = {0};
+	struct fi_cq_data_entry comp = {0};
 	struct iovec header;
 	unsigned char payload[] = "payload";
 	size_t i, j;
 
 	prefix_size = prefix;
+	domain.dgram.sendmsg_ev = ev;
+	domain.dgram.rx_metadata = ev ? FI_SUET_DGRAM_EV : 0;
 	domain.dgram.ep = &ep;
 	domain.dgram.max_mtu_sz = 256;
 	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
@@ -144,16 +170,19 @@ static void check_datagram(size_t prefix)
 	       (char *) pkt->ses_ctx + sizeof(struct suet_ses_pkt_entry));
 	memset(pkt->ses_ctx, 0x5a, sizeof(struct suet_ses_pkt_entry));
 	pkt->pkt_size = 11;
+	pkt->ev = 65535;
 	memcpy(pkt->pkt, "headpayload", pkt->pkt_size);
 
 	send_status = -FI_EAGAIN;
 	assert(suet_dgram_send(&domain, pkt) == -FI_EAGAIN);
+	assert(sent_ev == ev && (!ev || last_ev == 65535));
 	assert(!suet_dgram_pkt_in_use(pkt));
 	assert(pds->psn == 123);
 	send_status = 0;
 	assert(!suet_dgram_send(&domain, pkt));
 	assert(suet_dgram_pkt_in_use(pkt));
 	assert(sent_len == 11 && !memcmp(sent, "headpayload", 11));
+	assert(sent_ev == ev && (!ev || last_ev == 65535));
 	suet_dgram_tx_complete(&domain, send_context, 0);
 	assert(completed == pkt && completed_status == 0);
 
@@ -166,6 +195,7 @@ static void check_datagram(size_t prefix)
 	for (i = 0; i < 3; i++) {
 		assert(!suet_dgram_send(&domain, pkt));
 		assert(sent_len == 11 && !memcmp(sent, "headpayload", 11));
+		assert(sent_ev == ev && (!ev || last_ev == 65535));
 		assert(!memcmp(&header, &pkt->zc_pld_iov[0], sizeof(header)));
 		assert(pkt->pkt_size == 11 && pds->psn == 123);
 		for (j = 0; j < sizeof(struct suet_ses_pkt_entry); j++)
@@ -179,9 +209,12 @@ static void check_datagram(size_t prefix)
 	assert(!suet_dgram_ep_recv_pkt(&domain));
 	comp.op_context = recv_context;
 	comp.len = prefix + 7;
+	comp.flags = FI_SUET_DGRAM_EV;
+	comp.data = 54321;
 	suet_dgram_rx_complete(&domain, &comp, 17);
 	assert(received && received_addr == 17);
 	assert(received->pkt_size == 7);
+	assert(received->ev == (ev ? 54321 : 0));
 	assert(!memcmp(received->pkt, "payload", 7));
 	/* PDS/SES can retain the RX allocation after the completion returns. */
 	suet_dgram_pkt_free(received);
@@ -275,7 +308,7 @@ static void check_ses_retention(void)
 	struct suet_pkt_entry *packets[4];
 	struct suet_pds_pkt_entry saved[4];
 	struct suet_ses_rx_dispatch_result result;
-	struct fi_cq_msg_entry comp = {0};
+	struct fi_cq_data_entry comp = {0};
 	struct suet_ses_unexp_msg *unexp;
 	void *rx;
 	size_t i;
@@ -408,6 +441,7 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 	ipdc.state = SUET_PDC_ESTABLISHED;
 	ipdc.tx_seq_no = 100;
 	suet_cc_init(&ipdc.cc, suet_env.max_unacked);
+	suet_lb_init(&ipdc.lb, 65535, 7);
 	assert(!suet_rel_tx_init(&ipdc.rel, 100, suet_env.max_unacked,
 				 suet_env.max_pkt_retry, SUET_REL_GBN));
 	ipdc.tx_pkts = calloc(suet_env.max_unacked, sizeof(*ipdc.tx_pkts));
@@ -444,6 +478,7 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 		size_t len = MIN(length - offset, 64);
 		size_t hdr_len = sizeof(struct pds_req_hdr) + ses.hdr_len;
 
+		assert(pkt->ev == (uint16_t) (65535 + segment));
 		assert(pkt->zc_pld_iov_count ==
 		       (zero_copy && len ?
 				(segment == 0 && length > 23 ? 2 : 1) :
@@ -553,6 +588,7 @@ static void check_bitmap_retirement(void)
 	assert(!suet_rel_tx_init(&ipdc.rel, UINT32_MAX - 1, 3, 100,
 				 SUET_REL_GBN));
 	suet_cc_init(&ipdc.cc, 3);
+	suet_lb_init(&ipdc.lb, 7, 1);
 	ipdc.tx_pkts = calloc(3, sizeof(*ipdc.tx_pkts));
 	assert(ipdc.tx_pkts);
 	ipdc.local_pdcid = 7;
@@ -656,6 +692,7 @@ static void check_trimmed_request(void)
 	struct suet_domain domain = {0};
 	struct fid_ep ep = {.msg = &msg_ops};
 	domain.dgram.ep = &ep;
+	domain.dgram.sendmsg_ev = true;
 	domain.dgram.max_mtu_sz = 256;
 	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
 	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
@@ -676,12 +713,14 @@ static void check_trimmed_request(void)
 			pds_req_set_dpdcid(req, 8);
 			pkt->pkt_size =
 				sizeof(*req); /* no SES header/payload */
+			pkt->ev = 54321;
 			pkt->rx_flags =
 				SUET_DGRAM_RX_TRIMMED |
 				(last ? SUET_DGRAM_RX_TRIMMED_LASTHOP : 0);
 			suet_pds_receive(&domain, pkt, 9);
 			struct pds_nack_hdr *nack = (void *) sent;
 			assert(sent_len == sizeof(*nack));
+			assert(sent_ev && last_ev == 54321);
 			assert(pds_nack_get_code(nack) == (last ? 2 : 1));
 			assert(pds_nack_get_psn(nack) == 101);
 			assert(pds_nack_get_spdcid(nack) == (syn ? 0 : 8));
@@ -694,15 +733,90 @@ static void check_trimmed_request(void)
 	suet_dgram_free_pkt_entry_pools(&domain);
 }
 
+/* A late SES completion must echo its own request, not the most recent EV
+ * observed on this PDC. The response record remains PDS-owned.
+ */
+static void check_deferred_response_ev(void)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep ep = {.msg = &msg_ops};
+	struct suet_tpdc tpdc = {.dgram_av_addr = 9,
+				 .local_pdcid = 8,
+				 .ipdcid = 7,
+				 .ack_ev = 12345};
+	struct suet_pds_pkt_entry req = {.psn = 100};
+	struct suet_ses_resp resp = {.ses_opcode = UET_RESPONSE,
+				     .message_id = 17};
+	struct suet_pds_ses_resp_entry *saved;
+	struct suet_pkt_entry *pkt;
+	struct suet_req_pkt *wire;
+
+	domain.dgram.ep = &ep;
+	domain.dgram.sendmsg_ev = true;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	prefix_size = 0;
+	send_status = 0;
+	dispatch_pds_tx = true;
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	assert(!suet_pds_init(&domain));
+	assert(!suet_rel_rx_init(&tpdc.rel, 100, 128, SUET_REL_GBN));
+	dlist_init(&tpdc.gtd_del_list);
+	saved = suet_pds_response_reserve(&domain, &tpdc, &resp, 1, &req);
+	assert(saved && saved->ev == 12345);
+	tpdc.ack_ev = 54321;
+	suet_pds_response_complete(saved, &resp);
+	assert(sent_ev && last_ev == 12345);
+	assert(pds_prologue_get_type((const void *) sent) == PDS_ACK);
+	suet_dgram_tx_complete(&domain, send_context, 0);
+	/* A duplicate request on a different EV must replay the saved semantic
+	 * response on that duplicate's EV, rather than the saved original EV.
+	 */
+	domain.max_pkt_sz = 64;
+	tpdc.type = SUET_PDC_ROD;
+	assert(ofi_idm_set(&domain.pds.local_pdcid_to_tpdc_idm, 8, &tpdc) >= 0);
+	assert(suet_rel_rx_record(&tpdc.rel, 100, false) == SUET_REL_RX_NEW);
+	suet_rel_rx_commit(&tpdc.rel, 100);
+	tpdc.expected_rx_psn = 101;
+	pkt = suet_dgram_pkt_alloc(&domain);
+	assert(pkt);
+	wire = pkt->pkt;
+	memset(wire, 0, sizeof(*wire));
+	pds_prologue_set_type(&wire->pds, PDS_ROD_REQ);
+	pds_prologue_set_next_hdr(&wire->pds, UET_HDR_REQUEST_STD);
+	pds_prologue_set_flags(&wire->pds, PDS_FLAG_RETX);
+	pds_req_set_psn(&wire->pds, 100);
+	pds_req_set_spdcid(&wire->pds, 7);
+	pds_req_set_dpdcid(&wire->pds, 8);
+	ses_req_init(&wire->ses, UET_SEND, 1, 1, 1, 0, 17, 0, 0, 0, 0, 0, 0);
+	pkt->pkt_size = sizeof(*wire);
+	pkt->ev = 43210;
+	sent_ev = false;
+	suet_pds_receive(&domain, pkt, 9);
+	assert(sent_ev && last_ev == 43210);
+	assert(pds_prologue_get_type((const void *) sent) == PDS_ACK);
+	suet_dgram_tx_complete(&domain, send_context, 0);
+	ofi_idm_clear(&domain.pds.local_pdcid_to_tpdc_idm, 8);
+	suet_pds_response_cancel(saved);
+	suet_rel_rx_cleanup(&tpdc.rel);
+	suet_pds_cleanup(&domain);
+	suet_dgram_free_pkt_entry_pools(&domain);
+	dispatch_pds_tx = false;
+}
+
 int main(void)
 {
 	ofi_mem_init();
-	check_datagram(0);
-	check_datagram(8);
+	check_datagram(0, false);
+	check_datagram(8, false);
+	check_datagram(0, true);
+	check_datagram(8, true);
 	check_pds_retention();
 	check_ses_retention();
 	check_bitmap_retirement();
 	check_trimmed_request();
+	check_deferred_response_ev();
 	check_pds_framing(false, false, 141);
 	check_pds_framing(true, false, 141);
 	check_pds_framing(false, false, 0);

@@ -156,7 +156,7 @@ static void suet_pds_tpdc_send_ack(struct suet_domain *domain,
 				   uint8_t next_hdr, uint16_t message_id,
 				   uint32_t modified_length,
 				   uint8_t resp_opcode, uint8_t resp_rc,
-				   uint8_t resp_list);
+				   uint8_t resp_list, uint16_t ev);
 static void suet_pds_send_tx(struct suet_pds_tx_entry *tx);
 static void suet_pds_ipdc_progress_tx_pkt_list(struct suet_domain *domain,
 					       struct suet_ipdc *ipdc);
@@ -239,7 +239,7 @@ static void suet_pds_tpdc_send_ack_if_needed(
 			UET_HDR_RESPONSE, ses_resp->resp.message_id,
 			ses_resp->resp.modified_length,
 			ses_resp->resp.ses_opcode, ses_resp->resp.ses_rc,
-			ses_resp->resp.list);
+			ses_resp->resp.list, tpdc->ack_ev);
 	}
 }
 
@@ -303,6 +303,7 @@ static struct suet_pds_ses_resp_entry *suet_pds_tpdc_save_gtd_del_resp(
 	if (!saved)
 		return NULL;
 	saved->resp = *resp;
+	saved->ev = tpdc->ack_ev;
 	saved->psn = psn;
 	saved->num_pkts = num_pkts;
 	saved->domain = domain;
@@ -353,13 +354,13 @@ void suet_pds_response_complete(struct suet_pds_ses_resp_entry *response,
 	suet_pds_tpdc_send_ack(response->domain, response->tpdc, response->psn,
 			       UET_HDR_RESPONSE, resp->message_id,
 			       resp->modified_length, resp->ses_opcode,
-			       resp->ses_rc, resp->list);
+			       resp->ses_rc, resp->list, response->ev);
 }
 
 static void suet_pds_send_nack(struct suet_domain *domain,
 			       fi_addr_t dgram_av_addr, uint8_t nack_code,
 			       uint32_t nack_psn, uint16_t spdcid,
-			       uint16_t dpdcid)
+			       uint16_t dpdcid, uint16_t ev)
 {
 	struct suet_pds_pkt_entry *pkt_entry;
 	struct pds_nack_hdr *nack;
@@ -373,6 +374,7 @@ static void suet_pds_send_nack(struct suet_domain *domain,
 	nack = (struct pds_nack_hdr *) pkt_entry->pkt->pkt;
 	pkt_entry->pkt->pkt_size = sizeof(*nack);
 	pkt_entry->pkt->dgram_av_addr = dgram_av_addr;
+	pkt_entry->pkt->ev = ev;
 
 	pds_nack_init(nack, nack_code, nack_psn, spdcid, dpdcid);
 
@@ -415,7 +417,7 @@ send_resp:
 	if (nack_code)
 		suet_pds_send_nack(domain, tpdc->dgram_av_addr, nack_code,
 				   pds_req_get_psn(pds), tpdc->local_pdcid,
-				   tpdc->ipdcid);
+				   tpdc->ipdcid, pkt_entry->pkt->ev);
 	else
 		suet_pds_tpdc_send_ack_if_needed(
 			domain, tpdc,
@@ -461,7 +463,8 @@ static void suet_pds_dispatch_req_to_ses_ooo(
 					gtd_del_resp->resp.modified_length,
 					gtd_del_resp->resp.ses_opcode,
 					gtd_del_resp->resp.ses_rc,
-					gtd_del_resp->resp.list);
+					gtd_del_resp->resp.list,
+					pkt_entry->pkt->ev);
 				replayed = true;
 				break;
 			}
@@ -472,7 +475,8 @@ static void suet_pds_dispatch_req_to_ses_ooo(
 			suet_pds_tpdc_send_ack(
 				domain, tpdc, dup_psn, UET_HDR_RESPONSE,
 				resp.message_id, resp.modified_length,
-				resp.ses_opcode, resp.ses_rc, resp.list);
+				resp.ses_opcode, resp.ses_rc, resp.list,
+				pkt_entry->pkt->ev);
 		}
 		goto free_pkt;
 	}
@@ -484,7 +488,7 @@ static void suet_pds_dispatch_req_to_ses_ooo(
 					   PDS_NACK_CODE_ROD_OOO :
 					   PDS_NACK_CODE_PSN_OOR_WINDOW,
 				   pds_req_get_psn(pds_hdr), tpdc->local_pdcid,
-				   tpdc->ipdcid);
+				   tpdc->ipdcid, pkt_entry->pkt->ev);
 	else
 		domain->counters.dup_drops++;
 free_pkt:
@@ -504,6 +508,7 @@ static void suet_pds_process_rx_req(struct suet_domain *domain,
 		suet_pds_pkt_free(pkt_entry);
 		return;
 	}
+	tpdc->ack_ev = pkt_entry->pkt->ev;
 	tpdc->ack_flags = pds_prologue_get_flags(pds) & PDS_FLAG_RETX;
 	if (pkt_entry->pkt->rx_flags & SUET_DGRAM_RX_ECN)
 		tpdc->ack_flags |= PDS_ACK_FLAG_M;
@@ -850,9 +855,9 @@ static void suet_pds_process_cp(struct suet_domain *domain,
 			"CP for unknown DPDCID=%u (ctl_type=%u), sending "
 			"INV_DPDCID NACK\n",
 			dpdcid, ctl_type);
-		suet_pds_send_nack(domain, dgram_av_addr,
-				   PDS_NACK_CODE_INV_DPDCID, cp_psn, 0,
-				   pds_ctrl_get_spdcid(cphdr));
+		suet_pds_send_nack(
+			domain, dgram_av_addr, PDS_NACK_CODE_INV_DPDCID, cp_psn,
+			0, pds_ctrl_get_spdcid(cphdr), pkt_entry->pkt->ev);
 		goto free_pkt;
 	}
 
@@ -885,7 +890,7 @@ static void suet_pds_process_cp(struct suet_domain *domain,
 		}
 
 		suet_pds_tpdc_send_ack(domain, tpdc, cp_psn, UET_HDR_NONE, 0, 0,
-				       0, 0, 0);
+				       0, 0, 0, pkt_entry->pkt->ev);
 
 		domain->counters.pdc_closes_rx++;
 		suet_pds_free_tpdc(domain, tpdc);
@@ -1035,7 +1040,8 @@ static void suet_pds_tpdc_process_req(struct suet_domain *domain,
 
 nack_pkt:
 	suet_pds_send_nack(domain, dgram_av_addr, nack_code,
-			   pds_req_get_psn(pds), 0, pds_req_get_spdcid(pds));
+			   pds_req_get_psn(pds), 0, pds_req_get_spdcid(pds),
+			   pkt_entry->pkt->ev);
 	suet_pds_pkt_free(pkt_entry);
 }
 
@@ -1063,7 +1069,7 @@ void suet_pds_receive(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 					PDS_NACK_CODE_TRIMMED,
 				pds_req_get_psn(pds),
 				syn ? 0 : pds_req_get_dpdcid(pds),
-				pds_req_get_spdcid(pds));
+				pds_req_get_spdcid(pds), pkt->ev);
 		}
 		goto free_pkt;
 	}
@@ -1218,6 +1224,7 @@ static void suet_pds_ipdc_send_tracked_pkt(struct suet_domain *domain,
 	suet_pds_ipdc_insert_unacked_pkt(ipdc, pkt_entry, slot);
 	suet_rel_tx_attempt(&ipdc->rel, slot,
 			    suet_domain_now_ms(domain));
+	pkt_entry->pkt->ev = suet_lb_next_ev(&ipdc->lb);
 	(void) suet_pds_send_pkt(domain, pkt_entry);
 }
 
@@ -1286,7 +1293,7 @@ static void suet_pds_tpdc_send_ack(struct suet_domain *domain,
 				   uint8_t next_hdr, uint16_t message_id,
 				   uint32_t modified_length,
 				   uint8_t resp_opcode, uint8_t resp_rc,
-				   uint8_t resp_list)
+				   uint8_t resp_list, uint16_t ev)
 {
 	struct suet_pds_pkt_entry *pkt_entry;
 	struct suet_ack_pkt *ack;
@@ -1306,6 +1313,7 @@ static void suet_pds_tpdc_send_ack(struct suet_domain *domain,
 	pkt_entry->pkt->pkt_size =
 		hdr_size + (next_hdr == UET_HDR_RESPONSE ? sizeof(*ses) : 0);
 	pkt_entry->pkt->dgram_av_addr = tpdc->dgram_av_addr;
+	pkt_entry->pkt->ev = ev;
 
 	/* TX buffers are recycled from a pool; zero the prologue. */
 	ack->pds.prologue.raw = 0;
@@ -1373,6 +1381,8 @@ static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
 	ipdc->mpr_cack = ipdc->start_psn - 2;
 	suet_cc_init(&ipdc->cc, suet_env.max_unacked);
 	ipdc->cc.ecn_enabled = suet_env.ecn;
+	suet_lb_init(&ipdc->lb, (uint16_t) ipdc->start_psn,
+		     suet_env.spray_paths);
 	/* Spec Table 3-35: cack_psn = highest acked PSN. Before any ACK has
 	 * been received nothing in [start_psn, ...] is acked, so initialize
 	 * to start_psn - 1 (i.e. one before the first PSN we will send). */
@@ -1454,6 +1464,7 @@ static void suet_pds_ipdc_send_clear_cmd(struct suet_domain *domain,
 	cp = (struct suet_ctrl_pkt *) pkt_entry->pkt->pkt;
 	pkt_entry->pkt->pkt_size = sizeof(cp->pds);
 	pkt_entry->pkt->dgram_av_addr = ipdc->dgram_av_addr;
+	pkt_entry->pkt->ev = suet_lb_next_ev(&ipdc->lb);
 
 	/* Spec 3.5.16.3.1: pds.psn = 0, pds.flags.ar = 0 (fire-and-forget,
 	 * no ACK expected); CLEAR_PSN is carried in pds.payload. */
@@ -1487,6 +1498,7 @@ static void suet_pds_ipdc_send_close_cmd(struct suet_domain *domain,
 	cp = (struct suet_ctrl_pkt *) pkt_entry->pkt->pkt;
 	pkt_entry->pkt->pkt_size = sizeof(*cp);
 	pkt_entry->pkt->dgram_av_addr = ipdc->dgram_av_addr;
+	pkt_entry->pkt->ev = suet_lb_next_ev(&ipdc->lb);
 	pkt_entry->local_pdcid = ipdc->local_pdcid;
 
 	ipdc->close_psn = ipdc->tx_seq_no++;
@@ -1553,6 +1565,7 @@ static void suet_pds_ipdc_progress_tx_pkt_list(struct suet_domain *domain,
 		if (suet_dgram_pkt_in_use(pkt_entry->pkt))
 			break;
 		retry = true;
+		pkt_entry->pkt->ev = suet_lb_next_ev(&ipdc->lb);
 		pds_prologue_set_flags(
 			pkt_entry->pkt->pkt,
 			pds_prologue_get_flags(pkt_entry->pkt->pkt) |

@@ -43,6 +43,7 @@
 
 struct suet_env suet_env = {
 	.spin_count = 1000,
+	.spray_paths = 1,
 	.max_peers = 1024,
 	.max_unacked = 128,
 	.max_eps = 256,
@@ -80,6 +81,8 @@ static void suet_init_env(void)
 		suet_env.cq_read_batch_size = 1;
 	if (suet_env.cq_read_batch_size > SUET_CQ_MAX_BATCH)
 		suet_env.cq_read_batch_size = SUET_CQ_MAX_BATCH;
+	fi_param_get_int(&suet_prov, "spray_paths", &suet_env.spray_paths);
+	suet_env.spray_paths = MAX(1, MIN(suet_env.spray_paths, 65536));
 	fi_param_get_bool(&suet_prov, "ecn", &suet_env.ecn);
 	fi_param_get_bool(&suet_prov, "selective_repeat",
 			  &suet_env.selective_repeat);
@@ -207,6 +210,9 @@ struct fi_provider suet_prov = {.name = OFI_UTIL_PREFIX "suet",
 
 SUET_INI
 {
+	fi_param_define(&suet_prov, "spray_paths", FI_PARAM_INT,
+			"Oblivious spraying EV count (1..65536; default: 1, "
+			"stable EV; requires DGRAM FI_SENDMSG_EV)");
 	fi_param_define(
 		&suet_prov, "ecn", FI_PARAM_BOOL,
 		"React to ECN/trimming with bounded AIMD (default: false)");

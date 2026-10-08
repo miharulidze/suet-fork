@@ -30,8 +30,13 @@ struct fi_suet_clock {
 #define FI_SUET_DGRAM_ECN	      (UINT64_C(1) << 60)
 #define FI_SUET_DGRAM_TRIMMED	      (UINT64_C(1) << 61)
 #define FI_SUET_DGRAM_TRIMMED_LASTHOP (UINT64_C(1) << 62)
+/* When EV is negotiated, use FI_CQ_FORMAT_DATA on the RX CQ. data contains
+ * the host-order 16-bit EV only when this flag is present, also on source
+ * discovery errors. This is backend metadata, not FI_REMOTE_CQ_DATA.
+ */
+#define FI_SUET_DGRAM_EV (UINT64_C(1) << 63)
 #define FI_SUET_DGRAM_METADATA_MASK                  \
 	(FI_SUET_DGRAM_ECN | FI_SUET_DGRAM_TRIMMED | \
-	 FI_SUET_DGRAM_TRIMMED_LASTHOP)
+	 FI_SUET_DGRAM_TRIMMED_LASTHOP | FI_SUET_DGRAM_EV)
 
 #endif

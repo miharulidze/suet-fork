@@ -180,3 +180,28 @@ both PDC types and both reliability algorithms under the documented fault
 matrix. The six focused C test programs passed with ASan/UBSan; the directly
 compiled PDS/SES paths also had assertions enabled. Simulator sanitizer runs
 used `ASAN_OPTIONS=detect_leaks=0` and do not constitute a dependency leak audit.
+
+## Entropy selection and backend negotiation
+
+`test_lb.c` verifies stable EVs, complete cyclic coverage, independent contexts,
+non-power-of-two counts, 16-bit wrap and the full 65,536-value range. It needs
+only `suet_lb.c` and is registered with htsim CTest. The datagram ownership
+test runs copied and scatter/gather sends with and without EV support, with
+zero/nonzero prefixes, submission failures and repeated sends. It also checks
+unnegotiated RX metadata is ignored, trim NACKs echo EV, and a deferred SES
+response retains its original EV after another request updates the PDC. A
+replayed response must instead echo the duplicate request's EV.
+
+The htsim provider contract test checks capability discovery, all 16 EV bits,
+unchanged peer identity and payload, receive EV through source-discovery errors
+and normal completions, MSG-format receive compatibility, invalid flags, and safe `-FI_ENOSYS` for old/absent
+message operations. The simulation suite checks stable-EV defaults and cyclic
+spraying across both PDC types and reliability algorithms, including faults.
+
+Validation of the EV/spraying change on macOS (2026-10-08): all 35 UDP
+fabtests passed with the original iteration counts. All five htsim CTests
+passed normally and with ASan/UBSan, covering 65 simulation scenarios. The
+seven focused test programs passed with sanitizers, including directly
+compiled PDS/SES implementations with assertions enabled. Simulator runs use
+`ASAN_OPTIONS=detect_leaks=0`. Both directions of the libfabric patch apply
+cleanly, and an explicit UDP `FI_SENDMSG_EV` capability request is rejected.

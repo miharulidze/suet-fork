@@ -1,0 +1,113 @@
+diff --git a/include/rdma/fabric.h b/include/rdma/fabric.h
+--- a/include/rdma/fabric.h
++++ b/include/rdma/fabric.h
+@@ -133,6 +133,8 @@
+ #define FI_ATOMICS		FI_ATOMIC
+ #define FI_MULTICAST		(1ULL << 5)
+ #define FI_COLLECTIVE		(1ULL << 6)
++/* Optional FI_EP_DGRAM sendmsg with a per-packet entropy value. */
++#define FI_SENDMSG_EV		(1ULL << 7)
+ 
+ #define FI_READ			(1ULL << 8)
+ #define FI_WRITE		(1ULL << 9)
+diff --git a/include/rdma/fi_endpoint.h b/include/rdma/fi_endpoint.h
+--- a/include/rdma/fi_endpoint.h
++++ b/include/rdma/fi_endpoint.h
+@@ -49,6 +49,12 @@
+ 	fi_addr_t		addr;
+ 	void			*context;
+ 	uint64_t		data;
++};
++
++/* EV is host byte order; msg retains ordinary fi_sendmsg semantics. */
++struct fi_msg_ev {
++	struct fi_msg msg;
++	uint16_t ev;
+ };
+ 
+ /* Endpoint option levels */
+@@ -133,6 +139,8 @@
+ 	ssize_t	(*injectdata)(struct fid_ep *ep, const void *buf, size_t len,
+ 			uint64_t data, fi_addr_t dest_addr);
+ 	ssize_t	(*recv_flush)(struct fid_ep *ep, uint64_t flags);
++	ssize_t (*sendmsg_ev)(struct fid_ep *ep, const struct fi_msg_ev *msg,
++			uint64_t flags);
+ };
+ 
+ struct fi_ops_cm;
+@@ -354,6 +362,16 @@
+ }
+ 
+ static inline ssize_t
++fi_sendmsg_ev(struct fid_ep *ep, const struct fi_msg_ev *msg, uint64_t flags)
++{
++	if (!ep->msg || ep->msg->size <
++	    offsetof(struct fi_ops_msg, sendmsg_ev) + sizeof(ep->msg->sendmsg_ev) ||
++	    !ep->msg->sendmsg_ev)
++		return -FI_ENOSYS;
++	return ep->msg->sendmsg_ev(ep, msg, flags);
++}
++
++static inline ssize_t
+ fi_inject(struct fid_ep *ep, const void *buf, size_t len, fi_addr_t dest_addr)
+ {
+ 	return ep->msg->inject(ep, buf, len, dest_addr);
+diff --git a/include/ofi.h b/include/ofi.h
+--- a/include/ofi.h
++++ b/include/ofi.h
+@@ -150,7 +150,7 @@
+ 	 FI_COLLECTIVE | FI_NAMED_RX_CTX | FI_HMEM)
+ 
+ #define OFI_SECONDARY_TX_CAPS \
+-	(FI_TRIGGER | FI_FENCE | FI_RMA_PMEM | FI_WR)
++	(FI_TRIGGER | FI_FENCE | FI_RMA_PMEM | FI_WR | FI_SENDMSG_EV)
+ 
+ #define OFI_PRIMARY_RX_CAPS \
+ 	(FI_MSG | FI_RMA | FI_TAGGED | FI_ATOMIC | \
+diff --git a/src/fi_tostr.c b/src/fi_tostr.c
+--- a/src/fi_tostr.c
++++ b/src/fi_tostr.c
+@@ -190,6 +190,7 @@
+ 	IFFLAGSTRN(caps, FI_ATOMIC, len);
+ 	IFFLAGSTRN(caps, FI_MULTICAST, len);
+ 	IFFLAGSTRN(caps, FI_COLLECTIVE, len);
++	IFFLAGSTRN(caps, FI_SENDMSG_EV, len);
+ 
+ 	IFFLAGSTRN(caps, FI_READ, len);
+ 	IFFLAGSTRN(caps, FI_WRITE, len);
+diff --git a/man/fi_msg.3.md b/man/fi_msg.3.md
+--- a/man/fi_msg.3.md
++++ b/man/fi_msg.3.md
+@@ -416,3 +416,21 @@
+ [`fi_endpoint`(3)](fi_endpoint.3.html),
+ [`fi_domain`(3)](fi_domain.3.html),
+ [`fi_cq`(3)](fi_cq.3.html)
++
++# LOCAL EXTENSION: fi_sendmsg_ev
++
++`fi_sendmsg_ev(ep, msg_ev, flags)` accepts `struct fi_msg_ev`, containing
++`struct fi_msg msg` followed by `uint16_t ev`. The embedded message and flags
++have the same semantics and lifetime as fi_sendmsg. EV is a host-byte-order,
++per-packet entropy value used by an FI_EP_DGRAM provider for network path
++selection; it does not change the destination address, payload or CQ data.
++The provider copies EV before returning. How EV is mapped to the network
++encapsulation is backend-specific; it is not a literal route index.
++
++Providers supporting this operation advertise `FI_SENDMSG_EV` in fi_info.caps
++and fi_info.tx_attr.caps. It may be requested as a capability in fi_getinfo.
++When absent, callers should use fi_sendmsg. A missing or older message
++operations table returns -FI_ENOSYS from fi_sendmsg_ev. This extension appends
++an operation to fi_ops_msg without changing existing operation offsets.
++It does not define receive-side EV metadata; that requires a separately
++negotiated backend contract. This is a local extension, not an upstream API.
+diff --git a/util/info.c b/util/info.c
+--- a/util/info.c
++++ b/util/info.c
+@@ -125,6 +125,7 @@
+ 	ORCASE(FI_ATOMIC);
+ 	ORCASE(FI_MULTICAST);
+ 	ORCASE(FI_COLLECTIVE);
++	ORCASE(FI_SENDMSG_EV);
+ 
+ 	ORCASE(FI_READ);
+ 	ORCASE(FI_WRITE);

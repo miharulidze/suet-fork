@@ -51,6 +51,7 @@ enum suet_dgram_rx_flags {
 
 struct suet_pkt_entry {
 	uint8_t rx_flags;
+	uint16_t ev; /* TX path entropy / RX triggering entropy, not payload */
 	size_t pkt_size;
 	fi_addr_t dgram_av_addr;
 	void *pkt;

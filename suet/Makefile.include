@@ -8,6 +8,8 @@ _suet_files = \
 	prov/suet/src/suet_cq.c		\
 	prov/suet/src/suet_cntr.c		\
 	prov/suet/src/suet_ep.c		\
+	prov/suet/src/suet_lb.c	\
+	prov/suet/src/suet_lb.h	\
 	prov/suet/src/suet_cc.c	\
 	prov/suet/src/suet_cc.h	\
 	prov/suet/src/suet_rel.c	\
