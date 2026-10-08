@@ -15,9 +15,11 @@ runner waits for the client. Timeouts include partial output.
 
 `test_ses_pds.c` checks the direct SES/PDS contract: first, middle, and final
 segments; repeated/out-of-order preparation without mutating the TX entry;
-scatter/gather and zero-copy
-payloads; untouched PDS header space; datagram prefix accounting; empty
-messages; and the atomic header extension. It also checks independent SES
+scatter/gather and zero-copy payload descriptions; arbitrary header headroom;
+header/IOV capacity checks; empty messages; and the atomic header extension.
+Receive checks cover truncated headers/extensions/atomic operands and delivery
+from noncontiguous semantic-header/payload views. Size checks verify that
+atomic payload limits reserve space for all semantic headers. It also checks independent SES
 domain lifetimes, receive allocation after another domain closes, repeated
 cleanup, and reinitialization. Response-retention checks cover pool exhaustion,
 rejected unexpected intake, immutable response inputs, replay-range preservation
@@ -49,7 +51,9 @@ assertions.
 send failures, local success/error completions, ACK-before-completion retention,
 RX ownership transfer, and shutdown. It also checks context alignment and that
 retaining two unexpected-message segments in SES leaves PDS state and the
-datagram list node untouched. Run it with the same compiler and library settings
+datagram list node untouched. The real PDS assembler is exercised with copied,
+zero-copy, segmented, empty, and maximum-size atomic payloads, checking emitted
+headers and payload bytes after repeated sends with a provider prefix. Run it with the same compiler and library settings
 as above, replacing `test_ses_pds` with `test_pds_dgram` in both paths.
 
 ## Compatibility between builds
@@ -85,11 +89,10 @@ upstream sources were changed for that workaround.
 Results for the final refactor in that environment:
 
 - All 33 original fabtests and both added integration cases passed (35 total).
-- Four interoperability cases passed in each direction (eight total): empty
+- Five interoperability cases passed in each direction (ten total): empty
   messages, verified segmented unexpected messages, tagged peek/claim/discard,
-  and 1 MiB RMA writes.
-- Both standalone test programs passed. The packet-ownership tests also passed
-  with address/undefined-behavior sanitizers and assertions enabled in the
-  datagram, PDS, and SES implementations.
+  1 MiB RMA writes, and all supported atomic operations with delivery completion.
+- Both standalone test programs passed, including with address/undefined-behavior
+  sanitizers and assertions enabled in the directly compiled layer implementations.
 - Every provider source compiled without warnings. Changes in `suet_proto.h`
   rename C packet types and datagram address fields; wire layouts are unchanged.

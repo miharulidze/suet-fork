@@ -209,7 +209,7 @@ ssize_t suet_dgram_send(struct suet_domain *domain, struct suet_pkt_entry *pkt)
 
 	assert(!entry->in_use);
 	if (pkt->zc_pld_iov_count) {
-		/* SES supplies the wire header in slot zero and payload in the
+		/* PDS supplies the wire header in slot zero and payload in the
 		 * rest. Use a local header view so retransmits never accumulate
 		 * prefixes.
 		 */

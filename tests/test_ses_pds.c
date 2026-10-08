@@ -11,23 +11,27 @@
 #undef NDEBUG
 #include <assert.h>
 
-static void check_segments(bool zero_copy)
+static void check_segments(bool zero_copy, size_t headroom)
 {
 	struct suet_domain domain = {0};
 	struct suet_ep ep = {0};
-	struct suet_ses_tx_entry entry = {0};
-	struct suet_ses_tx_entry before;
-	struct suet_pkt_entry packet = {0};
+	struct suet_ses_tx_entry entry = {0}, before;
+	struct iovec iov[SUET_IOV_LIMIT];
+	void *desc[SUET_IOV_LIMIT];
+	struct suet_ses_tx_segment segment = {
+		.iov = iov,
+		.desc = desc,
+		.iov_capacity = SUET_IOV_LIMIT,
+	};
 	unsigned char payload[141], buffer[256], copied[64];
 	const uint32_t order[] = {2, 0, 1, 0, 2};
-	struct suet_req_pkt *wire = (void *) buffer;
+	struct ses_req_hdr *hdr = (void *) (buffer + headroom);
 	size_t i, j, offset, len, done;
 
 	domain.max_pkt_sz = 64;
-	domain.dgram.tx_prefix_size = 8;
 	ep.util_ep.domain = &domain.util_domain;
 	entry.ep = &ep;
-	entry.hdr_len = sizeof(*wire);
+	entry.hdr_len = sizeof(*hdr);
 	entry.num_pkts = 3;
 	entry.cq_entry.len = sizeof(payload);
 	entry.iov_count = 3;
@@ -40,53 +44,57 @@ static void check_segments(bool zero_copy)
 		entry.zc_desc[i] = zero_copy ? &entry.iov[i] : NULL;
 	ses_req_init(&entry.cached_hdr.ses, UET_SEND, 1, 1, 1, 1, 0x1234, 0,
 		     0x1122334455667788ULL, 0xaabbccdd, sizeof(payload), 3, 7);
-	packet.pkt = buffer;
-
 	memcpy(&before, &entry, sizeof(entry));
 
-	/* Repeat and reorder preparation: only the supplied segment may matter.
+	/* Arbitrary headroom is invisible to SES; payload stays separate.
+	 * Repeated/reordered preparation must not mutate the operation.
 	 */
 	for (i = 0; i < sizeof(order) / sizeof(order[0]); i++) {
 		memset(buffer, 0xa5, sizeof(buffer));
-		packet.zc_pld_iov_count = 0;
-		suet_ses_prepare_tx(&entry, &packet, order[i]);
+		assert(!suet_ses_prepare_tx(&entry, order[i], hdr, sizeof(*hdr),
+					    &segment));
 		offset = order[i] * 64;
 		len = MIN(sizeof(payload) - offset, 64);
-		for (j = 0; j < sizeof(wire->pds); j++)
+		for (j = 0; j < headroom; j++)
 			assert(buffer[j] == 0xa5);
-		assert(packet.pkt_size == sizeof(*wire) + len);
-		assert(!!ses_req_ctrl_is_som(&wire->ses) == (order[i] == 0));
-		assert(!!ses_req_ctrl_is_eom(&wire->ses) == (order[i] == 2));
-		assert(ses_get_message_id(&wire->ses) == 0x1234);
-		assert(ses_get_ri(&wire->ses) == 7);
+		for (j = headroom + sizeof(*hdr); j < sizeof(buffer); j++)
+			assert(buffer[j] == 0xa5);
+		assert(segment.hdr_len == sizeof(*hdr));
+		assert(segment.hdr_type == UET_HDR_REQUEST_STD);
+		assert(segment.payload_len == len);
+		assert(segment.zero_copy == zero_copy);
+		assert(!!ses_req_ctrl_is_som(hdr) == (order[i] == 0));
+		assert(!!ses_req_ctrl_is_eom(hdr) == (order[i] == 2));
+		assert(ses_get_message_id(hdr) == 0x1234);
+		assert(ses_get_ri(hdr) == 7);
 		if (order[i]) {
-			assert(ses_hd_get_message_offset(&wire->ses) == offset);
+			assert(ses_hd_get_message_offset(hdr) == offset);
 		} else {
-			assert(ses_get_request_length(&wire->ses) ==
-			       sizeof(payload));
-			assert(ses_get_match_bits(&wire->ses) ==
+			assert(ses_get_request_length(hdr) == sizeof(payload));
+			assert(ses_get_match_bits(hdr) ==
 			       0x1122334455667788ULL);
-			assert(ses_hd_get_completion_data(&wire->ses) ==
-			       0xaabbccdd);
+			assert(ses_hd_get_completion_data(hdr) == 0xaabbccdd);
 		}
-		if (zero_copy) {
-			done = 0;
-			for (j = 1; j <= packet.zc_pld_iov_count; j++) {
-				assert(done + packet.zc_pld_iov[j].iov_len <=
-				       len);
-				memcpy(copied + done,
-				       packet.zc_pld_iov[j].iov_base,
-				       packet.zc_pld_iov[j].iov_len);
-				done += packet.zc_pld_iov[j].iov_len;
-				assert(packet.zc_pld_desc[j]);
-			}
-			assert(done == len);
-			assert(!memcmp(copied, payload + offset, len));
-		} else {
-			assert(!memcmp(wire->msg, payload + offset, len));
+		done = 0;
+		for (j = 0; j < segment.iov_count; j++) {
+			assert(done + iov[j].iov_len <= len);
+			memcpy(copied + done, iov[j].iov_base, iov[j].iov_len);
+			done += iov[j].iov_len;
+			assert(!!desc[j] == zero_copy);
 		}
+		assert(done == len && !memcmp(copied, payload + offset, len));
 	}
 	assert(!memcmp(&entry, &before, sizeof(entry)));
+	memset(buffer, 0xa5, sizeof(buffer));
+	assert(suet_ses_prepare_tx(&entry, 0, hdr, sizeof(*hdr) - 1,
+				   &segment) == -FI_ETOOSMALL);
+	segment.iov_capacity = 2;
+	assert(suet_ses_prepare_tx(&entry, 0, hdr, sizeof(*hdr), &segment) ==
+	       -FI_ETOOSMALL);
+	assert(suet_ses_prepare_tx(&entry, 3, hdr, sizeof(*hdr), &segment) ==
+	       -FI_EINVAL);
+	for (i = 0; i < sizeof(buffer); i++)
+		assert(buffer[i] == 0xa5);
 }
 
 static void check_empty_and_atomic(void)
@@ -94,35 +102,78 @@ static void check_empty_and_atomic(void)
 	struct suet_domain domain = {0};
 	struct suet_ep ep = {0};
 	struct suet_ses_tx_entry entry = {0};
-	struct suet_pkt_entry packet = {0};
+	struct iovec iov[SUET_IOV_LIMIT];
+	void *desc[SUET_IOV_LIMIT];
+	struct suet_ses_tx_segment segment = {
+		.iov = iov,
+		.desc = desc,
+		.iov_capacity = SUET_IOV_LIMIT,
+	};
 	unsigned char buffer[256];
 	uint64_t operand = 0x123456789abcdef0ULL;
-	struct suet_amo_pkt *wire = (void *) buffer;
+	struct ses_req_hdr *hdr = (void *) buffer;
 
 	domain.max_pkt_sz = 64;
 	ep.util_ep.domain = &domain.util_domain;
 	entry.ep = &ep;
-	entry.hdr_len = sizeof(struct suet_req_pkt);
+	entry.hdr_len = sizeof(*hdr);
+	entry.num_pkts = 1;
 	entry.iov_count = 1;
 	entry.iov[0] = (struct iovec) {&operand, 0};
-	packet.pkt = buffer;
 	ses_req_init(&entry.cached_hdr.ses, UET_SEND, 1, 1, 1, 0, 1, 0, 0, 0, 0,
 		     3, 7);
-	suet_ses_prepare_tx(&entry, &packet, 0);
-	assert(packet.pkt_size == sizeof(struct suet_req_pkt));
-	assert(ses_req_ctrl_is_som(&wire->ses));
-	assert(ses_req_ctrl_is_eom(&wire->ses));
+	assert(!suet_ses_prepare_tx(&entry, 0, hdr, sizeof(buffer), &segment));
+	assert(segment.hdr_len == sizeof(*hdr));
+	assert(!segment.payload_len && !segment.iov_count);
+	assert(ses_req_ctrl_is_som(hdr) && ses_req_ctrl_is_eom(hdr));
 
-	entry.hdr_len = sizeof(*wire);
+	entry.hdr_len += sizeof(struct ses_msg_amo_hdr);
 	entry.cq_entry.len = sizeof(operand);
 	entry.iov[0].iov_len = sizeof(operand);
 	memset(&entry.cached_hdr.amo, 0x5a, sizeof(entry.cached_hdr.amo));
 	ses_req_init(&entry.cached_hdr.ses, UET_ATOMIC, 1, 1, 1, 0, 2, 0x1000,
 		     9, 0, sizeof(operand), 3, 7);
-	suet_ses_prepare_tx(&entry, &packet, 0);
-	assert(packet.pkt_size == sizeof(*wire) + sizeof(operand));
-	assert(!memcmp(&wire->amo, &entry.cached_hdr.amo, sizeof(wire->amo)));
-	assert(!memcmp(wire->msg, &operand, sizeof(operand)));
+	assert(!suet_ses_prepare_tx(&entry, 0, hdr, sizeof(buffer), &segment));
+	assert(segment.hdr_len == entry.hdr_len);
+	assert(segment.payload_len == sizeof(operand));
+	assert(!memcmp(hdr + 1, &entry.cached_hdr.amo,
+		       sizeof(entry.cached_hdr.amo)));
+	assert(segment.iov_count == 1 && iov[0].iov_base == &operand);
+}
+
+static void check_rx_views(void)
+{
+	struct suet_domain domain = {0};
+	struct suet_ep ep = {0};
+	struct suet_ep *ep_table[] = {&ep};
+	unsigned char buffer[128];
+	struct ses_req_hdr *hdr = (void *) (buffer + 37);
+	struct suet_ses_rx_packet pkt = {0};
+	size_t hdr_len = sizeof(*hdr);
+
+	domain.ep_table = ep_table;
+	memset(buffer, 0, sizeof(buffer));
+	ses_req_init(hdr, UET_SEND, 1, 1, 1, 0, 7, 0, 0, 0, 8, 0, 0);
+	assert(!suet_ses_rx_parse(&domain, UET_HDR_REQUEST_STD, hdr,
+				  hdr_len - 1, &pkt));
+	assert(!suet_ses_rx_parse(&domain, UET_HDR_NONE, hdr, hdr_len, &pkt));
+	assert(suet_ses_rx_parse(&domain, UET_HDR_REQUEST_STD, hdr, hdr_len + 8,
+				 &pkt));
+	assert(pkt.hdr == hdr && pkt.payload == hdr + 1 &&
+	       pkt.payload_len == 8);
+	assert(suet_ses_rx_parse(&domain, UET_HDR_REQUEST_STD, hdr, hdr_len,
+				 &pkt));
+	assert(!pkt.payload_len);
+
+	ses_req_init(hdr, UET_ATOMIC, 1, 1, 1, 0, 7, 0, 0, 0, 8, 0, 0);
+	hdr_len += sizeof(struct ses_msg_amo_hdr);
+	assert(!suet_ses_rx_parse(&domain, UET_HDR_REQUEST_STD, hdr,
+				  hdr_len - 1, &pkt));
+	assert(!suet_ses_rx_parse(&domain, UET_HDR_REQUEST_STD, hdr,
+				  hdr_len + 7, &pkt));
+	assert(suet_ses_rx_parse(&domain, UET_HDR_REQUEST_STD, hdr, hdr_len + 8,
+				 &pkt));
+	assert(pkt.payload == (char *) hdr + hdr_len && pkt.payload_len == 8);
 }
 
 static void check_ses_domain_lifecycle(void)
@@ -135,7 +186,13 @@ static void check_ses_domain_lifecycle(void)
 	size_t i;
 
 	for (i = 0; i < 2; i++) {
+		domains[i].dgram.max_pkt_size = 256;
 		assert(!suet_ses_init(&domains[i]));
+		assert(domains[i].max_pkt_sz + sizeof(struct ses_req_hdr) ==
+		       suet_pds_max_ses_size(&domains[i]));
+		assert(domains[i].max_inline_atom + sizeof(struct ses_req_hdr) +
+			       sizeof(struct ses_msg_amo_hdr) ==
+		       suet_pds_max_ses_size(&domains[i]));
 		assert(domains[i].ses.tx_entry_pool->attr.context ==
 		       &domains[i].ses);
 		assert(domains[i].ses.rx_entry_pool->attr.context ==
@@ -165,6 +222,49 @@ static void check_ses_domain_lifecycle(void)
 	assert(rx[0]);
 	suet_ses_rx_close(rx[0]);
 	suet_ses_cleanup(&domains[0]);
+}
+
+/* The semantic header and payload need not be adjacent in an SES view. */
+static void check_rx_payload_view(void)
+{
+	struct suet_domain domain = {0};
+	struct suet_ep ep = {0};
+	struct suet_ep *ep_table[] = {&ep};
+	struct ses_req_hdr hdr;
+	unsigned char payload[17], output[17] = {0};
+	struct iovec iov = {output, sizeof(output)};
+	struct suet_ses_rx_packet pkt = {
+		.hdr = &hdr,
+		.payload = payload,
+		.payload_len = sizeof(payload),
+	};
+	struct suet_ses_rx_dispatch_result result;
+	struct suet_ses_rx_entry *entry;
+	void *rx;
+
+	domain.dgram.max_pkt_size = 256;
+	domain.ep_table = ep_table;
+	ep.util_ep.domain = &domain.util_domain;
+	dlist_init(&ep.rx_list);
+	assert(!suet_ses_init(&domain));
+	rx = suet_ses_rx_open(&domain, NULL, 0);
+	assert(rx);
+	entry = suet_ses_rx_entry_init(&ep, &iov, 1, 0, 0, NULL,
+				       SUET_ADDR_INVALID, ofi_op_msg, 0);
+	assert(entry);
+	dlist_insert_tail(&entry->entry, &ep.rx_list);
+	memset(payload, 0x5a, sizeof(payload));
+	ses_req_init(&hdr, UET_SEND, 1, 1, 1, 0, 7, 0, 0, 0, sizeof(payload), 0,
+		     0);
+	suet_ses_receive(rx, NULL, &pkt, &result);
+	assert(result.accepted && !result.pkt_retained);
+	assert(result.completion == entry);
+	assert(entry->bytes_copied == sizeof(output));
+	assert(!memcmp(payload, output, sizeof(output)));
+	/* Inspect dispatch before commit writes the application CQ. */
+	suet_ses_rx_entry_free(entry);
+	suet_ses_rx_close(rx);
+	suet_ses_cleanup(&domain);
 }
 
 static void check_pds_domain_lifecycle(void)
@@ -206,7 +306,7 @@ static void check_response_retention(void)
 	struct suet_ep ep = {0};
 	struct suet_ep *ep_table[] = {&ep};
 	struct ofi_bufpool *tx_pool;
-	struct suet_pkt_entry packet = {0};
+	struct suet_ses_rx_packet packet = {0};
 	struct suet_req_pkt request = {0};
 	struct suet_ses_rx_dispatch_result result;
 	struct suet_ses_resp placeholder = {
@@ -227,6 +327,7 @@ static void check_response_retention(void)
 	struct suet_pds_ses_resp_entry *saved;
 	void *held_packet, *rx;
 
+	domain.dgram.max_pkt_size = 64 + sizeof(struct suet_req_pkt);
 	assert(!suet_ses_init(&domain));
 	assert(!suet_pds_init(&domain));
 	/* Use a one-slot chunk so pool exhaustion is deterministic. */
@@ -254,9 +355,9 @@ static void check_response_retention(void)
 	rx = suet_ses_rx_open(&domain, &tpdc, 0);
 	assert(rx);
 	ses_req_init(&request.ses, UET_SEND, 1, 0, 1, 0, 7, 0, 0, 0, 141, 0, 0);
-	packet.pkt = &request;
+	packet.hdr = &request.ses;
 	memset(&result, 0xa5, sizeof(result));
-	suet_ses_receive(rx, &packet, &result);
+	suet_ses_receive(rx, NULL, &packet, &result);
 	assert(result.status == -FI_ENOMEM);
 	assert(!result.accepted && !result.pkt_retained && !result.completion);
 	assert(dlist_empty(&ep.unexp_list));
@@ -297,14 +398,18 @@ static void check_response_retention(void)
 
 int main(void)
 {
-	check_segments(false);
-	check_segments(true);
+	check_segments(false, 0);
+	check_segments(true, 0);
+	check_segments(false, 37);
+	check_segments(true, 61);
+	check_rx_views();
 	check_empty_and_atomic();
 	puts("SES/PDS packet preparation: PASS");
 	/* Pool tests run without fi_getinfo, which normally initializes this.
 	 */
 	ofi_mem_init();
 	check_ses_domain_lifecycle();
+	check_rx_payload_view();
 	check_pds_domain_lifecycle();
 	check_response_retention();
 	ofi_mem_fini();

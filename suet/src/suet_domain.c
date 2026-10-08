@@ -170,13 +170,6 @@ int suet_domain_open(struct fid_fabric *fabric, struct fi_info *info,
 	if (ret)
 		goto err;
 
-	suet_domain->max_inline_msg =
-		suet_domain->dgram.max_pkt_size - sizeof(struct pds_req_hdr);
-	suet_domain->max_inline_rma = suet_domain->max_inline_msg;
-	suet_domain->max_inline_atom =
-		suet_domain->max_inline_rma - sizeof(struct ses_msg_amo_hdr);
-	suet_domain->max_pkt_sz =
-		suet_domain->dgram.max_pkt_size - sizeof(struct suet_req_pkt);
 	ret = suet_ses_init(suet_domain);
 	if (ret)
 		goto err_dgram;

@@ -287,7 +287,7 @@ static void check_ses_retention(void)
 	domain.dgram.rx_prefix_size = prefix_size;
 	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
 	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
-	domain.max_pkt_sz = 64;
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
 	domain.ep_table = ep_table;
 	ep.util_ep.domain = &domain.util_domain;
 	dlist_init(&domain.dgram.rx_pkt_list);
@@ -304,6 +304,7 @@ static void check_ses_retention(void)
 		struct suet_pds_pkt_entry *pds;
 		struct suet_ses_pkt_entry *ses;
 		struct suet_req_pkt *wire;
+		struct suet_ses_rx_packet view;
 
 		assert(!suet_dgram_ep_recv_pkt(&domain));
 		comp.op_context = recv_context;
@@ -326,9 +327,14 @@ static void check_ses_retention(void)
 			     128, 0, 0);
 		if (i)
 			ses_hd_set_cont(&wire->ses, 64, 64);
-		suet_ses_receive(rx, received, &result);
+		assert(suet_ses_rx_parse(
+			&domain, UET_HDR_REQUEST_STD, &wire->ses,
+			received->pkt_size - sizeof(wire->pds), &view));
+		view.handle = pds;
+		suet_ses_receive(rx, received->ses_ctx, &view, &result);
 		assert(result.accepted && result.pkt_retained);
-		assert(ses->pkt == received && !dlist_empty(&ses->entry));
+		assert(ses->pkt.handle == pds && ses->pkt.hdr == &wire->ses &&
+		       !dlist_empty(&ses->entry));
 		assert(dlist_empty(&dgram->entry));
 		assert(dlist_empty(&pds->entry));
 		suet_ses_rx_commit(rx, &result);
@@ -350,6 +356,107 @@ static void check_ses_retention(void)
 	suet_dgram_free_pkt_entry_pools(&domain);
 }
 
+/* Exercise the real PDS assembler with separate SES headers/payloads, then
+ * compare the emitted wire bytes on repeated sends with a provider prefix.
+ */
+static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep dgram_ep = {.msg = &msg_ops};
+	struct suet_ep ep = {0};
+	struct suet_ses_tx_entry ses = {0};
+	struct suet_ipdc ipdc = {0};
+	struct suet_pds_tx_entry tx = {0};
+	unsigned char payload[141];
+	size_t i, offset = 0;
+	uint32_t segment = 0;
+
+	prefix_size = 8;
+	send_status = 0;
+	domain.dgram.ep = &dgram_ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+	domain.dgram.tx_prefix_size = prefix_size;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	domain.max_pkt_sz = 64;
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	ep.util_ep.domain = &domain.util_domain;
+	ses.ep = &ep;
+	ses.hdr_len = sizeof(struct ses_req_hdr) +
+		      (atomic ? sizeof(struct ses_msg_amo_hdr) : 0);
+	ses.num_pkts = length ? ofi_div_ceil(length, 64) : 1;
+	ses.iov_count = 2;
+	ses.iov[0] = (struct iovec) {payload, MIN(length, 23)};
+	ses.iov[1] = (struct iovec) {payload + ses.iov[0].iov_len,
+				     length - ses.iov[0].iov_len};
+	ses.cq_entry.len = length;
+	for (i = 0; i < sizeof(payload); i++)
+		payload[i] = (unsigned char) (i * 37 + 11);
+	for (i = 0; i < ses.iov_count; i++)
+		ses.zc_desc[i] = zero_copy ? &ses.iov[i] : NULL;
+	ses_req_init(&ses.cached_hdr.ses, atomic ? UET_ATOMIC : UET_SEND, 1, 1,
+		     1, 0, 17, 0, 0, 0, length, 0, 0);
+	memset(&ses.cached_hdr.amo, 0x5a, sizeof(ses.cached_hdr.amo));
+	ipdc.state = SUET_PDC_ESTABLISHED;
+	ipdc.tx_seq_no = 100;
+	ipdc.last_tx_clear_psn = 99;
+	ipdc.local_pdcid = 7;
+	ipdc.tpdcid = 8;
+	ipdc.dgram_av_addr = 9;
+	dlist_init(&ipdc.in_flight_pkts);
+	tx.domain = &domain;
+	tx.ipdc = &ipdc;
+	tx.context = &ses;
+	suet_pds_tx_submit(&tx, ses.num_pkts);
+	assert(tx.next_segment == ses.num_pkts);
+	assert(ipdc.in_flight_cnt == ses.num_pkts);
+	while (!dlist_empty(&ipdc.in_flight_pkts)) {
+		struct suet_pds_pkt_entry *pds =
+			container_of(ipdc.in_flight_pkts.next,
+				     struct suet_pds_pkt_entry, entry);
+		struct suet_pkt_entry *pkt = pds->pkt;
+		struct suet_dgram_pkt_entry *dgram =
+			container_of(pkt, struct suet_dgram_pkt_entry, pkt);
+		const struct suet_req_pkt *wire = (const void *) sent;
+		size_t len = MIN(length - offset, 64);
+		size_t hdr_len = sizeof(struct pds_req_hdr) + ses.hdr_len;
+
+		assert(pkt->zc_pld_iov_count ==
+		       (zero_copy && len ?
+				(segment == 0 && length > 23 ? 2 : 1) :
+				0));
+		suet_dgram_tx_complete(&domain, &dgram->context, 0);
+		assert(!suet_dgram_send(&domain, pkt));
+		assert(sent_len == hdr_len + len);
+		assert(pds_prologue_get_type(&wire->pds) == PDS_ROD_REQ);
+		assert(pds_prologue_get_next_hdr(&wire->pds) ==
+		       UET_HDR_REQUEST_STD);
+		assert(pds_req_get_psn(&wire->pds) == 100 + segment);
+		assert(pds_req_get_spdcid(&wire->pds) == 7);
+		assert(pds_req_get_dpdcid(&wire->pds) == 8);
+		assert(pds_req_get_clear_psn(&wire->pds) == 99);
+		assert(!!ses_req_ctrl_is_som(&wire->ses) == (segment == 0));
+		assert(!!ses_req_ctrl_is_eom(&wire->ses) ==
+		       (offset + len == length));
+		assert(ses_get_message_id(&wire->ses) == 17);
+		if (segment)
+			assert(ses_hd_get_message_offset(&wire->ses) == offset);
+		if (atomic)
+			assert(!memcmp(sent + sizeof(*wire),
+				       &ses.cached_hdr.amo,
+				       sizeof(ses.cached_hdr.amo)));
+		assert(!memcmp(sent + hdr_len, payload + offset, len));
+		suet_dgram_tx_complete(&domain, &dgram->context, 0);
+		dlist_remove_init(&pds->entry);
+		suet_dgram_pkt_free(pkt);
+		offset += len;
+		segment++;
+	}
+	assert(offset == length && segment == ses.num_pkts);
+	suet_dgram_free_pkt_entry_pools(&domain);
+}
+
 int main(void)
 {
 	ofi_mem_init();
@@ -357,6 +464,11 @@ int main(void)
 	check_datagram(8);
 	check_pds_retention();
 	check_ses_retention();
+	check_pds_framing(false, false, 141);
+	check_pds_framing(true, false, 141);
+	check_pds_framing(false, false, 0);
+	check_pds_framing(true, false, 0);
+	check_pds_framing(false, true, 60);
 	ofi_mem_fini();
 	puts("PDS/datagram prefixes, completion ownership and shutdown: PASS");
 	return 0;

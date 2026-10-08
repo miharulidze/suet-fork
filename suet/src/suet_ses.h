@@ -37,14 +37,14 @@
 
 #include <rdma/fi_rma.h>
 
-#include "suet_pds_dgram_api.h"
+#include "suet_dgram.h"
 #include "suet_proto.h"
 #include "suet_ses_pds_api.h"
 
 /* SES-only membership for packets retained by an unexpected message. */
 struct suet_ses_pkt_entry {
 	struct dlist_entry entry;
-	struct suet_pkt_entry *pkt;
+	struct suet_ses_rx_packet pkt;
 };
 
 struct suet_ses_tx_entry {
@@ -62,7 +62,7 @@ struct suet_ses_tx_entry {
 
 	struct suet_ep *ep;
 	void *pds_ctx; /* opaque PDS transmission */
-	size_t hdr_len;
+	size_t hdr_len; /* semantic headers only */
 
 	/* Cached semantic headers; PDS headers live only in packet records. */
 	struct {

@@ -38,7 +38,7 @@ There is no operations table or new function-pointer dispatch.
   posting, CQ polling, and provider prefixes in `suet_dgram.c`. Its resources
   and lifecycle are declared in `suet_dgram.h`; the packet/event contract with
   PDS lives in `suet_pds_dgram_api.h`. Provider contexts stay private to datagram.
-  PDS and SES see packet lengths excluding provider prefixes. Local send
+  PDS sees wire lengths excluding provider prefixes. Local send
   completion releases provider access; PDS independently tracks acknowledgment
   and retry retention. Each packet still occupies one pool allocation, with
   separate aligned datagram, PDS, and SES records. Datagram keeps provider-busy
@@ -47,17 +47,25 @@ There is no operations table or new function-pointer dispatch.
   The shared packet view carries storage/I/O information and opaque layer
   contexts, without shared flags or list membership.
 - Each transmission has a separate PDS record with an opaque SES context. PDS
-  asks SES to prepare a segment and reports terminal completion through direct
-  calls. SES never traverses PDC queues or assigns packet sequence numbers.
+  supplies a semantic-header region and asks SES for header bytes plus payload
+  IOVs and registration descriptors. PDS assembles the wire packet and reports
+  terminal completion through direct calls. Header preparation writes directly
+  into the existing packet allocation; it adds no header or payload copy.
+  SES uses the semantic-byte budget exposed by PDS to derive payload limits,
+  including space for atomic extensions. SES never calculates PDS header sizes,
+  traverses PDC queues, or assigns packet sequence numbers.
 - Ordered receive state lives in an opaque SES context associated with the
-  transport stream. PDS delivers an ordered packet, persists any required
-  response, then commits the SES receive completion.
+  transport stream. PDS strips its framing; SES validates and separates its
+  header/extensions from the payload. Ordered dispatch receives that view and
+  an opaque release handle. Retained packets keep a copy of the view in their
+  existing SES record, including for peek/claim/discard. PDS persists any
+  required response before committing the SES receive completion.
 - Unexpected messages hold opaque response reservations. Completing or
   cancelling a reservation goes through PDS; SES does not mutate retained
   response lists. Closing a PDC invalidates the route while outstanding SES
   reservations remain safe to release.
 
-The boundary shares packet buffers and wire response metadata. The existing
+The boundary shares semantic views, opaque lifetime handles, and response metadata. The existing
 wire headers, Go-Back-N algorithm, per-domain locking, and datagram/zero-copy
 buffer lifetime rules are unchanged. Calls require the domain FEP lock or
 exclusive initialization/close. Domain close drains PDS, stops the datagram

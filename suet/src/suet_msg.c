@@ -177,7 +177,7 @@ suet_ep_tx_entry_init_msg(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 	if (!tx_entry)
 		return NULL;
 
-	tx_entry->hdr_len = sizeof(struct suet_req_pkt);
+	tx_entry->hdr_len = sizeof(struct ses_req_hdr);
 
 	if (tx_entry->cq_entry.len > (size_t) suet_domain->max_pkt_sz) {
 		tx_entry->num_pkts = ofi_div_ceil(tx_entry->cq_entry.len,

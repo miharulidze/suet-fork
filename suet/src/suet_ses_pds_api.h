@@ -35,18 +35,49 @@
 #ifndef _SUET_SES_PDS_API_H_
 #define _SUET_SES_PDS_API_H_
 
+#include <rdma/fabric.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <rdma/fabric.h>
+#include <sys/uio.h>
 
 /* Direct-call SES/PDS contract. All calls run under the domain FEP lock
  * (or exclusive domain initialization/close). Neither layer may inspect
  * the other's opaque contexts. No callback table is required.
  */
 struct suet_domain;
-struct suet_pkt_entry;
+struct ses_req_hdr;
 struct ses_resp_hdr;
 struct suet_pds_ses_resp_entry;
+
+/* TX describes semantic bytes only. PDS supplies hdr storage separately and
+ * caller-owned payload arrays of iov_capacity entries. SES fills those arrays
+ * for this segment; PDS consumes them before returning to its caller. Borrowed
+ * payload/registration lifetimes remain those of the SES transmission.
+ * hdr_capacity bounds only the semantic-header output region; PDS separately
+ * checks the assembled header/payload against its framing budget.
+ */
+struct suet_ses_tx_segment {
+	struct iovec *iov;
+	void **desc;
+	size_t iov_capacity;
+	size_t iov_count;
+	size_t hdr_len;
+	size_t payload_len;
+	uint8_t hdr_type;
+	bool zero_copy;
+};
+
+/* Validated semantic header (including extensions) and separate payload.
+ * The view may be transient. Retention copies the view, not its bytes; handle
+ * keeps the underlying storage alive until suet_pds_rx_release(). Parsing
+ * sets the header/payload fields; PDS supplies handle before dispatch.
+ */
+struct suet_ses_rx_packet {
+	const struct ses_req_hdr *hdr;
+	const void *payload;
+	size_t payload_len;
+	void *handle;
+};
 
 /* Semantic response data shared with PDS for transmission and replay. */
 struct suet_ses_resp {
@@ -81,8 +112,9 @@ void *suet_pds_tx_alloc(struct suet_domain *domain, fi_addr_t addr,
 			void *context);
 void suet_pds_tx_submit(void *pds_ctx, uint32_t num_pkts);
 void suet_pds_tx_cancel(void *pds_ctx);
-void suet_ses_prepare_tx(void *context, struct suet_pkt_entry *pkt,
-			 uint32_t segment);
+size_t suet_pds_max_ses_size(const struct suet_domain *domain);
+int suet_ses_prepare_tx(void *context, uint32_t segment, void *hdr,
+			size_t hdr_capacity, struct suet_ses_tx_segment *tx);
 void suet_ses_tx_done(void *context, int err, int prov_errno);
 bool suet_ses_response_is_error(const struct ses_resp_hdr *resp);
 bool suet_ses_tx_response(void *context, const struct ses_resp_hdr *resp);
@@ -90,16 +122,22 @@ bool suet_ses_tx_response(void *context, const struct ses_resp_hdr *resp);
 /* RX contexts belong to SES. pds_ctx is an opaque response route.
  * Receive may retain the packet by setting pkt_retained. PDS persists any
  * required response before commit; commit alone completes the SES operation.
+ * pkt_ctx is SES-owned storage supplied by PDS for retaining a copy of the
+ * view. PDS releases unretained packets; SES releases retained handles once.
  */
 void *suet_ses_rx_open(struct suet_domain *domain, void *pds_ctx, int peer_idx);
 void suet_ses_rx_close(void *ses_ctx);
 bool suet_ses_rx_busy(void *ses_ctx);
-bool suet_ses_rx_valid(struct suet_domain *domain, struct suet_pkt_entry *pkt);
-void suet_ses_receive(void *ses_ctx, struct suet_pkt_entry *pkt,
+bool suet_ses_rx_parse(struct suet_domain *domain, uint8_t hdr_type,
+		       const void *data, size_t len,
+		       struct suet_ses_rx_packet *pkt);
+void suet_ses_receive(void *ses_ctx, void *pkt_ctx,
+		      const struct suet_ses_rx_packet *pkt,
 		      struct suet_ses_rx_dispatch_result *resp);
 void suet_ses_rx_commit(void *ses_ctx,
 			const struct suet_ses_rx_dispatch_result *resp);
-void suet_ses_default_response(struct suet_pkt_entry *pkt,
+void suet_pds_rx_release(void *handle);
+void suet_ses_default_response(const struct ses_req_hdr *hdr,
 			       struct suet_ses_resp *resp);
 
 /* Reserve is called during in-order SES dispatch. PDS records the current

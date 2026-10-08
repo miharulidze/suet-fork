@@ -56,7 +56,8 @@ suet_tx_entry_init_atomic(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 	if (!tx_entry)
 		return NULL;
 
-	tx_entry->hdr_len = sizeof(struct suet_amo_pkt);
+	tx_entry->hdr_len =
+		sizeof(struct ses_req_hdr) + sizeof(struct ses_msg_amo_hdr);
 	tx_entry->num_pkts = 1;
 
 	suet_ses_init_rma_iov(rma_iov, tx_entry);
