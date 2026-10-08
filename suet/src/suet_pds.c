@@ -514,11 +514,6 @@ static void suet_pds_process_rx_req(struct suet_domain *domain,
 						 &ses, SUET_REL_RX_GAP);
 		return;
 	}
-	if (!suet_pds_parse_ses(domain, pkt_entry, &ses)) {
-		suet_rel_rx_cancel(&tpdc->rel, psn);
-		suet_pds_pkt_free(pkt_entry);
-		return;
-	}
 	if (suet_pds_dispatch_req_to_ses_in_order(domain, tpdc, pkt_entry, &ses))
 		suet_rel_rx_cancel(&tpdc->rel, psn);
 }
