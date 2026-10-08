@@ -104,11 +104,10 @@ table or per-packet allocation. Existing PSN-range message completion, semantic
 response replay and connection lifecycle remain in PDS.
 
 The default window remains 128 packets. GBN retains cumulative ACKs, the
-existing ACK cadence, timeout-driven recovery (received NACKs do not trigger
-immediate retransmission), per-packet attempt timestamps and a per-connection
-retry-round budget. Backoff starts at 1 ms and saturates safely at 4 seconds.
+existing ACK cadence, timeout-driven recovery, and per-packet attempt
+timestamps and retry limits. Trim NACKs additionally permit immediate recovery. Backoff starts at 1 ms and saturates safely at 4 seconds.
 Local send failures remain tracked for recovery and retry attempts retain the
-existing timing/accounting. Wire structures are unchanged. `max_unacked` is
+existing timing/accounting. Legacy request/ACK layouts are unchanged. `max_unacked` is
 clamped to 1..65535; negative retry limits become
 zero. An ACK covering an untracked PSN is rejected without retiring packets.
 
@@ -116,7 +115,7 @@ zero. An ACK covering an untracked PSN is rejected without retiring packets.
 
 `suet_cc.h` defines direct calls for send admission, tracking a new request,
 and releasing newly acknowledged credit. `suet_cc.c` implements a fixed
-packet window, initialized from `FI_SUET_MAX_UNACKED` (default 128). Each
+packet window, initialized from `FI_OFI_SUET_MAX_UNACKED` (default 128). Each
 initiator PDC embeds its CC context; there are no allocations or function
 pointers, and CC has no PDC-type, reliability, wire, or SES dependency.
 
@@ -204,3 +203,21 @@ monotonic and does not imply a default SES response or message completion.
 The selective-repeat window is bounded to 128–32640 packets to fit MPR and
 signed ACK offsets. The existing guaranteed-response/CLEAR handling is
 retained; this is not a claim of full UET protocol conformance.
+
+ECN and trimming use optional receive metadata from the datagram backend.
+The htsim backend negotiates `FI_SUET_DGRAM_RX_METADATA` and reports CE,
+trimmed, and last-hop-trimmed flags in receive completions. Backends without
+this extension keep their existing behavior. A trimmed request produces UET
+NACK code 1 or 2 without reaching SES or advancing the receive bitmap, even
+when the SYN request was trimmed. Valid trim NACKs schedule the missing PSN
+for retry; duplicates coalesce and SACKed packets are not retransmitted by SR.
+Other NACKs retain timeout recovery to avoid OOO feedback retry storms.
+Retry exhaustion is tracked per packet rather than across unrelated retries.
+
+`FI_OFI_SUET_ECN=1` enables bounded AIMD in `suet_cc`: a fresh marked ACK or
+trim NACK halves the window (minimum one), with one reduction per recovery
+flight and additive recovery up to the configured maximum. The default is
+still a fixed window. ACKs echo request CE using the UET M flag; duplicate
+feedback cannot release credit twice. This is a small experimental congestion
+response, not an implementation of UET NSCC. Native UDP currently does not
+supply the optional network metadata.

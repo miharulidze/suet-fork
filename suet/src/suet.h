@@ -98,6 +98,7 @@ struct suet_env {
 	int cq_read_batch_size;
 	int max_pkt_retry;
 	int selective_repeat;
+	int ecn;
 	int max_gtd_del_resp_pool_size;
 	int unexp_msg_pool_size;
 	size_t zc_mr_reg_threshold;

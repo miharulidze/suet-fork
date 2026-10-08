@@ -50,6 +50,7 @@ struct suet_domain;
 
 /* Underlying datagram-provider resources shared by the SUET domain. */
 struct suet_dgram_resources {
+	uint64_t rx_metadata;
 	struct fid_domain *domain;
 	struct fid_ep *ep;
 	struct fid_cq *tx_cq;

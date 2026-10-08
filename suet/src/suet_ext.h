@@ -20,4 +20,18 @@ struct fi_suet_clock {
 	void *context;
 };
 
+/* Optional DGRAM backend contract. fi_get_val(domain,
+ * FI_SUET_DGRAM_RX_METADATA, &uint64_mask) opts into these CQ flag bits.
+ * Backends derive ECN from the IP CE bits and trimming from configured DSCP;
+ * absent support means no metadata, never inference from a short payload.
+ * These private CQ flags are consumed by suet_dgram, not exposed to apps.
+ */
+#define FI_SUET_DGRAM_RX_METADATA     (FI_SUET_CLOCK - 1)
+#define FI_SUET_DGRAM_ECN	      (UINT64_C(1) << 60)
+#define FI_SUET_DGRAM_TRIMMED	      (UINT64_C(1) << 61)
+#define FI_SUET_DGRAM_TRIMMED_LASTHOP (UINT64_C(1) << 62)
+#define FI_SUET_DGRAM_METADATA_MASK                  \
+	(FI_SUET_DGRAM_ECN | FI_SUET_DGRAM_TRIMMED | \
+	 FI_SUET_DGRAM_TRIMMED_LASTHOP)
+
 #endif

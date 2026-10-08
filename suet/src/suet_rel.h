@@ -25,8 +25,15 @@ enum suet_rel_algorithm {
 struct suet_rel_tx {
 	enum suet_rel_algorithm algorithm;
 	uint64_t *sacked;
+	uint64_t *nacked;
+	uint32_t pending_nacks;
+	uint32_t rto_round;
+	bool rto_attempted;
 	struct suet_rel_window window;
 	uint64_t *attempt_time;
+	uint32_t *attempts;
+	/* Upper bound avoids scanning healthy windows for retry exhaustion. */
+	uint32_t max_attempts;
 	uint32_t tracked;
 	uint32_t retry_count;
 	uint32_t max_retries;
@@ -86,14 +93,14 @@ enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits);
 uint64_t suet_rel_rx_sack(const struct suet_rel_rx *rx, uint32_t base);
 uint32_t suet_rel_tx_cack(const struct suet_rel_tx *tx);
-/* NACK PSN validity is checked here. Current GBN recovers via timeout;
- * NACK reception intentionally does not schedule an immediate retry.
- */
-bool suet_rel_tx_nack(struct suet_rel_tx *tx, uint32_t psn);
+/* Schedule a valid, not already received packet after delay_ms (zero is immediate).
+ * Duplicate NACKs coalesce; positive receipt evidence takes precedence. */
+bool suet_rel_tx_nack(struct suet_rel_tx *tx, uint32_t psn, uint64_t now,
+		      uint32_t delay_ms);
 /* cursor starts at zero for each progress pass. Stop if local access prevents
  * resubmission, or if a submission fails. Finish the pass exactly once.
  */
-bool suet_rel_tx_retry_next(const struct suet_rel_tx *tx, uint64_t now,
+bool suet_rel_tx_retry_next(struct suet_rel_tx *tx, uint64_t now,
 			    uint32_t *cursor, uint32_t *psn, uint32_t *slot);
 void suet_rel_tx_retry_end(struct suet_rel_tx *tx, bool attempted);
 bool suet_rel_tx_failed(const struct suet_rel_tx *tx);

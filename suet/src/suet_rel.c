@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0-only */
-/* Go-Back-N implementation of the PDC-independent reliability contract. */
+/* Go-Back-N and selective repeat behind a PDC-independent contract. */
 #include "suet_rel.h"
 
 #include <assert.h>
@@ -75,8 +75,10 @@ int suet_rel_tx_init(struct suet_rel_tx *tx, uint32_t base_psn,
 	if (ret)
 		return ret;
 	tx->attempt_time = calloc(capacity, sizeof(*tx->attempt_time));
+	tx->attempts = calloc(capacity, sizeof(*tx->attempts));
+	tx->nacked = calloc(suet_rel_words(capacity), sizeof(uint64_t));
 	tx->sacked = calloc(suet_rel_words(capacity), sizeof(uint64_t));
-	if (!tx->attempt_time || !tx->sacked) {
+	if (!tx->attempt_time || !tx->sacked || !tx->nacked || !tx->attempts) {
 		suet_rel_tx_cleanup(tx);
 		return -ENOMEM;
 	}
@@ -87,6 +89,8 @@ int suet_rel_tx_init(struct suet_rel_tx *tx, uint32_t base_psn,
 
 void suet_rel_tx_cleanup(struct suet_rel_tx *tx)
 {
+	free(tx->attempts);
+	free(tx->nacked);
 	free(tx->sacked);
 	free(tx->attempt_time);
 	free(tx->window.present);
@@ -104,6 +108,7 @@ void suet_rel_tx_track(struct suet_rel_tx *tx, uint32_t slot)
 {
 	assert(slot < tx->window.capacity &&
 	       !suet_rel_bit(tx->window.present, slot));
+	tx->attempts[slot] = 0;
 	suet_rel_clear(tx->sacked, slot);
 	suet_rel_set(tx->window.present, slot);
 	tx->tracked++;
@@ -113,7 +118,15 @@ void suet_rel_tx_attempt(struct suet_rel_tx *tx, uint32_t slot, uint64_t now)
 {
 	assert(slot < tx->window.capacity &&
 	       suet_rel_bit(tx->window.present, slot));
+	if (tx->attempts[slot] != UINT32_MAX)
+		tx->attempts[slot]++;
+	if (tx->attempts[slot] > tx->max_attempts)
+		tx->max_attempts = tx->attempts[slot];
 	tx->attempt_time[slot] = now;
+	if (suet_rel_bit(tx->nacked, slot)) {
+		suet_rel_clear(tx->nacked, slot);
+		tx->pending_nacks--;
+	}
 }
 
 /* Walk a circular range by bitmap words, splitting at the physical end.
@@ -178,6 +191,9 @@ enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 		retired->newly_acked -=
 			__builtin_popcountll(tx->sacked[slot / 64] & mask);
 		tx->sacked[slot / 64] &= ~mask;
+		tx->pending_nacks -=
+			__builtin_popcountll(tx->nacked[slot / 64] & mask);
+		tx->nacked[slot / 64] &= ~mask;
 		left -= n;
 		slot += n;
 		if (slot == window->capacity)
@@ -187,6 +203,7 @@ enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 	tx->tracked -= count;
 	suet_rel_advance(window, count);
 	tx->retry_count = 0;
+	tx->rto_round = 0;
 	return SUET_REL_ACK_ADVANCED;
 }
 
@@ -202,6 +219,10 @@ uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits)
 		    suet_rel_bit(tx->sacked, slot))
 			continue;
 		suet_rel_set(tx->sacked, slot);
+		if (suet_rel_bit(tx->nacked, slot)) {
+			suet_rel_clear(tx->nacked, slot);
+			tx->pending_nacks--;
+		}
 		count++;
 	}
 	return count;
@@ -224,37 +245,53 @@ uint32_t suet_rel_tx_cack(const struct suet_rel_tx *tx)
 	return tx->window.base_psn - 1;
 }
 
-bool suet_rel_tx_nack(struct suet_rel_tx *tx, uint32_t psn)
+bool suet_rel_tx_nack(struct suet_rel_tx *tx, uint32_t psn, uint64_t now,
+		      uint32_t delay_ms)
 {
 	uint32_t slot;
 
-	return suet_rel_slot(&tx->window, psn, &slot) &&
-	       suet_rel_bit(tx->window.present, slot);
+	if (!suet_rel_slot(&tx->window, psn, &slot) ||
+	    !suet_rel_bit(tx->window.present, slot) ||
+	    suet_rel_bit(tx->sacked, slot) || suet_rel_bit(tx->nacked, slot))
+		return false;
+	suet_rel_set(tx->nacked, slot);
+	tx->pending_nacks++;
+	tx->attempt_time[slot] = now + delay_ms;
+	tx->rto_round = 0;
+	return true;
 }
 
-bool suet_rel_tx_retry_next(const struct suet_rel_tx *tx, uint64_t now,
-			    uint32_t *cursor, uint32_t *psn, uint32_t *retry_slot)
+bool suet_rel_tx_retry_next(struct suet_rel_tx *tx, uint64_t now,
+			    uint32_t *cursor, uint32_t *psn,
+			    uint32_t *retry_slot)
 {
 	const struct suet_rel_window *window = &tx->window;
 	uint64_t timeout =
-		tx->retry_count >= 12 ? 4000 : UINT64_C(1) << tx->retry_count;
+		tx->rto_round >= 12 ? 4000 : UINT64_C(1) << tx->rto_round;
 	uint32_t offset, slot;
+	bool nack;
 
 	if (!tx->tracked)
 		return false;
 	while (*cursor < window->capacity) {
 		offset = (*cursor)++;
-		slot = (window->head + offset) % window->capacity;
+		slot = window->head + offset;
+		if (slot >= window->capacity)
+			slot -= window->capacity;
 		if (!suet_rel_bit(window->present, slot) ||
 		    (tx->algorithm == SUET_REL_SR &&
 		     suet_rel_bit(tx->sacked, slot)))
 			continue;
-		if (now < tx->attempt_time[slot] ||
-		    now - tx->attempt_time[slot] < timeout) {
-			if (tx->algorithm == SUET_REL_GBN)
+		nack = suet_rel_bit(tx->nacked, slot);
+		if (nack && now < tx->attempt_time[slot])
+			continue;
+		if (!nack && (now < tx->attempt_time[slot] ||
+			      now - tx->attempt_time[slot] < timeout)) {
+			if (tx->algorithm == SUET_REL_GBN && !tx->pending_nacks)
 				return false;
 			continue;
 		}
+		tx->rto_attempted |= !nack;
 		*retry_slot = slot;
 		*psn = window->base_psn + offset;
 		return true;
@@ -266,11 +303,21 @@ void suet_rel_tx_retry_end(struct suet_rel_tx *tx, bool attempted)
 {
 	if (attempted && tx->retry_count != UINT32_MAX)
 		tx->retry_count++;
+	if (attempted && tx->rto_attempted && tx->rto_round != UINT32_MAX)
+		tx->rto_round++;
+	tx->rto_attempted = false;
 }
 
 bool suet_rel_tx_failed(const struct suet_rel_tx *tx)
 {
-	return tx->retry_count > tx->max_retries;
+	if (!tx->max_attempts || tx->max_attempts - 1 <= tx->max_retries)
+		return false;
+	for (uint32_t slot = 0; slot < tx->window.capacity; slot++)
+		if (suet_rel_bit(tx->window.present, slot) &&
+		    tx->attempts[slot] &&
+		    tx->attempts[slot] - 1 > tx->max_retries)
+			return true;
+	return false;
 }
 
 int suet_rel_rx_init(struct suet_rel_rx *rx, uint32_t base_psn,

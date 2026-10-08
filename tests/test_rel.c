@@ -92,8 +92,7 @@ static void check_hole_and_retry(void)
 	assert(suet_rel_tx_cack(&tx) == 99);
 	track(&tx, 101);
 	attempt(&tx, 101, 0);
-	assert(suet_rel_tx_nack(&tx, 102));
-	assert(!suet_rel_tx_nack(&tx, 103));
+	assert(!suet_rel_tx_nack(&tx, 103, 10, 0));
 	cursor = 0;
 	assert(!retry_next(&tx, 0, &cursor, &psn));
 	/* A whole GBN pass increments the shared retry round only once. The
@@ -112,7 +111,6 @@ static void check_hole_and_retry(void)
 			attempt(&tx, psn, now);
 		}
 		assert(!retry_next(&tx, now, &cursor, &psn));
-		suet_rel_tx_retry_end(&tx, false);
 		assert(tx.retry_count == retry);
 		suet_rel_tx_retry_end(&tx, true);
 		assert(suet_rel_tx_failed(&tx) == (retry == 100));
@@ -256,6 +254,61 @@ static void check_selective_repeat(void)
 	suet_rel_rx_cleanup(&rx);
 }
 
+static void check_nack(void)
+{
+	for (enum suet_rel_algorithm algo = SUET_REL_GBN; algo <= SUET_REL_SR;
+	     algo++) {
+		struct suet_rel_tx tx;
+		uint32_t cursor = 0, psn;
+		assert(!suet_rel_tx_init(&tx, 100, 3, 3, algo));
+		track(&tx, 100);
+		track(&tx, 101);
+		attempt(&tx, 100, 10);
+		attempt(&tx, 101, 10);
+		assert(!suet_rel_tx_nack(&tx, 99, 10, 0));
+		assert(!suet_rel_tx_nack(&tx, 102, 10, 0));
+		assert(suet_rel_tx_nack(&tx, 101, 10, 0));
+		assert(!suet_rel_tx_nack(&tx, 101, 10, 0));
+		assert(retry_next(&tx, 10, &cursor, &psn) && psn == 101);
+		attempt(&tx, psn, 10);
+		suet_rel_tx_retry_end(&tx, true);
+		assert(tx.retry_count == 1 && tx.rto_round == 0);
+		cursor = 0;
+		assert(!retry_next(&tx, 10, &cursor, &psn));
+		assert(suet_rel_tx_sack(&tx, 101, 1) == 1);
+		assert(!suet_rel_tx_nack(&tx, 101, 10, 0));
+		suet_rel_tx_cleanup(&tx);
+	}
+}
+
+static void check_retry_budget_per_packet(void)
+{
+	struct suet_rel_tx tx;
+	uint32_t cursor, psn;
+	assert(!suet_rel_tx_init(&tx, 100, 128, 2, SUET_REL_SR));
+	for (uint32_t i = 0; i < 128; i++) {
+		track(&tx, 100 + i);
+		attempt(&tx, 100 + i, 0);
+		assert(suet_rel_tx_nack(&tx, 100 + i, 0, 0));
+		cursor = i;
+		assert(retry_next(&tx, 0, &cursor, &psn) && psn == 100 + i);
+		attempt(&tx, psn, 0);
+		suet_rel_tx_retry_end(&tx, true);
+		assert(!suet_rel_tx_failed(&tx));
+	}
+	for (int i = 0; i < 2; i++) {
+		assert(suet_rel_tx_nack(&tx, 100, 0, 1));
+		cursor = 0;
+		assert(!retry_next(&tx, 0, &cursor, &psn));
+		cursor = 0;
+		assert(retry_next(&tx, 1, &cursor, &psn) && psn == 100);
+		attempt(&tx, psn, 1);
+		suet_rel_tx_retry_end(&tx, true);
+	}
+	assert(suet_rel_tx_failed(&tx));
+	suet_rel_tx_cleanup(&tx);
+}
+
 int main(void)
 {
 	struct suet_rel_tx tx;
@@ -271,7 +324,9 @@ int main(void)
 	check_hole_and_retry();
 	check_rx();
 	check_selective_repeat();
-	puts("Reliability windows, wraparound, feedback and GBN recovery: "
+	check_nack();
+	check_retry_budget_per_packet();
+	puts("Reliability windows, wraparound, SACK, GBN/SR and NACK recovery: "
 	     "PASS");
 	return 0;
 }

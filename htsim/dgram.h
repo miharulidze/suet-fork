@@ -15,6 +15,7 @@ extern "C" {
 struct htsim_dgram_frame {
     struct sockaddr_in src, dst;
     size_t size;
+    uint64_t rx_metadata;
     unsigned char data[HTSIM_DGRAM_MTU];
 };
 

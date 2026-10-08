@@ -115,7 +115,7 @@ python3 test_suet.py --bin-dir /path/to/fabtests/bin -v \
 ```
 
 On Linux, use `LD_LIBRARY_PATH`. Environment overrides are repeatable and can
-also supply `FI_SUET_*` settings without changing the other process.
+also supply `FI_OFI_SUET_*` settings without changing the other process.
 
 ## macOS validation environment
 
@@ -159,3 +159,24 @@ short-header rejection, stale-CACK/new-SACK handling, retained packet pointers,
 and exactly-once credit release. The htsim suite runs both algorithms with
 both PDC types under reordering and random/burst loss, and requires nonzero
 wire SACK evidence in the RUD selective-repeat reordering case.
+
+
+ECN/trimming checks include negotiated DGRAM metadata through source-discovery
+CQ errors, byte-level trim NACKs (including SYN and last-hop cases), immediate
+NACK recovery behind an unexpired prefix, duplicate NACK coalescing, and
+per-packet retry budgets. `test_cc.c` checks fixed-window compatibility,
+exact credit accounting, recovery-flight reduction suppression, bounded
+additive growth and the one-packet minimum. Build it like `test_rel.c`, using
+`suet_cc.c`; both are also registered with htsim CTest.
+
+The receive regression also queues two complete unexpected messages with the
+same reused message ID and verifies that each retains only its own fragments.
+This reproduced a multithreaded UDP receive-length failure before the fix.
+
+Validation of the seven-change reliability series on macOS (2026-10-08):
+all 35 UDP fabtests passed, including the original multithreaded iteration
+counts. All four htsim CTests passed normally and with ASan/UBSan, including
+both PDC types and both reliability algorithms under the documented fault
+matrix. The six focused C test programs passed with ASan/UBSan; the directly
+compiled PDS/SES paths also had assertions enabled. Simulator sanitizer runs
+used `ASAN_OPTIONS=detect_leaks=0` and do not constitute a dependency leak audit.

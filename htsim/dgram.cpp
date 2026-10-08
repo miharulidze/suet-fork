@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 #include "dgram.h"
+#include "suet_ext.h"
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
@@ -670,7 +671,8 @@ extern "C" int htsim_dgram_deliver(const htsim_dgram_frame *frame) {
             copied += n;
         }
         Completion c;
-        c.entry = {rx->context, FI_RECV | FI_MSG, copied};
+        c.entry = {rx->context, FI_RECV | FI_MSG |
+                   (frame->rx_metadata & FI_SUET_DGRAM_METADATA_MASK), copied};
         c.source = source;
         if (copied != frame->size) {
             c.error = FI_ETRUNC;
@@ -700,6 +702,15 @@ extern "C" __attribute__((visibility("default"))) fi_provider *fi_prov_ini() {
     fabric_ops = domain_ops = av_fid_ops = cq_fid_ops = ep_fid_ops = mr_ops = common_ops;
     fabric_ops.close = close_fabric;
     domain_ops.close = close_domain;
+    domain_ops.control = [](fid *, int command, void *arg) {
+        auto *var = static_cast<fi_fid_var *>(arg);
+        if (command != FI_GET_VAL || !var || var->name != FI_SUET_DGRAM_RX_METADATA)
+            return -FI_ENOSYS;
+        if (!var->val)
+            return -FI_EINVAL;
+        *static_cast<uint64_t *>(var->val) = FI_SUET_DGRAM_METADATA_MASK;
+        return 0;
+    };
     av_fid_ops.close = close_av;
     cq_fid_ops.close = close_cq;
     ep_fid_ops.close = close_ep;

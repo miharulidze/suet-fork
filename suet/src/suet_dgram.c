@@ -34,6 +34,7 @@
  */
 
 #include "suet.h"
+#include "suet_ext.h"
 #include "suet_pds_dgram_api.h"
 
 #define SUET_MR_KEY_MAX_RETRIES 1024
@@ -561,6 +562,7 @@ struct suet_pkt_entry *suet_dgram_pkt_alloc(struct suet_domain *domain)
 	entry->in_use = false;
 	dlist_init(&entry->entry);
 	entry->pkt.zc_pld_iov_count = 0;
+	entry->pkt.rx_flags = 0;
 	return &entry->pkt;
 }
 
@@ -766,6 +768,7 @@ static void suet_dgram_rx_complete(struct suet_domain *domain,
 {
 	struct suet_dgram_pkt_entry *entry = container_of(
 		comp->op_context, struct suet_dgram_pkt_entry, context);
+	uint64_t flags = comp->flags & domain->dgram.rx_metadata;
 
 	entry->in_use = false;
 	dlist_remove_init(&entry->entry);
@@ -773,6 +776,14 @@ static void suet_dgram_rx_complete(struct suet_domain *domain,
 		suet_dgram_pkt_free(&entry->pkt);
 		return;
 	}
+	entry->pkt.rx_flags = 0;
+	if (flags & FI_SUET_DGRAM_ECN)
+		entry->pkt.rx_flags |= SUET_DGRAM_RX_ECN;
+	if (flags & FI_SUET_DGRAM_TRIMMED)
+		entry->pkt.rx_flags |= SUET_DGRAM_RX_TRIMMED;
+	if (flags & FI_SUET_DGRAM_TRIMMED_LASTHOP)
+		entry->pkt.rx_flags |=
+			SUET_DGRAM_RX_TRIMMED | SUET_DGRAM_RX_TRIMMED_LASTHOP;
 	entry->pkt.pkt_size = comp->len - domain->dgram.rx_prefix_size;
 	suet_pds_receive(domain, &entry->pkt, src_addr);
 }
@@ -1050,6 +1061,13 @@ int suet_dgram_init(struct suet_domain *suet_domain, struct fid_fabric *fabric,
 			&suet_domain->dgram.domain, context);
 	if (ret)
 		goto err;
+
+	suet_domain->dgram.rx_metadata = 0;
+	if (fi_get_val(&suet_domain->dgram.domain->fid,
+		       FI_SUET_DGRAM_RX_METADATA,
+		       &suet_domain->dgram.rx_metadata))
+		suet_domain->dgram.rx_metadata = 0;
+	suet_domain->dgram.rx_metadata &= FI_SUET_DGRAM_METADATA_MASK;
 
 	suet_domain->dgram.max_mtu_sz =
 		MIN(dgram_info->ep_attr->max_msg_size, mtu_limit);

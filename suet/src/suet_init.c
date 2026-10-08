@@ -80,6 +80,7 @@ static void suet_init_env(void)
 		suet_env.cq_read_batch_size = 1;
 	if (suet_env.cq_read_batch_size > SUET_CQ_MAX_BATCH)
 		suet_env.cq_read_batch_size = SUET_CQ_MAX_BATCH;
+	fi_param_get_bool(&suet_prov, "ecn", &suet_env.ecn);
 	fi_param_get_bool(&suet_prov, "selective_repeat",
 			  &suet_env.selective_repeat);
 	if (suet_env.selective_repeat) {
@@ -206,6 +207,9 @@ struct fi_provider suet_prov = {.name = OFI_UTIL_PREFIX "suet",
 
 SUET_INI
 {
+	fi_param_define(
+		&suet_prov, "ecn", FI_PARAM_BOOL,
+		"React to ECN/trimming with bounded AIMD (default: false)");
 	fi_param_define(
 		&suet_prov, "selective_repeat", FI_PARAM_BOOL,
 		"Use selective repeat instead of Go-Back-N (default: false)");

@@ -103,12 +103,11 @@ Optional arguments:
 
 A topology file supplies its own link rates and delays. `-q` supplies the
 queue capacity at every switch tier, as in the existing UEC runner.
-Queues use htsim's ECN queue implementation with overflow drops. ECN bits do
-not currently cross the libfabric DGRAM interface into SUET. Trimming, UEC
-congestion control, UecNIC multi-port arbitration and PCIe modeling are not
-implemented by this integration. SUET supplies its existing reliability and
-window behavior, so congestion results should not be interpreted as NSCC or
-other UEC congestion-control results.
+Queues use htsim's ECN implementation with overflow drops by default.
+`-trim_queues 1` selects composite queues that trim overflowing data packets.
+CE and trimming metadata cross the DGRAM interface into SUET. UEC congestion
+control, UecNIC multi-port arbitration and PCIe modeling are not implemented.
+SUET's optional bounded AIMD response is not NSCC or UEC congestion control.
 
 ## Time, traffic and completion
 
@@ -137,8 +136,8 @@ single-shot/multishot/barrier trigger definitions and configured link failures.
 `send_done_trigger` follows the SUET transmit CQ completion with
 `FI_DELIVERY_COMPLETE`; `recv_done_trigger` follows the verified receive CQ
 completion. These are completion dependencies, not UecSrc's last-packet-sent
-notification. Matrix `prio` does not select a separate queue class; packets use
-normal host priority.
+notification. Matrix `prio` does not select a separate queue class. Data packets use
+normal priority; control packets and trimmed headers use high priority.
 
 A successful run reports each message's start, finish and completion time,
 then packet/drop totals including the shutdown handshake. It verifies every
@@ -157,8 +156,8 @@ posted receive or a full RX CQ drops the arriving datagram. Unknown sources
 produce `FI_EADDRNOTAVAIL` CQ errors with a raw source address for SUET to insert.
 
 Accepting a send copies its bytes. Taking it into the network posts local TX
-completion, independently of arrival or loss. Network frames contain addresses
-and bytes only, so in-flight frames never retain provider FIDs or application
+completion, independently of arrival or loss. Network frames contain addresses,
+bytes and receive metadata, so in-flight frames never retain provider FIDs or application
 buffer pointers. Receive completions are generated only at arrival.
 
 The standalone reliability test checks bitmap windows, sequence wraparound and
@@ -190,3 +189,13 @@ wire. Both use the same provider reliability and CC implementation.
 `-burst_every N -burst_length M` drops M packets per N data transmissions.
 The integration suite verifies both delivery types with these faults and
 multiple concurrent messages sharing a peer.
+
+
+`-trim_every N` trims every Nth data transmission starting with the first,
+including the opening SYN; `-trim_lasthop 1` exercises the last-hop NACK code.
+`FI_OFI_SUET_SELECTIVE_REPEAT=1` selects SR and `FI_OFI_SUET_ECN=1` enables
+congestion-window response. Go-Back-N and fixed-window CC remain defaults.
+The test matrix covers both PDC types with both algorithms, reordering,
+random/burst loss, actual queue CE marking, 16 KiB trimming queues, and injected
+trimming with both NACK codes. It checks payloads, wire SACKs, echoed CE marks,
+and trim NACK counts. All four CTests include the independent CC unit test.

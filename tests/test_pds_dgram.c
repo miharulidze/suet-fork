@@ -510,8 +510,8 @@ static void inject_sack(struct suet_domain *domain, uint16_t id, uint64_t bits,
 	 * signed offset -6; bitmap bit 7 acknowledges PSN 0xffffffff.
 	 */
 	const unsigned char wire[32] = {
-		0x40, 0, 0, 0, 0xff, 0xff, 0xff, 0xfe,
-		0,    8, 0, 7, 0,    0,	   0xff, 0xfa,
+		0x40, 0x20, 0, 0, 0xff, 0xff, 0xff, 0xfe,
+		0,    8,    0, 7, 0,	0,    0xff, 0xfa,
 	};
 	memcpy(pkt->pkt, wire, sizeof(wire));
 	struct pds_ack_cc_hdr *ack = pkt->pkt;
@@ -624,8 +624,10 @@ static void check_bitmap_retirement(void)
 	assert(ipdc.cc.in_flight == 3);
 	inject_sack(&domain, 7, UINT64_C(1) << 7, false);
 	assert(ipdc.cc.in_flight == 2 && ipdc.tx_pkts[1] == packets[1]);
+	assert(ipdc.cc.ecn_events == 1);
 	inject_sack(&domain, 7, UINT64_C(1) << 7, false);
 	inject_sack(&domain, 7, 0, false);
+	assert(ipdc.cc.ecn_events == 1);
 	assert(ipdc.cc.in_flight == 2);
 	inject_cack(&domain, 7, 0);
 	assert(!ipdc.tx_pkts[1] && !ipdc.tx_pkts[2]);
@@ -649,6 +651,49 @@ static void check_bitmap_retirement(void)
 	suet_env.max_unacked = max_unacked;
 }
 
+static void check_trimmed_request(void)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep ep = {.msg = &msg_ops};
+	domain.dgram.ep = &ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	prefix_size = 0;
+	send_status = 0;
+	dispatch_pds_tx = true;
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	for (unsigned syn = 0; syn < 2; syn++) {
+		for (unsigned last = 0; last < 2; last++) {
+			struct suet_pkt_entry *pkt =
+				suet_dgram_pkt_alloc(&domain);
+			struct pds_req_hdr *req = pkt->pkt;
+			memset(req, 0, sizeof(*req));
+			pds_prologue_set_type(req, PDS_RUD_REQ);
+			pds_prologue_set_flags(req, syn ? PDS_FLAG_SYN : 0);
+			pds_req_set_psn(req, 101);
+			pds_req_set_spdcid(req, 7);
+			pds_req_set_dpdcid(req, 8);
+			pkt->pkt_size =
+				sizeof(*req); /* no SES header/payload */
+			pkt->rx_flags =
+				SUET_DGRAM_RX_TRIMMED |
+				(last ? SUET_DGRAM_RX_TRIMMED_LASTHOP : 0);
+			suet_pds_receive(&domain, pkt, 9);
+			struct pds_nack_hdr *nack = (void *) sent;
+			assert(sent_len == sizeof(*nack));
+			assert(pds_nack_get_code(nack) == (last ? 2 : 1));
+			assert(pds_nack_get_psn(nack) == 101);
+			assert(pds_nack_get_spdcid(nack) == (syn ? 0 : 8));
+			assert(pds_nack_get_dpdcid(nack) == 7);
+			assert(!domain.pds.tpdc_by_syn_key_ht);
+			suet_dgram_tx_complete(&domain, send_context, 0);
+		}
+	}
+	dispatch_pds_tx = false;
+	suet_dgram_free_pkt_entry_pools(&domain);
+}
+
 int main(void)
 {
 	ofi_mem_init();
@@ -657,6 +702,7 @@ int main(void)
 	check_pds_retention();
 	check_ses_retention();
 	check_bitmap_retirement();
+	check_trimmed_request();
 	check_pds_framing(false, false, 141);
 	check_pds_framing(true, false, 141);
 	check_pds_framing(false, false, 0);

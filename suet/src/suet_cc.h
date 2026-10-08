@@ -11,6 +11,12 @@
  */
 struct suet_cc {
 	uint32_t cwnd;
+	uint32_t max_cwnd;
+	uint32_t recovery_left;
+	uint32_t increase_credit;
+	uint64_t ecn_events;
+	uint64_t trim_events;
+	bool ecn_enabled;
 	uint32_t in_flight;
 };
 
@@ -24,5 +30,7 @@ void suet_cc_track(struct suet_cc *cc);
  * through reliability before reporting it here.
  */
 void suet_cc_ack(struct suet_cc *cc, uint32_t count);
+
+void suet_cc_congestion(struct suet_cc *cc, bool trimmed);
 
 #endif

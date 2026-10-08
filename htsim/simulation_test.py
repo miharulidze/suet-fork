@@ -68,6 +68,23 @@ trigger id 2 oneshot
                 result = run(pdc + '_sr' + sr + '_' + condition, traffic, ['-pdc', pdc, *opts])
                 if pdc == 'rud' and sr == '1' and condition == 'reorder':
                     assert int(re.search(r'sacks (\d+)', result[1])[1]) > 0, result
+    for pdc in ('rod', 'rud'):
+        for sr in ('0', '1'):
+            env['FI_OFI_SUET_SELECTIVE_REPEAT'] = sr
+            env['FI_OFI_SUET_ECN'] = '1'
+            incast = 'Nodes 16\nConnections 8\n' + ''.join(
+                f'{src}->15 start 0 size 131073\n' for src in range(8))
+            marked = run(pdc + '_sr' + sr + '_ecn', incast, ['-pdc', pdc, '-q', '262144'])
+            assert int(re.search(r'ecn_marks (\d+)', marked[1])[1]) > 0, marked
+            assert int(re.search(r'ack_marks (\d+)', marked[1])[1]) > 0, marked
+            trimmed = run(pdc + '_sr' + sr + '_trim_queues', incast,
+                          ['-pdc', pdc, '-q', '16384', '-trim_queues', '1'])
+            assert int(re.search(r'trims (\d+)', trimmed[1])[1]) > 0, trimmed
+            assert int(re.search(r'trim_nacks (\d+)', trimmed[1])[1]) > 0, trimmed
+            for last in ('0', '1'):
+                run(pdc + '_sr' + sr + '_trim_injection' + last, traffic,
+                    ['-pdc', pdc, '-trim_every', '13', '-trim_lasthop', last])
     env.pop('FI_OFI_SUET_SELECTIVE_REPEAT', None)
+    env.pop('FI_OFI_SUET_ECN', None)
     run('timeout', one, ['-end', '0.01'], expected=2)
 print('All simulator integration checks passed', flush=True)

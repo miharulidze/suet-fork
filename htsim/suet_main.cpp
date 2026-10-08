@@ -23,7 +23,8 @@ static void check(int ret, const char *operation) {
         throw std::runtime_error(std::string(operation) + ": " + fi_strerror(-ret));
 }
 static bool ordered = true;
-static uint32_t reorder_every, drop_per_mille, burst_every, burst_length = 2;
+static uint32_t reorder_every, drop_per_mille, burst_every, burst_length = 2, trim_every;
+static bool trim_queues, trim_lasthop;
 static uint64_t elapsed_ms(void *) { return EventList::now() / 1000000000ULL; }
 
 struct Host {
@@ -111,21 +112,29 @@ struct Host {
 };
 
 struct NetworkStats {
-    uint64_t sacks = 0, retransmits = 0;
+    uint64_t sacks = 0, retransmits = 0, ecn_marks = 0, ack_marks = 0, trims = 0, trim_nacks = 0;
     uint64_t sent = 0, received = 0, dropped = 0, receive_drops = 0, in_flight = 0;
 };
 class FabricPacket : public Packet {
   public:
     FabricPacket(const htsim_dgram_frame &data, PacketFlow &flow, const Route &route,
                  NetworkStats &stats, size_t overhead)
-        : frame(data), _stats(stats) {
+        : frame(data), _stats(stats), _overhead(overhead) {
         set_route(flow, route, data.size + overhead, stats.sent++);
         _type = IP;
+        unsigned type = frame.data[0] >> 3;
+        _is_header = type != 2 && type != 3;
         set_dst(htsim_dgram_host(&data.dst));
         set_pathid(htsim_dgram_host(&data.src) * 2654435761U + dst());
         stats.in_flight++;
     }
-    PktPriority priority() const override { return PRIO_LO; }
+    PktPriority priority() const override { return header_only() ? PRIO_HI : PRIO_LO; }
+    void strip_payload(uint16_t trim_size) override {
+        Packet::strip_payload(trim_size);
+        frame.size = std::min(frame.size, trim_size > _overhead ? trim_size - _overhead : 0);
+        frame.rx_metadata |= FI_SUET_DGRAM_TRIMMED;
+        _stats.trims++;
+    }
     void free() override {
         _stats.in_flight--;
         if (!delivered)
@@ -137,6 +146,7 @@ class FabricPacket : public Packet {
 
   private:
     NetworkStats &_stats;
+    size_t _overhead;
 };
 class FabricPort : public PacketSink {
   public:
@@ -145,6 +155,10 @@ class FabricPort : public PacketSink {
     void receivePacket(Packet &raw) override {
         auto &packet = static_cast<FabricPacket &>(raw);
         packet.delivered = true;
+        if (packet.flags() & ECN_CE) {
+            packet.frame.rx_metadata |= FI_SUET_DGRAM_ECN;
+            _stats.ecn_marks++;
+        }
         if (htsim_dgram_deliver(&packet.frame))
             _stats.receive_drops++;
         else
@@ -318,6 +332,10 @@ class Simulation : public EventSource {
         while ((ret = htsim_dgram_take_tx(&frame)) > 0) {
             if (frame.size >= 2) {
                 unsigned type = frame.data[0] >> 3;
+                if ((type == 7 || type == 8 || type == 9) && (frame.data[1] & 0x20))
+                    stats.ack_marks++;
+                if (type == 10 && frame.size >= 12 && (frame.data[2] == 1 || frame.data[2] == 2))
+                    stats.trim_nacks++;
                 if (type == 8 && frame.size >= 32) {
                     for (size_t i = 16; i < 24; i++)
                         if (frame.data[i]) { stats.sacks++; break; }
@@ -334,6 +352,11 @@ class Simulation : public EventSource {
             bool data = type == 2 || type == 3;
             if (data)
                 ++_data_packets;
+            if (data && trim_every && (_data_packets - 1) % trim_every == 0) {
+                packet->strip_payload(64);
+                if (trim_lasthop)
+                    packet->frame.rx_metadata |= FI_SUET_DGRAM_TRIMMED_LASTHOP;
+            }
             if (_drop_first) {
                 _drop_first--;
                 packet->free();
@@ -392,7 +415,8 @@ int main(int argc, char **argv) {
                           << "  [-poll_ns NS] [-linkspeed GBPS] [-hop_latency NS]\n"
                           << "  [-q BYTES] [-dgram_queue COUNT] [-overhead BYTES] [-seed N] "
                              "[-drop_first N] [-pdc rod|rud]\n"
-                          << "  [-reorder_every N] [-drop_per_mille N] [-burst_every N] [-burst_length N]\n";
+                          << "  [-reorder_every N] [-drop_per_mille N] [-burst_every N] [-burst_length N]\n"
+                          << "  [-trim_every N] [-trim_lasthop 0|1] [-trim_queues 0|1]\n";
                 return 0;
             }
             if (++i == argc)
@@ -420,6 +444,12 @@ int main(int argc, char **argv) {
                 seed = std::stoul(value);
             else if (arg == "-tiers")
                 tiers = std::stoul(value);
+            else if (arg == "-trim_every")
+                trim_every = std::stoul(value);
+            else if (arg == "-trim_queues")
+                trim_queues = std::stoul(value) != 0;
+            else if (arg == "-trim_lasthop")
+                trim_lasthop = std::stoul(value) != 0;
             else if (arg == "-reorder_every")
                 reorder_every = std::stoul(value);
             else if (arg == "-drop_per_mille")
@@ -439,7 +469,8 @@ int main(int argc, char **argv) {
         }
         if (matrix_file.empty() || end_us <= 0 || poll_ns < 0.001 || speed_gbps <= 0 ||
             latency_ns < 0 || queue_bytes < HTSIM_DGRAM_MTU + overhead || overhead > 1024 ||
-            !capacity || (tiers != 2 && tiers != 3))
+            !capacity || drop_per_mille > 1000 ||
+            (burst_every && burst_length >= burst_every) || (tiers != 2 && tiers != 3))
             throw std::runtime_error("invalid simulation options");
         srand(seed);
         srandom(seed);
@@ -454,11 +485,14 @@ int main(int argc, char **argv) {
         auto cfg = topo_file.empty()
                        ? std::make_unique<FatTreeTopologyCfg>(
                              tiers, matrix.N, speedFromGbps(speed_gbps), queue_bytes,
-                             timeFromNs(latency_ns), 0, ECN, PRIORITY)
-                       : FatTreeTopologyCfg::load(topo_file, queue_bytes, ECN, PRIORITY);
+                             timeFromNs(latency_ns), 0, trim_queues ? COMPOSITE : ECN, PRIORITY)
+                       : FatTreeTopologyCfg::load(topo_file, queue_bytes, trim_queues ? COMPOSITE : ECN, PRIORITY);
         if (cfg->no_of_nodes() != matrix.N)
             throw std::runtime_error("topology/matrix node count mismatch");
         cfg->set_queue_sizes(queue_bytes);
+        cfg->set_ecn_parameters(true, true, 2 * HTSIM_DGRAM_MTU, 4 * HTSIM_DGRAM_MTU);
+        FatTreeSwitch::_trim_size = 64;
+        FatTreeSwitch::_disable_trim = false;
         FatTreeTopology topology(cfg.get(), nullptr, &events, nullptr);
         for (auto *failure : matrix.failures)
             topology.add_failed_link(failure->switch_type, failure->switch_id, failure->link_id);
@@ -471,6 +505,8 @@ int main(int argc, char **argv) {
                   << " messages; packets " << simulation.stats.sent << " received "
                   << simulation.stats.received << " network_drops " << simulation.stats.dropped
                   << " sacks " << simulation.stats.sacks << " retransmits " << simulation.stats.retransmits
+                  << " ecn_marks " << simulation.stats.ecn_marks << " ack_marks " << simulation.stats.ack_marks
+                  << " trims " << simulation.stats.trims << " trim_nacks " << simulation.stats.trim_nacks
                   << " receive_drops " << simulation.stats.receive_drops << " elapsed_us "
                   << timeAsUs(events.now()) << '\n';
         if (!complete) {

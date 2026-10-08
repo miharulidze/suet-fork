@@ -134,6 +134,7 @@ struct suet_tpdc {
 	/* --- tpdc_syn_key_handle: key end --- */
 	uint16_t local_pdcid;
 	enum suet_pdc_type type;
+	uint8_t ack_flags; /* feedback for the current dispatch */
 	uint32_t expected_rx_psn; /* next expected PSN */
 	uint32_t last_rx_clear_psn; /* highest CLEAR_PSN received in
 				     * forward direction */

@@ -231,7 +231,7 @@ static void suet_pds_tpdc_send_ack_if_needed(
 	const struct suet_ses_rx_dispatch_result *ses_resp)
 {
 	if (suet_rel_rx_ack_needed(&tpdc->rel,
-				   ses_resp->ack_now ||
+				   ses_resp->ack_now || tpdc->ack_flags ||
 					   (pds_prologue_get_flags(&pkt->pds) &
 					    PDS_FLAG_AR))) {
 		suet_pds_tpdc_send_ack(
@@ -504,6 +504,9 @@ static void suet_pds_process_rx_req(struct suet_domain *domain,
 		suet_pds_pkt_free(pkt_entry);
 		return;
 	}
+	tpdc->ack_flags = pds_prologue_get_flags(pds) & PDS_FLAG_RETX;
+	if (pkt_entry->pkt->rx_flags & SUET_DGRAM_RX_ECN)
+		tpdc->ack_flags |= PDS_ACK_FLAG_M;
 	pkt_entry->psn = psn;
 	action = suet_rel_rx_record(
 		&tpdc->rel, psn, pds_prologue_get_flags(pds) & PDS_FLAG_RETX);
@@ -596,7 +599,7 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 	struct suet_rel_retired retired;
 	enum suet_rel_ack_result action;
 	struct suet_pds_pkt_entry *pkt_entry;
-	uint32_t i, slot;
+	uint32_t i, slot, acked;
 	struct suet_ipdc *ipdc;
 
 	ipdc = suet_pds_ipdc_get_by_local_pdcid(domain,
@@ -641,13 +644,12 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 		domain->counters.stale_acks_rx++;
 	if (action == SUET_REL_ACK_INVALID)
 		goto out;
-	suet_cc_ack(&ipdc->cc, retired.newly_acked);
+	acked = retired.newly_acked;
 	if (extended) {
 		uint32_t base =
 			cack_psn + (int16_t) ntohs(cc_ack->sack_psn_offset);
-		suet_cc_ack(&ipdc->cc,
-			    suet_rel_tx_sack(&ipdc->rel, base,
-					     ntohll(cc_ack->sack_bitmap)));
+		acked += suet_rel_tx_sack(&ipdc->rel, base,
+					  ntohll(cc_ack->sack_bitmap));
 		if (pds_psn_before(ipdc->mpr_cack, cack_psn)) {
 			ipdc->mpr_cack = cack_psn;
 			if (cc_ack->mpr)
@@ -655,6 +657,10 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 					(uint32_t) cc_ack->mpr * 128;
 		}
 	}
+
+	if (acked && (ntohs(ack->pds.prologue.raw) & PDS_ACK_FLAG_M))
+		suet_cc_congestion(&ipdc->cc, false);
+	suet_cc_ack(&ipdc->cc, acked);
 
 	/* Spec 3.5.8.3: Close ACK frees the ipdc and ends the lifecycle.
 	 * Identified by being in CLOSE_ACK_WAIT with a cack covering close_psn.
@@ -726,7 +732,15 @@ static void suet_pds_ipdc_process_nack(struct suet_domain *domain,
 	}
 
 	domain->counters.nacks_rx++;
-	(void) suet_rel_tx_nack(&ipdc->rel, pds_nack_get_psn(nack));
+	/* Trim feedback identifies a lost packet. Other NACKs retain timed
+	 * recovery: retrying every OOO response can exhaust later packets
+	 * while the missing prefix is still waiting for its timeout.
+	 */
+	if ((pds_nack_get_code(nack) == PDS_NACK_CODE_TRIMMED ||
+	     pds_nack_get_code(nack) == PDS_NACK_CODE_TRIMMED_LASTHOP) &&
+	    suet_rel_tx_nack(&ipdc->rel, pds_nack_get_psn(nack),
+			     suet_domain_now_ms(domain), 0))
+		suet_cc_congestion(&ipdc->cc, true);
 
 	FI_DBG(&suet_prov, FI_LOG_EP_CTRL,
 	       "Received NACK: code=%d nack_psn=%u dpdcid=%d\n",
@@ -1016,6 +1030,7 @@ static void suet_pds_tpdc_process_req(struct suet_domain *domain,
 		goto nack_pkt;
 	}
 	suet_pds_process_rx_req(domain, tpdc, pkt_entry);
+	tpdc->ack_flags = 0;
 	return;
 
 nack_pkt:
@@ -1035,6 +1050,23 @@ void suet_pds_receive(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 
 	if (pkt->pkt_size < sizeof(union pds_prologue))
 		goto free_pkt;
+
+	if (pkt->rx_flags & SUET_DGRAM_RX_TRIMMED) {
+		uint8_t type = pds_prologue_get_type(pds);
+		if ((type == PDS_ROD_REQ || type == PDS_RUD_REQ) &&
+		    pkt->pkt_size >= sizeof(*pds)) {
+			bool syn = pds_prologue_get_flags(pds) & PDS_FLAG_SYN;
+			suet_pds_send_nack(
+				domain, dgram_av_addr,
+				pkt->rx_flags & SUET_DGRAM_RX_TRIMMED_LASTHOP ?
+					PDS_NACK_CODE_TRIMMED_LASTHOP :
+					PDS_NACK_CODE_TRIMMED,
+				pds_req_get_psn(pds),
+				syn ? 0 : pds_req_get_dpdcid(pds),
+				pds_req_get_spdcid(pds));
+		}
+		goto free_pkt;
+	}
 
 	FI_DBG(&suet_prov, FI_LOG_EP_DATA, "got recv completion (type: %s)\n",
 	       pds_pkt_type_name(pds_prologue_get_type(pds)));
@@ -1284,6 +1316,7 @@ static void suet_pds_tpdc_send_ack(struct suet_domain *domain,
 	cack_psn = suet_rel_rx_cack(&tpdc->rel);
 
 	pds_ack_set_type(&ack->pds, extended ? PDS_ACK_CC : PDS_ACK);
+	ack->pds.prologue.raw |= htons(tpdc->ack_flags);
 	pds_ack_set_next_hdr(&ack->pds, next_hdr);
 	pds_ack_set_spdcid(&ack->pds, tpdc->local_pdcid);
 	pds_ack_set_dpdcid(&ack->pds, tpdc->ipdcid);
@@ -1339,6 +1372,7 @@ static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
 	ipdc->peer_window = suet_env.max_unacked;
 	ipdc->mpr_cack = ipdc->start_psn - 2;
 	suet_cc_init(&ipdc->cc, suet_env.max_unacked);
+	ipdc->cc.ecn_enabled = suet_env.ecn;
 	/* Spec Table 3-35: cack_psn = highest acked PSN. Before any ACK has
 	 * been received nothing in [start_psn, ...] is acked, so initialize
 	 * to start_psn - 1 (i.e. one before the first PSN we will send). */

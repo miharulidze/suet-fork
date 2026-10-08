@@ -43,7 +43,14 @@
  * each context. Their lifetime matches the packet allocation.
  * pkt and pkt_size always exclude the provider prefix.
  */
+enum suet_dgram_rx_flags {
+	SUET_DGRAM_RX_ECN = 1,
+	SUET_DGRAM_RX_TRIMMED = 2,
+	SUET_DGRAM_RX_TRIMMED_LASTHOP = 4,
+};
+
 struct suet_pkt_entry {
+	uint8_t rx_flags;
 	size_t pkt_size;
 	fi_addr_t dgram_av_addr;
 	void *pkt;

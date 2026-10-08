@@ -184,6 +184,7 @@ static inline const char *pds_pkt_type_name(int type)
 #define PDS_FLAG_AR    (1 << 3) /* [3] ACK requested */
 #define PDS_FLAG_RETX  (1 << 4) /* [4] retransmitted packet */
 #define PDS_FLAG_ISROD (1 << 5) /* [5] CP only (Table 3-38): 1 => PDC is ROD */
+#define PDS_ACK_FLAG_M (1 << 5) /* [5] ACK only (Table 3-35): reflected ECN mark */
 
 /*
  * PDS Control Packet header (Section 3.5.10.8 / 3.5.16, Table 3-38).
