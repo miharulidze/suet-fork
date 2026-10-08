@@ -111,12 +111,40 @@ void suet_rel_tx_attempt(struct suet_rel_tx *tx, uint32_t slot, uint64_t now)
 	tx->attempt_time[slot] = now;
 }
 
+/* Walk a circular range by bitmap words, splitting at the physical end.
+ * Validation is read-only: a hole must never partially retire an ACK.
+ */
+static bool suet_rel_range(struct suet_rel_window *window, uint32_t count,
+			   bool clear)
+{
+	uint32_t slot = window->head, n, shift;
+	uint64_t mask;
+
+	while (count) {
+		shift = slot % 64;
+		n = 64 - shift;
+		if (n > window->capacity - slot)
+			n = window->capacity - slot;
+		if (n > count)
+			n = count;
+		mask = (UINT64_MAX >> (64 - n)) << shift;
+		if (clear)
+			window->present[slot / 64] &= ~mask;
+		else if ((window->present[slot / 64] & mask) != mask)
+			return false;
+		count -= n;
+		slot += n;
+		if (slot == window->capacity)
+			slot = 0;
+	}
+	return true;
+}
+
 enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 					 struct suet_rel_retired *retired)
 {
 	struct suet_rel_window *window = &tx->window;
 	uint32_t count = cack - window->base_psn + 1;
-	uint32_t i, slot;
 
 	memset(retired, 0, sizeof(*retired));
 	if ((int32_t) (cack - window->base_psn) < 0)
@@ -124,17 +152,12 @@ enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 	if (count > window->capacity)
 		return SUET_REL_ACK_INVALID;
 	/* A cumulative ACK must not cover an unsubmitted hole. */
-	for (i = 0; i < count; i++) {
-		slot = (window->head + i) % window->capacity;
-		if (!suet_rel_bit(window->present, slot))
-			return SUET_REL_ACK_INVALID;
-	}
+	if (!suet_rel_range(window, count, false))
+		return SUET_REL_ACK_INVALID;
 	retired->first_psn = window->base_psn;
 	retired->first_slot = window->head;
 	retired->count = count;
-	for (i = 0; i < count; i++)
-		suet_rel_clear(window->present,
-			       (window->head + i) % window->capacity);
+	suet_rel_range(window, count, true);
 	tx->tracked -= count;
 	suet_rel_advance(window, count);
 	tx->retry_count = 0;

@@ -157,6 +157,42 @@ static void check_rx(void)
 	suet_rel_rx_cleanup(&rx);
 }
 
+static void check_ack_ranges(uint32_t capacity)
+{
+	struct suet_rel_tx tx;
+	struct suet_rel_retired retired;
+	uint32_t base = UINT32_MAX - 100, hole, i, count;
+
+	assert(!suet_rel_tx_init(&tx, base, capacity, 100));
+	/* Every missing bit position, at every physical head, including partial
+	 * words and PSN wrap. An invalid CACK must preserve the whole window.
+	 */
+	for (uint32_t head = 0; head < capacity; head++) {
+		for (hole = 0; hole < capacity; hole++) {
+			for (i = 0; i < capacity; i++)
+				if (i != hole)
+					track(&tx, base + i);
+			assert(suet_rel_tx_ack(&tx, base + capacity - 1,
+					       &retired) == SUET_REL_ACK_INVALID);
+			assert(tx.window.base_psn == base);
+			assert(tx.tracked == capacity - 1 && !retired.count);
+			for (i = 0; i < capacity; i++)
+				assert(can_track(&tx, base + i) == (i == hole));
+			track(&tx, base + hole);
+			assert(suet_rel_tx_ack(&tx, base + capacity - 1,
+					       &retired) == SUET_REL_ACK_ADVANCED);
+			assert(retired.count == capacity && !tx.tracked);
+			base += capacity;
+		}
+		count = 1;
+		track(&tx, base);
+		assert(suet_rel_tx_ack(&tx, base, &retired) ==
+		       SUET_REL_ACK_ADVANCED);
+		base += count;
+	}
+	suet_rel_tx_cleanup(&tx);
+}
+
 int main(void)
 {
 	struct suet_rel_tx tx;
@@ -166,6 +202,8 @@ int main(void)
 	check_windows(3, UINT32_MAX - 2);
 	check_windows(65, UINT32_MAX - 32);
 	check_windows(128, 100);
+	check_ack_ranges(65);
+	check_ack_ranges(129);
 	check_hole_and_retry();
 	check_rx();
 	puts("Reliability windows, wraparound, feedback and GBN recovery: "

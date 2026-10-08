@@ -645,11 +645,13 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 
 	/* Consume retired slots before any progress can submit into the new
 	 * window. */
+	slot = retired.first_slot;
 	for (i = 0; i < retired.count; i++) {
-		slot = (retired.first_slot + i) % ipdc->rel.window.capacity;
 		pkt_entry = ipdc->tx_pkts[slot];
 		assert(pkt_entry && pkt_entry->psn == retired.first_psn + i);
 		ipdc->tx_pkts[slot] = NULL;
+		if (++slot == ipdc->rel.window.capacity)
+			slot = 0;
 		if (suet_dgram_pkt_in_use(pkt_entry->pkt)) {
 			pkt_entry->acked = true;
 		} else {
