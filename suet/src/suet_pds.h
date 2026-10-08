@@ -130,7 +130,6 @@ struct suet_tpdc {
 	uint32_t last_rx_clear_psn; /* highest CLEAR_PSN received in
 				     * forward direction */
 	struct suet_rel_rx rel;
-	struct suet_pds_pkt_entry **rx_pkts; /* retained by ROD delivery */
 	enum suet_pdc_state state;
 	void *ses_ctx; /* opaque SES receive context */
 	struct dlist_entry

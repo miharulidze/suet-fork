@@ -492,7 +492,7 @@ static void suet_pds_process_rx_req(struct suet_domain *domain,
 	struct pds_req_hdr *pds = pkt_entry->pkt->pkt;
 	struct suet_ses_rx_packet ses;
 	enum suet_rel_rx_result action;
-	uint32_t psn = pds_req_get_psn(pds), slot;
+	uint32_t psn = pds_req_get_psn(pds);
 
 	if (!suet_pds_parse_ses(domain, pkt_entry, &ses)) {
 		suet_pds_pkt_free(pkt_entry);
@@ -505,33 +505,22 @@ static void suet_pds_process_rx_req(struct suet_domain *domain,
 						 &ses, action);
 		return;
 	}
-	if (!suet_rel_slot(&tpdc->rel.window, psn, &slot)) {
+	/* ROD drops out-of-order requests instead of retaining packet storage.
+	 * Keep this delivery constraint independent of reliability admission.
+	 */
+	if (psn != tpdc->expected_rx_psn) {
+		suet_rel_rx_cancel(&tpdc->rel, psn);
+		suet_pds_dispatch_req_to_ses_ooo(domain, tpdc, pkt_entry, pds,
+						 &ses, SUET_REL_RX_GAP);
+		return;
+	}
+	if (!suet_pds_parse_ses(domain, pkt_entry, &ses)) {
+		suet_rel_rx_cancel(&tpdc->rel, psn);
 		suet_pds_pkt_free(pkt_entry);
 		return;
 	}
-	assert(!tpdc->rx_pkts[slot]);
-	tpdc->rx_pkts[slot] = pkt_entry;
-
-	/* ROD ordering belongs here, independently of the reliability
-	 * algorithm. GBN currently admits only the head. A selective
-	 * implementation can admit later PSNs through the same API; PDC retains
-	 * them until ordered.
-	 */
-	while (suet_rel_slot(&tpdc->rel.window, tpdc->expected_rx_psn, &slot) &&
-	       (pkt_entry = tpdc->rx_pkts[slot])) {
-		psn = tpdc->expected_rx_psn;
-		tpdc->rx_pkts[slot] = NULL;
-		if (!suet_pds_parse_ses(domain, pkt_entry, &ses)) {
-			suet_rel_rx_cancel(&tpdc->rel, psn);
-			suet_pds_pkt_free(pkt_entry);
-			return;
-		}
-		if (suet_pds_dispatch_req_to_ses_in_order(domain, tpdc,
-							  pkt_entry, &ses)) {
-			suet_rel_rx_cancel(&tpdc->rel, psn);
-			return;
-		}
-	}
+	if (suet_pds_dispatch_req_to_ses_in_order(domain, tpdc, pkt_entry, &ses))
+		suet_rel_rx_cancel(&tpdc->rel, psn);
 }
 
 /* SES interprets semantic response codes and owns application errors. */
@@ -779,12 +768,6 @@ void suet_pds_tx_done(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 static void suet_pds_free_tpdc(struct suet_domain *domain,
 			       struct suet_tpdc *tpdc)
 {
-	uint32_t i;
-
-	for (i = 0; i < tpdc->rel.window.capacity; i++)
-		if (tpdc->rx_pkts[i])
-			suet_pds_pkt_free(tpdc->rx_pkts[i]);
-	free(tpdc->rx_pkts);
 	suet_rel_rx_cleanup(&tpdc->rel);
 
 	suet_ses_rx_close(tpdc->ses_ctx);
@@ -902,9 +885,6 @@ static struct suet_tpdc *suet_pds_allocate_tpdc(struct suet_domain *domain,
 	tpdc->expected_rx_psn = ipdc_start_psn;
 	if (suet_rel_rx_init(&tpdc->rel, ipdc_start_psn, suet_env.max_unacked))
 		goto err;
-	tpdc->rx_pkts = calloc(suet_env.max_unacked, sizeof(*tpdc->rx_pkts));
-	if (!tpdc->rx_pkts)
-		goto err;
 	/* Spec 3.5.11.4.4: CLEAR_PSN starts at Start_PSN - 1. */
 	tpdc->last_rx_clear_psn = ipdc_start_psn - 1;
 	tpdc->state = SUET_PDC_ESTABLISHED;
@@ -928,7 +908,6 @@ static struct suet_tpdc *suet_pds_allocate_tpdc(struct suet_domain *domain,
 	return tpdc;
 
 err:
-	free(tpdc->rx_pkts);
 	suet_rel_rx_cleanup(&tpdc->rel);
 	suet_ses_rx_close(tpdc->ses_ctx);
 	ofi_buf_free(tpdc);
