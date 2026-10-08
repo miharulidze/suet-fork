@@ -53,7 +53,7 @@
  */
 
 #define SUET_ADDR_VERSION 1
-#define SUET_DG_AV_NAME_LENGTH 32
+#define SUET_DGRAM_AV_NAME_LENGTH 32
 
 struct suet_av_addr {
     uint16_t version;          /* protocol version (SUET_AV_ADDR_VERSION) */
@@ -63,8 +63,9 @@ struct suet_av_addr {
     uint16_t start_ri;         /* starting resource index (12-bit) */
     uint16_t num_ri;           /* number of RIs (12-bit) */
     uint32_t initiator_id;     /* initiator ID for matching */
-    uint8_t  raw_dg_addr[SUET_DG_AV_NAME_LENGTH]; /* underlying datagram address */
-    uint16_t raw_dg_addrlen;   /* length of raw_dg_addr in bytes */
+    uint8_t raw_dgram_addr[SUET_DGRAM_AV_NAME_LENGTH]; /* underlying datagram
+							  address */
+    uint16_t raw_dgram_addrlen; /* length of raw_dgram_addr in bytes */
 };
 
 /*
@@ -1384,20 +1385,20 @@ static inline uint8_t ofi_op_to_ses_req_opcode(uint32_t op)
 }
 
 /* Request packet: pds_req_hdr + ses_req_hdr + optional extension hdrs + payload */
-struct __attribute__((packed)) ses_msg_data_pkt {
+struct __attribute__((packed)) suet_req_pkt {
     struct pds_req_hdr pds;
     struct ses_req_hdr ses;
     char msg[];
 };
 
 /* ACK packet: pds_ack_hdr + ses_resp_hdr (Table 3-35) */
-struct __attribute__((packed)) ses_msg_ack_pkt {
+struct __attribute__((packed)) suet_ack_pkt {
     struct pds_ack_hdr pds;
     struct ses_resp_hdr ses;
 };
 
 /* Control packet: pds_ctrl_hdr only (no SES payload). Section 3.5.16. */
-struct __attribute__((packed)) ses_msg_ctrl_pkt {
+struct __attribute__((packed)) suet_ctrl_pkt {
     struct pds_ctrl_hdr pds;
 };
 
@@ -1410,7 +1411,7 @@ struct __attribute__((packed)) ses_msg_amo_hdr {
 };
 
 /* Atomic request packet: pds + ses + amo_hdr + payload */
-struct __attribute__((packed)) ses_msg_amo_pkt {
+struct __attribute__((packed)) suet_amo_pkt {
     struct pds_req_hdr pds;
     struct ses_req_hdr ses;
     struct ses_msg_amo_hdr amo;

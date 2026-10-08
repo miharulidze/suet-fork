@@ -93,10 +93,10 @@ static int suet_mr_close(fid_t fid)
 
 	suet_mr_map_remove(suet_mr);
 
-	ret = fi_close(&suet_mr->dg_mr->fid);
+	ret = fi_close(&suet_mr->dgram_mr->fid);
 	if (ret)
 		FI_WARN(&suet_prov, FI_LOG_DOMAIN,
-			"fi_close(dg mr) failed: %d\n", ret);
+			"fi_close(dgram mr) failed: %d\n", ret);
 
 	ofi_mutex_destroy(&suet_mr->amo_lock);
 	ofi_atomic_dec32(&suet_mr->domain->util_domain.ref);
@@ -118,19 +118,20 @@ static struct fi_ops suet_mr_fi_ops = {
  * attr->requested_key and draws from the domain-internal namespace
  * (bit 31 set), retrying on collisions.
  */
-int suet_mr_reg_impl(struct suet_domain *domain, struct fi_mr_attr *attr,
-		     uint64_t flags, bool gen_key, struct fid_mr **mr)
+static int suet_mr_reg_impl(struct suet_domain *domain, struct fi_mr_attr *attr,
+			    uint64_t flags, bool gen_key, struct fid_mr **mr)
 {
 	int ret, tries = 0;
 
 	if (!gen_key)
-		return fi_mr_regattr(domain->fep_domain, attr, flags, mr);
+		return fi_mr_regattr(domain->dgram.domain, attr, flags, mr);
 
 	/* The counter may collide with a user-chosen requested_key already
-	 * registered on fep_domain, so advance and retry on -FI_ENOKEY. */
+	 * registered on the datagram domain, so advance and retry on
+	 * -FI_ENOKEY. */
 	do {
-		attr->requested_key = domain->mr_key++ | (1UL << 31);
-		ret = fi_mr_regattr(domain->fep_domain, attr, flags, mr);
+		attr->requested_key = domain->dgram.mr_key++ | (1UL << 31);
+		ret = fi_mr_regattr(domain->dgram.domain, attr, flags, mr);
 	} while (ret == -FI_ENOKEY && tries++ < SUET_MR_KEY_MAX_RETRIES);
 
 	return ret;
@@ -147,7 +148,7 @@ void suet_mr_closev_internal(struct fid_mr **mr, size_t count)
 		ret = fi_close(&mr[i]->fid);
 		if (ret)
 			FI_WARN(&suet_prov, FI_LOG_EP_DATA,
-				"fi_close(dg mr[%zu]) failed: %d\n", i, ret);
+				"fi_close(dgram mr[%zu]) failed: %d\n", i, ret);
 		mr[i] = NULL;
 	}
 }
@@ -202,7 +203,7 @@ static int suet_mr_regattr(struct fid *fid, const struct fi_mr_attr *attr,
 			   uint64_t flags, struct fid_mr **mr)
 {
 	struct suet_domain *domain;
-	struct fi_mr_attr dg_attr = *attr;
+	struct fi_mr_attr dgram_attr = *attr;
 	struct suet_mr *suet_mr;
 	int ret;
 
@@ -214,13 +215,14 @@ static int suet_mr_regattr(struct fid *fid, const struct fi_mr_attr *attr,
 		return -FI_ENOMEM;
 
 	ofi_mr_update_attr(domain->util_domain.fabric->fabric_fid.api_version,
-			   domain->util_domain.info_domain_caps, attr, &dg_attr,
-			   flags);
+			   domain->util_domain.info_domain_caps, attr,
+			   &dgram_attr, flags);
 
-	ret = suet_mr_reg_impl(domain, &dg_attr, flags, false, &suet_mr->dg_mr);
+	ret = suet_mr_reg_impl(domain, &dgram_attr, flags, false,
+			       &suet_mr->dgram_mr);
 	if (ret) {
 		FI_WARN(&suet_prov, FI_LOG_DOMAIN,
-			"fi_mr_regattr(dg) failed: %d\n", ret);
+			"fi_mr_regattr(dgram) failed: %d\n", ret);
 		goto err;
 	}
 
@@ -231,7 +233,7 @@ static int suet_mr_regattr(struct fid *fid, const struct fi_mr_attr *attr,
 	 * address/key verification in suet_ses_verify_mr_iov. MRs without
 	 * remote access (pure local send/recv) don't need a map entry. */
 	if (attr->access & (FI_REMOTE_READ | FI_REMOTE_WRITE)) {
-		ret = suet_mr_map_insert(domain, &dg_attr, suet_mr, flags);
+		ret = suet_mr_map_insert(domain, &dgram_attr, suet_mr, flags);
 		if (ret) {
 			goto map_err;
 		}

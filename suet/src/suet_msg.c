@@ -34,6 +34,7 @@
  */
 
 #include "suet.h"
+#include "suet_ses.h"
 #include <ofi_iov.h>
 #include <ofi_mem.h>
 #include <stdlib.h>
@@ -46,9 +47,9 @@ ssize_t suet_ep_generic_recvmsg(struct suet_ep *suet_ep,
 				uint64_t flags)
 {
 	ssize_t ret = 0;
-	struct suet_x_entry *rx_entry;
+	struct suet_ses_rx_entry *rx_entry;
 	struct dlist_entry *unexp_list, *rx_list;
-	struct suet_unexp_msg *unexp_msg;
+	struct suet_ses_unexp_msg *unexp_msg;
 	int peer_idx = SUET_ADDR_INVALID;
 
 	if (iov_count > SUET_IOV_LIMIT)
@@ -93,7 +94,7 @@ ssize_t suet_ep_generic_recvmsg(struct suet_ep *suet_ep,
 		} else if (flags & FI_CLAIM) {
 			FI_DBG(&suet_prov, FI_LOG_EP_CTRL,
 			       "Claiming message\n");
-			unexp_msg = (struct suet_unexp_msg
+			unexp_msg = (struct suet_ses_unexp_msg
 					     *) (((struct fi_context *) context)
 							 ->internal[0]);
 			suet_ses_complete_unexp_msg(suet_ep, rx_entry,
@@ -111,7 +112,8 @@ ssize_t suet_ep_generic_recvmsg(struct suet_ep *suet_ep,
 		goto out;
 	}
 	FI_DBG(&suet_prov, FI_LOG_EP_CTRL, "Discarding message\n");
-	unexp_msg = (struct suet_unexp_msg *) (((struct fi_context *) context)
+	unexp_msg =
+		(struct suet_ses_unexp_msg *) (((struct fi_context *) context)
 						       ->internal[0]);
 	ret = suet_ses_discard_recv(suet_ep, context, unexp_msg);
 
@@ -160,13 +162,13 @@ static ssize_t suet_ep_recvv(struct fid_ep *ep_fid, const struct iovec *iov,
 				       context, ofi_op_msg, ep->rx_flags, 0);
 }
 
-static struct suet_x_entry *
+static struct suet_ses_tx_entry *
 suet_ep_tx_entry_init_msg(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
-		       const struct iovec *iov, void **desc, size_t iov_count,
-		       uint64_t tag, uint64_t data, uint32_t suet_flags,
-		       void *context)
+			  const struct iovec *iov, void **desc,
+			  size_t iov_count, uint64_t tag, uint64_t data,
+			  uint32_t suet_flags, void *context)
 {
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 	struct suet_domain *suet_domain = suet_ep_domain(ep);
 
 	tx_entry = suet_ses_tx_entry_init_common(ep, addr, op, iov, desc,
@@ -175,11 +177,11 @@ suet_ep_tx_entry_init_msg(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 	if (!tx_entry)
 		return NULL;
 
-	tx_entry->hdr_len = sizeof(struct ses_msg_data_pkt);
+	tx_entry->hdr_len = sizeof(struct suet_req_pkt);
 
-	if (tx_entry->cq_entry.len > (size_t) suet_domain->max_seg_sz) {
+	if (tx_entry->cq_entry.len > (size_t) suet_domain->max_pkt_sz) {
 		tx_entry->num_pkts = ofi_div_ceil(tx_entry->cq_entry.len,
-						  suet_domain->max_seg_sz);
+						      suet_domain->max_pkt_sz);
 	} else {
 		tx_entry->num_pkts = 1;
 	}
@@ -191,7 +193,7 @@ ssize_t suet_ep_generic_inject(struct suet_ep *suet_ep, const struct iovec *iov,
 			       size_t iov_count, fi_addr_t addr, uint64_t tag,
 			       uint64_t data, uint32_t op, uint32_t suet_flags)
 {
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 	ssize_t ret = -FI_EAGAIN;
 
 	if (iov_count > SUET_IOV_LIMIT)
@@ -210,7 +212,7 @@ ssize_t suet_ep_generic_inject(struct suet_ep *suet_ep, const struct iovec *iov,
 		goto out;
 	}
 
-	suet_pds_send_tx_entry(tx_entry);
+	suet_ses_submit(tx_entry);
 	ret = 0;
 
 out:
@@ -224,7 +226,7 @@ ssize_t suet_ep_generic_sendmsg(struct suet_ep *suet_ep,
 				uint64_t data, void *context, uint32_t op,
 				uint32_t suet_flags)
 {
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 	ssize_t ret = -FI_EAGAIN;
 
 	if (iov_count > SUET_IOV_LIMIT)
@@ -252,7 +254,7 @@ ssize_t suet_ep_generic_sendmsg(struct suet_ep *suet_ep,
 		goto out;
 	}
 
-	suet_pds_send_tx_entry(tx_entry);
+	suet_ses_submit(tx_entry);
 	ret = 0;
 out:
 	ofi_genlock_unlock(&suet_ep_domain(suet_ep)->fep_lock);

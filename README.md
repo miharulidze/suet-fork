@@ -21,6 +21,49 @@ See `INSTALL.md` for more details.
 ### Portable design
 The SUET provider is a major rework of the RxD libfabric provider. Similarly to RxD, SUET enables connectionless reliable messaging endpoint semantics over connectionless unreliable endpoints (`FI_EP_RDM` over `FI_EP_DGRAM`), while also adding zero-copy send path and batched CQ polling optimizations. A core `FI_EP_DGRAM` provider serves as a portable abstraction layer for the wire protocol that encapsulates PDS/SES traffic. Thanks to that, SUET runs on Linux (UDP and Verbs) and macOS (UDP).
 
+### SES/PDS boundary
+
+The SES/PDS and PDS/datagram API headers define direct calls between layers.
+There is no operations table or new function-pointer dispatch.
+
+- SES owns operation buffers, message segmentation, endpoint matching, RMA
+  validation, atomic execution, unexpected messages, and application completions.
+- PDS owns PDCs, PSNs, transport queues, retry state, ACK/NACK processing, and
+  response retention. Its private types live in `suet_pds.h`; SES-only types live in
+  `suet_ses.h`. Helper implementations stay in the corresponding `.c` files.
+  The SES/PDS contract lives in `suet_ses_pds_api.h`.
+  `suet.h` includes the three layer headers and embeds their resource structures
+  directly in the domain; no separate SES/PDS resource allocation is needed.
+- Datagram owns provider setup, packet pools and registration, send/receive
+  posting, CQ polling, and provider prefixes in `suet_dgram.c`. Its resources
+  and lifecycle are declared in `suet_dgram.h`; the packet/event contract with
+  PDS lives in `suet_pds_dgram_api.h`. Provider contexts stay private to datagram.
+  PDS and SES see packet lengths excluding provider prefixes. Local send
+  completion releases provider access; PDS independently tracks acknowledgment
+  and retry retention. Each packet still occupies one pool allocation, with
+  separate aligned datagram, PDS, and SES records. Datagram keeps provider-busy
+  state and its posted-receive node private; PDS owns retry timing, PDC identity,
+  ACK state, and its queue node; SES owns its unexpected-message packet node.
+  The shared packet view carries storage/I/O information and opaque layer
+  contexts, without shared flags or list membership.
+- Each transmission has a separate PDS record with an opaque SES context. PDS
+  asks SES to prepare a segment and reports terminal completion through direct
+  calls. SES never traverses PDC queues or assigns packet sequence numbers.
+- Ordered receive state lives in an opaque SES context associated with the
+  transport stream. PDS delivers an ordered packet, persists any required
+  response, then commits the SES receive completion.
+- Unexpected messages hold opaque response reservations. Completing or
+  cancelling a reservation goes through PDS; SES does not mutate retained
+  response lists. Closing a PDC invalidates the route while outstanding SES
+  reservations remain safe to release.
+
+The boundary shares packet buffers and wire response metadata. The existing
+wire headers, Go-Back-N algorithm, per-domain locking, and datagram/zero-copy
+buffer lifetime rules are unchanged. Calls require the domain FEP lock or
+exclusive initialization/close. Domain close drains PDS, stops the datagram
+endpoint, then releases layer state and packet storage. No new dispatch table,
+reliability algorithm, or progress thread is introduced.
+
 ### Key provider features
 
 - Basic UET SES request/response flow
@@ -39,6 +82,7 @@ Many of the UET specification features are not yet supported, including but not 
 ### Test coverage:
 - SUET tested with libfabric fabtests, OpenMPI and MPICH
 - Basic header formats tested against Wireshark UET dissector
+- SES/PDS regression and mixed-build compatibility checks: see [tests/README.md](tests/README.md)
 
 ### libfabric API mapping and feature support
 

@@ -1,0 +1,363 @@
+/* SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0-only */
+#include <config.h>
+/* Match the library's internal pool layout before enabling assertions. */
+#if !ENABLE_DEBUG && !defined(NDEBUG)
+#define NDEBUG
+#endif
+#include "suet.h"
+#include "suet_pds.h"
+#include "suet_pds_dgram_api.h"
+#undef NDEBUG
+#include <assert.h>
+
+/* Include the implementation to exercise private provider completion paths.
+ * Only the upward events are replaced; production keeps direct calls.
+ */
+#define suet_pds_receive test_pds_receive
+#define suet_pds_tx_done test_pds_tx_done
+void test_pds_receive(struct suet_domain *, struct suet_pkt_entry *, fi_addr_t);
+void test_pds_tx_done(struct suet_domain *, struct suet_pkt_entry *, int);
+#include "../suet/src/suet_dgram.c"
+#undef suet_pds_receive
+#undef suet_pds_tx_done
+
+static struct suet_pkt_entry *received, *completed;
+static fi_addr_t received_addr;
+static int completed_status, send_status, close_status;
+static void *send_context, *recv_context;
+static unsigned char sent[256];
+static size_t sent_len, prefix_size;
+static bool ep_closed, dispatch_pds_tx;
+
+void test_pds_receive(struct suet_domain *domain, struct suet_pkt_entry *pkt,
+		      fi_addr_t src_addr)
+{
+	assert(!suet_dgram_pkt_in_use(pkt));
+	assert(dlist_empty(&domain->dgram.rx_pkt_list));
+	received = pkt;
+	received_addr = src_addr;
+}
+
+void test_pds_tx_done(struct suet_domain *domain, struct suet_pkt_entry *pkt,
+		      int status)
+{
+	(void) domain;
+	assert(!suet_dgram_pkt_in_use(pkt));
+	completed = pkt;
+	completed_status = status;
+	if (dispatch_pds_tx)
+		suet_pds_tx_done(domain, pkt, status);
+}
+
+static ssize_t mock_send(struct fid_ep *ep, const void *buf, size_t len,
+			 void *desc, fi_addr_t dest, void *context)
+{
+	(void) ep;
+	(void) desc;
+	assert(dest == 9);
+	assert(len >= prefix_size && len <= sizeof(sent));
+	sent_len = len - prefix_size;
+	memcpy(sent, (const char *) buf + prefix_size, sent_len);
+	send_context = context;
+	return send_status;
+}
+
+static ssize_t mock_sendv(struct fid_ep *ep, const struct iovec *iov,
+			  void **desc, size_t count, fi_addr_t dest,
+			  void *context)
+{
+	size_t i;
+
+	mock_send(ep, iov[0].iov_base, iov[0].iov_len, desc[0], dest, context);
+	for (i = 1; i < count; i++) {
+		assert(sent_len + iov[i].iov_len <= sizeof(sent));
+		memcpy(sent + sent_len, iov[i].iov_base, iov[i].iov_len);
+		sent_len += iov[i].iov_len;
+	}
+	return send_status;
+}
+
+static ssize_t mock_recv(struct fid_ep *ep, void *buf, size_t len, void *desc,
+			 fi_addr_t src, void *context)
+{
+	(void) ep;
+	(void) desc;
+	assert(src == FI_ADDR_UNSPEC && len == 256);
+	recv_context = context;
+	memset(buf, 0xa5, prefix_size);
+	memcpy((char *) buf + prefix_size, "payload", 7);
+	return 0;
+}
+
+static int mock_close(fid_t fid)
+{
+	struct suet_domain *domain = fid->context;
+
+	/* The provider must stop before packet pools are destroyed. */
+	assert(domain->dgram.tx_pkt_entry_pool);
+	assert(domain->dgram.rx_pkt_entry_pool);
+	if (close_status)
+		return close_status;
+	ep_closed = true;
+	return 0;
+}
+
+static struct fi_ops_msg msg_ops = {
+	.send = mock_send,
+	.sendv = mock_sendv,
+	.recv = mock_recv,
+};
+static struct fi_ops ep_ops = {.close = mock_close};
+
+static void check_datagram(size_t prefix)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep ep = {.fid = {.ops = &ep_ops, .context = &domain},
+			    .msg = &msg_ops};
+	struct suet_pkt_entry *pkt;
+	struct suet_pds_pkt_entry *pds;
+	struct fi_cq_msg_entry comp = {0};
+	struct iovec header;
+	unsigned char payload[] = "payload";
+	size_t i, j;
+
+	prefix_size = prefix;
+	domain.dgram.ep = &ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	domain.dgram.tx_prefix_size = prefix;
+	domain.dgram.rx_prefix_size = prefix;
+	dlist_init(&domain.dgram.rx_pkt_list);
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	pkt = suet_dgram_pkt_alloc(&domain);
+	assert(pkt);
+	pds = pkt->pds_ctx;
+	memset(pds, 0, sizeof(*pds));
+	pds->pkt = pkt;
+	pkt->dgram_av_addr = 9;
+	pds->timestamp = 123;
+	assert(!((uintptr_t) pkt->pds_ctx % SUET_BUF_POOL_ALIGNMENT));
+	assert(!((uintptr_t) pkt->ses_ctx % SUET_BUF_POOL_ALIGNMENT));
+	assert((char *) pkt->ses_ctx >= (char *) pds + sizeof(*pds));
+	assert((char *) pkt->pkt - prefix >=
+	       (char *) pkt->ses_ctx + sizeof(struct suet_ses_pkt_entry));
+	memset(pkt->ses_ctx, 0x5a, sizeof(struct suet_ses_pkt_entry));
+	pkt->pkt_size = 11;
+	memcpy(pkt->pkt, "headpayload", pkt->pkt_size);
+
+	send_status = -FI_EAGAIN;
+	assert(suet_dgram_send(&domain, pkt) == -FI_EAGAIN);
+	assert(!suet_dgram_pkt_in_use(pkt));
+	assert(pds->timestamp == 123);
+	send_status = 0;
+	assert(!suet_dgram_send(&domain, pkt));
+	assert(suet_dgram_pkt_in_use(pkt));
+	assert(sent_len == 11 && !memcmp(sent, "headpayload", 11));
+	suet_dgram_tx_complete(&domain, send_context, 0);
+	assert(completed == pkt && completed_status == 0);
+
+	/* Repeated sends must not accumulate prefix bytes or change PDS timing.
+	 */
+	pkt->zc_pld_iov_count = 1;
+	pkt->zc_pld_iov[0] = (struct iovec) {pkt->pkt, 4};
+	pkt->zc_pld_iov[1] = (struct iovec) {payload, 7};
+	header = pkt->zc_pld_iov[0];
+	for (i = 0; i < 3; i++) {
+		assert(!suet_dgram_send(&domain, pkt));
+		assert(sent_len == 11 && !memcmp(sent, "headpayload", 11));
+		assert(!memcmp(&header, &pkt->zc_pld_iov[0], sizeof(header)));
+		assert(pkt->pkt_size == 11 && pds->timestamp == 123);
+		for (j = 0; j < sizeof(struct suet_ses_pkt_entry); j++)
+			assert(((unsigned char *) pkt->ses_ctx)[j] == 0x5a);
+		suet_dgram_tx_complete(&domain, send_context, -FI_EIO);
+		assert(completed == pkt && completed_status == -FI_EIO);
+	}
+	suet_dgram_pkt_free(pkt);
+
+	received = NULL;
+	assert(!suet_dgram_ep_recv_pkt(&domain));
+	comp.op_context = recv_context;
+	comp.len = prefix + 7;
+	suet_dgram_rx_complete(&domain, &comp, 17);
+	assert(received && received_addr == 17);
+	assert(received->pkt_size == 7);
+	assert(!memcmp(received->pkt, "payload", 7));
+	/* PDS/SES can retain the RX allocation after the completion returns. */
+	suet_dgram_pkt_free(received);
+
+	if (prefix) {
+		received = NULL;
+		assert(!suet_dgram_ep_recv_pkt(&domain));
+		comp.op_context = recv_context;
+		comp.len = prefix - 1;
+		suet_dgram_rx_complete(&domain, &comp, 17);
+		assert(!received && dlist_empty(&domain.dgram.rx_pkt_list));
+	}
+	assert(!suet_dgram_ep_recv_pkt(&domain));
+	ep_closed = false;
+	close_status = -FI_EBUSY;
+	assert(suet_dgram_cleanup(&domain) == -FI_EBUSY);
+	assert(!ep_closed && domain.dgram.ep == &ep);
+	assert(!dlist_empty(&domain.dgram.rx_pkt_list));
+	assert(domain.dgram.tx_pkt_entry_pool &&
+	       domain.dgram.rx_pkt_entry_pool);
+	close_status = 0;
+	assert(!suet_dgram_cleanup(&domain));
+	assert(ep_closed && !domain.dgram.ep);
+	assert(!domain.dgram.tx_pkt_entry_pool &&
+	       !domain.dgram.rx_pkt_entry_pool);
+	assert(!suet_dgram_cleanup(&domain));
+}
+
+/* A local completion releases the provider borrow, not PDS retention.
+ * An ACK arriving while a send is pending must defer free until completion.
+ */
+static void check_pds_retention(void)
+{
+	struct suet_domain domain = {0};
+	struct suet_ipdc ipdc = {0};
+	struct fid_ep ep = {.msg = &msg_ops};
+	struct suet_pkt_entry *pkt;
+	struct suet_pds_pkt_entry *pds;
+
+	prefix_size = 0;
+	send_status = 0;
+	domain.dgram.ep = &ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	assert(!suet_pds_init(&domain));
+	ipdc.local_pdcid = 1;
+	ipdc.in_flight_cnt = 1;
+	dlist_init(&ipdc.in_flight_pkts);
+	dlist_init(&ipdc.tx_list);
+	assert(ofi_idm_set(&domain.pds.local_pdcid_to_ipdc_idm, 1, &ipdc) >= 0);
+	pkt = suet_dgram_pkt_alloc(&domain);
+	assert(pkt);
+	pds = pkt->pds_ctx;
+	memset(pds, 0, sizeof(*pds));
+	pds->pkt = pkt;
+	memset(pkt->pkt, 0, sizeof(struct suet_req_pkt));
+	pds_prologue_set_type(pkt->pkt, PDS_ROD_REQ);
+	pds->local_pdcid = 1;
+	pkt->dgram_av_addr = 9;
+	pkt->pkt_size = sizeof(struct suet_req_pkt);
+	dlist_insert_tail(&pds->entry, &ipdc.in_flight_pkts);
+	dispatch_pds_tx = true;
+	assert(!suet_dgram_send(&domain, pkt));
+	suet_dgram_tx_complete(&domain, send_context, 0);
+	assert(!suet_dgram_pkt_in_use(pkt));
+	assert(ipdc.in_flight_cnt == 1 && !dlist_empty(&ipdc.in_flight_pkts));
+	assert(!suet_dgram_send(&domain, pkt));
+	suet_dgram_tx_complete(&domain, send_context, -FI_EIO);
+	assert(!suet_dgram_pkt_in_use(pkt));
+	assert(ipdc.in_flight_cnt == 1 && !dlist_empty(&ipdc.in_flight_pkts));
+	assert(!suet_dgram_send(&domain, pkt));
+	pds->acked = true;
+	suet_dgram_tx_complete(&domain, send_context, 0);
+	assert(!ipdc.in_flight_cnt && dlist_empty(&ipdc.in_flight_pkts));
+	dispatch_pds_tx = false;
+	suet_pds_cleanup(&domain);
+	suet_dgram_free_pkt_entry_pools(&domain);
+}
+
+/* Retained SES packets must not overwrite PDS state or datagram's RX node.
+ * Exercise both first and continuation segments, then release through SES.
+ */
+static void check_ses_retention(void)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep dgram_ep = {.msg = &msg_ops};
+	struct suet_ep ep = {0};
+	struct suet_ep *ep_table[] = {&ep};
+	struct suet_tpdc tpdc = {0};
+	struct suet_pkt_entry *packets[2];
+	struct suet_pds_pkt_entry saved[2];
+	struct suet_ses_rx_dispatch_result result;
+	struct fi_cq_msg_entry comp = {0};
+	struct suet_ses_unexp_msg *unexp;
+	void *rx;
+	size_t i;
+
+	prefix_size = 8;
+	domain.dgram.ep = &dgram_ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.rx_prefix_size = prefix_size;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	domain.max_pkt_sz = 64;
+	domain.ep_table = ep_table;
+	ep.util_ep.domain = &domain.util_domain;
+	dlist_init(&domain.dgram.rx_pkt_list);
+	dlist_init(&ep.rx_list);
+	dlist_init(&ep.unexp_list);
+	dlist_init(&tpdc.gtd_del_list);
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	assert(!suet_ses_init(&domain));
+	assert(!suet_pds_init(&domain));
+	rx = suet_ses_rx_open(&domain, &tpdc, 0);
+	assert(rx);
+	for (i = 0; i < 2; i++) {
+		struct suet_dgram_pkt_entry *dgram;
+		struct suet_pds_pkt_entry *pds;
+		struct suet_ses_pkt_entry *ses;
+		struct suet_req_pkt *wire;
+
+		assert(!suet_dgram_ep_recv_pkt(&domain));
+		comp.op_context = recv_context;
+		comp.len = prefix_size + sizeof(*wire) + 64;
+		suet_dgram_rx_complete(&domain, &comp, 17);
+		packets[i] = received;
+		dgram = container_of(received, struct suet_dgram_pkt_entry,
+				     pkt);
+		pds = received->pds_ctx;
+		ses = received->ses_ctx;
+		memset(pds, 0, sizeof(*pds));
+		pds->pkt = received;
+		pds->timestamp = 123 + i;
+		pds->local_pdcid = 7;
+		dlist_init(&pds->entry);
+		memcpy(&saved[i], pds, sizeof(*pds));
+		wire = received->pkt;
+		memset(wire, 0, sizeof(*wire) + 64);
+		ses_req_init(&wire->ses, UET_SEND, !i, !!i, 1, 0, 7, 0, 0, 0,
+			     128, 0, 0);
+		if (i)
+			ses_hd_set_cont(&wire->ses, 64, 64);
+		suet_ses_receive(rx, received, &result);
+		assert(result.accepted && result.pkt_retained);
+		assert(ses->pkt == received && !dlist_empty(&ses->entry));
+		assert(dlist_empty(&dgram->entry));
+		assert(dlist_empty(&pds->entry));
+		suet_ses_rx_commit(rx, &result);
+	}
+	unexp = container_of(ep.unexp_list.next, struct suet_ses_unexp_msg,
+			     entry);
+	assert(unexp->pkt_list.next ==
+	       &((struct suet_ses_pkt_entry *) packets[0]->ses_ctx)->entry);
+	assert(unexp->pkt_list.prev ==
+	       &((struct suet_ses_pkt_entry *) packets[1]->ses_ctx)->entry);
+	for (i = 0; i < 2; i++)
+		assert(!memcmp(packets[i]->pds_ctx, &saved[i],
+			       sizeof(saved[i])));
+	suet_ses_unexp_msg_list_cleanup(&ep.unexp_list);
+	assert(dlist_empty(&ep.unexp_list));
+	suet_ses_rx_close(rx);
+	suet_ses_cleanup(&domain);
+	suet_pds_cleanup(&domain);
+	suet_dgram_free_pkt_entry_pools(&domain);
+}
+
+int main(void)
+{
+	ofi_mem_init();
+	check_datagram(0);
+	check_datagram(8);
+	check_pds_retention();
+	check_ses_retention();
+	ofi_mem_fini();
+	puts("PDS/datagram prefixes, completion ownership and shutdown: PASS");
+	return 0;
+}

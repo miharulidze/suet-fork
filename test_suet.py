@@ -14,6 +14,10 @@ Usage:
     python3 test_suet.py -v               # verbose output
     python3 test_suet.py --bin-dir /path  # custom binary directory
 
+    # Wire compatibility: use different libfabric builds on each side (macOS)
+    python3 test_suet.py --server-env DYLD_LIBRARY_PATH=/path/to/old/lib \
+                        --client-env DYLD_LIBRARY_PATH=/path/to/new/lib
+
     # Multi-node: server runs locally, client runs via SSH on the remote node
     python3 test_suet.py --server=node1 --client=node2 --provider="udp;ofi_suet"
 """
@@ -23,6 +27,7 @@ import os
 import shlex
 import subprocess
 import sys
+import tempfile
 import time
 
 DEFAULT_PROVIDER = "udp;ofi_suet"
@@ -60,7 +65,7 @@ def patch_test(test, provider, server_host, oob=False):
 
 
 def run_test(name, server_args, client_args, bin_dir, timeout, verbose,
-             client_host=None):
+             client_host=None, server_env=None, client_env=None):
     """
     Run a single fabtest: start server, start client, wait for both.
     Returns (passed: bool, output: str).
@@ -70,6 +75,9 @@ def run_test(name, server_args, client_args, bin_dir, timeout, verbose,
     """
     server_cmd = [os.path.join(bin_dir, server_args[0])] + server_args[1:]
     client_cmd = [os.path.join(bin_dir, client_args[0])] + client_args[1:]
+
+    if client_host and client_env:
+        client_cmd = ["env"] + [f"{k}={v}" for k, v in client_env.items()] + client_cmd
 
     if client_host:
         remote_cmd = " ".join(shlex.quote(a) for a in client_cmd)
@@ -81,44 +89,17 @@ def run_test(name, server_args, client_args, bin_dir, timeout, verbose,
 
     server_proc = None
     client_proc = None
-    output_lines = []
+    # File-backed output avoids blocking a verbose server while the client
+    # is running. Keep partial output on timeout for failure diagnosis.
+    server_log = tempfile.TemporaryFile()
+    client_log = tempfile.TemporaryFile()
 
-    try:
-        # Start server
-        server_proc = subprocess.Popen(
-            server_cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
-        time.sleep(2)  # let server bind
+    def output():
+        client_log.seek(0)
+        server_log.seek(0)
+        return (client_log.read() + b"\n" + server_log.read()).decode(errors="replace")
 
-        if server_proc.poll() is not None:
-            out = server_proc.stdout.read().decode(errors="replace")
-            return False, f"Server exited early (rc={server_proc.returncode})\n{out}"
-
-        # Start client
-        client_proc = subprocess.Popen(
-            client_cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
-
-        # Wait for client to finish
-        client_out, _ = client_proc.communicate(timeout=timeout)
-        output_lines.append(client_out.decode(errors="replace"))
-
-        # Wait for server to finish
-        server_out, _ = server_proc.communicate(timeout=10)
-        output_lines.append(server_out.decode(errors="replace"))
-
-        passed = client_proc.returncode == 0 and server_proc.returncode == 0
-        return passed, "\n".join(output_lines)
-
-    except subprocess.TimeoutExpired:
-        return False, "TIMEOUT"
-    except FileNotFoundError as e:
-        return False, f"Binary not found: {e}"
-    finally:
+    def stop_processes():
         for proc in (client_proc, server_proc):
             if proc and proc.poll() is None:
                 proc.kill()
@@ -126,6 +107,36 @@ def run_test(name, server_args, client_args, bin_dir, timeout, verbose,
                     proc.wait(timeout=2)
                 except subprocess.TimeoutExpired:
                     pass
+
+    try:
+        server_proc = subprocess.Popen(
+            server_cmd, stdout=server_log, stderr=subprocess.STDOUT,
+            env={**os.environ, **(server_env or {})},
+        )
+        time.sleep(2)  # let server bind
+
+        if server_proc.poll() is not None:
+            return False, f"Server exited early (rc={server_proc.returncode})\n{output()}"
+
+        client_proc = subprocess.Popen(
+            client_cmd, stdout=client_log, stderr=subprocess.STDOUT,
+            env={**os.environ, **(client_env or {})} if not client_host else None,
+        )
+        client_proc.wait(timeout=timeout)
+        server_proc.wait(timeout=10)
+
+        passed = client_proc.returncode == 0 and server_proc.returncode == 0
+        return passed, output()
+
+    except subprocess.TimeoutExpired:
+        stop_processes()
+        return False, f"TIMEOUT\n{output()}"
+    except FileNotFoundError as e:
+        return False, f"Binary not found: {e}"
+    finally:
+        stop_processes()
+        server_log.close()
+        client_log.close()
 
 
 # ---------------------------------------------------------------------------
@@ -347,6 +358,19 @@ TESTS = [
         "client": ["fi_rma_bw", "-v", "-S", "1048576", "-p", DEFAULT_PROVIDER, "-o", "write", DEFAULT_HOST],
         "timeout": 120,
     },
+    # SES/PDS boundary regressions: empty and buffered multi-segment messages.
+    {
+        "name": "rdm_pingpong (zero length)",
+        "category": "rdm",
+        "server": ["fi_rdm_pingpong", "-v", "-S", "0", "-I", "100", "-p", DEFAULT_PROVIDER, "-s", DEFAULT_HOST],
+        "client": ["fi_rdm_pingpong", "-v", "-S", "0", "-I", "100", "-p", DEFAULT_PROVIDER, DEFAULT_HOST],
+    },
+    {
+        "name": "unexpected_msg (segmented, verify)",
+        "category": "rdm",
+        "server": ["fi_unexpected_msg", "-v", "-e", "rdm", "-S", "65537", "-I", "10", "-p", DEFAULT_PROVIDER, "-s", DEFAULT_HOST],
+        "client": ["fi_unexpected_msg", "-v", "-e", "rdm", "-S", "65537", "-I", "10", "-p", DEFAULT_PROVIDER, DEFAULT_HOST],
+    },
 ]
 
 
@@ -372,7 +396,17 @@ def main():
                         help=f"Provider name (default: {DEFAULT_PROVIDER})")
     parser.add_argument("--oob", action="store_true",
                         help="Add -b (out-of-band) flag to server and client commands")
+    parser.add_argument("--server-env", action="append", default=[], metavar="NAME=VALUE",
+                        help="Server environment override (repeatable)")
+    parser.add_argument("--client-env", action="append", default=[], metavar="NAME=VALUE",
+                        help="Client environment override (repeatable)")
     args = parser.parse_args()
+
+    for setting in args.server_env + args.client_env:
+        if "=" not in setting or not setting.split("=", 1)[0]:
+            parser.error("Environment overrides must have the form NAME=VALUE")
+    server_env = dict(setting.split("=", 1) for setting in args.server_env)
+    client_env = dict(setting.split("=", 1) for setting in args.client_env)
 
     # Validate multi-node args
     if (args.server is None) != (args.client is None):
@@ -420,7 +454,7 @@ def main():
 
         passed, output = run_test(
             t["name"], t["server"], t["client"], bin_dir, timeout, args.verbose,
-            client_host=client_host,
+            client_host=client_host, server_env=server_env, client_env=client_env,
         )
 
         status = "PASS" if passed else "FAIL"

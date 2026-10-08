@@ -34,54 +34,26 @@
  */
 
 #include "suet.h"
+#include "suet_ses.h"
 #include <ofi_iov.h>
 #include <ofi_mem.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct suet_x_entry *suet_ep_get_tx_entry(struct suet_ep *ep, uint32_t op)
-{
-	struct suet_domain *domain = suet_ep_domain(ep);
-	struct suet_x_entry *tx_entry;
-
-	(void) op;
-	tx_entry = ofi_ibuf_alloc(domain->tx_entry_pool.pool);
-	if (!tx_entry)
-		return NULL;
-
-	tx_entry->ep = ep;
-
-	return tx_entry;
-}
-
-struct suet_x_entry *suet_ep_get_rx_entry(struct suet_ep *ep, uint32_t op)
-{
-	struct suet_domain *domain = suet_ep_domain(ep);
-	struct suet_x_entry *rx_entry;
-
-	(void) op;
-	rx_entry = ofi_ibuf_alloc(domain->rx_entry_pool.pool);
-	if (!rx_entry)
-		return NULL;
-
-	rx_entry->ep = ep;
-	return rx_entry;
-}
-
 static int suet_ep_match_ctx(struct dlist_entry *item, const void *arg)
 {
-	struct suet_x_entry *x_entry;
+	struct suet_ses_rx_entry *rx_entry;
 
-	x_entry = container_of(item, struct suet_x_entry, entry);
+	rx_entry = container_of(item, struct suet_ses_rx_entry, entry);
 
-	return (x_entry->cq_entry.op_context == arg);
+	return (rx_entry->cq_entry.op_context == arg);
 }
 
 static ssize_t suet_ep_cancel_recv(struct suet_ep *ep, struct dlist_entry *list,
 				   void *context)
 {
 	struct dlist_entry *entry;
-	struct suet_x_entry *rx_entry;
+	struct suet_ses_rx_entry *rx_entry;
 	struct fi_cq_err_entry err_entry;
 	int ret = 0;
 
@@ -91,7 +63,7 @@ static ssize_t suet_ep_cancel_recv(struct suet_ep *ep, struct dlist_entry *list,
 	if (!entry)
 		goto out;
 
-	rx_entry = container_of(entry, struct suet_x_entry, entry);
+	rx_entry = container_of(entry, struct suet_ses_rx_entry, entry);
 	memset(&err_entry, 0, sizeof(struct fi_cq_err_entry));
 	err_entry.op_context = rx_entry->cq_entry.op_context;
 	err_entry.flags = rx_entry->cq_entry.flags;
@@ -224,8 +196,9 @@ static int suet_ep_cm_setname(fid_t fid, void *raw_addr, size_t addrlen)
 	if (addrlen < sizeof(struct suet_av_addr))
 		return -FI_ETOOSMALL;
 
-	return fi_setname(&suet_ep_domain(ep)->dg_ep->fid,
-			  (void *) addr->raw_dg_addr, addr->raw_dg_addrlen);
+	return fi_setname(&suet_ep_domain(ep)->dgram.ep->fid,
+			  (void *) addr->raw_dgram_addr,
+			  addr->raw_dgram_addrlen);
 }
 
 static int suet_ep_cm_getname(fid_t fid, void *raw_addr, size_t *addrlen)
@@ -233,8 +206,8 @@ static int suet_ep_cm_getname(fid_t fid, void *raw_addr, size_t *addrlen)
 	struct suet_ep *ep =
 		container_of(fid, struct suet_ep, util_ep.ep_fid.fid);
 	struct suet_av_addr *addr = (struct suet_av_addr *) raw_addr;
-	uint8_t raw_dg_addr[SUET_DG_AV_NAME_LENGTH];
-	size_t raw_dg_addrlen = sizeof(raw_dg_addr);
+	uint8_t raw_dgram_addr[SUET_DGRAM_AV_NAME_LENGTH];
+	size_t raw_dgram_addrlen = sizeof(raw_dgram_addr);
 	int ret;
 
 	if (*addrlen < sizeof(struct suet_av_addr)) {
@@ -242,8 +215,8 @@ static int suet_ep_cm_getname(fid_t fid, void *raw_addr, size_t *addrlen)
 		return -FI_ETOOSMALL;
 	}
 
-	ret = fi_getname(&suet_ep_domain(ep)->dg_ep->fid, raw_dg_addr,
-			 &raw_dg_addrlen);
+	ret = fi_getname(&suet_ep_domain(ep)->dgram.ep->fid, raw_dgram_addr,
+			 &raw_dgram_addrlen);
 	if (ret && ret != -FI_ETOOSMALL)
 		return ret;
 
@@ -252,9 +225,9 @@ static int suet_ep_cm_getname(fid_t fid, void *raw_addr, size_t *addrlen)
 	addr->pid_on_fep = ep->pid_on_fep & SUET_PID_ON_FEP_MASK;
 	addr->start_ri = ep->resource_index & SUET_RI_MASK;
 	addr->num_ri = 1;
-	addr->raw_dg_addrlen =
-		(uint16_t) MIN(raw_dg_addrlen, sizeof(raw_dg_addr));
-	memcpy(addr->raw_dg_addr, raw_dg_addr, addr->raw_dg_addrlen);
+	addr->raw_dgram_addrlen =
+		(uint16_t) MIN(raw_dgram_addrlen, sizeof(raw_dgram_addr));
+	memcpy(addr->raw_dgram_addr, raw_dgram_addr, addr->raw_dgram_addrlen);
 
 	*addrlen = sizeof(struct suet_av_addr);
 	return 0;
@@ -273,7 +246,7 @@ struct fi_ops_cm suet_ep_cm = {
 	.join = fi_no_join,
 };
 
-void suet_ep_progress(struct util_ep *util_ep)
+static void suet_ep_progress(struct util_ep *util_ep)
 {
 	struct suet_ep *ep = container_of(util_ep, struct suet_ep, util_ep);
 	struct suet_domain *domain = suet_ep_domain(ep);
@@ -287,10 +260,7 @@ static int suet_ep_close(struct fid *fid)
 {
 	struct suet_ep *ep;
 	struct suet_domain *domain;
-	struct suet_pkt_entry *pkt_entry;
-	struct suet_x_entry *x_entry;
-	struct suet_ipdc *ipdc;
-	struct suet_tpdc *tpdc;
+	struct suet_ses_rx_entry *rx_entry;
 	struct dlist_entry *tmp;
 
 	ep = container_of(fid, struct suet_ep, util_ep.ep_fid.fid);
@@ -301,57 +271,18 @@ static int suet_ep_close(struct fid *fid)
 	if (ep->resource_index < suet_env.max_eps)
 		domain->ep_table[ep->resource_index] = NULL;
 
-	/* Drain tx_entries belonging to this EP from every active ipdc's
-	 * tx_list. tx_entries are allocated from ep->tx_entry_pool, which
-	 * is destroyed by suet_ep_free_res() below; any tx_entry left
-	 * referenced by an ipdc would dangle through the next domain
-	 * progress / teardown and segfault when iterated. */
-	dlist_foreach_container (&domain->active_ipdc_list, struct suet_ipdc,
-				 ipdc, entry) {
-		dlist_foreach_container_safe (&ipdc->tx_list,
-					      struct suet_x_entry, x_entry,
-					      entry, tmp) {
-			if (x_entry->ep != ep)
-				continue;
-			suet_ses_tx_entry_free(x_entry);
-		}
-	}
-
-	/* Drain rx_entries belonging to this EP from every active tpdc's
-	 * rx_list / rma_rx_list. */
-	dlist_foreach_container (&domain->active_tpdc_list, struct suet_tpdc,
-				 tpdc, entry) {
-		dlist_foreach_container_safe (&tpdc->rx_list,
-					      struct suet_x_entry, x_entry,
-					      entry, tmp) {
-			if (x_entry->ep != ep)
-				continue;
-			suet_ses_rx_entry_free(x_entry);
-		}
-		dlist_foreach_container_safe (&tpdc->rma_rx_list,
-					      struct suet_x_entry, x_entry,
-					      entry, tmp) {
-			if (x_entry->ep != ep)
-				continue;
-			suet_ses_rx_entry_free(x_entry);
-		}
-	}
-
-	while (!dlist_empty(&ep->ctrl_pkts)) {
-		dlist_pop_front(&ep->ctrl_pkts, struct suet_pkt_entry,
-				pkt_entry, d_entry);
-		if (!(pkt_entry->flags & SUET_PKT_IN_USE))
-			suet_domain_pkt_entry_free(pkt_entry);
-	}
+	suet_ses_ep_cleanup(ep);
 
 	/* Posted-but-unmatched rx_entries on the EP's own lists also come
-	 * from ep->rx_entry_pool. Free them before the pool is destroyed. */
-	dlist_foreach_container_safe (&ep->rx_list, struct suet_x_entry,
-				      x_entry, entry, tmp)
-		suet_ses_rx_entry_free(x_entry);
-	dlist_foreach_container_safe (&ep->rx_tag_list, struct suet_x_entry,
-				      x_entry, entry, tmp)
-		suet_ses_rx_entry_free(x_entry);
+	 * from the SES RX entry pool. Free them before the pool is destroyed.
+	 */
+	dlist_foreach_container_safe (&ep->rx_list, struct suet_ses_rx_entry,
+				      rx_entry, entry, tmp)
+		suet_ses_rx_entry_free(rx_entry);
+	dlist_foreach_container_safe (&ep->rx_tag_list,
+				      struct suet_ses_rx_entry, rx_entry, entry,
+				      tmp)
+		suet_ses_rx_entry_free(rx_entry);
 
 	ofi_genlock_unlock(&domain->fep_lock);
 
@@ -366,11 +297,11 @@ static int suet_ep_close(struct fid *fid)
 
 static int suet_ep_init_res(struct suet_ep *ep, struct fi_info *fi_info)
 {
+	dlist_init(&ep->tx_list);
 	dlist_init(&ep->rx_list);
 	dlist_init(&ep->rx_tag_list);
 	dlist_init(&ep->unexp_list);
 	dlist_init(&ep->unexp_tag_list);
-	dlist_init(&ep->ctrl_pkts);
 
 	return 0;
 }
@@ -386,7 +317,7 @@ static struct fi_ops suet_ep_fi_ops = {
 int suet_endpoint(struct fid_domain *domain, struct fi_info *info,
 		  struct fid_ep **ep, void *context)
 {
-	struct fi_info *dg_info;
+	struct fi_info *dgram_info;
 	struct suet_domain *suet_domain;
 	struct suet_ep *suet_ep;
 	int ret;
@@ -403,22 +334,23 @@ int suet_endpoint(struct fid_domain *domain, struct fi_info *info,
 	if (ret)
 		goto err1;
 
-	/* Get dg_info for rx/tx size limits (dg_ep already lives on domain) */
+	/* Get dgram_info for rx/tx size limits (dgram_ep already lives on
+	 * domain) */
 	{
 		struct suet_av_addr_tmp_storage addr_save = {0};
-		suet_av_info_unwrap_raw_dg_addrs(info, &addr_save);
+		suet_av_info_unwrap_raw_dgram_addrs(info, &addr_save);
 		ret = ofi_get_core_info(
 			suet_domain->util_domain.fabric->fabric_fid.api_version,
 			NULL, NULL, 0, &suet_util_prov, info, NULL,
-			suet_info_to_core, &dg_info);
-		suet_av_info_wrap_raw_dg_addrs(info, &addr_save);
+			suet_info_to_core, &dgram_info);
+		suet_av_info_wrap_raw_dgram_addrs(info, &addr_save);
 	}
 	if (ret)
 		goto err2;
 
-	suet_ep->rx_size = MIN(dg_info->rx_attr->size, info->rx_attr->size);
-	suet_ep->tx_size = MIN(dg_info->tx_attr->size, info->tx_attr->size);
-	fi_freeinfo(dg_info);
+	suet_ep->rx_size = MIN(dgram_info->rx_attr->size, info->rx_attr->size);
+	suet_ep->tx_size = MIN(dgram_info->tx_attr->size, info->tx_attr->size);
+	fi_freeinfo(dgram_info);
 
 	suet_ep->pid_on_fep = suet_domain->pid_on_fep;
 

@@ -3,6 +3,7 @@ _suet_files = \
 	prov/suet/src/suet_init.c		\
 	prov/suet/src/suet_fabric.c	\
 	prov/suet/src/suet_domain.c	\
+	prov/suet/src/suet_dgram.c	\
 	prov/suet/src/suet_av.c		\
 	prov/suet/src/suet_cq.c		\
 	prov/suet/src/suet_cntr.c		\
@@ -15,6 +16,11 @@ _suet_files = \
 	prov/suet/src/suet_atomic.c	\
 	prov/suet/src/suet_mr.c		\
 	prov/suet/src/suet.h		\
+	prov/suet/src/suet_dgram.h	\
+	prov/suet/src/suet_pds_dgram_api.h	\
+	prov/suet/src/suet_pds.h		\
+	prov/suet/src/suet_ses.h	\
+	prov/suet/src/suet_ses_pds_api.h	\
 	prov/suet/src/suet_proto.h
 
 if HAVE_SUET

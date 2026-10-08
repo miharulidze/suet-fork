@@ -37,34 +37,35 @@
 #include <string.h>
 #include <sys/uio.h>
 
-#include <ofi_enosys.h>
 #include "ofi_iov.h"
 #include "suet.h"
+#include "suet_ses.h"
+#include <ofi_enosys.h>
 
-static struct suet_x_entry *suet_tx_entry_init_atomic(struct suet_ep *ep, fi_addr_t addr,
-			uint32_t op, const struct iovec *iov, size_t iov_count,
-			uint64_t data, uint32_t flags, void *context,
-			const struct fi_rma_iov *rma_iov, size_t rma_count,
-			enum fi_datatype datatype, enum fi_op atomic_op)
+static struct suet_ses_tx_entry *
+suet_tx_entry_init_atomic(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
+			  const struct iovec *iov, size_t iov_count,
+			  uint64_t data, uint32_t flags, void *context,
+			  const struct fi_rma_iov *rma_iov, size_t rma_count,
+			  enum fi_datatype datatype, enum fi_op atomic_op)
 {
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 
 	tx_entry = suet_ses_tx_entry_init_common(
 		ep, addr, op, iov, NULL, iov_count, 0, data, flags, context);
 	if (!tx_entry)
 		return NULL;
 
-	tx_entry->hdr_len = sizeof(struct ses_msg_amo_pkt);
+	tx_entry->hdr_len = sizeof(struct suet_amo_pkt);
 	tx_entry->num_pkts = 1;
 
 	suet_ses_init_rma_iov(rma_iov, tx_entry);
 
-	tx_entry->cached_hdr.amo.amo.atomic_opcode =
-		fi_op_to_ses_amo(atomic_op);
-	tx_entry->cached_hdr.amo.amo.atomic_datatype =
+	tx_entry->cached_hdr.amo.atomic_opcode = fi_op_to_ses_amo(atomic_op);
+	tx_entry->cached_hdr.amo.atomic_datatype =
 		fi_datatype_to_ses_type(datatype);
-	tx_entry->cached_hdr.amo.amo.semantic_control = 0;
-	tx_entry->cached_hdr.amo.amo.reserved = 0;
+	tx_entry->cached_hdr.amo.semantic_control = 0;
+	tx_entry->cached_hdr.amo.reserved = 0;
 
 	return tx_entry;
 }
@@ -76,7 +77,7 @@ static ssize_t suet_ep_generic_atomic(struct suet_ep *suet_ep,
 			enum fi_op atomic_op, void *context, uint32_t op,
 			uint32_t suet_flags)
 {
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 	struct iovec iov[SUET_IOV_LIMIT];
 	struct fi_rma_iov rma_iov[SUET_IOV_LIMIT];
 	size_t max_inline_atom;
@@ -104,7 +105,7 @@ static ssize_t suet_ep_generic_atomic(struct suet_ep *suet_ep,
 	if (!tx_entry)
 		goto out;
 
-	suet_pds_send_tx_entry(tx_entry);
+	suet_ses_submit(tx_entry);
 	ret = 0;
 
 out:
@@ -173,7 +174,7 @@ static ssize_t suet_ep_atomic_inject(struct fid_ep *ep_fid, const void *buf,
 			uint64_t key, enum fi_datatype datatype, enum fi_op op)
 {
 	struct suet_ep *suet_ep = container_of(ep_fid, struct suet_ep, util_ep.ep_fid.fid);
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 	struct iovec iov;
 	struct fi_rma_iov rma_iov;
 	ssize_t ret = -FI_EAGAIN;
@@ -198,7 +199,7 @@ static ssize_t suet_ep_atomic_inject(struct fid_ep *ep_fid, const void *buf,
 	if (!tx_entry)
 		goto out;
 
-	suet_pds_send_tx_entry(tx_entry);
+	suet_ses_submit(tx_entry);
 	ret = 0;
 out:
 	ofi_genlock_unlock(&suet_ep_domain(suet_ep)->fep_lock);

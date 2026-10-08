@@ -122,15 +122,16 @@ int suet_info_to_core(uint32_t version, const struct fi_info *suet_info_in,
 	return 0;
 }
 
-int suet_info_to_suet(uint32_t version, const struct fi_info *core_info,
-		      const struct fi_info *base_info, struct fi_info *info)
+static int suet_info_to_suet(uint32_t version, const struct fi_info *core_info,
+			     const struct fi_info *base_info,
+			     struct fi_info *info)
 {
-	if (core_info->src_addrlen > SUET_DG_AV_NAME_LENGTH) {
+	if (core_info->src_addrlen > SUET_DGRAM_AV_NAME_LENGTH) {
 		FI_INFO(&suet_prov, FI_LOG_CORE,
 			"core provider %s address length %zu exceeds "
-			"SUET_DG_AV_NAME_LENGTH (%d), skipping\n",
+			"SUET_DGRAM_AV_NAME_LENGTH (%d), skipping\n",
 			core_info->fabric_attr->prov_name,
-			core_info->src_addrlen, SUET_DG_AV_NAME_LENGTH);
+			core_info->src_addrlen, SUET_DGRAM_AV_NAME_LENGTH);
 		return -FI_EINVAL;
 	}
 
@@ -171,9 +172,9 @@ static int suet_wrap_addr(void **addr, size_t *addrlen)
 		return -FI_ENOMEM;
 
 	wrapped->version = SUET_ADDR_VERSION;
-	wrapped->raw_dg_addrlen =
-		(uint16_t) MIN(*addrlen, SUET_DG_AV_NAME_LENGTH);
-	memcpy(wrapped->raw_dg_addr, *addr, wrapped->raw_dg_addrlen);
+	wrapped->raw_dgram_addrlen =
+		(uint16_t) MIN(*addrlen, SUET_DGRAM_AV_NAME_LENGTH);
+	memcpy(wrapped->raw_dgram_addr, *addr, wrapped->raw_dgram_addrlen);
 	free(*addr);
 	*addr = wrapped;
 	*addrlen = sizeof(struct suet_av_addr);
@@ -193,7 +194,7 @@ static int suet_getinfo(uint32_t version, const char *node, const char *service,
 	struct suet_av_addr_tmp_storage addr_save = {0};
 
 	if (mut_hints)
-		suet_av_info_unwrap_raw_dg_addrs(mut_hints, &addr_save);
+		suet_av_info_unwrap_raw_dgram_addrs(mut_hints, &addr_save);
 
 	if (suet_env.rescan > 0) /* Explicitly enabled */
 		flags |= FI_RESCAN;
@@ -204,7 +205,7 @@ static int suet_getinfo(uint32_t version, const char *node, const char *service,
 			   hints, suet_info_to_core, suet_info_to_suet, info);
 
 	if (mut_hints)
-		suet_av_info_wrap_raw_dg_addrs(mut_hints, &addr_save);
+		suet_av_info_wrap_raw_dgram_addrs(mut_hints, &addr_save);
 
 	if (ret)
 		return ret;

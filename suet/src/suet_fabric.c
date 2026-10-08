@@ -64,7 +64,7 @@ static int suet_fabric_close(fid_t fid)
 	struct suet_fabric *suet_fabric;
 
 	suet_fabric = container_of(fid, struct suet_fabric, util_fabric.fabric_fid.fid);
-	ret = fi_close(&suet_fabric->dg_fabric->fid);
+	ret = fi_close(&suet_fabric->dgram_fabric->fid);
 	if (ret)
 		return ret;
 
@@ -88,7 +88,7 @@ int suet_fabric(struct fi_fabric_attr *attr, struct fid_fabric **fabric,
 		void *context)
 {
 	struct suet_fabric *suet_fabric;
-	struct fi_info *dg_info;
+	struct fi_info *dgram_info;
 	int ret;
 
 	suet_fabric = calloc(1, sizeof(*suet_fabric));
@@ -100,14 +100,15 @@ int suet_fabric(struct fi_fabric_attr *attr, struct fid_fabric **fabric,
 	if (ret)
 		goto err1;
 
-	ret = ofi_get_core_info_fabric(&suet_prov, attr, &dg_info);
+	ret = ofi_get_core_info_fabric(&suet_prov, attr, &dgram_info);
 	if (ret) {
 		FI_WARN(&suet_prov, FI_LOG_FABRIC, "Unable to get core info!\n");
 		ret = -FI_EINVAL;
 		goto err2; 
 	}
 
-	ret = fi_fabric(dg_info->fabric_attr, &suet_fabric->dg_fabric, context);
+	ret = fi_fabric(dgram_info->fabric_attr, &suet_fabric->dgram_fabric,
+			context);
 	if (ret)
 		goto err3;
 
@@ -115,10 +116,10 @@ int suet_fabric(struct fi_fabric_attr *attr, struct fid_fabric **fabric,
 	(*fabric)->fid.ops = &suet_fabric_fi_ops;
 	(*fabric)->ops = &suet_fabric_ops;
 
-	fi_freeinfo(dg_info);
+	fi_freeinfo(dgram_info);
 	return 0;
 err3:
-	fi_freeinfo(dg_info);
+	fi_freeinfo(dgram_info);
 err2:
 	(void) ofi_fabric_close(&suet_fabric->util_fabric);
 err1:

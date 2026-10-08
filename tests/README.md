@@ -1,0 +1,95 @@
+# SES/PDS regression checks
+
+The normal suite retains all 33 original cases and adds zero-length messaging
+and verified, segmented unexpected messages (65,537 bytes):
+
+```sh
+python3 test_suet.py --bin-dir /path/to/fabtests/bin -v
+```
+
+No test iterations or timeout limits were reduced. Output is captured in
+temporary files so a verbose server cannot fill its output pipe while the
+runner waits for the client. Timeouts include partial output.
+
+## Packet preparation
+
+`test_ses_pds.c` checks the direct SES/PDS contract: first, middle, and final
+segments; repeated/out-of-order preparation without mutating the TX entry;
+scatter/gather and zero-copy
+payloads; untouched PDS header space; datagram prefix accounting; empty
+messages; and the atomic header extension. It also checks independent SES
+domain lifetimes, receive allocation after another domain closes, repeated
+cleanup, and reinitialization. Response-retention checks cover pool exhaustion,
+rejected unexpected intake, immutable response inputs, replay-range preservation
+across semantic response replacement, and capacity recovery after release.
+It runs without network access.
+
+From the SUET repository, with a configured libfabric source/build tree that
+includes this provider and its installed static library:
+
+```sh
+LIBFABRIC=/path/to/libfabric
+PREFIX=/path/to/install
+cc -g -Wall -DHAVE_CONFIG_H -D_GNU_SOURCE \
+  -I"$LIBFABRIC" -I"$LIBFABRIC/include" -I"$LIBFABRIC/include/osx" \
+  -Isuet/src tests/test_ses_pds.c "$PREFIX/lib/libfabric.a" \
+  -lpthread -ldl -o /tmp/test_ses_pds
+/tmp/test_ses_pds
+```
+
+Use the platform's internal include directory on other systems and any extra
+static dependencies required by its enabled libfabric providers. Compile the
+test with assertions enabled (without `-DNDEBUG`). The test matches the
+configured libfabric debug/release header layout before enabling its own
+assertions.
+
+## Datagram and packet ownership
+
+`test_pds_dgram.c` checks provider prefixes, repeated zero-copy sends, immediate
+send failures, local success/error completions, ACK-before-completion retention,
+RX ownership transfer, and shutdown. It also checks context alignment and that
+retaining two unexpected-message segments in SES leaves PDS state and the
+datagram list node untouched. Run it with the same compiler and library settings
+as above, replacing `test_ses_pds` with `test_pds_dgram` in both paths.
+
+## Compatibility between builds
+
+On macOS, use the same fabtests binaries with a different libfabric library
+for each process. Both builds must use the same libfabric ABI. Swap the two
+paths to check the opposite direction:
+
+```sh
+python3 test_suet.py --bin-dir /path/to/fabtests/bin -v \
+  --server-env DYLD_LIBRARY_PATH=/path/to/original/lib \
+  --client-env DYLD_LIBRARY_PATH=/path/to/refactored/lib
+```
+
+On Linux, use `LD_LIBRARY_PATH`. Environment overrides are repeatable and can
+also supply `FI_SUET_*` settings without changing the other process.
+
+## macOS validation environment
+
+The refactor was validated on macOS over `udp;ofi_suet` on loopback. The
+original provider was SUET commit `e3e21c5`. Both builds used libfabric
+`7a494bde871a927a8fc7a917f1556eb01a089d39`, the provider registration patch, and
+the two dependency patches documented by the repository build:
+
+- `304fe27a299042685c029d03d692c54abeb44409` (UDP source error handling)
+- `5ea1ba6ed6d56973b516cc24d3489d1c703b500a` (Verbs source error handling)
+
+Configure used `--enable-suet --enable-udp CFLAGS='-O2 -g'`. Explicit CFLAGS
+avoided an upstream macOS dynamic-loader failure involving `_coll_av_open`
+with the default visibility flags. This was a validation build setting; no
+upstream sources were changed for that workaround.
+
+Results for the final refactor in that environment:
+
+- All 33 original fabtests and both added integration cases passed (35 total).
+- Four interoperability cases passed in each direction (eight total): empty
+  messages, verified segmented unexpected messages, tagged peek/claim/discard,
+  and 1 MiB RMA writes.
+- Both standalone test programs passed. The packet-ownership tests also passed
+  with address/undefined-behavior sanitizers and assertions enabled in the
+  datagram, PDS, and SES implementations.
+- Every provider source compiled without warnings. Changes in `suet_proto.h`
+  rename C packet types and datagram address fields; wire layouts are unchanged.

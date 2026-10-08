@@ -33,20 +33,22 @@
  * SOFTWARE.
  */
 
+#include "suet.h"
+#include "suet_ses.h"
+#include <ofi_enosys.h>
+#include <ofi_iov.h>
+#include <ofi_mem.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ofi_enosys.h>
-#include <ofi_mem.h>
-#include <ofi_iov.h>
-#include "suet.h"
 
-static struct suet_x_entry *
+static struct suet_ses_tx_entry *
 suet_ep_tx_entry_init_rma(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
-		       const struct iovec *iov, void **desc, size_t iov_count,
-		       uint64_t data, uint32_t flags, void *context,
-		       const struct fi_rma_iov *rma_iov, size_t rma_count)
+			  const struct iovec *iov, void **desc,
+			  size_t iov_count, uint64_t data, uint32_t flags,
+			  void *context, const struct fi_rma_iov *rma_iov,
+			  size_t rma_count)
 {
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 	struct suet_domain *suet_domain = suet_ep_domain(ep);
 
 	tx_entry = suet_ses_tx_entry_init_common(
@@ -54,11 +56,11 @@ suet_ep_tx_entry_init_rma(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 	if (!tx_entry)
 		return NULL;
 
-	tx_entry->hdr_len = sizeof(struct ses_msg_data_pkt);
+	tx_entry->hdr_len = sizeof(struct suet_req_pkt);
 
-	if (tx_entry->cq_entry.len > (size_t) suet_domain->max_seg_sz)
+	if (tx_entry->cq_entry.len > (size_t) suet_domain->max_pkt_sz)
 		tx_entry->num_pkts = ofi_div_ceil(tx_entry->cq_entry.len,
-						  suet_domain->max_seg_sz);
+						      suet_domain->max_pkt_sz);
 	else
 		tx_entry->num_pkts = 1;
 
@@ -73,7 +75,7 @@ static ssize_t suet_ep_generic_write_inject(struct suet_ep *suet_ep,
 		fi_addr_t addr, void *context, uint32_t op, uint64_t data,
 		uint32_t suet_flags)
 {
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 	ssize_t ret = -FI_EAGAIN;
 
 	if (iov_count > SUET_IOV_LIMIT || rma_count > SUET_IOV_LIMIT)
@@ -92,7 +94,7 @@ static ssize_t suet_ep_generic_write_inject(struct suet_ep *suet_ep,
 		goto out;
 	}
 
-	suet_pds_send_tx_entry(tx_entry);
+	suet_ses_submit(tx_entry);
 	ret = 0;
 
 out:
@@ -106,7 +108,7 @@ suet_ep_generic_rma(struct suet_ep *suet_ep, const struct iovec *iov,
 	void **desc, fi_addr_t addr, void *context, uint32_t op, uint64_t data,
 	uint32_t suet_flags)
 {
-	struct suet_x_entry *tx_entry;
+	struct suet_ses_tx_entry *tx_entry;
 	ssize_t ret = -FI_EAGAIN;
 
 	if (suet_flags & SUET_INJECT)
@@ -135,7 +137,7 @@ suet_ep_generic_rma(struct suet_ep *suet_ep, const struct iovec *iov,
 		goto out;
 	}
 
-	suet_pds_send_tx_entry(tx_entry);
+	suet_ses_submit(tx_entry);
 	ret = 0;
 
 out:
