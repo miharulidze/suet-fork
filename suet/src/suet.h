@@ -72,7 +72,6 @@
 #define SUET_MAX_TX_BITS 10
 #define SUET_MAX_RX_BITS 10
 
-#define SUET_MR_KEY_MAX_RETRIES 1024
 #define SUET_BUF_POOL_ALIGNMENT 16
 #define SUET_MAX_PENDING	128
 #define SUET_ADDR_INVALID	0
@@ -116,15 +115,16 @@ extern struct fi_ops_mr suet_domain_mr_ops;
 
 struct suet_mr {
 	struct fid_mr mr_fid;
-	struct fid_mr *dgram_mr;
+	void *dgram_ctx; /* datagram registration handle */
 	struct suet_domain *domain;
 	ofi_mutex_t amo_lock;
 };
 
 int suet_mr_regv_internal(struct suet_domain *domain, const struct iovec *iov,
 			  size_t count, size_t reg_limit, uint64_t access,
-			  struct fid_mr **mr);
-void suet_mr_closev_internal(struct fid_mr **mr, size_t count);
+			  void **mr, void **desc);
+void suet_mr_closev_internal(void **mr, size_t count);
+void *suet_mr_desc(void *desc);
 
 /*
  * Provider architecture:
@@ -150,7 +150,7 @@ void suet_mr_closev_internal(struct fid_mr **mr, size_t count);
 
 struct suet_fabric { /* UET NIC */
 	struct util_fabric util_fabric;
-	struct fid_fabric *dgram_fabric;
+	void *dgram_ctx; /* datagram fabric handle */
 };
 
 struct suet_domain; /* UET Fabric endpoint (FEP) */
@@ -194,7 +194,6 @@ struct suet_domain {
 
 struct suet_av {
 	struct util_av util_av;
-	struct fid_av *dgram_av;
 	struct indexer usr_av_addr_to_peer_idx;
 	struct index_map peer_idx_to_usr_av_addr;
 };
@@ -246,12 +245,7 @@ suet_av_info_wrap_raw_dgram_addrs(struct fi_info *info,
 	info->dest_addrlen = save->dest_addrlen;
 }
 
-static inline int suet_av_peer_idx_from_usr_av_addr(struct suet_av *av,
-						    fi_addr_t fi_addr)
-{
-	return (int) (intptr_t) ofi_idx_lookup(&av->usr_av_addr_to_peer_idx,
-					       SUET_IDX_OFFSET((int) fi_addr));
-}
+int suet_av_peer_idx_from_usr_av_addr(struct suet_av *av, fi_addr_t addr);
 
 struct suet_cq;
 typedef int (*suet_cq_write_fn)(struct suet_cq *cq,
@@ -359,9 +353,9 @@ static inline uint32_t suet_ep_rx_flags(uint64_t fi_flags)
 
 void suet_ses_unexp_msg_list_cleanup(struct dlist_entry *list);
 
-int suet_info_to_core(uint32_t version, const struct fi_info *suet_info,
-		      const struct fi_info *base_info,
-		      struct fi_info *core_info);
+void suet_info_from_dgram(struct fi_info *info, uint64_t caps,
+			  uint64_t domain_caps, size_t max_mtu,
+			  size_t prefix_size);
 int suet_fabric(struct fi_fabric_attr *attr, struct fid_fabric **fabric,
 		void *context);
 

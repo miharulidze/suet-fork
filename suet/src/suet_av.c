@@ -34,264 +34,7 @@
  */
 
 #include "suet.h"
-#include "suet_pds_dgram_api.h"
 #include <inttypes.h>
-
-fi_addr_t suet_dgram_av_get_addr_by_peer_idx(struct suet_domain *domain,
-					     int peer_idx)
-{
-	return (fi_addr_t) (intptr_t) ofi_idx_lookup(
-		&domain->dgram.peer_idx_to_av_addr, (int) peer_idx);
-}
-
-static int suet_dgram_av_tree_compare_fn(struct ofi_rbmap *map, void *key,
-					 void *data)
-{
-	struct suet_domain *domain;
-	uint8_t raw_dgram_addr[SUET_DGRAM_AV_NAME_LENGTH];
-	size_t raw_dgram_addr_len = sizeof(raw_dgram_addr);
-	int ret;
-	fi_addr_t dgram_av_addr;
-
-	memset(raw_dgram_addr, 0, raw_dgram_addr_len);
-	domain = container_of(map, struct suet_domain, dgram.rbmap);
-	dgram_av_addr = suet_dgram_av_get_addr_by_peer_idx(
-		domain, (int) (intptr_t) data);
-
-	ret = fi_av_lookup(domain->dgram.av, dgram_av_addr, raw_dgram_addr,
-			   &raw_dgram_addr_len);
-	if (ret)
-		return -1;
-
-	return memcmp(key, raw_dgram_addr, raw_dgram_addr_len);
-}
-
-/*
- * The SUET code is agnostic wrt the datagram address format, but we need
- * to know the size of the address in order to iterate over them.  Because
- * the datagram AV may be configured for asynchronous operation, open a
- * temporary one to insert/lookup the address to get the size.  I agree it's
- * goofy.
- */
-static int suet_dgram_av_set_addrlen(struct suet_domain *domain,
-				     const void *addr)
-{
-	struct fid_av *tmp_av;
-	struct fi_av_attr attr;
-	uint8_t tmp_addr[SUET_DGRAM_AV_NAME_LENGTH];
-	fi_addr_t fiaddr;
-	size_t len;
-	int ret;
-
-	FI_INFO(&suet_prov, FI_LOG_AV, "determine dgram address len\n");
-	memset(&attr, 0, sizeof attr);
-	attr.count = 1;
-
-	ret = fi_av_open(domain->dgram.domain, &attr, &tmp_av, NULL);
-	if (ret) {
-		FI_WARN(&suet_prov, FI_LOG_AV, "failed to open av: %d (%s)\n",
-			-ret, fi_strerror(-ret));
-		return ret;
-	}
-
-	ret = fi_av_insert(tmp_av, addr, 1, &fiaddr, 0, NULL);
-	if (ret != 1) {
-		FI_WARN(&suet_prov, FI_LOG_AV, "addr insert failed: %d (%s)\n",
-			-ret, fi_strerror(-ret));
-		ret = -FI_EINVAL;
-		goto close;
-	}
-
-	len = sizeof tmp_addr;
-	ret = fi_av_lookup(tmp_av, fiaddr, tmp_addr, &len);
-	if (ret) {
-		FI_WARN(&suet_prov, FI_LOG_AV, "addr lookup failed: %d (%s)\n",
-			-ret, fi_strerror(-ret));
-		goto close;
-	}
-
-	FI_INFO(&suet_prov, FI_LOG_AV, "set dgram address len: %zu\n", len);
-	domain->dgram.addrlen = len;
-close:
-	fi_close(&tmp_av->fid);
-	return ret;
-}
-
-static int suet_dgram_av_set_peer_idx(struct suet_domain *domain,
-				      fi_addr_t addr, int *peer_idx)
-{
-	int new_peer_idx;
-	new_peer_idx = ofi_idx_insert(&(domain->dgram.peer_idx_to_av_addr),
-				      (void *) (uintptr_t) addr);
-	if (new_peer_idx < 0)
-		return -FI_ENOMEM;
-	*peer_idx = new_peer_idx;
-	return 0;
-}
-
-void suet_dgram_av_cleanup(struct suet_domain *domain)
-{
-	struct ofi_rbnode *node;
-	fi_addr_t dgram_av_addr;
-	int peer_idx;
-	int ret;
-
-	while ((node = ofi_rbmap_get_root(&domain->dgram.rbmap))) {
-		peer_idx = (int) (intptr_t) node->data;
-		dgram_av_addr =
-			suet_dgram_av_get_addr_by_peer_idx(domain, peer_idx);
-
-		ret = fi_av_remove(domain->dgram.av, &dgram_av_addr, 1, 0);
-		if (ret)
-			FI_WARN(&suet_prov, FI_LOG_AV,
-				"failed to remove dgram addr: %d (%s)\n", -ret,
-				fi_strerror(-ret));
-
-		ofi_idx_remove_ordered(&domain->dgram.peer_idx_to_av_addr,
-				       peer_idx);
-		ofi_rbmap_delete(&domain->dgram.rbmap, node);
-	}
-	ofi_rbmap_cleanup(&domain->dgram.rbmap);
-	ofi_idx_reset(&domain->dgram.peer_idx_to_av_addr);
-
-	ofi_genlock_destroy(&domain->dgram.av_lock);
-
-	if (domain->dgram.av) {
-		ret = fi_close(&domain->dgram.av->fid);
-		if (ret)
-			FI_WARN(&suet_prov, FI_LOG_AV,
-				"failed to close dgram_av: %d (%s)\n", -ret,
-				fi_strerror(-ret));
-		domain->dgram.av = NULL;
-	}
-}
-
-int suet_dgram_av_init(struct suet_domain *domain)
-{
-	struct fi_av_attr av_attr = {0};
-	int ret;
-
-	av_attr.type = FI_AV_UNSPEC;
-	ret = fi_av_open(domain->dgram.domain, &av_attr, &domain->dgram.av,
-			 NULL);
-	if (ret)
-		return ret;
-
-	ofi_rbmap_init(&domain->dgram.rbmap, suet_dgram_av_tree_compare_fn);
-	memset(&domain->dgram.peer_idx_to_av_addr, 0,
-	       sizeof(domain->dgram.peer_idx_to_av_addr));
-
-	ret = ofi_genlock_init(&domain->dgram.av_lock,
-			       domain->util_domain.threading != FI_THREAD_SAFE ?
-				       OFI_LOCK_NOOP :
-				       OFI_LOCK_MUTEX);
-	if (ret) {
-		ofi_rbmap_cleanup(&domain->dgram.rbmap);
-		fi_close(&domain->dgram.av->fid);
-		domain->dgram.av = NULL;
-		return ret;
-	}
-
-	return 0;
-}
-
-int suet_dgram_av_get_peer_idx_by_addr(struct suet_domain *domain,
-				       fi_addr_t dgram_av_addr)
-{
-	uint8_t raw_addr[SUET_DGRAM_AV_NAME_LENGTH];
-	size_t addrlen = sizeof(raw_addr);
-	struct ofi_rbnode *node;
-	int ret;
-
-	memset(raw_addr, 0, addrlen);
-	ret = fi_av_lookup(domain->dgram.av, dgram_av_addr, raw_addr, &addrlen);
-	if (ret)
-		return 0;
-
-	node = ofi_rbmap_find(&domain->dgram.rbmap, raw_addr);
-	if (!node)
-		return 0;
-
-	return (int) (intptr_t) node->data;
-}
-
-static int suet_dgram_av_insert_raw_addr(struct suet_domain *domain,
-					 const void *raw_addr, int *peer_idx,
-					 uint64_t flags, void *context)
-{
-	struct ofi_rbnode *node;
-	fi_addr_t dgram_av_addr;
-	int ret;
-
-	node = ofi_rbmap_find(&domain->dgram.rbmap, (void *) raw_addr);
-	if (node) {
-		*peer_idx = (int) (intptr_t) node->data;
-		return 0;
-	}
-
-	ret = fi_av_insert(domain->dgram.av, raw_addr, 1, &dgram_av_addr, flags,
-			   context);
-	if (ret != 1)
-		return -FI_EINVAL;
-
-	ret = suet_dgram_av_set_peer_idx(domain, dgram_av_addr, peer_idx);
-	if (ret < 0)
-		goto nomem;
-
-	ret = ofi_rbmap_insert(&domain->dgram.rbmap, (void *) raw_addr,
-			       (void *) (uintptr_t) (*peer_idx), NULL);
-	if (ret) {
-		ofi_idx_remove_ordered(&(domain->dgram.peer_idx_to_av_addr),
-				       (int) (*peer_idx));
-		goto nomem;
-	}
-
-	return ret;
-nomem:
-	fi_av_remove(domain->dgram.av, &dgram_av_addr, 1, flags);
-	return ret;
-}
-
-int suet_dgram_av_handle_addr_notavail(struct suet_domain *domain,
-				       struct fi_cq_err_entry *err,
-				       struct fi_cq_msg_entry *comp,
-				       fi_addr_t *dgram_av_addr)
-{
-	int peer_idx;
-	ssize_t ret;
-
-	ofi_genlock_lock(&domain->dgram.av_lock);
-
-	/* err_data stores raw address */
-	ret = fi_av_insert(domain->dgram.av, err->err_data, 1, dgram_av_addr, 0,
-			   NULL);
-	if (ret != 1) {
-		FI_WARN(&suet_prov, FI_LOG_CQ,
-			"Failed to insert source address into dgram AV\n");
-		*dgram_av_addr = FI_ADDR_UNSPEC;
-		ofi_genlock_unlock(&domain->dgram.av_lock);
-		return -FI_EINVAL;
-	}
-
-	FI_DBG(&suet_prov, FI_LOG_CQ,
-	       "FI_SOURCE_ERR: inserted unknown source into dgram AV "
-	       "as dgram_av_addr=%ld\n",
-	       (long) *dgram_av_addr);
-
-	ret = suet_dgram_av_insert_raw_addr(domain, err->err_data, &peer_idx, 0,
-					    NULL);
-	ofi_genlock_unlock(&domain->dgram.av_lock);
-	if (ret)
-		FI_WARN(&suet_prov, FI_LOG_CQ,
-			"suet_av_insert_raw_dgram_addr failed: %s\n",
-			fi_strerror(-ret));
-
-	comp->op_context = err->op_context;
-	comp->flags = err->flags;
-	comp->len = err->len;
-
-	return 0;
-}
 
 static int suet_av_set_usr_av_addr(struct suet_av *av, int peer_idx)
 {
@@ -319,7 +62,7 @@ static int suet_av_insert(struct fid_av *av_fid, const void *raw_addr,
 {
 	struct suet_av *av;
 	struct suet_domain *domain;
-	const struct suet_av_addr *addr, *tmp;
+	const struct suet_av_addr *addr;
 	int i = 0, ret = 0, success_cnt = 0;
 	int peer_idx;
 	int util_addr, *sync_err = NULL;
@@ -336,20 +79,15 @@ static int suet_av_insert(struct fid_av *av_fid, const void *raw_addr,
 		memset(sync_err, 0, sizeof(*sync_err) * count);
 	}
 
-	ofi_genlock_lock(&domain->dgram.av_lock);
-	if (!domain->dgram.addrlen) {
-		tmp = (const struct suet_av_addr *) raw_addr;
-		ret = suet_dgram_av_set_addrlen(domain, tmp->raw_dgram_addr);
-		if (ret)
-			goto out;
-	}
+	/* Public mappings are independent of the domain-wide peer table. */
+	ofi_genlock_lock(&av->util_av.lock);
 
 	for (; i < count; i++, raw_addr = (uint8_t *) raw_addr +
 					  sizeof(struct suet_av_addr)) {
 		addr = (const struct suet_av_addr *) raw_addr;
-		ret = suet_dgram_av_insert_raw_addr(
-			domain, addr->raw_dgram_addr, &peer_idx, flags,
-			sync_err ? &sync_err[i] : context);
+		ret = suet_dgram_av_insert(domain, addr->raw_dgram_addr,
+					   &peer_idx, flags,
+					   sync_err ? &sync_err[i] : context);
 		if (ret)
 			break;
 
@@ -378,8 +116,7 @@ static int suet_av_insert(struct fid_av *av_fid, const void *raw_addr,
 			sync_err[i] = -ret;
 		i++;
 	}
-out:
-	ofi_genlock_unlock(&domain->dgram.av_lock);
+	ofi_genlock_unlock(&av->util_av.lock);
 
 	for (; i < count; i++) {
 		if (fi_addr)
@@ -412,14 +149,13 @@ static int suet_av_remove(struct fid_av *av_fid, fi_addr_t *fi_addr,
 	size_t i;
 	int peer_idx;
 	struct suet_av *av;
-	struct suet_domain *domain;
 
 	av = container_of(av_fid, struct suet_av, util_av.av_fid);
-	domain = container_of(av->util_av.domain, struct suet_domain,
-			      util_domain);
-	ofi_genlock_lock(&domain->dgram.av_lock);
+	ofi_genlock_lock(&av->util_av.lock);
 	for (i = 0; i < count; i++) {
-		peer_idx = suet_av_peer_idx_from_usr_av_addr(av, fi_addr[i]);
+		peer_idx = (int) (intptr_t) ofi_idx_lookup(
+			&av->usr_av_addr_to_peer_idx,
+			SUET_IDX_OFFSET((int) fi_addr[i]));
 		if (!peer_idx) {
 			ret = -FI_EINVAL;
 			continue;
@@ -434,7 +170,7 @@ static int suet_av_remove(struct fid_av *av_fid, fi_addr_t *fi_addr,
 		FI_WARN(&suet_prov, FI_LOG_AV,
 			"Unable to remove address from AV\n");
 
-	ofi_genlock_unlock(&domain->dgram.av_lock);
+	ofi_genlock_unlock(&av->util_av.lock);
 	return ret;
 }
 
@@ -445,8 +181,10 @@ static const char *suet_av_straddr(struct fid_av *av, const void *raw_addr,
 		(const struct suet_av_addr *) raw_addr;
 	struct suet_av *suet_av;
 	suet_av = container_of(av, struct suet_av, util_av.av_fid);
-	return suet_av->dgram_av->ops->straddr(suet_av->dgram_av,
-					       addr->raw_dgram_addr, buf, len);
+	return suet_dgram_av_straddr(container_of(suet_av->util_av.domain,
+						  struct suet_domain,
+						  util_domain),
+				     addr->raw_dgram_addr, buf, len);
 }
 
 static int suet_av_lookup(struct fid_av *av, fi_addr_t fi_addr, void *raw_addr,
@@ -530,7 +268,6 @@ int suet_av_create(struct fid_domain *domain_fid, struct fi_av_attr *attr,
 	if (ret)
 		goto err1;
 
-	av->dgram_av = domain->dgram.av;
 	av->util_av.av_fid.fid.ops = &suet_av_fi_ops;
 	av->util_av.av_fid.ops = &suet_av_ops;
 	*av_fid = &av->util_av.av_fid;
@@ -539,4 +276,15 @@ int suet_av_create(struct fid_domain *domain_fid, struct fi_av_attr *attr,
 err1:
 	free(av);
 	return ret;
+}
+
+int suet_av_peer_idx_from_usr_av_addr(struct suet_av *av, fi_addr_t addr)
+{
+	int peer_idx;
+
+	ofi_genlock_lock(&av->util_av.lock);
+	peer_idx = (int) (intptr_t) ofi_idx_lookup(&av->usr_av_addr_to_peer_idx,
+						   SUET_IDX_OFFSET((int) addr));
+	ofi_genlock_unlock(&av->util_av.lock);
+	return peer_idx;
 }

@@ -67,8 +67,10 @@ static void suet_pds_pkt_free(struct suet_pds_pkt_entry *entry)
 
 size_t suet_pds_max_ses_size(const struct suet_domain *domain)
 {
-	return domain->dgram.max_pkt_size > sizeof(struct pds_req_hdr) ?
-		       domain->dgram.max_pkt_size - sizeof(struct pds_req_hdr) :
+	size_t size = suet_dgram_max_pkt_size(domain);
+
+	return size > sizeof(struct pds_req_hdr) ?
+		       size - sizeof(struct pds_req_hdr) :
 		       0;
 }
 
@@ -1542,9 +1544,9 @@ static bool suet_pds_free_ipdc_if_retry_exhausted(struct suet_domain *domain,
 	return true;
 }
 
-void *suet_pds_tx_alloc(struct suet_domain *domain, fi_addr_t addr,
-			void *context)
+void *suet_pds_tx_alloc(struct suet_domain *domain, int peer_idx, void *context)
 {
+	fi_addr_t addr = suet_dgram_av_get_addr_by_peer_idx(domain, peer_idx);
 	struct suet_ipdc *ipdc = suet_pds_assign_ipdc(domain, addr);
 	struct suet_pds_tx_entry *tx;
 

@@ -66,6 +66,9 @@ struct suet_pkt_entry *suet_dgram_pkt_alloc(struct suet_domain *domain);
 void suet_dgram_pkt_free(struct suet_pkt_entry *pkt);
 bool suet_dgram_pkt_in_use(const struct suet_pkt_entry *pkt);
 ssize_t suet_dgram_send(struct suet_domain *domain, struct suet_pkt_entry *pkt);
+size_t suet_dgram_max_pkt_size(const struct suet_domain *domain);
+fi_addr_t suet_dgram_av_get_addr_by_peer_idx(struct suet_domain *domain,
+					     int peer_idx);
 int suet_dgram_av_get_peer_idx_by_addr(struct suet_domain *domain,
 				       fi_addr_t addr);
 

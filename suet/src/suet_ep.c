@@ -196,9 +196,9 @@ static int suet_ep_cm_setname(fid_t fid, void *raw_addr, size_t addrlen)
 	if (addrlen < sizeof(struct suet_av_addr))
 		return -FI_ETOOSMALL;
 
-	return fi_setname(&suet_ep_domain(ep)->dgram.ep->fid,
-			  (void *) addr->raw_dgram_addr,
-			  addr->raw_dgram_addrlen);
+	return suet_dgram_setname(suet_ep_domain(ep),
+				  (void *) addr->raw_dgram_addr,
+				  addr->raw_dgram_addrlen);
 }
 
 static int suet_ep_cm_getname(fid_t fid, void *raw_addr, size_t *addrlen)
@@ -215,8 +215,8 @@ static int suet_ep_cm_getname(fid_t fid, void *raw_addr, size_t *addrlen)
 		return -FI_ETOOSMALL;
 	}
 
-	ret = fi_getname(&suet_ep_domain(ep)->dgram.ep->fid, raw_dgram_addr,
-			 &raw_dgram_addrlen);
+	ret = suet_dgram_getname(suet_ep_domain(ep), raw_dgram_addr,
+				 &raw_dgram_addrlen);
 	if (ret && ret != -FI_ETOOSMALL)
 		return ret;
 
@@ -317,7 +317,6 @@ static struct fi_ops suet_ep_fi_ops = {
 int suet_endpoint(struct fid_domain *domain, struct fi_info *info,
 		  struct fid_ep **ep, void *context)
 {
-	struct fi_info *dgram_info;
 	struct suet_domain *suet_domain;
 	struct suet_ep *suet_ep;
 	int ret;
@@ -334,23 +333,10 @@ int suet_endpoint(struct fid_domain *domain, struct fi_info *info,
 	if (ret)
 		goto err1;
 
-	/* Get dgram_info for rx/tx size limits (dgram_ep already lives on
-	 * domain) */
-	{
-		struct suet_av_addr_tmp_storage addr_save = {0};
-		suet_av_info_unwrap_raw_dgram_addrs(info, &addr_save);
-		ret = ofi_get_core_info(
-			suet_domain->util_domain.fabric->fabric_fid.api_version,
-			NULL, NULL, 0, &suet_util_prov, info, NULL,
-			suet_info_to_core, &dgram_info);
-		suet_av_info_wrap_raw_dgram_addrs(info, &addr_save);
-	}
+	ret = suet_dgram_ep_sizes(suet_domain, info, &suet_ep->tx_size,
+				  &suet_ep->rx_size);
 	if (ret)
 		goto err2;
-
-	suet_ep->rx_size = MIN(dgram_info->rx_attr->size, info->rx_attr->size);
-	suet_ep->tx_size = MIN(dgram_info->tx_attr->size, info->tx_attr->size);
-	fi_freeinfo(dgram_info);
 
 	suet_ep->pid_on_fep = suet_domain->pid_on_fep;
 

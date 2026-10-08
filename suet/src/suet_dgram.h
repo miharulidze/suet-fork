@@ -91,13 +91,30 @@ int suet_dgram_stop(struct suet_domain *domain);
 int suet_dgram_cleanup(struct suet_domain *domain);
 void suet_dgram_progress(struct suet_domain *domain);
 
-int suet_dgram_av_init(struct suet_domain *domain);
-void suet_dgram_av_cleanup(struct suet_domain *domain);
-fi_addr_t suet_dgram_av_get_addr_by_peer_idx(struct suet_domain *domain,
-					     int peer_idx);
-int suet_dgram_av_handle_addr_notavail(struct suet_domain *domain,
-				       struct fi_cq_err_entry *err,
-				       struct fi_cq_msg_entry *comp,
-				       fi_addr_t *dgram_av_addr);
+/* Backend management. Handles/descriptors are opaque to callers; no
+ * backend fid is exposed. Peer IDs live until domain cleanup, even after
+ * the corresponding address is removed from an application AV.
+ * AV operations take their own lock and never acquire a public AV lock.
+ */
+int suet_dgram_av_insert(struct suet_domain *domain, const void *addr,
+			 int *peer_idx, uint64_t flags, void *context);
+const char *suet_dgram_av_straddr(struct suet_domain *domain, const void *addr,
+				  char *buf, size_t *len);
+int suet_dgram_mr_reg(struct suet_domain *domain, struct fi_mr_attr *attr,
+		      uint64_t flags, bool gen_key, void **handle);
+int suet_dgram_mr_close(void *handle);
+void *suet_dgram_mr_desc(void *handle);
+int suet_dgram_setname(struct suet_domain *domain, void *addr, size_t len);
+int suet_dgram_getname(struct suet_domain *domain, void *addr, size_t *len);
+const char *suet_dgram_cq_strerror(struct suet_domain *domain, int err,
+				   const void *data, char *buf, size_t len);
+int suet_dgram_fabric_open(struct fi_fabric_attr *attr, void *context,
+			   void **handle);
+int suet_dgram_fabric_close(void *handle);
+int suet_dgram_getinfo(uint32_t version, const char *node, const char *service,
+		       uint64_t flags, const struct fi_info *hints,
+		       struct fi_info **info);
+int suet_dgram_ep_sizes(struct suet_domain *domain, struct fi_info *info,
+			size_t *tx_size, size_t *rx_size);
 
 #endif

@@ -57,7 +57,7 @@ struct suet_ses_tx_entry {
 
 	struct iovec iov[SUET_IOV_LIMIT];
 	void *zc_desc[SUET_IOV_LIMIT];
-	struct fid_mr *zc_internal_mrs[SUET_IOV_LIMIT];
+	void *zc_internal_mrs[SUET_IOV_LIMIT]; /* opaque registration handles */
 	struct fi_cq_tagged_entry cq_entry;
 
 	struct suet_ep *ep;

@@ -37,18 +37,15 @@
 
 #include "suet.h"
 
-/*
- * Memory registration for SUET. Follows mostly the RxM pattern: user-facing
- * fi_mr_* calls register a real MR on the underlying DGRAM domain
- * (fep_domain) and wrap the result in a struct suet_mr. SUET emulates
- * RMA/atomics in software on the target side, so the MR is also tracked
- * in util_domain.mr_map unconditionally for address/key verification.
- *
- * The same suet_mr_reg_impl() helper is shared by the user-facing MR
- * ops and by TX-time on-demand registration (suet_mr_regv_internal) when the
- * user's send exceeds mr_reg_threshold, so both paths go through
- * identical code.
+/* Public MR objects and remote access verification belong to SUET.
+ * Datagram registration handles and descriptors are opaque to this layer.
  */
+void *suet_mr_desc(void *desc)
+{
+	struct suet_mr *mr = desc;
+
+	return mr ? suet_dgram_mr_desc(mr->dgram_ctx) : NULL;
+}
 
 static int suet_mr_map_insert(struct suet_domain *domain,
 			      struct fi_mr_attr *user_attr,
@@ -93,7 +90,7 @@ static int suet_mr_close(fid_t fid)
 
 	suet_mr_map_remove(suet_mr);
 
-	ret = fi_close(&suet_mr->dgram_mr->fid);
+	ret = suet_dgram_mr_close(suet_mr->dgram_ctx);
 	if (ret)
 		FI_WARN(&suet_prov, FI_LOG_DOMAIN,
 			"fi_close(dgram mr) failed: %d\n", ret);
@@ -112,32 +109,7 @@ static struct fi_ops suet_mr_fi_ops = {
 	.ops_open = fi_no_ops_open,
 };
 
-/*
- * Calls fi_mr_regattr() on the underlying DGRAM domain.
- * When gen_key is true the function ignores the caller's
- * attr->requested_key and draws from the domain-internal namespace
- * (bit 31 set), retrying on collisions.
- */
-static int suet_mr_reg_impl(struct suet_domain *domain, struct fi_mr_attr *attr,
-			    uint64_t flags, bool gen_key, struct fid_mr **mr)
-{
-	int ret, tries = 0;
-
-	if (!gen_key)
-		return fi_mr_regattr(domain->dgram.domain, attr, flags, mr);
-
-	/* The counter may collide with a user-chosen requested_key already
-	 * registered on the datagram domain, so advance and retry on
-	 * -FI_ENOKEY. */
-	do {
-		attr->requested_key = domain->dgram.mr_key++ | (1UL << 31);
-		ret = fi_mr_regattr(domain->dgram.domain, attr, flags, mr);
-	} while (ret == -FI_ENOKEY && tries++ < SUET_MR_KEY_MAX_RETRIES);
-
-	return ret;
-}
-
-void suet_mr_closev_internal(struct fid_mr **mr, size_t count)
+void suet_mr_closev_internal(void **mr, size_t count)
 {
 	size_t i;
 	int ret;
@@ -145,7 +117,7 @@ void suet_mr_closev_internal(struct fid_mr **mr, size_t count)
 	for (i = 0; i < count; i++) {
 		if (!mr[i])
 			continue;
-		ret = fi_close(&mr[i]->fid);
+		ret = suet_dgram_mr_close(mr[i]);
 		if (ret)
 			FI_WARN(&suet_prov, FI_LOG_EP_DATA,
 				"fi_close(dgram mr[%zu]) failed: %d\n", i, ret);
@@ -154,13 +126,13 @@ void suet_mr_closev_internal(struct fid_mr **mr, size_t count)
 }
 
 /*
- * Register an IOV on the underlying fep_domain for a single send,
+ * Register an IOV through the datagram layer for a single send,
  * capped at reg_limit total bytes. Used by the TX path when the send
  * length exceeds suet_env.mr_reg_threshold.
  */
 int suet_mr_regv_internal(struct suet_domain *domain, const struct iovec *iov,
 			  size_t count, size_t reg_limit, uint64_t access,
-			  struct fid_mr **mr)
+			  void **mr, void **desc)
 {
 	struct iovec cur_buf_slice;
 	struct fi_mr_attr attr = {
@@ -175,14 +147,16 @@ int suet_mr_regv_internal(struct suet_domain *domain, const struct iovec *iov,
 		len = MIN(iov[i].iov_len, reg_limit);
 		cur_buf_slice.iov_base = iov[i].iov_base;
 		cur_buf_slice.iov_len = len;
-		ret = suet_mr_reg_impl(domain, &attr, 0, true, &mr[i]);
+		ret = suet_dgram_mr_reg(domain, &attr, 0, true, &mr[i]);
 		if (ret)
 			goto err;
+		desc[i] = suet_dgram_mr_desc(mr[i]);
 		reg_limit -= len;
 	}
 	return 0;
 err:
 	suet_mr_closev_internal(mr, i);
+	memset(desc, 0, count * sizeof(*desc));
 	return ret;
 }
 
@@ -218,8 +192,8 @@ static int suet_mr_regattr(struct fid *fid, const struct fi_mr_attr *attr,
 			   domain->util_domain.info_domain_caps, attr,
 			   &dgram_attr, flags);
 
-	ret = suet_mr_reg_impl(domain, &dgram_attr, flags, false,
-			       &suet_mr->dgram_mr);
+	ret = suet_dgram_mr_reg(domain, &dgram_attr, flags, false,
+				&suet_mr->dgram_ctx);
 	if (ret) {
 		FI_WARN(&suet_prov, FI_LOG_DOMAIN,
 			"fi_mr_regattr(dgram) failed: %d\n", ret);

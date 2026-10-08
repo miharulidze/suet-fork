@@ -56,6 +56,18 @@ zero-copy, segmented, empty, and maximum-size atomic payloads, checking emitted
 headers and payload bytes after repeated sends with a provider prefix. Run it with the same compiler and library settings
 as above, replacing `test_ses_pds` with `test_pds_dgram` in both paths.
 
+## Datagram resource ownership
+
+`test_dgram_resources.c` exercises the real AV and MR layers with a small
+provider double. It checks stable domain peer IDs across public AV removal,
+reinsertion and multiple AVs; concurrent AV updates; a valid backend address
+of zero; partial insertion and synchronous errors; RX source discovery; and
+balanced backend AV lifetimes. MR checks cover requested keys, generated-key
+collisions, bounded IOV registration, opaque descriptors, partial-failure
+rollback and successful registration after failure. Build and run it using
+the same command above, replacing `test_ses_pds` with `test_dgram_resources`.
+No network access is needed.
+
 ## Compatibility between builds
 
 On macOS, use the same fabtests binaries with a different libfabric library
@@ -92,7 +104,7 @@ Results for the final refactor in that environment:
 - Five interoperability cases passed in each direction (ten total): empty
   messages, verified segmented unexpected messages, tagged peek/claim/discard,
   1 MiB RMA writes, and all supported atomic operations with delivery completion.
-- Both standalone test programs passed, including with address/undefined-behavior
+- All three standalone test programs passed, including with address/undefined-behavior
   sanitizers and assertions enabled in the directly compiled layer implementations.
 - Every provider source compiled without warnings. Changes in `suet_proto.h`
   rename C packet types and datagram address fields; wire layouts are unchanged.

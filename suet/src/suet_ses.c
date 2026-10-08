@@ -413,14 +413,11 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 	struct suet_ses_tx_entry *tx_entry;
 	struct suet_domain *domain = suet_ep_domain(ep);
 	int peer_idx;
-	fi_addr_t dgram_av_addr;
 	size_t i;
 
 	peer_idx = suet_av_peer_idx_from_usr_av_addr(suet_ep_av(ep), addr);
 	if (!peer_idx)
 		return NULL;
-
-	dgram_av_addr = suet_dgram_av_get_addr_by_peer_idx(domain, peer_idx);
 
 	tx_entry = suet_ses_tx_entry_alloc(ep);
 	if (!tx_entry) {
@@ -428,7 +425,7 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 		return NULL;
 	}
 
-	tx_entry->pds_ctx = suet_pds_tx_alloc(domain, dgram_av_addr, tx_entry);
+	tx_entry->pds_ctx = suet_pds_tx_alloc(domain, peer_idx, tx_entry);
 	if (!tx_entry->pds_ctx) {
 		ofi_ibuf_free(tx_entry);
 		return NULL;
@@ -450,9 +447,7 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 	if (op == ofi_op_msg || op == ofi_op_tagged || op == ofi_op_write) {
 		if (desc) {
 			for (i = 0; i < iov_count; i++) {
-				struct suet_mr *smr = desc[i];
-				tx_entry->zc_desc[i] =
-					fi_mr_desc(smr->dgram_mr);
+				tx_entry->zc_desc[i] = suet_mr_desc(desc[i]);
 			}
 		} else if (tx_entry->cq_entry.len >
 			   domain->zc_mr_reg_threshold) {
@@ -460,7 +455,8 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 			 * registration. Failure falls back to memcpy path. */
 			int mr_ret = suet_mr_regv_internal(
 				domain, iov, iov_count, tx_entry->cq_entry.len,
-				FI_SEND, tx_entry->zc_internal_mrs);
+				FI_SEND, tx_entry->zc_internal_mrs,
+				tx_entry->zc_desc);
 			if (mr_ret) {
 				FI_WARN(&suet_prov, FI_LOG_EP_DATA,
 					"on-demand MR reg failed (%d); using "
@@ -468,11 +464,6 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 					mr_ret);
 				memset(tx_entry->zc_internal_mrs, 0,
 				       sizeof(tx_entry->zc_internal_mrs));
-			} else {
-				for (i = 0; i < iov_count; i++) {
-					tx_entry->zc_desc[i] = fi_mr_desc(
-						tx_entry->zc_internal_mrs[i]);
-				}
 			}
 		}
 	}

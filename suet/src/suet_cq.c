@@ -62,8 +62,8 @@ static const char *suet_cq_strerror(struct fid_cq *cq_fid, int prov_errno,
 	util_ep = container_of(fid_entry->fid, struct util_ep, ep_fid.fid);
 	ep = container_of(util_ep, struct suet_ep, util_ep);
 
-	str = fi_cq_strerror(suet_ep_domain(ep)->dgram.tx_cq, prov_errno,
-			     err_data, buf, len);
+	str = suet_dgram_cq_strerror(suet_ep_domain(ep), prov_errno, err_data,
+				     buf, len);
 	ofi_genlock_unlock(&cq->util_cq.ep_list_lock);
 	return str;
 }

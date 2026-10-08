@@ -91,73 +91,27 @@ static void suet_init_env(void)
 			    &suet_env.zc_mr_reg_threshold);
 }
 
-void suet_info_to_core_mr_modes(uint32_t version, const struct fi_info *hints,
-				struct fi_info *core_info)
+/* SUET capabilities and framing limits stay independent of backend discovery.
+ */
+void suet_info_from_dgram(struct fi_info *info, uint64_t caps,
+			  uint64_t domain_caps, size_t max_mtu,
+			  size_t prefix_size)
 {
-	/* We handle FI_MR_BASIC and FI_MR_SCALABLE irrespective of version */
-	if (hints && hints->domain_attr &&
-	    (hints->domain_attr->mr_mode & (OFI_MR_SCALABLE | OFI_MR_BASIC))) {
-		core_info->mode = OFI_LOCAL_MR;
-		core_info->domain_attr->mr_mode = hints->domain_attr->mr_mode;
-	} else if (FI_VERSION_LT(version, FI_VERSION(1, 5))) {
-		core_info->mode |= OFI_LOCAL_MR;
-		/* Specify FI_MR_UNSPEC (instead of FI_MR_BASIC) so that
-		 * providers that support only FI_MR_SCALABLE aren't dropped */
-		core_info->domain_attr->mr_mode = OFI_MR_UNSPEC;
-	} else {
-		core_info->domain_attr->mr_mode |= FI_MR_LOCAL;
-		core_info->domain_attr->mr_mode |= OFI_MR_BASIC_MAP;
-	}
-}
-
-int suet_info_to_core(uint32_t version, const struct fi_info *suet_info_in,
-		      const struct fi_info *base_info,
-		      struct fi_info *core_info)
-{
-	suet_info_to_core_mr_modes(version, suet_info_in, core_info);
-	core_info->caps = FI_MSG | FI_SOURCE | FI_SOURCE_ERR;
-	core_info->mode = OFI_LOCAL_MR | FI_CONTEXT | FI_MSG_PREFIX;
-	core_info->ep_attr->type = FI_EP_DGRAM;
-	core_info->domain_attr->threading = FI_THREAD_DOMAIN;
-	return 0;
-}
-
-static int suet_info_to_suet(uint32_t version, const struct fi_info *core_info,
-			     const struct fi_info *base_info,
-			     struct fi_info *info)
-{
-	if (core_info->src_addrlen > SUET_DGRAM_AV_NAME_LENGTH) {
-		FI_INFO(&suet_prov, FI_LOG_CORE,
-			"core provider %s address length %zu exceeds "
-			"SUET_DGRAM_AV_NAME_LENGTH (%d), skipping\n",
-			core_info->fabric_attr->prov_name,
-			core_info->src_addrlen, SUET_DGRAM_AV_NAME_LENGTH);
-		return -FI_EINVAL;
-	}
-
-	info->caps = ofi_pick_core_flags(suet_info.caps, core_info->caps,
+	info->caps = ofi_pick_core_flags(suet_info.caps, caps,
 					 FI_LOCAL_COMM | FI_REMOTE_COMM);
 	info->mode = suet_info.mode;
 
 	*info->tx_attr = *suet_info.tx_attr;
-	info->tx_attr->inject_size =
-		MIN(core_info->ep_attr->max_msg_size, PDS_MAX_MTU_SIZE) -
-		(sizeof(struct pds_req_hdr) +
-		 core_info->ep_attr->msg_prefix_size +
-		 sizeof(struct ses_msg_amo_hdr));
+	info->tx_attr->inject_size = MIN(max_mtu, PDS_MAX_MTU_SIZE) -
+				     (sizeof(struct pds_req_hdr) + prefix_size +
+				      sizeof(struct ses_msg_amo_hdr));
 
 	*info->rx_attr = *suet_info.rx_attr;
 	*info->ep_attr = *suet_info.ep_attr;
 	*info->domain_attr = *suet_info.domain_attr;
-	info->domain_attr->caps = ofi_pick_core_flags(
-		suet_info.domain_attr->caps, core_info->domain_attr->caps,
-		FI_LOCAL_COMM | FI_REMOTE_COMM);
-	if (core_info->nic) {
-		info->nic = ofi_nic_dup(core_info->nic);
-		if (!info->nic)
-			return -FI_ENOMEM;
-	}
-	return 0;
+	info->domain_attr->caps =
+		ofi_pick_core_flags(suet_info.domain_attr->caps, domain_caps,
+				    FI_LOCAL_COMM | FI_REMOTE_COMM);
 }
 
 static int suet_wrap_addr(void **addr, size_t *addrlen)
@@ -201,8 +155,7 @@ static int suet_getinfo(uint32_t version, const char *node, const char *service,
 	else if (!suet_env.rescan) /* Explicitly disabled */
 		flags &= ~FI_RESCAN;
 
-	ret = ofix_getinfo(version, node, service, flags, &suet_util_prov,
-			   hints, suet_info_to_core, suet_info_to_suet, info);
+	ret = suet_dgram_getinfo(version, node, service, flags, hints, info);
 
 	if (mut_hints)
 		suet_av_info_wrap_raw_dgram_addrs(mut_hints, &addr_save);

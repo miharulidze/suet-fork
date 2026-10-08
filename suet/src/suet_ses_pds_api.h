@@ -101,14 +101,15 @@ struct suet_ses_rx_dispatch_result {
 	bool accepted; /* false leaves the receive PSN unchanged */
 };
 
-/* TX allocation reserves transport queue state, but does not send. Submit
+/* TX allocation takes a stable SUET peer index and reserves transport queue
+ * state, but does not send. PDS resolves the datagram destination. Submit
  * follows SES header initialization. PDS borrows the SES
  * context until suet_ses_tx_done(), or explicit cancellation. PDS owns PSNs,
  * packet records and retry state; SES owns segmentation and completions.
  * Cancellation detaches the operation; it does not retire in-flight packets
  * or relax the existing datagram/zero-copy buffer lifetime requirements.
  */
-void *suet_pds_tx_alloc(struct suet_domain *domain, fi_addr_t addr,
+void *suet_pds_tx_alloc(struct suet_domain *domain, int peer_idx,
 			void *context);
 void suet_pds_tx_submit(void *pds_ctx, uint32_t num_pkts);
 void suet_pds_tx_cancel(void *pds_ctx);
