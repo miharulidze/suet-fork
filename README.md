@@ -39,8 +39,9 @@ There is no operations table or new function-pointer dispatch.
 
 - SES owns operation buffers, message segmentation, endpoint matching, RMA
   validation, atomic execution, unexpected messages, and application completions.
-- PDS owns PDCs, PSNs, transport queues, retry state, ACK/NACK processing, and
-  response retention. Its private types live in `suet_pds.h`; SES-only types live in
+- PDS owns PDCs, PSNs, transport queues, wire ACK/NACK handling, and
+  response retention. Reliability manages windows and retry decisions through
+  `suet_rel.h`. PDS private types live in `suet_pds.h`; SES-only types live in
   `suet_ses.h`. Helper implementations stay in the corresponding `.c` files.
   The SES/PDS contract lives in `suet_ses_pds_api.h`.
   `suet.h` includes the three layer headers and embeds their resource structures
@@ -53,8 +54,8 @@ There is no operations table or new function-pointer dispatch.
   completion releases provider access; PDS independently tracks acknowledgment
   and retry retention. Each packet still occupies one pool allocation, with
   separate aligned datagram, PDS, and SES records. Datagram keeps provider-busy
-  state and its posted-receive node private; PDS owns retry timing, PDC identity,
-  ACK state, and its queue node; SES owns its unexpected-message packet node.
+  state and its posted-receive node private; PDS owns PDC identity, packet
+  retirement state, and its queue node; SES owns its unexpected-message packet node.
   The shared packet view carries storage/I/O information and opaque layer
   contexts, without shared flags or list membership.
 - Each transmission has a separate PDS record with an opaque SES context. PDS
@@ -82,6 +83,34 @@ buffer lifetime rules are unchanged. Calls require the domain FEP lock or
 exclusive initialization/close. Domain close drains PDS, stops the datagram
 endpoint, then releases layer state and packet storage. No new dispatch table,
 reliability algorithm, or progress thread is introduced.
+
+### Reliability boundary
+
+`suet_rel.h` defines a direct-call contract; `suet_rel.c` implements Go-Back-N.
+The implementation takes PSNs, decoded feedback and monotonic millisecond
+timestamps, with no PDC types, wire headers, packet pointers or SES dependency.
+PDC assigns PSNs and owns the packet-pointer arrays; reliability owns circular
+bitmap windows and retry state. Bitmap slots and pointer slots share the same
+index through `suet_rel_slot()`. ACK processing returns the retired slot range;
+PDS detaches those pointers before progressing new transmissions. Packets still
+borrowed by datagram remain on PDS's lifetime list until local completion.
+
+ROD delivery ordering stays in PDS. Its receive pointer array can retain packets
+admitted ahead of the delivery position by another reliability implementation.
+The GBN implementation currently discards future PSNs, independently of the
+PDC delivery type. This separation does not add RUD wire or SES support.
+Replacing the reliability implementation does not require a function-pointer
+table or per-packet allocation. Existing PSN-range message completion, semantic
+response replay and connection lifecycle remain in PDS.
+
+The default window remains 128 packets. GBN retains cumulative ACKs, the
+existing ACK cadence, timeout-driven recovery (received NACKs do not trigger
+immediate retransmission), per-packet attempt timestamps and a per-connection
+retry-round budget. Backoff starts at 1 ms and saturates safely at 4 seconds.
+Local send failures remain tracked for recovery and retry attempts retain the
+existing timing/accounting. Wire structures are unchanged. `max_unacked` is
+clamped to 1..65535 to match PDS's packet counter; negative retry limits become
+zero. An ACK covering an untracked PSN is rejected without retiring packets.
 
 ### Simulation clock
 

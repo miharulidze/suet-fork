@@ -68,6 +68,26 @@ rollback and successful registration after failure. Build and run it using
 the same command above, replacing `test_ses_pds` with `test_dgram_resources`.
 No network access is needed.
 
+## Go-Back-N reliability
+
+`test_rel.c` links only `suet_rel.c`, without libfabric or PDC/SES definitions.
+It checks circular slots across PSN wraparound with power-of-two and arbitrary
+window sizes, cumulative ACK validation (including unsent holes), repeated
+retirement/reuse, duplicate feedback, GBN retry rounds, backoff through retry
+exhaustion, receive acceptance/cancellation, and ACK cadence. Run it directly:
+
+```sh
+cc -g -Wall -Wextra -Werror -fsanitize=address,undefined -Isuet/src \
+  tests/test_rel.c suet/src/suet_rel.c -o /tmp/test_rel
+/tmp/test_rel
+```
+
+The htsim CMake build also includes this test. `test_pds_dgram.c` additionally
+injects real PDS ACKs across PSN wraparound while datagram still owns the TX
+buffers. It checks pointer-slot retirement, invalid/duplicate ACKs and local
+completions in a different order. The existing ownership and framing checks
+remain intact.
+
 ## External simulation clock
 
 `test_clock.c` checks per-domain callback installation, elapsed-time reads,
@@ -112,7 +132,9 @@ Results for the final refactor in that environment:
 - Five interoperability cases passed in each direction (ten total): empty
   messages, verified segmented unexpected messages, tagged peek/claim/discard,
   1 MiB RMA writes, and all supported atomic operations with delivery completion.
-- All three standalone test programs passed, including with address/undefined-behavior
+- All five standalone test programs passed, including with address/undefined-behavior
   sanitizers and assertions enabled in the directly compiled layer implementations.
+- All three htsim CTests passed. A 32-flow, 64 MB topology run also verified
+  every message while recovering from 4,095 network drops.
 - Every provider source compiled without warnings. Changes in `suet_proto.h`
   rename C packet types and datagram address fields; wire layouts are unchanged.

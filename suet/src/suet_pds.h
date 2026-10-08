@@ -36,13 +36,14 @@
 #define _SUET_PDS_H_
 
 #include "suet_pds_dgram_api.h"
+#include "suet_rel.h"
 #include "suet_ses_pds_api.h"
 
 /* PDS-only reliability state and in-flight queue membership. */
 struct suet_pds_pkt_entry {
 	struct dlist_entry entry;
 	struct suet_pkt_entry *pkt;
-	uint64_t timestamp;
+	uint32_t psn;
 	uint16_t local_pdcid;
 	bool acked;
 };
@@ -96,12 +97,12 @@ struct suet_ipdc {
 	uint16_t tpdcid; /* learned from first ACK.spdcid */
 	uint32_t start_psn;
 	uint32_t tx_seq_no;
-	uint32_t last_rx_cack_psn; /* last PSN acked by target (cack_psn) */
 	uint32_t last_tx_clear_psn; /* CLEAR_PSN this initiator transmits
 				     * Eager-clear: advanced with CACK_PSN when
 				     * the SES response has been delivered. */
 	uint32_t close_psn;
-	int retry_cnt;
+	struct suet_rel_tx rel;
+	struct suet_pds_pkt_entry **tx_pkts; /* indexed by reliability slot */
 	uint16_t in_flight_cnt;
 	bool teardown_pending; /* close requested; defer QUIESCE until
 				  ESTABLISHED */
@@ -125,12 +126,10 @@ struct suet_tpdc {
 	/* --- tpdc_syn_key_handle: key end --- */
 	uint16_t local_pdcid;
 	uint32_t expected_rx_psn; /* next expected PSN */
-	uint32_t last_tx_cack_psn; /* last cack_psn we sent (= expected_rx_psn-1
-				    * at the moment the ACK was emitted) */
 	uint32_t last_rx_clear_psn; /* highest CLEAR_PSN received in
 				     * forward direction */
-	uint32_t pkts_since_last_ack; /* requests delivered since last ACK sent;
-				       * drives ACK coalescing */
+	struct suet_rel_rx rel;
+	struct suet_pds_pkt_entry **rx_pkts; /* retained by ROD delivery */
 	enum suet_pdc_state state;
 	void *ses_ctx; /* opaque SES receive context */
 	struct dlist_entry

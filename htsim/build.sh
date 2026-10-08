@@ -51,7 +51,7 @@ cmake -S "$SCRIPT_DIR" -B "$HTSIM_BUILD_DIR" \
     -DLIBFABRIC_ROOT="$LIBFABRIC_ROOT" \
     -DSUET_SRC_DIR="$SUET_SRC_DIR" \
     -DENABLE_SUET_TESTS=ON -DSUET_SANITIZE="$SUET_SANITIZE"
-cmake --build "$HTSIM_BUILD_DIR" --target htsim_suet fabric_dgram_test --parallel "$JOBS"
+cmake --build "$HTSIM_BUILD_DIR" --target htsim_suet fabric_dgram_test suet_rel_test --parallel "$JOBS"
 
 printf '\nhtsim runner: %s/htsim_suet\n' "$HTSIM_BUILD_DIR"
 printf 'provider path: %s\n' "$HTSIM_BUILD_DIR"

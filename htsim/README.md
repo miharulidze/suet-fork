@@ -75,7 +75,7 @@ cmake -S htsim -B suet-workspace/htsim-build \
   -DHTSIM_SOURCE_DIR=/absolute/path/to/uet-htsim \
   -DLIBFABRIC_ROOT=/absolute/path/to/suet-enabled/install
 cmake --build suet-workspace/htsim-build \
-  --target htsim_suet fabric_dgram_test --parallel
+  --target htsim_suet fabric_dgram_test suet_rel_test --parallel
 ctest --test-dir suet-workspace/htsim-build --output-on-failure
 ```
 
@@ -161,7 +161,8 @@ completion, independently of arrival or loss. Network frames contain addresses
 and bytes only, so in-flight frames never retain provider FIDs or application
 buffer pointers. Receive completions are generated only at arrival.
 
-The provider test checks completion timing, source discovery, truncation,
+The standalone reliability test checks bitmap windows, sequence wraparound and
+GBN recovery without linking libfabric. The provider test checks completion timing, source discovery, truncation,
 backpressure, cancellation and object lifetimes. The integration test checks
 segmentation, zero-length messages, deterministic runs, slower-link timing,
 incast with a small DGRAM queue, timed/triggered messages, simulated-time loss

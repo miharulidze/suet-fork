@@ -136,7 +136,7 @@ static void check_datagram(size_t prefix)
 	memset(pds, 0, sizeof(*pds));
 	pds->pkt = pkt;
 	pkt->dgram_av_addr = 9;
-	pds->timestamp = 123;
+	pds->psn = 123;
 	assert(!((uintptr_t) pkt->pds_ctx % SUET_BUF_POOL_ALIGNMENT));
 	assert(!((uintptr_t) pkt->ses_ctx % SUET_BUF_POOL_ALIGNMENT));
 	assert((char *) pkt->ses_ctx >= (char *) pds + sizeof(*pds));
@@ -149,7 +149,7 @@ static void check_datagram(size_t prefix)
 	send_status = -FI_EAGAIN;
 	assert(suet_dgram_send(&domain, pkt) == -FI_EAGAIN);
 	assert(!suet_dgram_pkt_in_use(pkt));
-	assert(pds->timestamp == 123);
+	assert(pds->psn == 123);
 	send_status = 0;
 	assert(!suet_dgram_send(&domain, pkt));
 	assert(suet_dgram_pkt_in_use(pkt));
@@ -167,7 +167,7 @@ static void check_datagram(size_t prefix)
 		assert(!suet_dgram_send(&domain, pkt));
 		assert(sent_len == 11 && !memcmp(sent, "headpayload", 11));
 		assert(!memcmp(&header, &pkt->zc_pld_iov[0], sizeof(header)));
-		assert(pkt->pkt_size == 11 && pds->timestamp == 123);
+		assert(pkt->pkt_size == 11 && pds->psn == 123);
 		for (j = 0; j < sizeof(struct suet_ses_pkt_entry); j++)
 			assert(((unsigned char *) pkt->ses_ctx)[j] == 0x5a);
 		suet_dgram_tx_complete(&domain, send_context, -FI_EIO);
@@ -317,7 +317,7 @@ static void check_ses_retention(void)
 		ses = received->ses_ctx;
 		memset(pds, 0, sizeof(*pds));
 		pds->pkt = received;
-		pds->timestamp = 123 + i;
+		pds->psn = 123 + i;
 		pds->local_pdcid = 7;
 		dlist_init(&pds->entry);
 		memcpy(&saved[i], pds, sizeof(*pds));
@@ -400,6 +400,10 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 	memset(&ses.cached_hdr.amo, 0x5a, sizeof(ses.cached_hdr.amo));
 	ipdc.state = SUET_PDC_ESTABLISHED;
 	ipdc.tx_seq_no = 100;
+	assert(!suet_rel_tx_init(&ipdc.rel, 100, suet_env.max_unacked,
+				 suet_env.max_pkt_retry));
+	ipdc.tx_pkts = calloc(suet_env.max_unacked, sizeof(*ipdc.tx_pkts));
+	assert(ipdc.tx_pkts);
 	ipdc.last_tx_clear_psn = 99;
 	ipdc.local_pdcid = 7;
 	ipdc.tpdcid = 8;
@@ -454,6 +458,105 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 		segment++;
 	}
 	assert(offset == length && segment == ses.num_pkts);
+	free(ipdc.tx_pkts);
+	suet_rel_tx_cleanup(&ipdc.rel);
+	suet_dgram_free_pkt_entry_pools(&domain);
+}
+
+/* Exercise the real ACK path while packets are still borrowed by datagram.
+ * Retired bitmap slots must detach immediately; local completions retain and
+ * release the old packet records independently of those slots.
+ */
+static void inject_cack(struct suet_domain *domain, uint16_t pdcid,
+			uint32_t psn)
+{
+	struct suet_pkt_entry *pkt = suet_dgram_pkt_alloc(domain);
+	struct pds_ack_hdr *ack = pkt->pkt;
+
+	memset(ack, 0, sizeof(*ack));
+	pds_ack_set_type(ack, PDS_ACK);
+	pds_ack_set_next_hdr(ack, UET_HDR_NONE);
+	pds_ack_set_dpdcid(ack, pdcid);
+	pds_ack_set_spdcid(ack, 8);
+	pds_ack_set_cack_psn(ack, psn);
+	pkt->pkt_size = sizeof(*ack);
+	suet_pds_receive(domain, pkt, 9);
+}
+
+static void check_bitmap_retirement(void)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep ep = {.msg = &msg_ops};
+	struct suet_ipdc ipdc = {0};
+	struct suet_pds_pkt_entry *packets[3];
+	struct suet_dgram_pkt_entry *local[3];
+	uint32_t i, slot;
+
+	domain.dgram.ep = &ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	prefix_size = 0;
+	send_status = 0;
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	assert(!suet_pds_init(&domain));
+	assert(!suet_rel_tx_init(&ipdc.rel, UINT32_MAX - 1, 3, 100));
+	ipdc.tx_pkts = calloc(3, sizeof(*ipdc.tx_pkts));
+	assert(ipdc.tx_pkts);
+	ipdc.local_pdcid = 7;
+	ipdc.state = SUET_PDC_ESTABLISHED;
+	ipdc.last_tx_clear_psn = UINT32_MAX - 2;
+	dlist_init(&ipdc.tx_list);
+	dlist_init(&ipdc.in_flight_pkts);
+	assert(ofi_idm_set(&domain.pds.local_pdcid_to_ipdc_idm, 7, &ipdc) >= 0);
+	dispatch_pds_tx = true;
+	for (i = 0; i < 3; i++) {
+		struct suet_pkt_entry *pkt = suet_dgram_pkt_alloc(&domain);
+		struct suet_pds_pkt_entry *pds = pkt->pds_ctx;
+		uint32_t psn = UINT32_MAX - 1 + i;
+
+		memset(pds, 0, sizeof(*pds));
+		pds->pkt = pkt;
+		pds->psn = psn;
+		pds->local_pdcid = 7;
+		packets[i] = pds;
+		memset(pkt->pkt, 0, sizeof(struct pds_req_hdr));
+		pds_prologue_set_type(pkt->pkt, PDS_ROD_REQ);
+		pds_req_set_psn(pkt->pkt, psn);
+		pkt->pkt_size = sizeof(struct pds_req_hdr);
+		pkt->dgram_av_addr = 9;
+		assert(suet_rel_slot(&ipdc.rel.window, psn, &slot));
+		ipdc.tx_pkts[slot] = pds;
+		suet_rel_tx_track(&ipdc.rel, psn);
+		suet_rel_tx_attempt(&ipdc.rel, psn,
+				    suet_domain_now_ms(&domain));
+		dlist_insert_tail(&pds->entry, &ipdc.in_flight_pkts);
+		ipdc.in_flight_cnt++;
+		assert(!suet_dgram_send(&domain, pkt));
+		local[i] = container_of(pkt, struct suet_dgram_pkt_entry, pkt);
+	}
+
+	inject_cack(&domain, 7, UINT32_MAX - 1);
+	assert(packets[0]->acked && !ipdc.tx_pkts[0]);
+	assert(ipdc.in_flight_cnt == 3);
+	assert(suet_rel_tx_can_track(&ipdc.rel, 1));
+	inject_cack(&domain, 7, UINT32_MAX - 1); /* duplicate */
+	assert(ipdc.in_flight_cnt == 3);
+	inject_cack(&domain, 7, 1); /* covers a PSN never submitted */
+	assert(suet_rel_tx_cack(&ipdc.rel) == UINT32_MAX - 1);
+	assert(!packets[1]->acked && !packets[2]->acked);
+	inject_cack(&domain, 7, 0);
+	assert(!ipdc.tx_pkts[1] && !ipdc.tx_pkts[2]);
+	assert(packets[1]->acked && packets[2]->acked);
+	/* Complete in a different order from PSNs and ACKs. */
+	suet_dgram_tx_complete(&domain, &local[2]->context, 0);
+	suet_dgram_tx_complete(&domain, &local[0]->context, 0);
+	suet_dgram_tx_complete(&domain, &local[1]->context, 0);
+	assert(!ipdc.in_flight_cnt && dlist_empty(&ipdc.in_flight_pkts));
+	dispatch_pds_tx = false;
+	free(ipdc.tx_pkts);
+	suet_rel_tx_cleanup(&ipdc.rel);
+	suet_pds_cleanup(&domain);
 	suet_dgram_free_pkt_entry_pools(&domain);
 }
 
@@ -464,6 +567,7 @@ int main(void)
 	check_datagram(8);
 	check_pds_retention();
 	check_ses_retention();
+	check_bitmap_retirement();
 	check_pds_framing(false, false, 141);
 	check_pds_framing(true, false, 141);
 	check_pds_framing(false, false, 0);

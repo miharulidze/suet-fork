@@ -62,6 +62,10 @@ static void suet_init_env(void)
 	fi_param_get_int(&suet_prov, "spin_count", &suet_env.spin_count);
 	fi_param_get_int(&suet_prov, "max_peers", &suet_env.max_peers);
 	fi_param_get_int(&suet_prov, "max_unacked", &suet_env.max_unacked);
+	if (suet_env.max_unacked < 1)
+		suet_env.max_unacked = 1;
+	if (suet_env.max_unacked > UINT16_MAX)
+		suet_env.max_unacked = UINT16_MAX;
 	fi_param_get_int(&suet_prov, "max_eps", &suet_env.max_eps);
 	fi_param_get_bool(&suet_prov, "rescan", &suet_env.rescan);
 	fi_param_get_bool(&suet_prov, "print_domain_counters",
@@ -77,6 +81,8 @@ static void suet_init_env(void)
 	if (suet_env.cq_read_batch_size > SUET_CQ_MAX_BATCH)
 		suet_env.cq_read_batch_size = SUET_CQ_MAX_BATCH;
 	fi_param_get_int(&suet_prov, "max_pkt_retry", &suet_env.max_pkt_retry);
+	if (suet_env.max_pkt_retry < 0)
+		suet_env.max_pkt_retry = 0;
 	fi_param_get_int(&suet_prov, "max_gtd_del_resp_pool_size",
 			 &suet_env.max_gtd_del_resp_pool_size);
 	if (suet_env.max_gtd_del_resp_pool_size < 1)
@@ -200,7 +206,7 @@ SUET_INI
 			"Maximum number of peers to track (default: 1024)");
 	fi_param_define(
 		&suet_prov, "max_unacked", FI_PARAM_INT,
-		"Maximum number of packets to send at once (default: 128)");
+		"Maximum number of packets to send at once (clamped to 1..65535; default: 128)");
 	fi_param_define(
 		&suet_prov, "max_eps", FI_PARAM_INT,
 		"Maximum number of endpoints per domain (default: 256)");
@@ -229,7 +235,7 @@ SUET_INI
 		"Maximum number of CQ entries to read per poll call "
 		"(clamped to [1, SUET_CQ_MAX_BATCH=64]). (default: 16)");
 	fi_param_define(&suet_prov, "max_pkt_retry", FI_PARAM_INT,
-			"Maximum per-packet RTO retries before the owning ipdc "
+			"Maximum GBN retry rounds without ACK progress before the owning ipdc "
 			"is force-closed. (default: 100)");
 	fi_param_define(
 		&suet_prov, "max_gtd_del_resp_pool_size", FI_PARAM_INT,
