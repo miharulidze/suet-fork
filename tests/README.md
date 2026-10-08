@@ -88,6 +88,12 @@ buffers. It checks pointer-slot retirement, invalid/duplicate ACKs and local
 completions in a different order. The existing ownership and framing checks
 remain intact.
 
+The same PDS test covers fixed-window CC admission independently of bitmap and
+buffer capacity, credit release through real cumulative ACKs, duplicate/invalid
+ACK rejection, and slot reuse while an ACKed buffer awaits local completion.
+Local resubmission and completion do not consume or release additional
+congestion credit.
+
 ## External simulation clock
 
 `test_clock.c` checks per-domain callback installation, elapsed-time reads,

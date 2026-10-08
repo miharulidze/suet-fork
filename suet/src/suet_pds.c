@@ -573,7 +573,6 @@ static void suet_pds_free_ipdc(struct suet_domain *domain,
 		} else {
 			suet_pds_pkt_free(pkt_entry);
 		}
-		ipdc->in_flight_cnt--;
 	}
 
 	dlist_remove(&ipdc->entry);
@@ -644,6 +643,7 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 	}
 	if (action == SUET_REL_ACK_INVALID)
 		goto out;
+	suet_cc_ack(&ipdc->cc, retired.count);
 
 	/* Spec 3.5.8.3: Close ACK frees the ipdc and ends the lifecycle.
 	 * Identified by being in CLOSE_ACK_WAIT with a cack covering close_psn.
@@ -669,7 +669,6 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 		if (suet_dgram_pkt_in_use(pkt_entry->pkt)) {
 			pkt_entry->acked = true;
 		} else {
-			ipdc->in_flight_cnt--;
 			dlist_remove_init(&pkt_entry->entry);
 			suet_pds_pkt_free(pkt_entry);
 		}
@@ -685,7 +684,7 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 	 * for free (Spec 3.5.10.4) and Clear Cmd MUST NOT be emitted.
 	 * Probe / Close ACK paths set req=0 by construction. */
 	if (pds_ack_get_req(&ack->pds) == PDS_ACK_REQ_CLEAR &&
-	    dlist_empty(&ipdc->tx_list) && ipdc->in_flight_cnt == 0 &&
+	    dlist_empty(&ipdc->tx_list) && dlist_empty(&ipdc->in_flight_pkts) &&
 	    ipdc->state == SUET_PDC_ESTABLISHED)
 		suet_pds_ipdc_send_clear_cmd(domain, ipdc);
 	goto out;
@@ -760,7 +759,6 @@ void suet_pds_tx_done(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 			dlist_remove_init(&pkt_entry->entry);
 			suet_pds_pkt_free(pkt_entry);
 			if (ipdc) {
-				ipdc->in_flight_cnt--;
 				/* try to send more if window allows and we have
 				 * outstanding data */
 				suet_pds_ipdc_progress_tx_list(ipdc);
@@ -1149,8 +1147,8 @@ suet_pds_ipdc_insert_unacked_pkt(struct suet_ipdc *ipdc,
 		return;
 	ipdc->tx_pkts[slot] = pkt_entry;
 	suet_rel_tx_track(&ipdc->rel, pkt_entry->psn);
+	suet_cc_track(&ipdc->cc);
 	dlist_insert_tail(&pkt_entry->entry, &ipdc->in_flight_pkts);
-	ipdc->in_flight_cnt++;
 }
 
 static void suet_pds_ipdc_send_tracked_pkt(struct suet_domain *domain,
@@ -1170,15 +1168,14 @@ static void suet_pds_send_tx(struct suet_pds_tx_entry *tx)
 	struct suet_ipdc *ipdc = tx->ipdc;
 	struct suet_pds_pkt_entry *pkt_entry;
 
-	if (ipdc->in_flight_cnt >= (uint16_t) suet_env.max_unacked)
+	if (!suet_cc_can_send(&ipdc->cc))
 		return;
 	if (!tx->started) {
 		tx->started = true;
 		tx->start_psn = ipdc->tx_seq_no;
 		ipdc->tx_seq_no += tx->num_pkts;
 	}
-	while (tx->next_segment < tx->num_pkts &&
-	       ipdc->in_flight_cnt < (uint16_t) suet_env.max_unacked) {
+	while (tx->next_segment < tx->num_pkts && suet_cc_can_send(&ipdc->cc)) {
 		if (!suet_rel_tx_can_track(&ipdc->rel,
 					   tx->start_psn + tx->next_segment))
 			return;
@@ -1288,6 +1285,7 @@ static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
 	ipdc->dgram_av_addr = dgram_av_addr;
 	ipdc->start_psn = pds_generate_start_psn(&domain->pds.psn_seed, 0);
 	ipdc->tx_seq_no = ipdc->start_psn;
+	suet_cc_init(&ipdc->cc, suet_env.max_unacked);
 	/* Spec Table 3-35: cack_psn = highest acked PSN. Before any ACK has
 	 * been received nothing in [start_psn, ...] is acked, so initialize
 	 * to start_psn - 1 (i.e. one before the first PSN we will send). */
@@ -1300,7 +1298,6 @@ static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
 	/* Spec 3.5.11.4.4: CLEAR_PSN initialized to Start_PSN - 1 in both
 	 * directions. Eager-clear: advanced with the cumulative ACK horizon. */
 	ipdc->last_tx_clear_psn = ipdc->start_psn - 1;
-	ipdc->in_flight_cnt = 0;
 	ipdc->state = SUET_PDC_OPENING;
 	ipdc->teardown_pending = false;
 	ipdc->close_psn = 0;

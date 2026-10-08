@@ -230,7 +230,6 @@ static void check_pds_retention(void)
 	assert(!suet_dgram_init_pkt_entry_pools(&domain));
 	assert(!suet_pds_init(&domain));
 	ipdc.local_pdcid = 1;
-	ipdc.in_flight_cnt = 1;
 	dlist_init(&ipdc.in_flight_pkts);
 	dlist_init(&ipdc.tx_list);
 	assert(ofi_idm_set(&domain.pds.local_pdcid_to_ipdc_idm, 1, &ipdc) >= 0);
@@ -249,15 +248,15 @@ static void check_pds_retention(void)
 	assert(!suet_dgram_send(&domain, pkt));
 	suet_dgram_tx_complete(&domain, send_context, 0);
 	assert(!suet_dgram_pkt_in_use(pkt));
-	assert(ipdc.in_flight_cnt == 1 && !dlist_empty(&ipdc.in_flight_pkts));
+	assert(!dlist_empty(&ipdc.in_flight_pkts));
 	assert(!suet_dgram_send(&domain, pkt));
 	suet_dgram_tx_complete(&domain, send_context, -FI_EIO);
 	assert(!suet_dgram_pkt_in_use(pkt));
-	assert(ipdc.in_flight_cnt == 1 && !dlist_empty(&ipdc.in_flight_pkts));
+	assert(!dlist_empty(&ipdc.in_flight_pkts));
 	assert(!suet_dgram_send(&domain, pkt));
 	pds->acked = true;
 	suet_dgram_tx_complete(&domain, send_context, 0);
-	assert(!ipdc.in_flight_cnt && dlist_empty(&ipdc.in_flight_pkts));
+	assert(dlist_empty(&ipdc.in_flight_pkts));
 	dispatch_pds_tx = false;
 	suet_pds_cleanup(&domain);
 	suet_dgram_free_pkt_entry_pools(&domain);
@@ -400,6 +399,7 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 	memset(&ses.cached_hdr.amo, 0x5a, sizeof(ses.cached_hdr.amo));
 	ipdc.state = SUET_PDC_ESTABLISHED;
 	ipdc.tx_seq_no = 100;
+	suet_cc_init(&ipdc.cc, suet_env.max_unacked);
 	assert(!suet_rel_tx_init(&ipdc.rel, 100, suet_env.max_unacked,
 				 suet_env.max_pkt_retry));
 	ipdc.tx_pkts = calloc(suet_env.max_unacked, sizeof(*ipdc.tx_pkts));
@@ -412,9 +412,19 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 	tx.domain = &domain;
 	tx.ipdc = &ipdc;
 	tx.context = &ses;
+	/* Congestion admission must block even with packet/bitmap capacity.
+	 * Use synthetic outstanding credit here; real ACK accounting is
+	 * exercised below by check_bitmap_retirement.
+	 */
+	for (i = 0; i < (size_t) suet_env.max_unacked; i++)
+		suet_cc_track(&ipdc.cc);
+	suet_pds_tx_submit(&tx, ses.num_pkts);
+	assert(!tx.started && !tx.next_segment);
+	assert(dlist_empty(&ipdc.in_flight_pkts));
+	suet_cc_ack(&ipdc.cc, suet_env.max_unacked);
 	suet_pds_tx_submit(&tx, ses.num_pkts);
 	assert(tx.next_segment == ses.num_pkts);
-	assert(ipdc.in_flight_cnt == ses.num_pkts);
+	assert(ipdc.cc.in_flight == ses.num_pkts);
 	while (!dlist_empty(&ipdc.in_flight_pkts)) {
 		struct suet_pds_pkt_entry *pds =
 			container_of(ipdc.in_flight_pkts.next,
@@ -432,6 +442,7 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 				0));
 		suet_dgram_tx_complete(&domain, &dgram->context, 0);
 		assert(!suet_dgram_send(&domain, pkt));
+		assert(ipdc.cc.in_flight == ses.num_pkts);
 		assert(sent_len == hdr_len + len);
 		assert(pds_prologue_get_type(&wire->pds) == PDS_ROD_REQ);
 		assert(pds_prologue_get_next_hdr(&wire->pds) ==
@@ -488,12 +499,24 @@ static void check_bitmap_retirement(void)
 	struct suet_domain domain = {0};
 	struct fid_ep ep = {.msg = &msg_ops};
 	struct suet_ipdc ipdc = {0};
+	struct suet_ep ses_ep = {0};
+	struct suet_ses_tx_entry ses = {.ep = &ses_ep,
+					.num_pkts = 1,
+					.hdr_len = sizeof(struct ses_req_hdr)};
+	struct suet_pds_tx_entry tx = {.domain = &domain,
+				       .ipdc = &ipdc,
+				       .context = &ses};
 	struct suet_pds_pkt_entry *packets[3];
 	struct suet_dgram_pkt_entry *local[3];
+	struct suet_dgram_pkt_entry *new_local;
 	uint32_t i, slot;
+	int max_unacked = suet_env.max_unacked;
 
+	suet_env.max_unacked = 3;
 	domain.dgram.ep = &ep;
 	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+	domain.max_pkt_sz = 64;
 	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
 	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
 	prefix_size = 0;
@@ -501,9 +524,13 @@ static void check_bitmap_retirement(void)
 	assert(!suet_dgram_init_pkt_entry_pools(&domain));
 	assert(!suet_pds_init(&domain));
 	assert(!suet_rel_tx_init(&ipdc.rel, UINT32_MAX - 1, 3, 100));
+	suet_cc_init(&ipdc.cc, 3);
 	ipdc.tx_pkts = calloc(3, sizeof(*ipdc.tx_pkts));
 	assert(ipdc.tx_pkts);
 	ipdc.local_pdcid = 7;
+	ipdc.tpdcid = 8;
+	ipdc.dgram_av_addr = 9;
+	ipdc.tx_seq_no = 1;
 	ipdc.state = SUET_PDC_ESTABLISHED;
 	ipdc.last_tx_clear_psn = UINT32_MAX - 2;
 	dlist_init(&ipdc.tx_list);
@@ -528,36 +555,60 @@ static void check_bitmap_retirement(void)
 		assert(suet_rel_slot(&ipdc.rel.window, psn, &slot));
 		ipdc.tx_pkts[slot] = pds;
 		suet_rel_tx_track(&ipdc.rel, psn);
+		suet_cc_track(&ipdc.cc);
 		suet_rel_tx_attempt(&ipdc.rel, psn,
 				    suet_domain_now_ms(&domain));
 		dlist_insert_tail(&pds->entry, &ipdc.in_flight_pkts);
-		ipdc.in_flight_cnt++;
 		assert(!suet_dgram_send(&domain, pkt));
 		local[i] = container_of(pkt, struct suet_dgram_pkt_entry, pkt);
 	}
 
+	/* Local completion alone must not open the congestion window. */
+	suet_dgram_tx_complete(&domain, &local[2]->context, 0);
+	assert(ipdc.cc.in_flight == 3 && !suet_cc_can_send(&ipdc.cc));
+	assert(!suet_dgram_send(&domain, packets[2]->pkt));
+	assert(ipdc.cc.in_flight == 3);
 	inject_cack(&domain, 7, UINT32_MAX - 1);
 	assert(packets[0]->acked && !ipdc.tx_pkts[0]);
-	assert(ipdc.in_flight_cnt == 3);
+	assert(ipdc.cc.in_flight == 2 && suet_cc_can_send(&ipdc.cc));
 	assert(suet_rel_tx_can_track(&ipdc.rel, 1));
+	/* Reuse the ACKed slot while its old buffer is still borrowed. */
+	ses_ep.util_ep.domain = &domain.util_domain;
+	ses_req_init(&ses.cached_hdr.ses, UET_SEND, 1, 1, 1, 0, 17, 0, 0, 0, 0,
+		     0, 0);
+	suet_pds_tx_submit(&tx, 1);
+	assert(tx.started && tx.next_segment == 1);
+	assert(ipdc.cc.in_flight == 3 && !suet_cc_can_send(&ipdc.cc));
+	assert(ipdc.tx_pkts[0] != packets[0] && ipdc.tx_pkts[0]->psn == 1);
+	assert(suet_dgram_pkt_in_use(packets[0]->pkt));
+	new_local = container_of(ipdc.tx_pkts[0]->pkt,
+				 struct suet_dgram_pkt_entry, pkt);
 	inject_cack(&domain, 7, UINT32_MAX - 1); /* duplicate */
-	assert(ipdc.in_flight_cnt == 3);
-	inject_cack(&domain, 7, 1); /* covers a PSN never submitted */
+	assert(ipdc.cc.in_flight == 3);
+	inject_cack(&domain, 7, 2); /* covers a PSN never submitted */
 	assert(suet_rel_tx_cack(&ipdc.rel) == UINT32_MAX - 1);
 	assert(!packets[1]->acked && !packets[2]->acked);
+	assert(ipdc.cc.in_flight == 3);
 	inject_cack(&domain, 7, 0);
 	assert(!ipdc.tx_pkts[1] && !ipdc.tx_pkts[2]);
 	assert(packets[1]->acked && packets[2]->acked);
+	assert(ipdc.cc.in_flight == 1);
+	inject_cack(&domain, 7, 1);
+	assert(!ipdc.tx_pkts[0]);
+	assert(!ipdc.cc.in_flight && ipdc.cc.cwnd == 3);
 	/* Complete in a different order from PSNs and ACKs. */
 	suet_dgram_tx_complete(&domain, &local[2]->context, 0);
 	suet_dgram_tx_complete(&domain, &local[0]->context, 0);
+	suet_dgram_tx_complete(&domain, &new_local->context, 0);
 	suet_dgram_tx_complete(&domain, &local[1]->context, 0);
-	assert(!ipdc.in_flight_cnt && dlist_empty(&ipdc.in_flight_pkts));
+	assert(dlist_empty(&ipdc.in_flight_pkts));
+	assert(!ipdc.cc.in_flight && ipdc.cc.cwnd == 3);
 	dispatch_pds_tx = false;
 	free(ipdc.tx_pkts);
 	suet_rel_tx_cleanup(&ipdc.rel);
 	suet_pds_cleanup(&domain);
 	suet_dgram_free_pkt_entry_pools(&domain);
+	suet_env.max_unacked = max_unacked;
 }
 
 int main(void)

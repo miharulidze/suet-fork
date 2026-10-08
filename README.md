@@ -109,8 +109,28 @@ immediate retransmission), per-packet attempt timestamps and a per-connection
 retry-round budget. Backoff starts at 1 ms and saturates safely at 4 seconds.
 Local send failures remain tracked for recovery and retry attempts retain the
 existing timing/accounting. Wire structures are unchanged. `max_unacked` is
-clamped to 1..65535 to match PDS's packet counter; negative retry limits become
+clamped to 1..65535; negative retry limits become
 zero. An ACK covering an untracked PSN is rejected without retiring packets.
+
+### Congestion-control boundary
+
+`suet_cc.h` defines direct calls for send admission, tracking a new request,
+and releasing newly acknowledged credit. `suet_cc.c` implements a fixed
+packet window, initialized from `FI_SUET_MAX_UNACKED` (default 128). Each
+initiator PDC embeds its CC context; there are no allocations or function
+pointers, and CC has no PDC-type, reliability, wire, or SES dependency.
+
+PDS checks CC credit, reliability-window space and packet-buffer availability
+before sending new data. A tracked request reserves one CC credit even if its
+first local submission fails. Retransmissions reuse that credit. Only validated,
+newly acknowledged requests release it; duplicate/invalid ACKs and local
+datagram completions do not. PDS separately retains ACKed buffers still borrowed
+by datagram. They no longer consume send-window credit: a freed reliability
+slot can hold a new packet while its previous buffer waits for local completion.
+Message completion still waits for local access to end.
+Tracked Close requests use the same credit accounting; ACK/NACK and CLEAR
+responses do not. This fixed policy adds no pacing, window adaptation or wire
+feedback fields.
 
 ### Simulation clock
 

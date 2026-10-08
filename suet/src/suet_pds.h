@@ -35,6 +35,7 @@
 #ifndef _SUET_PDS_H_
 #define _SUET_PDS_H_
 
+#include "suet_cc.h"
 #include "suet_pds_dgram_api.h"
 #include "suet_rel.h"
 #include "suet_ses_pds_api.h"
@@ -102,8 +103,8 @@ struct suet_ipdc {
 				     * the SES response has been delivered. */
 	uint32_t close_psn;
 	struct suet_rel_tx rel;
+	struct suet_cc cc;
 	struct suet_pds_pkt_entry **tx_pkts; /* indexed by reliability slot */
-	uint16_t in_flight_cnt;
 	bool teardown_pending; /* close requested; defer QUIESCE until
 				  ESTABLISHED */
 	enum suet_pdc_state state;
