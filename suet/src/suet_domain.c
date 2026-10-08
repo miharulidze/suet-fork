@@ -107,7 +107,10 @@ static int suet_domain_close(fid_t fid)
 	suet_domain = container_of(fid, struct suet_domain,
 				   util_domain.domain_fid.fid);
 
-	suet_pds_drain(suet_domain);
+	ret = suet_pds_drain(suet_domain, !(suet_domain->clock.flags &
+					    FI_SUET_CLOCK_ASYNC_CLOSE));
+	if (ret)
+		return ret;
 
 	if (suet_env.print_domain_counters)
 		FI_INFO(&suet_prov, FI_LOG_DOMAIN,
@@ -146,11 +149,41 @@ static int suet_domain_close(fid_t fid)
 	return 0;
 }
 
+uint64_t suet_domain_now_ms(struct suet_domain *domain)
+{
+	return domain->clock.elapsed_ms ?
+		       domain->clock.elapsed_ms(domain->clock.context) :
+		       ofi_gettime_ms();
+}
+
+static int suet_domain_control(struct fid *fid, int command, void *arg)
+{
+	struct suet_domain *domain = container_of(fid, struct suet_domain,
+						  util_domain.domain_fid.fid);
+	struct fi_fid_var *var = arg;
+	struct fi_suet_clock *clock;
+
+	if (command != FI_SET_VAL || !var || var->name != FI_SUET_CLOCK)
+		return -FI_ENOSYS;
+	clock = var->val;
+	if (!clock || clock->size != sizeof(*clock) ||
+	    (clock->flags & ~FI_SUET_CLOCK_ASYNC_CLOSE))
+		return -FI_EINVAL;
+	ofi_genlock_lock(&domain->fep_lock);
+	if (domain->next_ri) {
+		ofi_genlock_unlock(&domain->fep_lock);
+		return -FI_EBUSY;
+	}
+	domain->clock = *clock;
+	ofi_genlock_unlock(&domain->fep_lock);
+	return 0;
+}
+
 static struct fi_ops suet_domain_fi_ops = {
 	.size = sizeof(struct fi_ops),
 	.close = suet_domain_close,
 	.bind = fi_no_bind,
-	.control = fi_no_control,
+	.control = suet_domain_control,
 	.ops_open = fi_no_ops_open,
 };
 

@@ -3,8 +3,8 @@
 ## Automated build
 
 ```bash
-./build.sh        # builds libfabric and fabtests into ./build-workspace/install/
-./build.sh --test # runs prov/suet/test_suet.py against the build
+./build.sh        # builds libfabric and fabtests into ./suet-workspace/build/
+./build.sh --test # runs test_suet.py against the build
 ```
 
 For anything beyond the default (running a subset, multi-node, custom timeout, etc.) invoke the test runner directly:
@@ -12,6 +12,19 @@ For anything beyond the default (running a subset, multi-node, custom timeout, e
 ```bash
 python3 test_suet.py --bin-dir suet-workspace/build/bin --timeout 60 --verbose
 ```
+
+## Simulator build
+
+```bash
+./build.sh --htsim       # libfabric + fabtests + htsim DGRAM provider and runner
+./build.sh --test-htsim  # provider contract and simulator integration tests
+```
+
+Use `./build.sh --htsim-only` to build the simulator integration against an
+existing install (`LIBFABRIC_ROOT`, default `$WORKDIR/build`). Set
+`HTSIM_SOURCE_DIR` to use an existing `uet-htsim` checkout; otherwise the build
+fetches a pinned revision. See [htsim/README.md](htsim/README.md) for run commands,
+build overrides and simulator limitations.
 
 ## Manual build
 

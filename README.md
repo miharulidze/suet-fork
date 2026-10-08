@@ -16,6 +16,17 @@ SUET is developed at the Scalable Parallel Computing Lab (SPCL) at ETH Zurich fo
 
 See `INSTALL.md` for more details.
 
+To build and test SUET over the htsim network model:
+
+```bash
+./build.sh --htsim
+./build.sh --test-htsim
+```
+
+The provider, runner, tests and build integration are in [htsim/](htsim/README.md).
+The simulator dependency is fetched at a pinned revision, or supplied through
+`HTSIM_SOURCE_DIR`. Use `--htsim-only` to reuse an existing SUET/libfabric install.
+
 ## Provider architecture
 
 ### Portable design
@@ -71,6 +82,22 @@ buffer lifetime rules are unchanged. Calls require the domain FEP lock or
 exclusive initialization/close. Domain close drains PDS, stops the datagram
 endpoint, then releases layer state and packet storage. No new dispatch table,
 reliability algorithm, or progress thread is introduced.
+
+### Simulation clock
+
+`suet/src/suet_ext.h` exposes an optional per-domain clock through
+`fi_set_val(&domain->fid, FI_SUET_CLOCK, &clock)`. Install it before creating
+endpoints. The callback returns monotonic elapsed milliseconds; its context
+must remain valid until the domain closes. The record is copied by SUET.
+A null callback restores the normal clock. Retry intervals and wire formats
+are unchanged.
+
+A discrete-event driver can also set `FI_SUET_CLOCK_ASYNC_CLOSE`. In this mode,
+`fi_close(domain)` returns `-FI_EAGAIN` while PDS teardown needs further
+progress. The driver must keep advancing its network and retry closing all
+participating domains. Without this flag, the existing blocking close behavior
+is preserved. This supports the [htsim_suet runner](htsim/README.md) without simulator
+dependencies in the SUET provider.
 
 ### Key provider features
 

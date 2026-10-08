@@ -16,6 +16,7 @@ _suet_files = \
 	prov/suet/src/suet_atomic.c	\
 	prov/suet/src/suet_mr.c		\
 	prov/suet/src/suet.h		\
+	prov/suet/src/suet_ext.h		\
 	prov/suet/src/suet_dgram.h	\
 	prov/suet/src/suet_pds_dgram_api.h	\
 	prov/suet/src/suet_pds.h		\

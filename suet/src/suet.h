@@ -66,6 +66,7 @@
 #define _SUET_H_
 
 #include "suet_dgram.h"
+#include "suet_ext.h"
 #include "suet_pds.h"
 #include "suet_ses.h"
 
@@ -177,6 +178,7 @@ struct suet_domain {
 	uint16_t pid_on_fep;
 	uint32_t ep_counter;
 	struct ofi_genlock fep_lock;
+	struct fi_suet_clock clock;
 	struct suet_ep **ep_table;
 
 	size_t zc_mr_reg_threshold;
@@ -368,6 +370,7 @@ int suet_query_atomic(struct fid_domain *domain, enum fi_datatype datatype,
 
 int suet_domain_open(struct fid_fabric *fabric, struct fi_info *info,
 		     struct fid_domain **dom, void *context);
+uint64_t suet_domain_now_ms(struct suet_domain *domain);
 void suet_domain_progress(struct suet_domain *domain);
 int suet_domain_broadcast_cq_err(struct suet_domain *domain, int err,
 				 bool is_tx);
@@ -380,7 +383,7 @@ int suet_cntr_open(struct fid_domain *domain, struct fi_cntr_attr *attr,
 int suet_pds_init(struct suet_domain *domain);
 void suet_pds_cleanup(struct suet_domain *domain);
 void suet_pds_progress(struct suet_domain *domain);
-void suet_pds_drain(struct suet_domain *domain);
+int suet_pds_drain(struct suet_domain *domain, bool blocking);
 
 int suet_ses_init(struct suet_domain *domain);
 void suet_ses_cleanup(struct suet_domain *domain);

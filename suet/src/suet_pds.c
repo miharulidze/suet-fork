@@ -98,7 +98,7 @@ static bool suet_pds_parse_ses(struct suet_domain *domain,
 static ssize_t suet_pds_send_pkt(struct suet_domain *domain,
 				 struct suet_pds_pkt_entry *pkt)
 {
-	pkt->timestamp = ofi_gettime_ms();
+	pkt->timestamp = suet_domain_now_ms(domain);
 	return suet_dgram_send(domain, pkt->pkt);
 }
 
@@ -1511,7 +1511,7 @@ static void suet_pds_ipdc_progress_tx_pkt_list(struct suet_domain *domain,
 	ssize_t ret;
 	bool retry = false;
 
-	current = ofi_gettime_ms();
+	current = suet_domain_now_ms(domain);
 	dlist_foreach_container (&ipdc->in_flight_pkts,
 				 struct suet_pds_pkt_entry, pkt_entry, entry) {
 		if (suet_dgram_pkt_in_use(pkt_entry->pkt) || pkt_entry->acked ||
@@ -1581,7 +1581,7 @@ void suet_pds_progress(struct suet_domain *domain)
 	}
 }
 
-void suet_pds_drain(struct suet_domain *domain)
+int suet_pds_drain(struct suet_domain *domain, bool blocking)
 {
 	struct suet_ipdc *ipdc;
 	struct dlist_entry *tmp;
@@ -1593,7 +1593,11 @@ void suet_pds_drain(struct suet_domain *domain)
 	while (!dlist_empty(&domain->pds.active_ipdc_list) ||
 	       !dlist_empty(&domain->pds.active_tpdc_list)) {
 		suet_domain_progress(domain);
+		if (!blocking && (!dlist_empty(&domain->pds.active_ipdc_list) ||
+				  !dlist_empty(&domain->pds.active_tpdc_list)))
+			return -FI_EAGAIN;
 	}
+	return 0;
 }
 
 void suet_pds_cleanup(struct suet_domain *suet_domain)

@@ -8,10 +8,19 @@
 #   WORKDIR           where to place the workspace   (default: ./suet-workspace)
 #   SUET_SRC_DIR      suet provider source dir       (default: ./suet next to this script)
 #   JOBS              make -j argument               (default: nproc/sysctl)
+#   HTSIM_SOURCE_DIR  existing uet-htsim checkout (otherwise fetch pinned revision)
+#   HTSIM_REPO        simulator git URL (default: ultraethernet/uet-htsim)
+#   HTSIM_REF         simulator revision (default: validated commit; see htsim/build.sh)
+#   HTSIM_BUILD_DIR   simulator build directory (default: $WORKDIR/htsim-build)
+#   LIBFABRIC_ROOT    existing install for --htsim-only (default: $WORKDIR/build)
+#   SUET_SANITIZE     ASan/UBSan for simulator integration (default: OFF)
 #
 # Usage:
 #   ./build.sh         # full fresh build (libfabric + fabtests)
 #   ./build.sh --test  # run test_suet.py against the existing build
+#   ./build.sh --htsim       # full build, including htsim provider and runner
+#   ./build.sh --htsim-only  # build htsim against an existing SUET/libfabric install
+#   ./build.sh --test-htsim  # run provider and simulator tests; does not build
 #
 # --test does NOT build. Run a build first (./build.sh) and then test
 # against it (./build.sh --test).
@@ -36,16 +45,33 @@ VRB_FI_SOURCE_ERR_SHA="5ea1ba6ed6d56973b516cc24d3489d1c703b500a"
 PATCH_FILE="$SCRIPT_DIR/patches/0001-register-suet-provider.patch"
 
 TEST_ONLY=0
+BUILD_HTSIM=0
+HTSIM_ONLY=0
+TEST_HTSIM=0
+if [ "$#" -gt 1 ]; then
+    echo "expected at most one build mode; see --help" >&2
+    exit 2
+fi
 case "${1:-}" in
     "")        ;;
     --test)    TEST_ONLY=1 ;;
+    --htsim)   BUILD_HTSIM=1 ;;
+    --htsim-only) HTSIM_ONLY=1 ;;
+    --test-htsim) TEST_HTSIM=1 ;;
     -h|--help) sed -n '2,/^set -euo/p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)         echo "unknown flag: $1" >&2; exit 2 ;;
 esac
 
 log() { printf '\n==> %s\n' "$*"; }
 
+# Keep paths valid after changing into the dependency build directories.
+case "$WORKDIR" in /*) ;; *) WORKDIR="$PWD/$WORKDIR" ;; esac
 INSTALL="$WORKDIR/build"
+
+if [ "$TEST_HTSIM" = 1 ]; then
+    export WORKDIR
+    exec bash "$SCRIPT_DIR/htsim/build.sh" test
+fi
 
 # ---- --test mode: run the suet test suite against an existing build -----
 if [ "$TEST_ONLY" = 1 ]; then
@@ -72,6 +98,23 @@ else
     echo "SUET_SRC_DIR=$SUET_SRC_DIR does not look like a suet provider source tree" >&2
     echo "(expected <dir>/src/suet.h or <dir>/prov/suet/src/suet.h to exist)" >&2
     exit 1
+fi
+
+SUET_SRC_DIR="$(cd "$SUET_SRC_DIR" && pwd)"
+if [ "$BUILD_HTSIM" = 1 ] || [ "$HTSIM_ONLY" = 1 ]; then
+    # Resolve user paths before the libfabric build changes the working directory.
+    if [ -n "${HTSIM_SOURCE_DIR:-}" ]; then
+        HTSIM_SOURCE_DIR="$(cd "$HTSIM_SOURCE_DIR" && pwd)"
+        export HTSIM_SOURCE_DIR
+    fi
+    if [ -n "${HTSIM_BUILD_DIR:-}" ]; then
+        case "$HTSIM_BUILD_DIR" in /*) ;; *) HTSIM_BUILD_DIR="$PWD/$HTSIM_BUILD_DIR" ;; esac
+        export HTSIM_BUILD_DIR
+    fi
+    export WORKDIR SUET_SRC_DIR JOBS
+fi
+if [ "$HTSIM_ONLY" = 1 ]; then
+    exec bash "$SCRIPT_DIR/htsim/build.sh" build
 fi
 
 mkdir -p "$WORKDIR"
@@ -149,7 +192,15 @@ make -j"$JOBS"
 make install
 cd ..
 
+if [ "$BUILD_HTSIM" = 1 ]; then
+    log "building htsim provider and runner"
+    LIBFABRIC_ROOT="$INSTALL" bash "$SCRIPT_DIR/htsim/build.sh" build
+fi
+
 log "done. install prefix: $INSTALL"
 log "  fi_info:        $INSTALL/bin/fi_info -p 'udp;ofi_suet'"
 log "  fabtests:       $INSTALL/bin/fi_*"
 log "  run test suite: $0 --test"
+if [ "$BUILD_HTSIM" = 1 ]; then
+    log "  simulator tests: $SCRIPT_DIR/build.sh --test-htsim"
+fi

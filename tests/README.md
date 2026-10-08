@@ -68,6 +68,14 @@ rollback and successful registration after failure. Build and run it using
 the same command above, replacing `test_ses_pds` with `test_dgram_resources`.
 No network access is needed.
 
+## External simulation clock
+
+`test_clock.c` checks per-domain callback installation, elapsed-time reads,
+invalid extension arguments, rejection after endpoint creation and restoration
+of the normal clock. Build with the same command above, replacing
+`test_ses_pds` with `test_clock`. The htsim integration additionally checks loss
+recovery using simulated time and nonblocking PDS shutdown.
+
 ## Compatibility between builds
 
 On macOS, use the same fabtests binaries with a different libfabric library
