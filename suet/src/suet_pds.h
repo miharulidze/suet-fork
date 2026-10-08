@@ -83,17 +83,22 @@ enum suet_pdc_state {
 	SUET_PDC_CLOSED, /* terminal, free pending */
 };
 
+struct suet_ipdc_key {
+	fi_addr_t dgram_av_addr;
+	enum suet_pdc_type type;
+} __attribute__((packed));
+
 /*
  * Initiator-side PDC - created on first send to a remote FEP.
  * Tracks TX reliability state: PSN sequence, in_flight packets, tx_list.
- * Currently, only one per remote FEP, shared by all EPs on this domain.
+ * One per remote FEP and delivery type, shared by EPs on this domain.
  */
 struct suet_ipdc {
 	struct dlist_entry entry;
 	UT_hash_handle ipdc_dgram_av_addr_handle; /* handle for
 						     ipdc_by_dgram_av_addr_ht */
-	fi_addr_t
-		dgram_av_addr; /* DGRAM-layer address of remote (uthash key) */
+	fi_addr_t dgram_av_addr; /* first field of suet_ipdc_key */
+	enum suet_pdc_type type;
 	uint16_t local_pdcid;
 	uint16_t tpdcid; /* learned from first ACK.spdcid */
 	uint32_t start_psn;
@@ -116,7 +121,7 @@ struct suet_ipdc {
 /*
  * Target-side PDC — created on first SYN from a remote FEP.
  * Tracks RX reliability state: expected PSN.
- * Currently, only one per remote FEP, shared by all EPs on this domain.
+ * One per remote FEP and delivery type, shared by EPs on this domain.
  */
 struct suet_tpdc {
 	struct dlist_entry entry;
@@ -126,6 +131,7 @@ struct suet_tpdc {
 	uint16_t ipdcid; /* from SYN.spdcid */
 	/* --- tpdc_syn_key_handle: key end --- */
 	uint16_t local_pdcid;
+	enum suet_pdc_type type;
 	uint32_t expected_rx_psn; /* next expected PSN */
 	uint32_t last_rx_clear_psn; /* highest CLEAR_PSN received in
 				     * forward direction */

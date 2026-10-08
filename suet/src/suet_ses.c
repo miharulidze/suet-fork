@@ -425,7 +425,8 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 		return NULL;
 	}
 
-	tx_entry->pds_ctx = suet_pds_tx_alloc(domain, peer_idx, tx_entry);
+	tx_entry->pds_ctx =
+		suet_pds_tx_alloc(domain, peer_idx, tx_entry, ep->pdc_type);
 	if (!tx_entry->pds_ctx) {
 		ofi_ibuf_free(tx_entry);
 		return NULL;

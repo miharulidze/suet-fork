@@ -54,5 +54,15 @@ trigger id 2 oneshot
     topology = Path(sys.argv[2]).resolve()
     run('topology_file', 'Nodes 32\nConnections 1\n0->31 start 0 size 65537\n',
         ['-topo', str(topology)])
+    for pdc in ('rod', 'rud'):
+        traffic = 'Nodes 16\nConnections 3\n' + ''.join(
+            f'0->13 start 0 size {size}\n' for size in (65537, 32769, 8193))
+        for condition, opts in (
+            ('normal', []),
+            ('reorder', ['-reorder_every', '7']),
+            ('random_loss', ['-drop_per_mille', '25']),
+            ('burst_loss', ['-burst_every', '19', '-burst_length', '2']),
+        ):
+            run(pdc + '_' + condition, traffic, ['-pdc', pdc, *opts])
     run('timeout', one, ['-end', '0.01'], expected=2)
 print('All simulator integration checks passed', flush=True)

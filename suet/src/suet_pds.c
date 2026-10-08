@@ -127,13 +127,15 @@ suet_pds_tpdc_get_by_local_pdcid(struct suet_domain *domain, uint16_t lpdcid)
 
 static inline struct suet_ipdc *
 suet_pds_ipdc_get_by_dgram_av_addr(struct suet_domain *domain,
-				   fi_addr_t dgram_av_addr)
+				   fi_addr_t dgram_av_addr,
+				   enum suet_pdc_type type)
 {
+	struct suet_ipdc_key key = {dgram_av_addr, type};
 	struct suet_ipdc *ipdc = NULL;
 
 	HASH_FIND(ipdc_dgram_av_addr_handle,
-		  domain->pds.ipdc_by_dgram_av_addr_ht, &dgram_av_addr,
-		  sizeof(dgram_av_addr), ipdc);
+		  domain->pds.ipdc_by_dgram_av_addr_ht, &key, sizeof(key),
+		  ipdc);
 	return ipdc;
 }
 
@@ -508,7 +510,7 @@ static void suet_pds_process_rx_req(struct suet_domain *domain,
 	/* ROD drops out-of-order requests instead of retaining packet storage.
 	 * Keep this delivery constraint independent of reliability admission.
 	 */
-	if (psn != tpdc->expected_rx_psn) {
+	if (tpdc->type == SUET_PDC_ROD && psn != tpdc->expected_rx_psn) {
 		suet_rel_rx_cancel(&tpdc->rel, psn);
 		suet_pds_dispatch_req_to_ses_ooo(domain, tpdc, pkt_entry, pds,
 						 &ses, SUET_REL_RX_GAP);
@@ -738,6 +740,7 @@ void suet_pds_tx_done(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 			break;
 		}
 		/* fallthrough */
+	case PDS_RUD_REQ:
 	case PDS_ROD_REQ:
 		if (pkt_entry->acked) {
 			lpdcid = pkt_entry->local_pdcid;
@@ -860,7 +863,8 @@ free_pkt:
 static struct suet_tpdc *suet_pds_allocate_tpdc(struct suet_domain *domain,
 						fi_addr_t dgram_av_addr,
 						uint16_t ipdcid,
-						uint32_t ipdc_start_psn)
+						uint32_t ipdc_start_psn,
+						enum suet_pdc_type type)
 {
 	struct suet_tpdc *tpdc;
 
@@ -871,6 +875,7 @@ static struct suet_tpdc *suet_pds_allocate_tpdc(struct suet_domain *domain,
 	memset(tpdc, 0, sizeof(*tpdc));
 	tpdc->local_pdcid = suet_domain_allocate_pdcid(domain);
 	tpdc->ipdcid = ipdcid;
+	tpdc->type = type;
 	tpdc->dgram_av_addr = dgram_av_addr;
 	tpdc->ses_ctx = suet_ses_rx_open(
 		domain, tpdc,
@@ -914,18 +919,18 @@ err:
 static struct suet_tpdc *
 suet_pds_resolve_tpdc_on_syn(struct suet_domain *domain,
 			     fi_addr_t peer_dgram_av_addr, uint16_t ipdcid,
-			     uint32_t ipdc_start_psn)
+			     uint32_t ipdc_start_psn, enum suet_pdc_type type)
 {
 	struct suet_tpdc *tpdc = suet_pds_tpdc_get_by_syn_key(
 		domain, peer_dgram_av_addr, ipdcid);
 	return tpdc ? tpdc :
 		      suet_pds_allocate_tpdc(domain, peer_dgram_av_addr, ipdcid,
-					     ipdc_start_psn);
+					     ipdc_start_psn, type);
 }
 
-static void suet_pds_tpdc_process_rod_pkt(struct suet_domain *domain,
-					  fi_addr_t dgram_av_addr,
-					  struct suet_pds_pkt_entry *pkt_entry)
+static void suet_pds_tpdc_process_req(struct suet_domain *domain,
+				      fi_addr_t dgram_av_addr,
+				      struct suet_pds_pkt_entry *pkt_entry)
 {
 	struct suet_req_pkt *pkt = (struct suet_req_pkt *) pkt_entry->pkt->pkt;
 	struct pds_req_hdr *pds = &pkt->pds;
@@ -943,9 +948,12 @@ static void suet_pds_tpdc_process_rod_pkt(struct suet_domain *domain,
 		ipdc_start_psn =
 			pds_req_get_psn(pds) - pds_req_get_syn_psn_offset(pds);
 
-		tpdc = suet_pds_resolve_tpdc_on_syn(domain, dgram_av_addr,
-						    pds_req_get_spdcid(pds),
-						    ipdc_start_psn);
+		tpdc = suet_pds_resolve_tpdc_on_syn(
+			domain, dgram_av_addr, pds_req_get_spdcid(pds),
+			ipdc_start_psn,
+			pds_prologue_get_type(pds) == PDS_ROD_REQ ?
+				SUET_PDC_ROD :
+				SUET_PDC_RUD);
 		if (!tpdc) {
 			FI_WARN(&suet_prov, FI_LOG_CQ,
 				"Failed to resolve TPDC on SYN, sending "
@@ -971,6 +979,13 @@ static void suet_pds_tpdc_process_rod_pkt(struct suet_domain *domain,
 		}
 	}
 
+	if ((tpdc->type == SUET_PDC_ROD) !=
+		    (pds_prologue_get_type(pds) == PDS_ROD_REQ) ||
+	    tpdc->dgram_av_addr != dgram_av_addr ||
+	    tpdc->ipdcid != pds_req_get_spdcid(pds)) {
+		nack_code = PDS_NACK_CODE_INV_DPDCID;
+		goto nack_pkt;
+	}
 	suet_pds_process_rx_req(domain, tpdc, pkt_entry);
 	return;
 
@@ -1012,12 +1027,13 @@ void suet_pds_receive(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 			goto free_pkt;
 		suet_pds_ipdc_process_nack(domain, pkt_entry);
 		break;
+	case PDS_RUD_REQ:
 	case PDS_ROD_REQ:
 		if (pkt->pkt_size < sizeof(*pds))
 			goto free_pkt;
 		if (pds_prologue_get_next_hdr(pds) != UET_HDR_REQUEST_STD)
 			goto bad_next_hdr;
-		suet_pds_tpdc_process_rod_pkt(domain, dgram_av_addr, pkt_entry);
+		suet_pds_tpdc_process_req(domain, dgram_av_addr, pkt_entry);
 		break;
 	case PDS_CP:
 		if (pkt->pkt_size < sizeof(struct pds_ctrl_hdr))
@@ -1084,7 +1100,8 @@ static struct suet_pds_pkt_entry *suet_pds_ipdc_generate_new_req_pkt(
 	}
 	pkt->pkt_size = hdr_len + ses.payload_len;
 	memset(pds, 0, sizeof(*pds));
-	pds_prologue_set_type(pds, PDS_ROD_REQ);
+	pds_prologue_set_type(pds, ipdc->type == SUET_PDC_ROD ? PDS_ROD_REQ :
+								PDS_RUD_REQ);
 	pds_prologue_set_next_hdr(pds, ses.hdr_type);
 	pds_req_set_psn(pds, psn);
 	pkt_entry->psn = psn;
@@ -1245,7 +1262,8 @@ static void suet_pds_tpdc_send_ack(struct suet_domain *domain,
 }
 
 static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
-						fi_addr_t dgram_av_addr)
+						fi_addr_t dgram_av_addr,
+						enum suet_pdc_type type)
 {
 	struct suet_ipdc *ipdc;
 
@@ -1257,6 +1275,7 @@ static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
 	ipdc->local_pdcid = suet_domain_allocate_pdcid(domain);
 	ipdc->tpdcid = 0;
 	ipdc->dgram_av_addr = dgram_av_addr;
+	ipdc->type = type;
 	ipdc->start_psn = pds_generate_start_psn(&domain->pds.psn_seed, 0);
 	ipdc->tx_seq_no = ipdc->start_psn;
 	suet_cc_init(&ipdc->cc, suet_env.max_unacked);
@@ -1284,7 +1303,7 @@ static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
 
 	HASH_ADD(ipdc_dgram_av_addr_handle,
 		 domain->pds.ipdc_by_dgram_av_addr_ht, dgram_av_addr,
-		 sizeof(ipdc->dgram_av_addr), ipdc);
+		 sizeof(struct suet_ipdc_key), ipdc);
 
 	dlist_insert_tail(&ipdc->entry, &domain->pds.active_ipdc_list);
 
@@ -1302,10 +1321,11 @@ err:
 }
 
 static struct suet_ipdc *suet_pds_assign_ipdc(struct suet_domain *domain,
-					      fi_addr_t dgram_av_addr)
+					      fi_addr_t dgram_av_addr,
+					      enum suet_pdc_type type)
 {
 	struct suet_ipdc *ipdc =
-		suet_pds_ipdc_get_by_dgram_av_addr(domain, dgram_av_addr);
+		suet_pds_ipdc_get_by_dgram_av_addr(domain, dgram_av_addr, type);
 
 	if (ipdc && ipdc->state != SUET_PDC_OPENING &&
 	    ipdc->state != SUET_PDC_ESTABLISHED) {
@@ -1318,7 +1338,8 @@ static struct suet_ipdc *suet_pds_assign_ipdc(struct suet_domain *domain,
 		       ipdc->local_pdcid, ipdc->state);
 		return NULL;
 	}
-	return ipdc ? ipdc : suet_pds_allocate_ipdc(domain, dgram_av_addr);
+	return ipdc ? ipdc :
+		      suet_pds_allocate_ipdc(domain, dgram_av_addr, type);
 }
 
 static void suet_pds_ipdc_send_clear_cmd(struct suet_domain *domain,
@@ -1458,10 +1479,11 @@ static bool suet_pds_free_ipdc_if_retry_exhausted(struct suet_domain *domain,
 	return true;
 }
 
-void *suet_pds_tx_alloc(struct suet_domain *domain, int peer_idx, void *context)
+void *suet_pds_tx_alloc(struct suet_domain *domain, int peer_idx, void *context,
+			enum suet_pdc_type type)
 {
 	fi_addr_t addr = suet_dgram_av_get_addr_by_peer_idx(domain, peer_idx);
-	struct suet_ipdc *ipdc = suet_pds_assign_ipdc(domain, addr);
+	struct suet_ipdc *ipdc = suet_pds_assign_ipdc(domain, addr, type);
 	struct suet_pds_tx_entry *tx;
 
 	if (!ipdc)

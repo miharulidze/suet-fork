@@ -338,6 +338,12 @@ int suet_endpoint(struct fid_domain *domain, struct fi_info *info,
 	if (ret)
 		goto err2;
 
+	/* Select delivery from the endpoint ordering contract, as in the
+	 * reference provider. All currently advertised ordering bits require
+	 * ordered delivery (including the legacy FI_ORDER_WAW bit).
+	 */
+	suet_ep->pdc_type =
+		info->tx_attr->msg_order ? SUET_PDC_ROD : SUET_PDC_RUD;
 	suet_ep->pid_on_fep = suet_domain->pid_on_fep;
 
 	ofi_genlock_lock(&suet_domain->fep_lock);

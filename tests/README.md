@@ -144,3 +144,9 @@ Results for the final refactor in that environment:
   every message while recovering from 4,095 network drops.
 - Every provider source compiled without warnings. Changes in `suet_proto.h`
   rename C packet types and datagram address fields; wire layouts are unchanged.
+
+The cumulative ACK tests additionally exercise every missing-bit position at
+every physical head in 65- and 129-slot windows. Invalid ACKs must preserve
+all submitted slots; full retirement must work across word and PSN wrap.
+ROD has no out-of-order packet buffer. Endpoint ordering selects ROD when
+ordering is requested and RUD otherwise; PDC lookup separates the two modes.

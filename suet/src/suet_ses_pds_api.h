@@ -44,6 +44,11 @@
  * (or exclusive domain initialization/close). Neither layer may inspect
  * the other's opaque contexts. No callback table is required.
  */
+enum suet_pdc_type {
+	SUET_PDC_ROD,
+	SUET_PDC_RUD,
+};
+
 struct suet_domain;
 struct ses_req_hdr;
 struct ses_resp_hdr;
@@ -109,8 +114,8 @@ struct suet_ses_rx_dispatch_result {
  * Cancellation detaches the operation; it does not retire in-flight packets
  * or relax the existing datagram/zero-copy buffer lifetime requirements.
  */
-void *suet_pds_tx_alloc(struct suet_domain *domain, int peer_idx,
-			void *context);
+void *suet_pds_tx_alloc(struct suet_domain *domain, int peer_idx, void *context,
+			enum suet_pdc_type type);
 void suet_pds_tx_submit(void *pds_ctx, uint32_t num_pkts);
 void suet_pds_tx_cancel(void *pds_ctx);
 size_t suet_pds_max_ses_size(const struct suet_domain *domain);

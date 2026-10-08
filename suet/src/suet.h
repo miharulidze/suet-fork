@@ -257,6 +257,7 @@ struct suet_cq {
 };
 
 struct suet_ep {
+	enum suet_pdc_type pdc_type;
 	struct util_ep util_ep;
 
 	uint16_t resource_index; /* assigned RI for this EP (12-bit) */

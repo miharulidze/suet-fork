@@ -181,3 +181,12 @@ and recovered from 4,095 network drops at the default seed and queue size.
 The simulator checks and the DGRAM contract test passed both normally and
 with ASan/UBSan. SUET's four focused test programs and its 35-case UDP suite
 also passed after the clock/close changes.
+
+Select endpoint ordering with `-pdc rod` (default, `FI_ORDER_SAS`) or
+`-pdc rud` (no ordering requested). The runner checks the request type on the
+wire. Both use the same provider reliability and CC implementation.
+`-reorder_every N` delays every Nth data packet by 10 us;
+`-drop_per_mille N` injects reproducible random data loss; and
+`-burst_every N -burst_length M` drops M packets per N data transmissions.
+The integration suite verifies both delivery types with these faults and
+multiple concurrent messages sharing a peer.

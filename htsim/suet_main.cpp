@@ -8,6 +8,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <random>
 #include <rdma/fabric.h>
 #include <rdma/fi_cm.h>
 #include <rdma/fi_domain.h>
@@ -21,6 +22,8 @@ static void check(int ret, const char *operation) {
     if (ret < 0)
         throw std::runtime_error(std::string(operation) + ": " + fi_strerror(-ret));
 }
+static bool ordered = true;
+static uint32_t reorder_every, drop_per_mille, burst_every, burst_length = 2;
 static uint64_t elapsed_ms(void *) { return EventList::now() / 1000000000ULL; }
 
 struct Host {
@@ -37,6 +40,7 @@ struct Host {
         if (!hints)
             throw std::bad_alloc();
         hints->caps = FI_MSG | FI_TAGGED;
+        hints->tx_attr->msg_order = ordered ? FI_ORDER_SAS : 0;
         hints->ep_attr->type = FI_EP_RDM;
         hints->domain_attr->threading = FI_THREAD_DOMAIN;
         hints->fabric_attr->prov_name = strdup("htsim;ofi_suet");
@@ -44,6 +48,7 @@ struct Host {
             fi_getinfo(FI_VERSION(1, 11), std::to_string(id).c_str(), "1", FI_SOURCE, hints, &info);
         fi_freeinfo(hints);
         check(ret, "fi_getinfo(htsim;ofi_suet)");
+        info->tx_attr->msg_order = ordered ? FI_ORDER_SAS : 0;
         if (!fabric)
             check(fi_fabric(info->fabric_attr, &fabric, nullptr), "fi_fabric");
         check(fi_domain(fabric, info, &domain, nullptr), "fi_domain");
@@ -300,14 +305,37 @@ class Simulation : public EventSource {
                 } while (count == 64);
             }
         }
+        for (auto it = _delayed.begin(); it != _delayed.end();) {
+            if (it->first <= EventList::now()) {
+                it->second->sendOn();
+                it = _delayed.erase(it);
+            } else
+                ++it;
+        }
         htsim_dgram_frame frame;
         int ret;
         while ((ret = htsim_dgram_take_tx(&frame)) > 0) {
+            if (frame.size >= 2) {
+                unsigned type = frame.data[0] >> 3;
+                if (type == 2 || type == 3) {
+                    if (type != (ordered ? 3U : 2U))
+                        throw std::runtime_error("incorrect PDC wire type");
+                }
+            }
             auto *packet = new FabricPacket(frame, _flow, _routes.at(htsim_dgram_host(&frame.src)),
                                             stats, _overhead);
+            unsigned type = frame.data[0] >> 3;
+            bool data = type == 2 || type == 3;
+            if (data)
+                ++_data_packets;
             if (_drop_first) {
                 _drop_first--;
                 packet->free();
+            } else if (data && ((drop_per_mille && _random() % 1000 < drop_per_mille) ||
+                                (burst_every && _data_packets % burst_every < burst_length))) {
+                packet->free();
+            } else if (data && reorder_every && _data_packets % reorder_every == 0) {
+                _delayed.emplace_back(EventList::now() + timeFromUs(10.0), packet);
             } else
                 packet->sendOn();
         }
@@ -330,6 +358,9 @@ class Simulation : public EventSource {
     simtime_picosec _poll;
     size_t _overhead;
     uint64_t _drop_first;
+    uint64_t _data_packets = 0;
+    std::mt19937 _random{1};
+    std::vector<std::pair<simtime_picosec, FabricPacket *>> _delayed;
     size_t _completed = 0;
     bool _draining = false, _drained = false;
     fid_fabric *_fabric = nullptr;
@@ -354,7 +385,8 @@ int main(int argc, char **argv) {
                 std::cout << "htsim_suet -tm FILE [-topo FILE] [-tiers 2|3] [-end US]\n"
                           << "  [-poll_ns NS] [-linkspeed GBPS] [-hop_latency NS]\n"
                           << "  [-q BYTES] [-dgram_queue COUNT] [-overhead BYTES] [-seed N] "
-                             "[-drop_first N]\n";
+                             "[-drop_first N] [-pdc rod|rud]\n"
+                          << "  [-reorder_every N] [-drop_per_mille N] [-burst_every N] [-burst_length N]\n";
                 return 0;
             }
             if (++i == argc)
@@ -382,7 +414,19 @@ int main(int argc, char **argv) {
                 seed = std::stoul(value);
             else if (arg == "-tiers")
                 tiers = std::stoul(value);
-            else if (arg == "-drop_first")
+            else if (arg == "-reorder_every")
+                reorder_every = std::stoul(value);
+            else if (arg == "-drop_per_mille")
+                drop_per_mille = std::stoul(value);
+            else if (arg == "-burst_every")
+                burst_every = std::stoul(value);
+            else if (arg == "-burst_length")
+                burst_length = std::stoul(value);
+            else if (arg == "-pdc") {
+                if (value != "rod" && value != "rud")
+                    throw std::runtime_error("invalid PDC type");
+                ordered = value == "rod";
+            } else if (arg == "-drop_first")
                 drop_first = std::stoull(value);
             else
                 throw std::runtime_error("unknown option: " + arg);
