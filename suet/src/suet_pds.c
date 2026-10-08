@@ -1111,28 +1111,25 @@ static struct suet_pds_pkt_entry *suet_pds_ipdc_generate_new_req_pkt(
 
 static void
 suet_pds_ipdc_insert_unacked_pkt(struct suet_ipdc *ipdc,
-				 struct suet_pds_pkt_entry *pkt_entry)
+				 struct suet_pds_pkt_entry *pkt_entry,
+				 uint32_t slot)
 {
-	uint32_t slot;
-	bool valid = suet_rel_slot(&ipdc->rel.window, pkt_entry->psn, &slot);
-
-	assert(valid && !ipdc->tx_pkts[slot]);
-	if (!valid)
-		return;
+	assert(!ipdc->tx_pkts[slot]);
 	ipdc->tx_pkts[slot] = pkt_entry;
-	suet_rel_tx_track(&ipdc->rel, pkt_entry->psn);
+	suet_rel_tx_track(&ipdc->rel, slot);
 	suet_cc_track(&ipdc->cc);
 	dlist_insert_tail(&pkt_entry->entry, &ipdc->in_flight_pkts);
 }
 
 static void suet_pds_ipdc_send_tracked_pkt(struct suet_domain *domain,
 					   struct suet_ipdc *ipdc,
-					   struct suet_pds_pkt_entry *pkt_entry)
+					   struct suet_pds_pkt_entry *pkt_entry,
+					   uint32_t slot)
 {
 	/* On send failure: PSN already consumed; enqueue so subsequent progress
 	 * call can retransmits. */
-	suet_pds_ipdc_insert_unacked_pkt(ipdc, pkt_entry);
-	suet_rel_tx_attempt(&ipdc->rel, pkt_entry->psn,
+	suet_pds_ipdc_insert_unacked_pkt(ipdc, pkt_entry, slot);
+	suet_rel_tx_attempt(&ipdc->rel, slot,
 			    suet_domain_now_ms(domain));
 	(void) suet_pds_send_pkt(domain, pkt_entry);
 }
@@ -1141,6 +1138,7 @@ static void suet_pds_send_tx(struct suet_pds_tx_entry *tx)
 {
 	struct suet_ipdc *ipdc = tx->ipdc;
 	struct suet_pds_pkt_entry *pkt_entry;
+	uint32_t slot;
 
 	if (!suet_cc_can_send(&ipdc->cc))
 		return;
@@ -1151,14 +1149,14 @@ static void suet_pds_send_tx(struct suet_pds_tx_entry *tx)
 	}
 	while (tx->next_segment < tx->num_pkts && suet_cc_can_send(&ipdc->cc)) {
 		if (!suet_rel_tx_can_track(&ipdc->rel,
-					   tx->start_psn + tx->next_segment))
+					   tx->start_psn + tx->next_segment, &slot))
 			return;
 		pkt_entry = suet_pds_ipdc_generate_new_req_pkt(
 			tx->domain, tx, ipdc, tx->start_psn + tx->next_segment,
 			0);
 		if (!pkt_entry)
 			return;
-		suet_pds_ipdc_send_tracked_pkt(tx->domain, ipdc, pkt_entry);
+		suet_pds_ipdc_send_tracked_pkt(tx->domain, ipdc, pkt_entry, slot);
 		tx->next_segment++;
 	}
 }
@@ -1356,6 +1354,10 @@ static void suet_pds_ipdc_send_close_cmd(struct suet_domain *domain,
 {
 	struct suet_pds_pkt_entry *pkt_entry;
 	struct suet_ctrl_pkt *cp;
+	uint32_t slot;
+
+	if (!suet_rel_tx_can_track(&ipdc->rel, ipdc->tx_seq_no, &slot))
+		return;
 
 	/* On pkt_entry alloc failure we simply return; the next progress tick
 	 * will call us again. */
@@ -1375,12 +1377,12 @@ static void suet_pds_ipdc_send_close_cmd(struct suet_domain *domain,
 	pds_ctrl_init(&cp->pds, PDS_CTL_CLOSE_CMD, ipdc->close_psn,
 		      ipdc->local_pdcid, ipdc->tpdcid, 0);
 
-	suet_pds_ipdc_insert_unacked_pkt(ipdc, pkt_entry);
+	suet_pds_ipdc_insert_unacked_pkt(ipdc, pkt_entry, slot);
 	ipdc->state = SUET_PDC_CLOSE_ACK_WAIT;
 
 	/* On NIC send failure the pkt sits on in_flight_pkts and
 	 * the RTO path retransmits it. */
-	suet_rel_tx_attempt(&ipdc->rel, pkt_entry->psn,
+	suet_rel_tx_attempt(&ipdc->rel, slot,
 			    suet_domain_now_ms(domain));
 	if (suet_pds_send_pkt(domain, pkt_entry)) {
 		FI_WARN(&suet_prov, FI_LOG_EP_CTRL,
@@ -1426,9 +1428,7 @@ static void suet_pds_ipdc_progress_tx_pkt_list(struct suet_domain *domain,
 	uint32_t cursor = 0, psn, slot;
 	bool retry = false;
 
-	while (suet_rel_tx_retry_next(&ipdc->rel, current, &cursor, &psn)) {
-		if (!suet_rel_slot(&ipdc->rel.window, psn, &slot))
-			break;
+	while (suet_rel_tx_retry_next(&ipdc->rel, current, &cursor, &psn, &slot)) {
 		pkt_entry = ipdc->tx_pkts[slot];
 		assert(pkt_entry && pkt_entry->psn == psn);
 		if (suet_dgram_pkt_in_use(pkt_entry->pkt))
@@ -1438,7 +1438,7 @@ static void suet_pds_ipdc_progress_tx_pkt_list(struct suet_domain *domain,
 			pkt_entry->pkt->pkt,
 			pds_prologue_get_flags(pkt_entry->pkt->pkt) |
 				PDS_FLAG_RETX);
-		suet_rel_tx_attempt(&ipdc->rel, psn,
+		suet_rel_tx_attempt(&ipdc->rel, slot,
 				    suet_domain_now_ms(domain));
 		if (suet_pds_send_pkt(domain, pkt_entry))
 			break;

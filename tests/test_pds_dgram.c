@@ -554,9 +554,9 @@ static void check_bitmap_retirement(void)
 		pkt->dgram_av_addr = 9;
 		assert(suet_rel_slot(&ipdc.rel.window, psn, &slot));
 		ipdc.tx_pkts[slot] = pds;
-		suet_rel_tx_track(&ipdc.rel, psn);
+		suet_rel_tx_track(&ipdc.rel, slot);
 		suet_cc_track(&ipdc.cc);
-		suet_rel_tx_attempt(&ipdc.rel, psn,
+		suet_rel_tx_attempt(&ipdc.rel, slot,
 				    suet_domain_now_ms(&domain));
 		dlist_insert_tail(&pds->entry, &ipdc.in_flight_pkts);
 		assert(!suet_dgram_send(&domain, pkt));
@@ -571,7 +571,7 @@ static void check_bitmap_retirement(void)
 	inject_cack(&domain, 7, UINT32_MAX - 1);
 	assert(packets[0]->acked && !ipdc.tx_pkts[0]);
 	assert(ipdc.cc.in_flight == 2 && suet_cc_can_send(&ipdc.cc));
-	assert(suet_rel_tx_can_track(&ipdc.rel, 1));
+	assert(suet_rel_tx_can_track(&ipdc.rel, 1, &slot));
 	/* Reuse the ACKed slot while its old buffer is still borrowed. */
 	ses_ep.util_ep.domain = &domain.util_domain;
 	ses_req_init(&ses.cached_hdr.ses, UET_SEND, 1, 1, 1, 0, 17, 0, 0, 0, 0,

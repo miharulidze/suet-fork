@@ -62,10 +62,12 @@ int suet_rel_rx_init(struct suet_rel_rx *rx, uint32_t base_psn,
 void suet_rel_rx_cleanup(struct suet_rel_rx *rx);
 bool suet_rel_slot(const struct suet_rel_window *window, uint32_t psn,
 		   uint32_t *slot);
-bool suet_rel_tx_can_track(const struct suet_rel_tx *tx, uint32_t psn);
-void suet_rel_tx_track(struct suet_rel_tx *tx, uint32_t psn);
+bool suet_rel_tx_can_track(const struct suet_rel_tx *tx, uint32_t psn, uint32_t *slot);
+void suet_rel_tx_track(struct suet_rel_tx *tx, uint32_t slot);
+/* Track/attempt consume the slot returned by admission or retry_next.
+ * The caller must not advance the window between these calls. */
 /* Preserve GBN's existing timing of attempts, including local send failure. */
-void suet_rel_tx_attempt(struct suet_rel_tx *tx, uint32_t psn, uint64_t now);
+void suet_rel_tx_attempt(struct suet_rel_tx *tx, uint32_t slot, uint64_t now);
 enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 					 struct suet_rel_retired *retired);
 uint32_t suet_rel_tx_cack(const struct suet_rel_tx *tx);
@@ -77,7 +79,7 @@ bool suet_rel_tx_nack(struct suet_rel_tx *tx, uint32_t psn);
  * resubmission, or if a submission fails. Finish the pass exactly once.
  */
 bool suet_rel_tx_retry_next(const struct suet_rel_tx *tx, uint64_t now,
-			    uint32_t *cursor, uint32_t *psn);
+			    uint32_t *cursor, uint32_t *psn, uint32_t *slot);
 void suet_rel_tx_retry_end(struct suet_rel_tx *tx, bool attempted);
 bool suet_rel_tx_failed(const struct suet_rel_tx *tx);
 

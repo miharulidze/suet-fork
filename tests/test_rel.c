@@ -7,6 +7,35 @@
 #include <stdint.h>
 #include <stdio.h>
 
+/* PSN-oriented test helpers independently exercise slot lookup. */
+static bool can_track(struct suet_rel_tx *tx, uint32_t psn)
+{
+	uint32_t slot;
+	return suet_rel_tx_can_track(tx, psn, &slot);
+}
+static void track(struct suet_rel_tx *tx, uint32_t psn)
+{
+	uint32_t slot;
+	assert(suet_rel_tx_can_track(tx, psn, &slot));
+	suet_rel_tx_track(tx, slot);
+}
+static void attempt(struct suet_rel_tx *tx, uint32_t psn, uint64_t now)
+{
+	uint32_t slot;
+	assert(suet_rel_slot(&tx->window, psn, &slot));
+	suet_rel_tx_attempt(tx, slot, now);
+}
+static bool retry_next(struct suet_rel_tx *tx, uint64_t now,
+		       uint32_t *cursor, uint32_t *psn)
+{
+	uint32_t slot, expected;
+	if (!suet_rel_tx_retry_next(tx, now, cursor, psn, &slot))
+		return false;
+	assert(suet_rel_slot(&tx->window, *psn, &expected));
+	assert(slot == expected);
+	return true;
+}
+
 static void check_windows(uint32_t capacity, uint32_t base)
 {
 	struct suet_rel_tx tx;
@@ -16,12 +45,12 @@ static void check_windows(uint32_t capacity, uint32_t base)
 	assert(!suet_rel_tx_init(&tx, base, capacity, 100));
 	for (round = 0; round < 4 * capacity; round++) {
 		for (i = 0; i < capacity; i++) {
-			assert(suet_rel_tx_can_track(&tx, psn + i));
-			suet_rel_tx_track(&tx, psn + i);
-			suet_rel_tx_attempt(&tx, psn + i, 0);
-			assert(!suet_rel_tx_can_track(&tx, psn + i));
+			assert(can_track(&tx, psn + i));
+			track(&tx, psn + i);
+			attempt(&tx, psn + i, 0);
+			assert(!can_track(&tx, psn + i));
 		}
-		assert(!suet_rel_tx_can_track(&tx, psn + capacity));
+		assert(!can_track(&tx, psn + capacity));
 		assert(suet_rel_tx_ack(&tx, psn + capacity, &retired) ==
 		       SUET_REL_ACK_INVALID);
 		assert(suet_rel_tx_ack(&tx, psn - 1, &retired) ==
@@ -55,34 +84,34 @@ static void check_hole_and_retry(void)
 	uint64_t now = 0, delay;
 
 	assert(!suet_rel_tx_init(&tx, 100, 4, 100));
-	suet_rel_tx_track(&tx, 100);
-	suet_rel_tx_attempt(&tx, 100, 0);
-	suet_rel_tx_track(&tx, 102);
-	suet_rel_tx_attempt(&tx, 102, 0);
+	track(&tx, 100);
+	attempt(&tx, 100, 0);
+	track(&tx, 102);
+	attempt(&tx, 102, 0);
 	assert(suet_rel_tx_ack(&tx, 102, &retired) == SUET_REL_ACK_INVALID);
 	assert(suet_rel_tx_cack(&tx) == 99);
-	suet_rel_tx_track(&tx, 101);
-	suet_rel_tx_attempt(&tx, 101, 0);
+	track(&tx, 101);
+	attempt(&tx, 101, 0);
 	assert(suet_rel_tx_nack(&tx, 102));
 	assert(!suet_rel_tx_nack(&tx, 103));
 	cursor = 0;
-	assert(!suet_rel_tx_retry_next(&tx, 0, &cursor, &psn));
+	assert(!retry_next(&tx, 0, &cursor, &psn));
 	/* A whole GBN pass increments the shared retry round only once. The
 	 * original retry budget includes failed local submission attempts.
 	 */
 	for (retry = 0; retry <= 100; retry++) {
 		delay = retry >= 12 ? 4000 : UINT64_C(1) << retry;
 		cursor = 0;
-		assert(!suet_rel_tx_retry_next(&tx, now + delay - 1, &cursor,
+		assert(!retry_next(&tx, now + delay - 1, &cursor,
 					       &psn));
 		now += delay;
 		cursor = 0;
 		for (uint32_t expected = 100; expected <= 102; expected++) {
-			assert(suet_rel_tx_retry_next(&tx, now, &cursor, &psn));
+			assert(retry_next(&tx, now, &cursor, &psn));
 			assert(psn == expected);
-			suet_rel_tx_attempt(&tx, psn, now);
+			attempt(&tx, psn, now);
 		}
-		assert(!suet_rel_tx_retry_next(&tx, now, &cursor, &psn));
+		assert(!retry_next(&tx, now, &cursor, &psn));
 		suet_rel_tx_retry_end(&tx, false);
 		assert(tx.retry_count == retry);
 		suet_rel_tx_retry_end(&tx, true);
