@@ -137,10 +137,10 @@ static void check_rx(void)
 	assert(suet_rel_rx_record(&rx, base, true) == SUET_REL_RX_NEW);
 	suet_rel_rx_commit(&rx, base);
 	assert(suet_rel_rx_cack(&rx) == base);
-	assert(suet_rel_rx_ack_needed(&rx, false));
+	assert(suet_rel_rx_ack_needed(&rx, base, false));
 	suet_rel_rx_ack_sent(&rx);
-	assert(!suet_rel_rx_ack_needed(&rx, false));
-	assert(suet_rel_rx_ack_needed(&rx, true));
+	assert(!suet_rel_rx_ack_needed(&rx, base, false));
+	assert(suet_rel_rx_ack_needed(&rx, base, true));
 	assert(suet_rel_rx_record(&rx, base, false) == SUET_REL_RX_DROP);
 	assert(suet_rel_rx_record(&rx, base, true) == SUET_REL_RX_REPLAY);
 	for (uint32_t i = 1; i < 12; i++) {
@@ -309,6 +309,52 @@ static void check_retry_budget_per_packet(void)
 	suet_rel_tx_cleanup(&tx);
 }
 
+static void check_pending_ack(uint32_t base)
+{
+	struct suet_rel_rx rx;
+	const uint32_t order[] = {2, 5, 4, 3, 0, 1};
+	uint32_t psn;
+	size_t i;
+
+	assert(!suet_rel_rx_init(&rx, base, 128, SUET_REL_SR));
+	for (i = 0; i < sizeof(order) / sizeof(order[0]); i++) {
+		psn = base + order[i];
+		assert(suet_rel_rx_record(&rx, psn, false) == SUET_REL_RX_NEW);
+		suet_rel_rx_commit(&rx, psn);
+		if (i == 0 || i == 2 || i == 3)
+			suet_rel_rx_request_ack(&rx, psn);
+		assert(rx.ack_pending);
+		assert(rx.ack_target_psn == base + (i < 2 ? 2 : 4));
+		if (i == 1) {
+			/* Traffic above the requested PSN does not need extra ACKs. */
+			assert(!suet_rel_rx_ack_needed(&rx, psn, false));
+			continue;
+		}
+		assert(suet_rel_rx_ack_needed(&rx, psn, false));
+		if (i != 5) {
+			suet_rel_rx_ack_sent(&rx);
+			assert(rx.ack_pending); /* Interim SACK keeps the target. */
+		}
+	}
+	assert(suet_rel_rx_cack(&rx) == base + 5);
+	/* A failed local send never calls ack_sent. Retry even on later data. */
+	assert(suet_rel_rx_ack_needed(&rx, base + 6, false));
+	assert(rx.since_ack);
+	suet_rel_rx_ack_sent(&rx);
+	assert(!rx.ack_pending && !rx.since_ack);
+	assert(!suet_rel_rx_ack_needed(&rx, base + 6, false));
+	/* A new, already cumulative request is answered once. */
+	suet_rel_rx_request_ack(&rx, base + 3);
+	assert(suet_rel_rx_ack_needed(&rx, base + 3, false));
+	suet_rel_rx_ack_sent(&rx);
+	assert(!rx.ack_pending);
+	suet_rel_rx_request_ack(&rx, base + 10);
+	suet_rel_rx_reset(&rx, 70);
+	assert(!rx.ack_pending && !rx.since_ack);
+	assert(!suet_rel_rx_ack_needed(&rx, 70, false));
+	suet_rel_rx_cleanup(&rx);
+}
+
 int main(void)
 {
 	struct suet_rel_tx tx;
@@ -323,6 +369,8 @@ int main(void)
 	check_ack_ranges(129);
 	check_hole_and_retry();
 	check_rx();
+	check_pending_ack(100);
+	check_pending_ack(UINT32_MAX - 2);
 	check_selective_repeat();
 	check_nack();
 	check_retry_budget_per_packet();

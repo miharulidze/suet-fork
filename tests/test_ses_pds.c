@@ -267,6 +267,92 @@ static void check_rx_payload_view(void)
 	suet_ses_cleanup(&domain);
 }
 
+/* First arrival, including EOM, establishes the same operation that a later
+ * SOM must reuse. Continuation header_data must never become remote CQ data.
+ */
+static void check_rx_fragment_order(uint8_t opcode, const unsigned int *order)
+{
+	struct suet_domain domain = {0};
+	struct suet_ep ep = {0};
+	struct suet_ep *ep_table[] = {&ep};
+	struct suet_ses_rx_entry *entry = NULL;
+	struct suet_ses_rx_dispatch_result result;
+	struct ses_req_hdr hdr;
+	unsigned char payload[141], output[141] = {0};
+	struct iovec iov = {output, sizeof(output)};
+	struct fi_mr_attr attr = {
+		.mr_iov = &iov, .iov_count = 1,
+		.access = FI_REMOTE_WRITE, .requested_key = 9,
+	};
+	struct suet_ses_rx_packet pkt = {.hdr = &hdr};
+	uint64_t key = 9, data = UINT64_C(0x123456789abcdef0);
+	bool som_seen = false;
+	void *rx;
+	size_t i, offset, len, received = 0;
+
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+	domain.ep_table = ep_table;
+	ep.util_ep.domain = &domain.util_domain;
+	dlist_init(&ep.rx_list);
+	dlist_init(&ep.rx_tag_list);
+	dlist_init(&ep.unexp_list);
+	dlist_init(&ep.unexp_tag_list);
+	assert(!suet_ses_init(&domain));
+	rx = suet_ses_rx_open(&domain, NULL, 5);
+	assert(rx);
+	if (opcode == UET_WRITE) {
+		assert(!ofi_mr_map_init(&suet_prov, FI_MR_VIRT_ADDR,
+				       &domain.util_domain.mr_map));
+		assert(!ofi_mr_map_insert(&domain.util_domain.mr_map, &attr,
+					 &key, NULL, 0));
+	} else {
+		entry = suet_ses_rx_entry_init(&ep, &iov, 1, key, 0, NULL, 5,
+			opcode == UET_SEND ? ofi_op_msg : ofi_op_tagged, 0);
+		assert(entry);
+		dlist_insert_tail(&entry->entry, opcode == UET_SEND ?
+				  &ep.rx_list : &ep.rx_tag_list);
+	}
+	for (i = 0; i < sizeof(payload); i++)
+		payload[i] = (unsigned char) (i * 37 + 11);
+	for (i = 0; i < 3; i++) {
+		offset = order[i] * 64;
+		len = MIN(sizeof(payload) - offset, 64);
+		ses_req_init(&hdr, opcode, order[i] == 0, order[i] == 2,
+			     1, 1, 7, opcode == UET_WRITE ?
+			     (uintptr_t) output : 0, key, data, sizeof(payload),
+			     0, 0);
+		if (order[i])
+			ses_hd_set_cont(&hdr, (uint32_t) offset, (uint16_t) len);
+		else
+			som_seen = true;
+		pkt.payload = payload + offset;
+		pkt.payload_len = len;
+		suet_ses_receive(rx, NULL, &pkt, &result);
+		assert(result.accepted && !result.status && !result.pkt_retained);
+		if (!entry)
+			entry = result.completion;
+		assert(entry && result.completion == entry);
+		assert(entry->message_id == 7 && entry->num_pkts == 3);
+		assert(entry->pkts_received == i + 1);
+		received += len;
+		assert(entry->bytes_copied == received);
+		assert(!memcmp(output + offset, payload + offset, len));
+		assert(!!(entry->cq_entry.flags & FI_REMOTE_CQ_DATA) == som_seen);
+		if (som_seen)
+			assert(entry->cq_entry.data == data);
+		/* Final commit writes the application CQ; inspect before that. */
+		if (i != 2)
+			suet_ses_rx_commit(rx, &result);
+	}
+	assert(!memcmp(output, payload, sizeof(output)));
+	assert(dlist_empty(&ep.rx_list) && dlist_empty(&ep.rx_tag_list));
+	suet_ses_rx_entry_free(entry);
+	suet_ses_rx_close(rx);
+	if (opcode == UET_WRITE)
+		ofi_mr_map_close(&domain.util_domain.mr_map);
+	suet_ses_cleanup(&domain);
+}
+
 static void check_pds_domain_lifecycle(void)
 {
 	struct suet_domain domains[2] = {0};
@@ -338,13 +424,13 @@ static void check_response_retention(void)
 	dlist_init(&tpdc.gtd_del_list);
 	tpdc.expected_rx_psn = UINT32_MAX - 1;
 	memcpy(&before, &placeholder, sizeof(before));
-	struct suet_pds_pkt_entry request_ctx = {.psn = tpdc.expected_rx_psn};
-	saved = suet_pds_response_reserve(&domain, &tpdc, &placeholder, 3,
+	struct suet_pds_pkt_entry request_ctx = {.psn = 0};
+	saved = suet_pds_response_reserve(&domain, &tpdc, &placeholder, 3, 2,
 					  &request_ctx);
 	assert(saved);
 	assert(saved->psn == UINT32_MAX - 1 && saved->num_pkts == 3);
 	assert(!memcmp(&placeholder, &before, sizeof(before)));
-	assert(!suet_pds_response_reserve(&domain, &tpdc, &placeholder, 3,
+	assert(!suet_pds_response_reserve(&domain, &tpdc, &placeholder, 3, 2,
 					  &request_ctx));
 
 	/* A full response pool must reject unexpected intake without retaining
@@ -392,7 +478,7 @@ static void check_response_retention(void)
 	assert(dlist_empty(&tpdc.gtd_del_list));
 
 	/* Releasing a retained response makes capacity available again. */
-	saved = suet_pds_response_reserve(&domain, &tpdc, &placeholder, 1,
+	saved = suet_pds_response_reserve(&domain, &tpdc, &placeholder, 1, 0,
 					  &request_ctx);
 	assert(saved && saved->psn == 1 && saved->num_pkts == 1);
 	suet_pds_response_cancel(saved);
@@ -404,6 +490,12 @@ static void check_response_retention(void)
 
 int main(void)
 {
+	const unsigned int orders[][3] = {
+		{0, 1, 2}, {0, 2, 1}, {1, 0, 2},
+		{1, 2, 0}, {2, 0, 1}, {2, 1, 0},
+	};
+	size_t i;
+
 	check_segments(false, 0);
 	check_segments(true, 0);
 	check_segments(false, 37);
@@ -416,6 +508,11 @@ int main(void)
 	ofi_mem_init();
 	check_ses_domain_lifecycle();
 	check_rx_payload_view();
+	for (i = 0; i < sizeof(orders) / sizeof(orders[0]); i++) {
+		check_rx_fragment_order(UET_SEND, orders[i]);
+		check_rx_fragment_order(UET_TAGGED_SEND, orders[i]);
+		check_rx_fragment_order(UET_WRITE, orders[i]);
+	}
 	check_pds_domain_lifecycle();
 	check_response_retention();
 	ofi_mem_fini();

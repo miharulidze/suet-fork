@@ -24,6 +24,10 @@ domain lifetimes, receive allocation after another domain closes, repeated
 cleanup, and reinitialization. Response-retention checks cover pool exhaustion,
 rejected unexpected intake, immutable response inputs, replay-range preservation
 across semantic response replacement, and capacity recovery after release.
+Receive-order checks exercise all six permutations of three fragments for
+send, tagged send, and RMA write, including EOM-first and SOM-last delivery.
+They verify one receive entry per message, direct payload placement, and late
+SOM remote CQ data without interpreting continuation offsets as CQ data.
 It runs without network access.
 
 From the SUET repository, with a configured libfabric source/build tree that
@@ -51,7 +55,10 @@ assertions.
 send failures, local success/error completions, ACK-before-completion retention,
 RX ownership transfer, and shutdown. It also checks context alignment and that
 retaining two unexpected-message segments in SES leaves PDS state and the
-datagram list node untouched. The real PDS assembler is exercised with copied,
+datagram list node untouched. Unexpected-message checks also cover SOM-last delivery, reused message IDs,
+response replay ranges anchored before the first arriving fragment, and a
+receive posted between continuation and SOM arrival.
+The real PDS assembler is exercised with copied,
 zero-copy, segmented, empty, and maximum-size atomic payloads, checking emitted
 headers and payload bytes after repeated sends with a provider prefix. Run it with the same compiler and library settings
 as above, replacing `test_ses_pds` with `test_pds_dgram` in both paths.
@@ -81,6 +88,12 @@ cc -g -Wall -Wextra -Werror -fsanitize=address,undefined -Isuet/src \
   tests/test_rel.c suet/src/suet_rel.c -o /tmp/test_rel
 /tmp/test_rel
 ```
+
+Pending-ACK checks cover out-of-order AR targets, interim SACKs, target
+extension, older requests, PSN wraparound, reset, and local send failure.
+The packet-path test checks both wire AR and SES EOM requests: closing a gap
+must send a cumulative ACK even when the closing fragment requests no ACK.
+A failed ACK submission must preserve the pending target and ACK counters.
 
 The htsim CMake build also includes this test. `test_pds_dgram.c` additionally
 injects real PDS ACKs across PSN wraparound while datagram still owns the TX

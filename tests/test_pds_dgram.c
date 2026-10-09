@@ -298,7 +298,7 @@ static void check_pds_retention(void)
 /* Retained SES packets must not overwrite PDS state or datagram's RX node.
  * Exercise both first and continuation segments, then release through SES.
  */
-static void check_ses_retention(void)
+static void check_ses_retention(bool som_last, bool post_early)
 {
 	struct suet_domain domain = {0};
 	struct fid_ep dgram_ep = {.msg = &msg_ops};
@@ -310,13 +310,19 @@ static void check_ses_retention(void)
 	struct suet_ses_rx_dispatch_result result;
 	struct fi_cq_data_entry comp = {0};
 	struct suet_ses_unexp_msg *unexp;
+	struct suet_ses_rx_entry *entry = NULL;
+	struct suet_ses_pkt_entry *first, *last;
+	unsigned char output[128] = {0};
+	struct iovec iov = {output, sizeof(output)};
 	void *rx;
-	size_t i;
+	size_t i, j;
 
 	prefix_size = 8;
 	domain.dgram.ep = &dgram_ep;
 	domain.dgram.max_mtu_sz = 256;
 	domain.dgram.rx_prefix_size = prefix_size;
+	domain.dgram.tx_prefix_size = prefix_size;
+	tpdc.dgram_av_addr = 9;
 	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
 	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
 	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
@@ -331,12 +337,13 @@ static void check_ses_retention(void)
 	assert(!suet_pds_init(&domain));
 	rx = suet_ses_rx_open(&domain, &tpdc, 0);
 	assert(rx);
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < (post_early ? 2 : 4); i++) {
 		struct suet_dgram_pkt_entry *dgram;
 		struct suet_pds_pkt_entry *pds;
 		struct suet_ses_pkt_entry *ses;
 		struct suet_req_pkt *wire;
 		struct suet_ses_rx_packet view;
+		unsigned int segment = (i % 2) ^ som_last;
 
 		assert(!suet_dgram_ep_recv_pkt(&domain));
 		comp.op_context = recv_context;
@@ -349,45 +356,79 @@ static void check_ses_retention(void)
 		ses = received->ses_ctx;
 		memset(pds, 0, sizeof(*pds));
 		pds->pkt = received;
-		pds->psn = 123 + i;
+		pds->psn = 123 + (i / 2) * 2 + segment;
 		pds->local_pdcid = 7;
 		dlist_init(&pds->entry);
 		memcpy(&saved[i], pds, sizeof(*pds));
 		wire = received->pkt;
 		memset(wire, 0, sizeof(*wire) + 64);
-		ses_req_init(&wire->ses, UET_SEND, !(i % 2), !!(i % 2), 1, 0, 7, 0, 0, 0,
-			     128, 0, 0);
-		if (i % 2)
+		ses_req_init(&wire->ses, UET_SEND, !segment, !!segment, 1, 1,
+			     7, 0, 0, 0xabcdef, 128, 0, 0);
+		memset(wire + 1, segment ? 0x22 : 0x11, 64);
+		if (segment)
 			ses_hd_set_cont(&wire->ses, 64, 64);
 		assert(suet_ses_rx_parse(
 			&domain, UET_HDR_REQUEST_STD, &wire->ses,
 			received->pkt_size - sizeof(wire->pds), &view));
 		view.handle = pds;
 		suet_ses_receive(rx, received->ses_ctx, &view, &result);
-		assert(result.accepted && result.pkt_retained);
+		assert(result.accepted);
+		if (post_early && i == 1) {
+			assert(!result.pkt_retained && result.completion == entry);
+			assert(entry->pkts_received == 2 && entry->bytes_copied == 128);
+			assert(entry->cq_entry.flags & FI_REMOTE_CQ_DATA);
+			assert(entry->cq_entry.data == 0xabcdef);
+			for (j = 0; j < sizeof(output); j++)
+				assert(output[j] == (j < 64 ? 0x11 : 0x22));
+			suet_ses_rx_entry_free(entry);
+			suet_pds_rx_release(pds);
+			break;
+		}
+		assert(result.pkt_retained);
 		assert(ses->pkt.handle == pds && ses->pkt.hdr == &wire->ses &&
 		       !dlist_empty(&ses->entry));
 		assert(dlist_empty(&dgram->entry));
 		assert(dlist_empty(&pds->entry));
 		suet_ses_rx_commit(rx, &result);
+		if (post_early && i == 0) {
+			unexp = container_of(ep.unexp_list.next,
+					     struct suet_ses_unexp_msg, entry);
+			entry = suet_ses_rx_entry_init(&ep, &iov, 1, 0, 0,
+				NULL, SUET_ADDR_INVALID, ofi_op_msg, 0);
+			assert(entry);
+			/* Exercise the real matching/retained-payload transfer.
+			 * A failed local ACK send avoids pending mock completions. */
+			send_status = -FI_EAGAIN;
+			suet_ses_complete_unexp_msg(&ep, entry, unexp);
+			send_status = 0;
+			assert(dlist_empty(&ep.unexp_list));
+			assert(entry->pkts_received == 1);
+			assert(!(entry->cq_entry.flags & FI_REMOTE_CQ_DATA));
+		}
 	}
+	if (post_early)
+		goto cleanup;
 	unexp = container_of(ep.unexp_list.next, struct suet_ses_unexp_msg,
 			     entry);
-	assert(unexp->pkt_list.next ==
-	       &((struct suet_ses_pkt_entry *) packets[0]->ses_ctx)->entry);
-	assert(unexp->pkt_list.prev ==
-	       &((struct suet_ses_pkt_entry *) packets[1]->ses_ctx)->entry);
+	first = packets[som_last ? 1 : 0]->ses_ctx;
+	last = packets[som_last ? 0 : 1]->ses_ctx;
+	assert(unexp->pkt_list.next == &first->entry);
+	assert(unexp->pkt_list.prev == &last->entry);
+	assert(unexp->pkts_received == 2 && unexp->num_pkts == 2);
+	assert(unexp->gtd_del_resp->psn == 123);
+	assert(unexp->gtd_del_resp->num_pkts == 2);
 	/* The sender can reuse an ID after all packets are ACKed while the
 	 * older complete unexpected message is still waiting for a receive.
 	 */
 	unexp = container_of(unexp->entry.next, struct suet_ses_unexp_msg, entry);
-	assert(unexp->pkt_list.next ==
-	       &((struct suet_ses_pkt_entry *) packets[2]->ses_ctx)->entry);
-	assert(unexp->pkt_list.prev ==
-	       &((struct suet_ses_pkt_entry *) packets[3]->ses_ctx)->entry);
+	first = packets[som_last ? 3 : 2]->ses_ctx;
+	last = packets[som_last ? 2 : 3]->ses_ctx;
+	assert(unexp->pkt_list.next == &first->entry);
+	assert(unexp->pkt_list.prev == &last->entry);
 	for (i = 0; i < 4; i++)
 		assert(!memcmp(packets[i]->pds_ctx, &saved[i],
 			       sizeof(saved[i])));
+cleanup:
 	suet_ses_unexp_msg_list_cleanup(&ep.unexp_list);
 	assert(dlist_empty(&ep.unexp_list));
 	suet_ses_rx_close(rx);
@@ -763,7 +804,7 @@ static void check_deferred_response_ev(void)
 	assert(!suet_pds_init(&domain));
 	assert(!suet_rel_rx_init(&tpdc.rel, 100, 128, SUET_REL_GBN));
 	dlist_init(&tpdc.gtd_del_list);
-	saved = suet_pds_response_reserve(&domain, &tpdc, &resp, 1, &req);
+	saved = suet_pds_response_reserve(&domain, &tpdc, &resp, 1, 0, &req);
 	assert(saved && saved->ev == 12345);
 	tpdc.ack_ev = 54321;
 	suet_pds_response_complete(saved, &resp);
@@ -805,6 +846,101 @@ static void check_deferred_response_ev(void)
 	dispatch_pds_tx = false;
 }
 
+/* Real SES/PDS dispatch must retain wire AR and semantic EOM requests until
+ * the gap-closing ACK is submitted successfully, including across PSN wrap.
+ */
+static void check_gap_ack(bool wire_ar, bool fail_final, uint32_t base)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep dgram_ep = {.msg = &msg_ops};
+	struct suet_ep ep = {0};
+	struct suet_cq cq = {0};
+	struct suet_ep *ep_table[] = {&ep};
+	struct suet_tpdc tpdc = {.type = SUET_PDC_RUD,
+		.dgram_av_addr = 9, .local_pdcid = 8, .ipdcid = 7};
+	struct suet_ses_rx_entry *entry;
+	unsigned char output[320] = {0};
+	struct iovec iov = {output, wire_ar ? 320 : 192};
+	const unsigned int order[] = {0, 2, 1, 1};
+	size_t i, j;
+
+	domain.dgram.ep = &dgram_ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	domain.ep_table = ep_table;
+	ep.util_ep.domain = &domain.util_domain;
+	ep.util_ep.rx_cq = &cq.util_cq;
+	ep.util_ep.cntr_inc_funcs[CNTR_RX] = ofi_cntr_inc_noop;
+	dlist_init(&ep.rx_list);
+	dlist_init(&ep.unexp_list);
+	dlist_init(&tpdc.gtd_del_list);
+	prefix_size = 0;
+	send_status = 0;
+	dispatch_pds_tx = true;
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	assert(!suet_ses_init(&domain));
+	assert(!suet_pds_init(&domain));
+	assert(!suet_rel_rx_init(&tpdc.rel, base, 128, SUET_REL_SR));
+	tpdc.expected_rx_psn = base;
+	tpdc.last_rx_clear_psn = base - 1;
+	tpdc.ses_ctx = suet_ses_rx_open(&domain, &tpdc, 0);
+	assert(tpdc.ses_ctx);
+	assert(ofi_idm_set(&domain.pds.local_pdcid_to_tpdc_idm, 8, &tpdc) >= 0);
+	entry = suet_ses_rx_entry_init(&ep, &iov, 1, 0, 0, NULL,
+		SUET_ADDR_INVALID, ofi_op_msg, SUET_NO_RX_COMP);
+	assert(entry);
+	dlist_insert_tail(&entry->entry, &ep.rx_list);
+	for (i = 0; i < (fail_final ? 4 : 3); i++) {
+		struct suet_pkt_entry *pkt = suet_dgram_pkt_alloc(&domain);
+		struct suet_req_pkt *wire = pkt->pkt;
+		struct pds_ack_hdr *ack = (void *) sent;
+		unsigned int segment = order[i];
+
+		memset(wire, 0, sizeof(*wire) + 64);
+		pds_prologue_set_type(&wire->pds, PDS_RUD_REQ);
+		pds_prologue_set_next_hdr(&wire->pds, UET_HDR_REQUEST_STD);
+		pds_prologue_set_flags(&wire->pds, i == 3 ? PDS_FLAG_RETX :
+			(wire_ar && segment == 2 ? PDS_FLAG_AR : 0));
+		pds_req_set_psn(&wire->pds, base + segment);
+		pds_req_set_clear_psn(&wire->pds, base - 1);
+		pds_req_set_spdcid(&wire->pds, 7);
+		pds_req_set_dpdcid(&wire->pds, 8);
+		ses_req_init(&wire->ses, UET_SEND, !segment,
+			!wire_ar && segment == 2, 1, 0, 17, 0, 0, 0,
+			(uint32_t) iov.iov_len, 0, 0);
+		if (segment)
+			ses_hd_set_cont(&wire->ses, segment * 64, 64);
+		memset(wire + 1, segment + 1, 64);
+		pkt->pkt_size = sizeof(*wire) + 64;
+		sent_len = 0;
+		send_status = fail_final && i == 2 ? -FI_EAGAIN : 0;
+		suet_pds_receive(&domain, pkt, 9);
+		assert(sent_len &&
+		       pds_prologue_get_type((const void *) ack) == PDS_ACK_CC);
+		assert(pds_ack_get_cack_psn(ack) == base + (i < 2 ? 0 : 2));
+		assert(tpdc.rel.ack_pending == (i == 1 || (fail_final && i == 2)));
+		if (send_status)
+			assert(tpdc.rel.since_ack);
+		else
+			suet_dgram_tx_complete(&domain, send_context, 0);
+	}
+	for (j = 0; j < 192; j++)
+		assert(output[j] == j / 64 + 1);
+	if (wire_ar)
+		suet_ses_rx_entry_free(entry);
+	assert(!suet_ses_rx_busy(tpdc.ses_ctx));
+	suet_ses_rx_close(tpdc.ses_ctx);
+	ofi_idm_clear(&domain.pds.local_pdcid_to_tpdc_idm, 8);
+	suet_rel_rx_cleanup(&tpdc.rel);
+	suet_pds_cleanup(&domain);
+	suet_ses_cleanup(&domain);
+	suet_dgram_free_pkt_entry_pools(&domain);
+	dispatch_pds_tx = false;
+	send_status = 0;
+}
+
 int main(void)
 {
 	ofi_mem_init();
@@ -813,10 +949,16 @@ int main(void)
 	check_datagram(0, true);
 	check_datagram(8, true);
 	check_pds_retention();
-	check_ses_retention();
+	check_ses_retention(false, false);
+	check_ses_retention(true, false);
+	check_ses_retention(true, true);
 	check_bitmap_retirement();
 	check_trimmed_request();
 	check_deferred_response_ev();
+	check_gap_ack(false, false, 100);
+	check_gap_ack(true, false, 100);
+	check_gap_ack(false, true, UINT32_MAX - 1);
+	check_gap_ack(true, true, UINT32_MAX - 1);
 	check_pds_framing(false, false, 141);
 	check_pds_framing(true, false, 141);
 	check_pds_framing(false, false, 0);

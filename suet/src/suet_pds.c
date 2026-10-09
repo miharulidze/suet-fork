@@ -230,14 +230,17 @@ static void suet_pds_tpdc_send_ack_if_needed(
 	struct suet_req_pkt *pkt,
 	const struct suet_ses_rx_dispatch_result *ses_resp)
 {
-	if (suet_rel_rx_ack_needed(&tpdc->rel,
-				   ses_resp->ack_now || tpdc->ack_flags ||
-					   (pds_prologue_get_flags(&pkt->pds) &
-					    PDS_FLAG_AR))) {
+	uint32_t psn = pds_req_get_psn(&pkt->pds);
+	bool requested = ses_resp->ack_now ||
+		(pds_prologue_get_flags(&pkt->pds) & PDS_FLAG_AR);
+
+	if (ses_resp->accepted && requested)
+		suet_rel_rx_request_ack(&tpdc->rel, psn);
+	if (suet_rel_rx_ack_needed(&tpdc->rel, psn,
+				   requested || tpdc->ack_flags)) {
 		suet_pds_tpdc_send_ack(
-			domain, tpdc, pds_req_get_psn(&pkt->pds),
-			UET_HDR_RESPONSE, ses_resp->resp.message_id,
-			ses_resp->resp.modified_length,
+			domain, tpdc, psn, UET_HDR_RESPONSE,
+			ses_resp->resp.message_id, ses_resp->resp.modified_length,
 			ses_resp->resp.ses_opcode, ses_resp->resp.ses_rc,
 			ses_resp->resp.list, tpdc->ack_ev);
 	}
@@ -317,7 +320,7 @@ static struct suet_pds_ses_resp_entry *suet_pds_tpdc_save_gtd_del_resp(
 struct suet_pds_ses_resp_entry *
 suet_pds_response_reserve(struct suet_domain *domain, void *pds_ctx,
 			  const struct suet_ses_resp *resp, uint16_t num_pkts,
-			  void *request)
+			  uint32_t segment, void *request)
 {
 	struct suet_tpdc *route = pds_ctx;
 	struct suet_pds_pkt_entry *pkt = request;
@@ -325,8 +328,8 @@ suet_pds_response_reserve(struct suet_domain *domain, void *pds_ctx,
 
 	if (!route || !pkt)
 		return NULL;
-	saved = suet_pds_tpdc_save_gtd_del_resp(domain, route, resp, pkt->psn,
-						num_pkts);
+	saved = suet_pds_tpdc_save_gtd_del_resp(
+		domain, route, resp, pkt->psn - segment, num_pkts);
 	if (saved)
 		saved->reserved = true;
 	return saved;
@@ -1354,8 +1357,10 @@ static void suet_pds_tpdc_send_ack(struct suet_domain *domain,
 			pds_ack_set_req(&ack->pds, PDS_ACK_REQ_CLEAR);
 	}
 
-	if (suet_pds_send_pkt(domain, pkt_entry))
+	if (suet_pds_send_pkt(domain, pkt_entry)) {
 		suet_pds_pkt_free(pkt_entry);
+		return;
+	}
 
 	suet_rel_rx_ack_sent(&tpdc->rel);
 }

@@ -204,7 +204,7 @@ static inline int suet_ses_verify_mr_iov(struct suet_ep *ep,
 }
 
 static inline const struct suet_ses_rx_packet *
-suet_ses_unexp_msg_get_som_pkt(struct suet_ses_unexp_msg *unexp_msg)
+suet_ses_unexp_msg_get_first_pkt(struct suet_ses_unexp_msg *unexp_msg)
 {
 	struct suet_ses_pkt_entry *entry = container_of(
 		unexp_msg->pkt_list.next, struct suet_ses_pkt_entry, entry);
@@ -220,7 +220,11 @@ static void suet_ses_unexp_msg_append_pkt(struct suet_ses_unexp_msg *unexp_msg,
 
 	entry->pkt = *pkt;
 	unexp_msg->pkts_received++;
-	dlist_insert_tail(&entry->entry, &unexp_msg->pkt_list);
+	/* Keep SOM first when available for peek/claim completion data. */
+	if (ses_req_ctrl_is_som(pkt->hdr))
+		dlist_insert_head(&entry->entry, &unexp_msg->pkt_list);
+	else
+		dlist_insert_tail(&entry->entry, &unexp_msg->pkt_list);
 }
 
 static const struct suet_ses_rx_packet *
@@ -589,7 +593,7 @@ static int suet_ses_match_unexp_msg(struct dlist_entry *item, const void *arg)
 	struct suet_ses_unexp_msg *unexp_msg =
 		container_of(item, struct suet_ses_unexp_msg, entry);
 	const struct suet_ses_rx_packet *pkt =
-		suet_ses_unexp_msg_get_som_pkt(unexp_msg);
+		suet_ses_unexp_msg_get_first_pkt(unexp_msg);
 
 	if (!suet_match_addr(attr->peer_idx, unexp_msg->peer_idx))
 		return 0;
@@ -621,7 +625,17 @@ suet_ses_check_unexp_list(struct dlist_entry *list, int peer_idx, uint64_t tag,
 	return container_of(match, struct suet_ses_unexp_msg, entry);
 }
 
-static void suet_ses_req_som_unpack_generic_op_metadata(
+static void suet_ses_update_rx_metadata(struct suet_ses_rx_entry *entry,
+					const struct ses_req_hdr *hdr)
+{
+	/* Continuations use header_data for offset/length, even if HD is set. */
+	if (ses_req_ctrl_is_som(hdr) && ses_req_ctrl_has_hd(hdr)) {
+		entry->cq_entry.flags |= FI_REMOTE_CQ_DATA;
+		entry->cq_entry.data = ses_hd_get_completion_data(hdr);
+	}
+}
+
+static void suet_ses_init_rx_metadata(
 	struct suet_ses_rx_ctx *rx, struct suet_ses_rx_entry *rx_entry,
 	const struct suet_ses_rx_packet *pkt)
 {
@@ -630,11 +644,6 @@ static void suet_ses_req_som_unpack_generic_op_metadata(
 
 	rx->curr_rx_id = rx_entry->rx_id;
 	rx_entry->message_id = ses_get_message_id(pkt->hdr);
-
-	if (ses_req_ctrl_has_hd(ses_hdr)) {
-		rx_entry->cq_entry.flags |= FI_REMOTE_CQ_DATA;
-		rx_entry->cq_entry.data = ses_hd_get_completion_data(ses_hdr);
-	}
 
 	rx_entry->peer_idx = rx->peer_idx;
 
@@ -657,7 +666,7 @@ void suet_ses_complete_unexp_msg(struct suet_ep *ep,
 				 struct suet_ses_unexp_msg *unexp_msg)
 {
 	const struct suet_ses_rx_packet *pkt =
-		suet_ses_unexp_msg_get_som_pkt(unexp_msg);
+		suet_ses_unexp_msg_get_first_pkt(unexp_msg);
 	const struct suet_ses_rx_packet *pkt_entry;
 	struct suet_domain *suet_domain = suet_ep_domain(ep);
 	struct suet_ses_rx_ctx *rx;
@@ -678,7 +687,7 @@ void suet_ses_complete_unexp_msg(struct suet_ep *ep,
 	rx = unexp_msg->ses_ctx;
 	curr_id = rx->curr_rx_id;
 
-	suet_ses_req_som_unpack_generic_op_metadata(rx, rx_entry, pkt);
+	suet_ses_init_rx_metadata(rx, rx_entry, pkt);
 	dlist_remove(&rx_entry->entry);
 	dlist_insert_tail(&rx_entry->entry, &rx->rx_list);
 
@@ -689,6 +698,7 @@ void suet_ses_complete_unexp_msg(struct suet_ep *ep,
 		offset = ses_req_ctrl_is_som(pkt_entry->hdr) ?
 				 0 :
 				 ses_hd_get_message_offset(pkt_entry->hdr);
+		suet_ses_update_rx_metadata(rx_entry, pkt_entry->hdr);
 		suet_ses_copy_payload(rx_entry, pkt_entry, offset);
 		rx_entry->pkts_received++;
 		suet_pds_rx_release(pkt_entry->handle);
@@ -741,10 +751,11 @@ int suet_ses_peek_recv(struct suet_ep *suet_ep, int peer_idx, uint64_t tag,
 		dlist_remove(&unexp_msg->entry);
 	}
 
-	pkt = suet_ses_unexp_msg_get_som_pkt(unexp_msg);
+	pkt = suet_ses_unexp_msg_get_first_pkt(unexp_msg);
 	return ofi_cq_write(suet_ep->util_ep.rx_cq, context,
 			    FI_TAGGED | FI_RECV,
 			    ses_get_request_length(pkt->hdr), NULL,
+			    ses_req_ctrl_is_som(pkt->hdr) &&
 			    ses_req_ctrl_has_hd(pkt->hdr) ?
 				    ses_hd_get_completion_data(pkt->hdr) :
 				    0,
@@ -805,7 +816,7 @@ int suet_ses_progress_unexp_list(struct suet_ep *ep,
 		if (!unexp_msg)
 			return 0;
 
-		pkt = suet_ses_unexp_msg_get_som_pkt(unexp_msg);
+		pkt = suet_ses_unexp_msg_get_first_pkt(unexp_msg);
 		total_size = ses_get_request_length(pkt->hdr);
 
 		if (rx_entry->flags & SUET_MULTI_RECV)
@@ -828,7 +839,7 @@ int suet_ses_discard_recv(struct suet_ep *suet_ep, void *context,
 			  struct suet_ses_unexp_msg *unexp_msg)
 {
 	const struct suet_ses_rx_packet *pkt =
-		suet_ses_unexp_msg_get_som_pkt(unexp_msg);
+		suet_ses_unexp_msg_get_first_pkt(unexp_msg);
 	uint16_t gtd_msg_id = ses_get_message_id(pkt->hdr);
 	uint32_t gtd_req_len = (uint32_t) ses_get_request_length(pkt->hdr);
 	struct suet_pds_ses_resp_entry *response;
@@ -856,6 +867,7 @@ int suet_ses_discard_recv(struct suet_ep *suet_ep, void *context,
 
 	ret = ofi_cq_write(suet_ep->util_ep.rx_cq, context, FI_TAGGED | FI_RECV,
 			   0, NULL,
+			   ses_req_ctrl_is_som(pkt->hdr) &&
 			   ses_req_ctrl_has_hd(pkt->hdr) ?
 				   ses_hd_get_completion_data(pkt->hdr) :
 				   0,
@@ -872,8 +884,8 @@ int suet_ses_discard_recv(struct suet_ep *suet_ep, void *context,
 /*
  * Allocate an unexpected-message bookkeeping struct and link a
  * opaque response reservation with PDS, marked
- * UET_NO_RESPONSE. PDS records the current request PSN and the message
- * packet count as the replay range.
+ * UET_NO_RESPONSE. PDS derives the first request PSN from this fragment's
+ * index and retains the message packet count as the replay range.
  *
  * Reserving at intake is the spec-clean way to admit a message we cannot
  * yet semantically answer (Spec 3.4.3.6.2.2 / 3.4.4.5): the receiver MUST
@@ -885,26 +897,28 @@ int suet_ses_discard_recv(struct suet_ep *suet_ep, void *context,
  */
 static struct suet_ses_unexp_msg *
 suet_ses_init_unexp_msg(struct suet_ep *ep, struct suet_ses_rx_ctx *rx,
-			const struct suet_ses_rx_packet *som_pkt,
+			const struct suet_ses_rx_packet *pkt,
 			struct suet_ses_rx_dispatch_result *resp)
 {
 	struct suet_domain *domain = suet_ep_domain(ep);
 	struct suet_ses_unexp_msg *unexp_msg;
 	struct suet_pds_ses_resp_entry *reserved_resp;
-	uint32_t request_length = ses_get_request_length(som_pkt->hdr);
+	uint32_t request_length = ses_get_request_length(pkt->hdr);
 	uint32_t num_pkts = ofi_div_ceil(request_length, domain->max_pkt_sz);
+	uint32_t segment = ses_req_ctrl_is_som(pkt->hdr) ? 0 :
+		ses_hd_get_message_offset(pkt->hdr) / domain->max_pkt_sz;
 	struct suet_ses_resp placeholder = {
 		.ses_opcode = UET_NO_RESPONSE,
 		.ses_rc = RC_OK,
 		.list = UET_EXPECTED,
-		.message_id = ses_get_message_id(som_pkt->hdr),
+		.message_id = ses_get_message_id(pkt->hdr),
 		.modified_length = request_length,
 	};
 
 	/* 0-byte messages still produce one SOM+EOM packet. */
 	reserved_resp = suet_pds_response_reserve(
 		domain, rx->pds_ctx, &placeholder,
-		(uint16_t) (num_pkts == 0 ? 1 : num_pkts), som_pkt->handle);
+		(uint16_t) (num_pkts == 0 ? 1 : num_pkts), segment, pkt->handle);
 	if (!reserved_resp) {
 		/* Spec 3.5.12.7: no GD response slot available. */
 		resp->status = -FI_ENOMEM;
@@ -915,7 +929,7 @@ suet_ses_init_unexp_msg(struct suet_ep *ep, struct suet_ses_rx_ctx *rx,
 	if (!unexp_msg) {
 		suet_pds_response_cancel(reserved_resp);
 		FI_WARN(&suet_prov, FI_LOG_CQ,
-			"SES SOM: no rx entry match and unexpected "
+			"SES: no rx entry match and unexpected "
 			"alloc failed\n");
 		resp->resp.ses_rc = RC_NO_MATCH;
 		resp->resp.ses_opcode = UET_RESPONSE;
@@ -935,7 +949,7 @@ suet_ses_init_unexp_msg(struct suet_ep *ep, struct suet_ses_rx_ctx *rx,
 
 static struct suet_ses_rx_entry *
 suet_ses_match_msg_rx_entry(struct suet_ep *ep, struct suet_ses_rx_ctx *rx,
-			    void *pkt_ctx, const struct suet_ses_rx_packet *pkt,
+			    const struct suet_ses_rx_packet *pkt,
 			    struct suet_ses_rx_dispatch_result *resp)
 {
 	struct suet_ses_rx_entry *rx_entry, *dup_entry;
@@ -967,8 +981,6 @@ suet_ses_match_msg_rx_entry(struct suet_ep *ep, struct suet_ses_rx_ctx *rx,
 		rx->curr_unexp = suet_ses_init_unexp_msg(ep, rx, pkt, resp);
 		if (rx->curr_unexp) {
 			rx->curr_unexp->peer_idx = rx->peer_idx;
-			suet_ses_unexp_msg_append_pkt(rx->curr_unexp, pkt_ctx,
-						      pkt);
 			dlist_insert_tail(&rx->curr_unexp->entry, unexp_list);
 		}
 		return NULL;
@@ -1050,18 +1062,16 @@ static void suet_ses_execute_atomic_op(struct suet_ep *ep,
 }
 
 static struct suet_ses_rx_entry *
-suet_ses_req_som_unpack_to_rx_entry(struct suet_ep *ep,
-				    struct suet_ses_rx_ctx *rx, void *pkt_ctx,
-				    const struct suet_ses_rx_packet *pkt,
-				    struct suet_ses_rx_dispatch_result *resp)
+suet_ses_init_rx_entry(struct suet_ep *ep, struct suet_ses_rx_ctx *rx,
+			const struct suet_ses_rx_packet *pkt,
+			struct suet_ses_rx_dispatch_result *resp)
 {
 	uint8_t ses_opcode = ses_req_ctrl_get_opcode(pkt->hdr);
 	struct suet_ses_rx_entry *rx_entry;
 
 	if (ses_req_opcode_is_send(ses_opcode) ||
 	    ses_req_opcode_is_tagged(ses_opcode)) {
-		rx_entry =
-			suet_ses_match_msg_rx_entry(ep, rx, pkt_ctx, pkt, resp);
+		rx_entry = suet_ses_match_msg_rx_entry(ep, rx, pkt, resp);
 	} else if (ses_req_opcode_is_write(ses_opcode)) {
 		rx_entry =
 			suet_ses_match_rma_rx_entry(ep, rx, pkt, ofi_op_write);
@@ -1075,7 +1085,7 @@ suet_ses_req_som_unpack_to_rx_entry(struct suet_ep *ep,
 	}
 
 	if (rx_entry)
-		suet_ses_req_som_unpack_generic_op_metadata(rx, rx_entry, pkt);
+		suet_ses_init_rx_metadata(rx, rx_entry, pkt);
 
 	return rx_entry;
 }
@@ -1158,7 +1168,9 @@ void suet_ses_receive(void *ses_ctx, void *pkt_ctx,
 	struct suet_ses_rx_ctx *rx = ses_ctx;
 	struct suet_domain *domain = rx->domain;
 	struct suet_ep *ep = suet_ses_lookup_ep_by_ri(domain, pkt->hdr);
-	struct suet_ses_rx_entry *rx_entry = NULL;
+	struct suet_ses_rx_entry *rx_entry = NULL, *entry;
+	struct suet_ses_unexp_msg *unexp;
+	uint16_t id = ses_get_message_id(pkt->hdr);
 	bool is_som = ses_req_ctrl_is_som(pkt->hdr);
 
 	memset(resp, 0, sizeof(*resp));
@@ -1167,70 +1179,46 @@ void suet_ses_receive(void *ses_ctx, void *pkt_ctx,
 	if (!ep)
 		return;
 	rx->curr_unexp = NULL;
-	if (!is_som) {
-		struct suet_ses_unexp_msg *unexp;
-		struct suet_ses_rx_entry *entry;
-		uint16_t id = ses_get_message_id(pkt->hdr);
-
-		dlist_foreach_container (&rx->rx_list, struct suet_ses_rx_entry,
-					 entry, entry) {
-			if (entry->ep == ep && entry->message_id == id) {
-				rx_entry = entry;
-				break;
-			}
-		}
-		dlist_foreach_container (&rx->unexp_list,
-					 struct suet_ses_unexp_msg, unexp,
-					 rx_entry) {
-			const struct ses_req_hdr *hdr =
-				suet_ses_unexp_msg_get_som_pkt(unexp)->hdr;
-			/* A completed unexpected message may retain a reused ID.
-			 * Only the incomplete operation can own a new fragment. */
-			if (rx_entry || unexp->pkts_received >= unexp->num_pkts)
-				continue;
-			if (ses_get_ri(hdr) == ses_get_ri(pkt->hdr) &&
-			    ses_get_message_id(hdr) == id) {
-				rx->curr_unexp = unexp;
-				break;
-			}
-		}
-		/* No SOM metadata yet: refuse admission rather than acknowledge
-		 * a fragment whose receive/remote MR has not been established.
-		 * Reliability will retry it after the first fragment arrives.
-		 */
-		if (!rx_entry && !rx->curr_unexp) {
-			resp->status = -FI_EAGAIN;
-			return;
+	dlist_foreach_container (&rx->rx_list, struct suet_ses_rx_entry,
+				 entry, entry) {
+		if (entry->ep == ep && entry->message_id == id) {
+			rx_entry = entry;
+			break;
 		}
 	}
-	if (is_som) {
-		uint8_t ses_opcode = ses_req_ctrl_get_opcode(pkt->hdr);
-
-		resp->resp.ses_rc = RC_OK;
-		rx_entry = suet_ses_req_som_unpack_to_rx_entry(ep, rx, pkt_ctx,
-							       pkt, resp);
-		if (!rx_entry) {
-			if (!resp->status && rx->curr_unexp) {
-				resp->resp.ses_opcode = UET_NO_RESPONSE;
-				resp->pkt_retained = true;
-			}
-		} else if (ses_opcode == UET_ATOMIC) {
-			suet_ses_execute_atomic_op(ep, rx_entry, pkt);
-			rx_entry->pkts_received++;
-		} else {
-			suet_ses_copy_payload(rx_entry, pkt, 0);
-			rx_entry->pkts_received++;
+	dlist_foreach_container (&rx->unexp_list,
+				 struct suet_ses_unexp_msg, unexp,
+				 rx_entry) {
+		const struct ses_req_hdr *hdr =
+			suet_ses_unexp_msg_get_first_pkt(unexp)->hdr;
+		/* A completed unexpected message may retain a reused ID.
+		 * Only the incomplete operation can own a new fragment. */
+		if (rx_entry || unexp->pkts_received >= unexp->num_pkts)
+			continue;
+		if (ses_get_ri(hdr) == ses_get_ri(pkt->hdr) &&
+		    ses_get_message_id(hdr) == id) {
+			rx->curr_unexp = unexp;
+			break;
 		}
-	} else if (rx->curr_unexp) {
+	}
+	/* Every standard fragment carries the matching and placement metadata.
+	 * The first arrival establishes state; a later SOM reuses that state.
+	 */
+	if (!rx_entry && !rx->curr_unexp)
+		rx_entry = suet_ses_init_rx_entry(ep, rx, pkt, resp);
+
+	if (rx->curr_unexp) {
 		suet_ses_unexp_msg_append_pkt(rx->curr_unexp, pkt_ctx, pkt);
 		resp->resp.ses_opcode = UET_NO_RESPONSE;
 		resp->pkt_retained = true;
-		resp->resp.ses_rc = RC_OK;
-	} else {
-		suet_ses_copy_payload(rx_entry, pkt,
-				      ses_hd_get_message_offset(pkt->hdr));
+	} else if (rx_entry) {
+		suet_ses_update_rx_metadata(rx_entry, pkt->hdr);
+		if (ses_req_ctrl_get_opcode(pkt->hdr) == UET_ATOMIC)
+			suet_ses_execute_atomic_op(ep, rx_entry, pkt);
+		else
+			suet_ses_copy_payload(rx_entry, pkt, is_som ? 0 :
+					      ses_hd_get_message_offset(pkt->hdr));
 		rx_entry->pkts_received++;
-		resp->resp.ses_rc = RC_OK;
 	}
 
 	resp->ack_now |= resp->resp.ses_rc != RC_OK;
@@ -1245,15 +1233,9 @@ void suet_ses_rx_commit(void *ses_ctx,
 	struct suet_ses_rx_ctx *rx = ses_ctx;
 	struct suet_ses_rx_entry *entry = resp->completion;
 
-	/* For unexpected messages, EOM is recognized by the retained packet. */
-	if (rx->curr_unexp && !dlist_empty(&rx->curr_unexp->pkt_list)) {
-		struct suet_ses_pkt_entry *last =
-			container_of(rx->curr_unexp->pkt_list.prev,
-				     struct suet_ses_pkt_entry, entry);
-		const struct suet_ses_rx_packet *pkt = &last->pkt;
-		if (ses_req_ctrl_is_eom(pkt->hdr))
-			rx->curr_unexp = NULL;
-	}
+	if (rx->curr_unexp && rx->curr_unexp->pkts_received >=
+					     rx->curr_unexp->num_pkts)
+		rx->curr_unexp = NULL;
 	if (entry && entry->pkts_received >= entry->num_pkts)
 		suet_ses_rx_entry_complete(entry);
 }

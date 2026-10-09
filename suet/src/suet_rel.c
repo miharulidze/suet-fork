@@ -408,16 +408,32 @@ uint32_t suet_rel_rx_cack(const struct suet_rel_rx *rx)
 	return rx->window.base_psn - 1;
 }
 
-bool suet_rel_rx_ack_needed(const struct suet_rel_rx *rx, bool requested)
+void suet_rel_rx_request_ack(struct suet_rel_rx *rx, uint32_t psn)
+{
+	if (!rx->ack_pending || (int32_t) (psn - rx->ack_target_psn) > 0)
+		rx->ack_target_psn = psn;
+	rx->ack_pending = true;
+}
+
+bool suet_rel_rx_ack_needed(const struct suet_rel_rx *rx, uint32_t psn,
+			    bool requested)
 {
 	uint32_t interval = rx->window.capacity / 2;
 
-	return requested || rx->since_ack >= (interval ? interval : 1);
+	return requested || rx->since_ack >= (interval ? interval : 1) ||
+	       (rx->ack_pending &&
+		((int32_t) (psn - rx->ack_target_psn) <= 0 ||
+		 /* Retry an unsent cumulative ACK on the next arrival, even
+		  * when that packet is beyond the requested target. */
+		 (int32_t) (suet_rel_rx_cack(rx) - rx->ack_target_psn) >= 0));
 }
 
 void suet_rel_rx_ack_sent(struct suet_rel_rx *rx)
 {
 	rx->since_ack = 0;
+	if (rx->ack_pending &&
+	    (int32_t) (suet_rel_rx_cack(rx) - rx->ack_target_psn) >= 0)
+		rx->ack_pending = false;
 	if ((int32_t) (rx->max_psn - (rx->sack_base + 63)) > 0)
 		rx->sack_base += 64;
 }
@@ -433,4 +449,6 @@ void suet_rel_rx_reset(struct suet_rel_rx *rx, uint32_t base_psn)
 	rx->sack_base = base_psn - 1;
 	rx->max_psn = base_psn - 1;
 	rx->since_ack = 0;
+	rx->ack_target_psn = 0;
+	rx->ack_pending = false;
 }

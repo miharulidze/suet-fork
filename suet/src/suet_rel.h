@@ -46,6 +46,8 @@ struct suet_rel_rx {
 	uint32_t since_ack;
 	uint32_t sack_base;
 	uint32_t max_psn;
+	uint32_t ack_target_psn;
+	bool ack_pending;
 };
 
 /* Slots occupied before ACK processing. Consume every pointer in this range
@@ -110,7 +112,11 @@ enum suet_rel_rx_result suet_rel_rx_record(struct suet_rel_rx *rx, uint32_t psn,
 void suet_rel_rx_commit(struct suet_rel_rx *rx, uint32_t psn);
 void suet_rel_rx_cancel(struct suet_rel_rx *rx, uint32_t psn);
 uint32_t suet_rel_rx_cack(const struct suet_rel_rx *rx);
-bool suet_rel_rx_ack_needed(const struct suet_rel_rx *rx, bool requested);
+/* An interim SACK does not satisfy a request above the cumulative horizon. */
+void suet_rel_rx_request_ack(struct suet_rel_rx *rx, uint32_t psn);
+bool suet_rel_rx_ack_needed(const struct suet_rel_rx *rx, uint32_t psn,
+			    bool requested);
+/* Call only after successful ACK submission to the datagram layer. */
 void suet_rel_rx_ack_sent(struct suet_rel_rx *rx);
 /* PDC lifecycle may discard a receive window; no close protocol lives here. */
 void suet_rel_rx_reset(struct suet_rel_rx *rx, uint32_t base_psn);
