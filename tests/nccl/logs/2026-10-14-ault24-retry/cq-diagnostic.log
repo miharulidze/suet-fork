@@ -1,0 +1,52 @@
+Function "suet_ses_cq_write" not defined.
+Breakpoint 1 (suet_ses_cq_write) pending.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib64/libthread_db.so.1".
+# nccl-tests version 2.21.1 (afd59ab) nccl-headers=23203 nccl-library=23203
+# Collective test starting: all_reduce_perf
+# nThread 1 nGpus 2 minBytes 8 maxBytes 8 step: 2(factor) warmup iters: 0 iters: 1 agg iters: 1 validation: 1 graph: 0 unalign: 0
+#
+# Using devices
+Missing separate debuginfo for /usr/lib64/libcuda.so.1
+Try: yum --enablerepo='*debug*' install /usr/lib/debug/.build-id/00/fe86755e78630ad9bd65f322e047577d51f0d8.debug
+[New Thread 0x15554d692000 (LWP 344234)]
+#  Rank  0 Group  0 Pid 344230 on     ault24 device  0 [0000:1c:00] Tesla V100-PCIE-16GB
+#  Rank  1 Group  0 Pid 344230 on     ault24 device  1 [0000:1e:00] Tesla V100-PCIE-16GB
+[New Thread 0x15553e99c000 (LWP 344247)]
+[New Thread 0x15553e19b000 (LWP 344248)]
+[New Thread 0x155523fff000 (LWP 344249)]
+NCCL version 2.32.3+cuda12.8
+[New Thread 0x1555223dd000 (LWP 344250)]
+[New Thread 0x155521bdc000 (LWP 344251)]
+Missing separate debuginfo for /usr/lib64/libnvidia-ptxjitcompiler.so.1
+Try: yum --enablerepo='*debug*' install /usr/lib/debug/.build-id/4f/31738155a86d028944864fa029e51fb82fcdbb.debug
+BFD: warning: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libicudata.so.78: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0010001
+BFD: warning: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libicudata.so.78: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0010002
+
+[2026-10-14 13:14:23] ault24:344230:344250 [0] ncclResult_t nccl_ofi_gin_init(void**, uint64_t, ncclDebugLogger_t):50 NCCL WARN NET/OFI GIN only supports RDMA transport protocol.
+[New Thread 0x155504fea000 (LWP 344252)]
+
+[2026-10-14 13:14:23] ault24:344230:344250 [0] transport/rma_socket.cc:32 (ncclRmaSocketProxyInit) NCCL WARN RMA/Socket : rma_socket requires GDRCopy; and GDR Copy is not available
+
+[2026-10-14 13:14:23] ault24:344230:344250 [0] ncclResult_t nccl_ofi_gin_init(void**, uint64_t, ncclDebugLogger_t):50 NCCL WARN NET/OFI GIN only supports RDMA transport protocol.
+Missing separate debuginfo for /usr/lib64/libnvidia-ml.so.1
+Try: yum --enablerepo='*debug*' install /usr/lib/debug/.build-id/9a/f8e628a53308e85ab92bce05b9cb83c460af3d.debug
+[Thread 0x15553e99c000 (LWP 344247) exited]
+[New Thread 0x15553e99c000 (LWP 344253)]
+[New Thread 0x1554f8fa1000 (LWP 344254)]
+[New Thread 0x1554c4863000 (LWP 344255)]
+[New Thread 0x1554b462d000 (LWP 344256)]
+[New Thread 0x1554b3e2c000 (LWP 344257)]
+[Thread 0x155521bdc000 (LWP 344251) exited]
+[Thread 0x1555223dd000 (LWP 344250) exited]
+#
+#                                                              out-of-place                       in-place
+#       size         count      type   redop    root     time   algbw   busbw  #wrong     time   algbw   busbw  #wrong
+#        (B)    (elements)                               (us)  (GB/s)  (GB/s)             (us)  (GB/s)  (GB/s)        
+[New Thread 0x1555223dd000 (LWP 344258)]
+[New Thread 0x155521bdc000 (LWP 344259)]
+[New Thread 0x1554b362b000 (LWP 344260)]
+[New Thread 0x1554b2e2a000 (LWP 344261)]
+[Switching to Thread 0x1554f8fa1000 (LWP 344254)]
+/tmp/suet-nccl-retry-mkhalilo-20261014/cq-diagnostic.gdb:13: Error in sourced command file:
+No symbol "cq_entry" in current context.

@@ -1,0 +1,9 @@
+Cloning into '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl'...
+done.
+plugin-autogen=0
+plugin-configure=0
+plugin-build=0
+plugin-install=0
+nccl-fixed-2gpu=0
+nccl-fixed-4gpu=0
+fixed-plugin-finished

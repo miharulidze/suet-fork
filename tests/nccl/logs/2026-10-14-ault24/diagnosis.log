@@ -1,0 +1,148 @@
+2026-10-14T12:01:58+02:00
+ault24.cscs.ch
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        755G     0  755G   0% /dev
+tmpfs           756G     0  756G   0% /dev/shm
+tmpfs           756G  115M  755G   1% /run
+tmpfs           756G     0  756G   0% /sys/fs/cgroup
+/dev/sda2       219G   18G  190G   9% /
+/dev/sda1       511M   11M  501M   3% /boot/efi
+/apps:
+total 8
+drwxr-xr-x  2 root root 4096 Mar 31  2021 .
+dr-xr-xr-x 21 root root 4096 Jun 12 00:14 ..
+
+/scratch:
+total 8
+drwxr-xr-x  2 root root 4096 Jun 18  2021 .
+dr-xr-xr-x 21 root root 4096 Jun 12 00:14 ..
+
+/users:
+total 8
+drwxr-xr-x  2 root root 4096 Jul  6  2021 .
+dr-xr-xr-x 21 root root 4096 Jun 12 00:14 ..
+CC=/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/gcc
+CUDA_HOME=/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d
+CXX=/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/g++
+LD_LIBRARY_PATH=/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/rdma-core-34.0-75kokuxa2gqlk6huwk3zjsokukwvsx6g/lib64:/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/rdma-core-34.0-75kokuxa2gqlk6huwk3zjsokukwvsx6g/lib:/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/lib64:/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/lib64:/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/lib:/users/mkhalilo/Development/nccl/build/lib:/users/mkhalilo/Development/mpi/openmpi-5.0.5/build/lib:/users/mkhalilo/Development/mpi/ucx/build/lib::
+LOADEDMODULES=gcc/10.2.0:cuda/11.4.0:rdma-core/34.0
+PATH=/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/rdma-core-34.0-75kokuxa2gqlk6huwk3zjsokukwvsx6g/bin:/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin:/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin:/users/mkhalilo/Development/mpi/openmpi-5.0.5/build/bin:/users/mkhalilo/Development/mpi/ucx/build/bin:/users/mkhalilo/miniconda3/envs/hermes2/bin:/users/mkhalilo/miniconda3/condabin:/users/mkhalilo/.local/bin:/users/mkhalilo/bin:/opt/rocm/bin:/apps/ault/system/bin:/apps/common/system/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+SLURM_JOB_ID=892393
+/usr/bin/gcc
+/usr/bin/g++
+ls: cannot access '/apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/gcc': No such file or directory
+ M Makefile.am
+ M configure.ac
+ M include/ofi_prov.h
+ M include/rdma/fabric.h
+ M src/fabric.c
+?? prov/suet/
+error: patch failed: include/rdma/fi_endpoint.h:133
+error: include/rdma/fi_endpoint.h: patch does not apply
+105-	int	(*rx_ctx)(struct fid_ep *sep, int index,
+106-			struct fi_rx_attr *attr, struct fid_ep **rx_ep,
+107-			void *context);
+108-	ssize_t (*rx_size_left)(struct fid_ep *ep);
+109-	ssize_t (*tx_size_left)(struct fid_ep *ep);
+110-	int	(*export_xpu)(struct fid_ep *ep, uint64_t flags,
+111-			struct fid_xpu_ep *xpu_ep);
+112-	int	(*tx_flush)(struct fid_ep *ep, uint64_t flags);
+113-};
+114-
+115:struct fi_ops_msg {
+116-	size_t	size;
+117-	ssize_t (*recv)(struct fid_ep *ep, void *buf, size_t len, void *desc,
+118-			fi_addr_t src_addr, void *context);
+119-	ssize_t (*recvv)(struct fid_ep *ep, const struct iovec *iov, void **desc,
+120-			size_t count, fi_addr_t src_addr, void *context);
+121-	ssize_t (*recvmsg)(struct fid_ep *ep, const struct fi_msg *msg,
+122-			uint64_t flags);
+123-	ssize_t (*send)(struct fid_ep *ep, const void *buf, size_t len, void *desc,
+124-			fi_addr_t dest_addr, void *context);
+125-	ssize_t (*sendv)(struct fid_ep *ep, const struct iovec *iov, void **desc,
+126-			size_t count, fi_addr_t dest_addr, void *context);
+127-	ssize_t (*sendmsg)(struct fid_ep *ep, const struct fi_msg *msg,
+128-			uint64_t flags);
+129-	ssize_t	(*inject)(struct fid_ep *ep, const void *buf, size_t len,
+130-			fi_addr_t dest_addr);
+--
+148- * operations referenced by a endpoint in order to optimize the data transfer code
+149- * paths.
+150- *
+151- * A provider may allocate the minimal size structure needed to support the
+152- * ops requested by the user.
+153- */
+154-struct fid_ep {
+155-	struct fid		fid;
+156-	struct fi_ops_ep	*ops;
+157-	struct fi_ops_cm	*cm;
+158:	struct fi_ops_msg	*msg;
+159-	struct fi_ops_rma	*rma;
+160-	struct fi_ops_tagged	*tagged;
+161-	struct fi_ops_atomic	*atomic;
+162-	struct fi_ops_collective *collective;
+163-	struct fi_ops_wr	*wr;
+164-};
+165-
+166-struct fid_pep {
+167-	struct fid		fid;
+168-	struct fi_ops_ep	*ops;
+169-	struct fi_ops_cm	*cm;
+170-};
+171-
+172-struct fid_stx {
+173-	struct fid		fid;
+--
+341-}
+342-
+343-static inline ssize_t
+344-fi_sendv(struct fid_ep *ep, const struct iovec *iov, void **desc,
+345-	 size_t count, fi_addr_t dest_addr, void *context)
+346-{
+347-	return ep->msg->sendv(ep, iov, desc, count, dest_addr, context);
+348-}
+349-
+350-static inline ssize_t
+351:fi_sendmsg(struct fid_ep *ep, const struct fi_msg *msg, uint64_t flags)
+352-{
+353-	return ep->msg->sendmsg(ep, msg, flags);
+354-}
+355-
+356-static inline ssize_t
+357-fi_inject(struct fid_ep *ep, const void *buf, size_t len, fi_addr_t dest_addr)
+358-{
+359-	return ep->msg->inject(ep, buf, len, dest_addr);
+360-}
+361-
+362-static inline ssize_t
+363-fi_senddata(struct fid_ep *ep, const void *buf, size_t len, void *desc,
+364-	      uint64_t data, fi_addr_t dest_addr, void *context)
+365-{
+366-	return ep->msg->senddata(ep, buf, len, desc, data, dest_addr, context);
+--
+369-static inline ssize_t
+370-fi_injectdata(struct fid_ep *ep, const void *buf, size_t len,
+371-		uint64_t data, fi_addr_t dest_addr)
+372-{
+373-	return ep->msg->injectdata(ep, buf, len, data, dest_addr);
+374-}
+375-
+376-static inline int
+377-fi_recv_flush(struct fid_ep *ep, uint64_t flags)
+378-{
+379:	return FI_CHECK_OP(ep->msg, struct fi_ops_msg, recv_flush) ?
+380-		ep->msg->recv_flush(ep, flags) : -FI_ENOSYS;
+381-}
+382-
+383-static inline int
+384-fi_ep_export_xpu(struct fid_ep *ep, uint64_t flags,
+385-		 struct fid_xpu_ep *xpu_ep)
+386-{
+387-	return ep->ops->export_xpu(ep, flags, xpu_ep);
+388-}
+389-
+390-#endif
+391-
+392-#ifdef __cplusplus
+393-}
+394-#endif

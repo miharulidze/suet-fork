@@ -1,0 +1,1744 @@
+Running 35 tests with provider 'udp;ofi_suet' [loopback]
+Binary dir: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin
+Timeout: 60s per test
+============================================================
+
+[    rdm] rdm_pingpong ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_pingpong -v -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_pingpong -v -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     1.2m        0.37s      3.43      18.68       0.05
+    256     10k     4.8m        0.37s     13.74      18.64       0.05
+    1k      10k     19m         0.32s     64.84      15.79       0.06
+    4k      10k     78m         0.69s    118.32      34.62       0.03
+    64k     1k      125m        0.68s    193.91     337.97       0.00
+    1m      100     200m        1.04s    201.42    5205.90       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     1.2m        0.37s      3.43      18.68       0.05
+    256     10k     4.8m        0.37s     13.74      18.64       0.05
+    1k      10k     19m         0.32s     64.84      15.79       0.06
+    4k      10k     78m         0.69s    118.32      34.62       0.03
+    64k     1k      125m        0.68s    193.96     337.88       0.00
+    1m      100     200m        1.04s    201.63    5200.37       0.00
+
+[    rdm] rdm_bw ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw -v -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw -v -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      20k     1.2m        0.26s      5.01      12.76       0.08
+    256     20k     4.8m        0.23s     22.23      11.52       0.09
+    1k      20k     19m         0.24s     84.17      12.17       0.08
+    4k      20k     78m         0.44s    187.40      21.86       0.05
+    64k     2k      125m        0.61s    213.62     306.79       0.00
+    1m      200     200m        1.18s    177.35    5912.61       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      20k     1.2m        0.25s      5.03      12.73       0.08
+    256     20k     4.8m        0.23s     22.22      11.52       0.09
+    1k      20k     19m         0.24s     84.29      12.15       0.08
+    4k      20k     78m         0.44s    187.40      21.86       0.05
+    64k     2k      125m        0.61s    213.24     307.33       0.00
+    1m      200     200m        1.19s    175.75    5966.35       0.00
+
+[    rdm] rdm_bw_mt ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      62k         0.06s      1.07      59.61       0.02
+    256     1k      250k        0.06s      4.47      57.28       0.02
+    1k      1k      1000k       0.08s     13.38      76.53       0.01
+    4k      1k      3.9m        0.09s     47.74      85.79       0.01
+    64k     1k      62m         0.25s    258.76     253.26       0.00
+    1m      1k      1000m       2.91s    360.92    2905.25       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      62k         0.06s      1.07      59.63       0.02
+    256     1k      250k        0.06s      4.47      57.26       0.02
+    1k      1k      1000k       0.08s     13.38      76.56       0.01
+    4k      1k      3.9m        0.09s     47.76      85.77       0.01
+    64k     1k      62m         0.25s    258.93     253.10       0.00
+    1m      1k      1000m       2.91s    360.92    2905.25       0.00
+
+[    rdm] rdm_bw_mt (bidir) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -g -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -g -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      62k         0.09s      0.71      90.36       0.01
+    256     1k      250k        0.09s      2.95      86.82       0.01
+    1k      1k      1000k       0.09s     10.96      93.40       0.01
+    4k      1k      3.9m        0.10s     40.15     102.03       0.01
+    64k     1k      62m         0.49s    132.83     493.40       0.00
+    1m      1k      1000m       5.85s    179.22    5850.65       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      62k         0.09s      0.71      90.37       0.01
+    256     1k      250k        0.09s      2.95      86.82       0.01
+    1k      1k      1000k       0.09s     10.96      93.39       0.01
+    4k      1k      3.9m        0.10s     40.14     102.05       0.01
+    64k     1k      62m         0.49s    132.84     493.36       0.00
+    1m      1k      1000m       5.85s    179.23    5850.56       0.00
+
+[    rdm] rdm_bw_mt (2 eps) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -n 2 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -n 2 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      125k        0.04s      2.96      21.66       0.05
+    256     1k      500k        0.03s     15.48      16.54       0.06
+    1k      1k      1.9m        0.03s     62.52      16.38       0.06
+    4k      1k      7.8m        0.06s    144.53      28.34       0.04
+    64k     1k      125m        0.59s    221.04     296.48       0.00
+    1m      1k      1.9g        7.20s    291.38    3598.66       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      125k        0.04s      2.96      21.65       0.05
+    256     1k      500k        0.03s     15.47      16.54       0.06
+    1k      1k      1.9m        0.03s     62.56      16.37       0.06
+    4k      1k      7.8m        0.06s    144.53      28.34       0.04
+    64k     1k      125m        0.59s    221.05     296.48       0.00
+    1m      1k      1.9g        7.20s    291.38    3598.69       0.00
+
+[    rdm] rdm_bw_mt (4 eps) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -n 4 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -n 4 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      250k        0.08s      3.06      20.92       0.05
+    256     1k      1000k       0.09s     11.53      22.20       0.05
+    1k      1k      3.9m        0.07s     62.35      16.42       0.06
+    4k      1k      15m         0.13s    129.00      31.75       0.03
+    64k     1k      250m        1.93s    135.66     483.10       0.00
+    1m      1k      3.9g       17.43s    240.66    4357.17       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      250k        0.09s      2.82      22.69       0.04
+    256     1k      1000k       0.09s     11.53      22.20       0.05
+    1k      1k      3.9m        0.07s     62.35      16.42       0.06
+    4k      1k      15m         0.13s    126.34      32.42       0.03
+    64k     1k      250m        1.94s    135.17     484.83       0.00
+    1m      1k      3.9g       17.44s    240.56    4358.97       0.00
+
+[    rdm] rdm_bw_mt (4eps, bidir) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -g -n 4 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw_mt -v -g -n 4 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      250k        0.14s      1.78      35.97       0.03
+    256     1k      1000k       0.12s      8.31      30.82       0.03
+    1k      1k      3.9m        0.13s     32.63      31.39       0.03
+    4k      1k      15m         0.25s     65.18      62.84       0.02
+    64k     1k      250m        3.86s     68.00     963.80       0.00
+    1m      1k      3.9g       35.42s    118.41    8855.12       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      1k      250k        0.14s      1.78      35.97       0.03
+    256     1k      1000k       0.12s      8.36      30.64       0.03
+    1k      1k      3.9m        0.13s     32.63      31.38       0.03
+    4k      1k      15m         0.25s     65.20      62.82       0.02
+    64k     1k      250m        3.86s     68.00     963.78       0.00
+    1m      1k      3.9g       35.42s    118.43    8854.20       0.00
+
+[    rdm] rdm (functional) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Sending message...
+    Send completion received
+    Waiting for message from client...
+    Data check OK
+    Received data from client: Hello from Client!
+
+[    rdm] unexpected_msg ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_unexpected_msg -e rdm -I 10 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_unexpected_msg -e rdm -I 10 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    PID 33770 GOOD iter 0/10 completed
+    PID 33770 GOOD all done
+    PID 33765 GOOD iter 0/10 completed
+    PID 33765 GOOD all done
+
+[    rdm] rdm_cntr_pingpong ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_cntr_pingpong -v -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_cntr_pingpong -v -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     1.2m        0.73s      1.75      36.53       0.03
+    256     10k     4.8m        0.78s      6.57      38.98       0.03
+    1k      10k     19m         0.78s     26.31      38.93       0.03
+    4k      10k     78m         0.93s     88.33      46.37       0.02
+    64k     1k      125m        0.64s    203.56     321.94       0.00
+    1m      100     200m        1.14s    184.13    5694.86       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     1.2m        0.73s      1.75      36.52       0.03
+    256     10k     4.8m        0.78s      6.57      38.98       0.03
+    1k      10k     19m         0.78s     26.31      38.93       0.03
+    4k      10k     78m         0.93s     88.33      46.37       0.02
+    64k     1k      125m        0.64s    203.66     321.79       0.00
+    1m      100     200m        1.14s    184.29    5689.88       0.00
+
+[    rdm] inject_test ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_inject_test -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_inject_test -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Start testing 
+    GOOD: Completed  Testing
+    Start testing 
+    GOOD: Completed  Testing
+
+[    rdm] cq_data ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_cq_data -e rdm -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_cq_data -e rdm -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Posting send with CQ data: 0x123456789abcdef
+    Done
+    Waiting for CQ data from client
+    remote_cq_data: success
+    fi_cq_data_entry verification: success
+
+[    rdm] multi_recv ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_multi_recv -e rdm -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_multi_recv -e rdm -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    1k      1k      1000k       0.06s     16.27      62.92       0.02
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    1k      1k      1000k       0.06s     16.28      62.89       0.02
+
+[    rdm] multi_ep ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_multi_ep -e rdm -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_multi_ep -e rdm -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Creating 3 EPs
+    Send RMA info to all 3 remote EPs
+    Wait for all messages from peer
+    PASSED multi ep sends
+    Wait for all writes from peer
+    PASSED multi ep writes
+    Testing closing and re-registering all MRs and retesting
+    Send RMA info to all 3 remote EPs
+    Wait for all messages from peer
+    PASSED multi ep sends
+    Wait for all writes from peer
+    PASSED multi ep writes
+    Creating 3 EPs
+    Send RMA info to all 3 remote EPs
+    Wait for all messages from peer
+    PASSED multi ep sends
+    Wait for all writes from peer
+    PASSED multi ep writes
+    Testing closing and re-registering all MRs and retesting
+    Send RMA info to all 3 remote EPs
+    Wait for all messages from peer
+    PASSED multi ep sends
+    Wait for all writes from peer
+    PASSED multi ep writes
+
+[ tagged] rdm_tagged_pingpong ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_tagged_pingpong -v -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_tagged_pingpong -v -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     1.2m        0.78s      1.64      39.10       0.03
+    256     10k     4.8m        0.74s      6.88      37.20       0.03
+    1k      10k     19m         0.71s     28.67      35.72       0.03
+    4k      10k     78m         0.85s     96.41      42.49       0.02
+    64k     1k      125m        0.71s    184.57     355.07       0.00
+    1m      100     200m        1.11s    189.54    5532.25       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     1.2m        0.78s      1.64      39.10       0.03
+    256     10k     4.8m        0.74s      6.88      37.20       0.03
+    1k      10k     19m         0.71s     28.67      35.72       0.03
+    4k      10k     78m         0.85s     96.41      42.48       0.02
+    64k     1k      125m        0.71s    184.61     354.99       0.00
+    1m      100     200m        1.11s    189.73    5526.77       0.00
+
+[ tagged] rdm_tagged_bw ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_tagged_bw -v -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_tagged_bw -v -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      20k     1.2m        0.25s      5.22      12.26       0.08
+    256     20k     4.8m        0.23s     21.89      11.69       0.09
+    1k      20k     19m         0.24s     86.27      11.87       0.08
+    4k      20k     78m         0.45s    182.77      22.41       0.04
+    64k     2k      125m        0.61s    213.94     306.33       0.00
+    1m      200     200m        1.59s    131.61    7967.00       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      20k     1.2m        0.25s      5.22      12.26       0.08
+    256     20k     4.8m        0.23s     21.92      11.68       0.09
+    1k      20k     19m         0.24s     86.31      11.86       0.08
+    4k      20k     78m         0.45s    182.73      22.42       0.04
+    64k     2k      125m        0.61s    213.56     306.87       0.00
+    1m      200     200m        1.60s    130.73    8020.63       0.00
+
+[ tagged] rdm_tagged_peek ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_tagged_peek -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_tagged_peek -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Peek for a bad msg
+    Peek w/ claim for a bad msg
+    Peek msg 1
+    Receive msg 1
+    Peek w/ claim msg 2
+    Receive claimed msg 2
+    Peek & discard msg 3
+    Checking to see if msg 3 was discarded
+    Peek w/ claim msg 4
+    Claim and discard msg 4
+    Receive msg 5
+    Receive msg 6
+    Receive msg 10
+    Receive msg 9
+    Receive msg 8
+    Receive msg 7
+    Sending 10 tagged messages
+    Waiting for messages to complete
+
+[ tagged] recv_cancel ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_recv_cancel -e rdm -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_recv_cancel -e rdm -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    GOOD: Completed Recv Cancel Test
+
+[    rma] rma_bw (write) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_bw -v -p 'udp;ofi_suet' -o write -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_bw -v -p 'udp;ofi_suet' -o write 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      20k     1.2m        0.30s      4.31      14.84       0.07
+    256     20k     4.8m        0.31s     16.69      15.34       0.07
+    1k      20k     19m         0.35s     59.29      17.27       0.06
+    4k      20k     78m         0.86s     95.72      42.79       0.02
+    64k     2k      125m        1.06s    123.66     529.98       0.00
+    1m      200     200m        1.80s    116.56    8996.39       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      20k     1.2m        0.30s      4.31      14.84       0.07
+    256     20k     4.8m        0.31s     16.69      15.34       0.07
+    1k      20k     19m         0.35s     59.30      17.27       0.06
+    4k      20k     78m         0.86s     95.72      42.79       0.02
+    64k     2k      125m        1.06s    123.66     529.99       0.00
+    1m      200     200m        1.80s    116.56    8996.17       0.00
+
+[    rma] rma_bw (writedata) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_bw -v -p 'udp;ofi_suet' -o writedata -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_bw -v -p 'udp;ofi_suet' -o writedata 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      20k     1.2m        0.18s      7.30       8.77       0.11
+    256     20k     4.8m        0.18s     28.51       8.98       0.11
+    1k      20k     19m         0.22s     91.21      11.23       0.09
+    4k      20k     78m         0.56s    145.73      28.11       0.04
+    64k     2k      125m        0.76s    171.95     381.12       0.00
+    1m      200     200m        2.16s     97.09   10800.43       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      20k     1.2m        0.18s      7.29       8.77       0.11
+    256     20k     4.8m        0.18s     28.51       8.98       0.11
+    1k      20k     19m         0.22s     91.20      11.23       0.09
+    4k      20k     78m         0.56s    145.71      28.11       0.04
+    64k     2k      125m        0.76s    171.85     381.35       0.00
+    1m      200     200m        2.16s     97.19   10789.00       0.00
+
+[    rma] rma_pingpong (write) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_pingpong -p 'udp;ofi_suet' -o write -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_pingpong -p 'udp;ofi_suet' -o write 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     1.2m        0.97s      1.32      48.32       0.02
+    256     10k     4.8m        0.74s      6.91      37.03       0.03
+    1k      10k     19m         0.72s     28.31      36.17       0.03
+    4k      10k     78m         0.86s     94.85      43.18       0.02
+    64k     1k      125m        0.41s    319.97     204.82       0.00
+    1m      100     200m        0.52s    400.02    2621.30       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     1.2m        0.97s      1.32      48.32       0.02
+    256     10k     4.8m        0.74s      6.91      37.03       0.03
+    1k      10k     19m         0.72s     28.31      36.17       0.03
+    4k      10k     78m         0.86s     94.85      43.18       0.02
+    64k     1k      125m        0.41s    319.97     204.82       0.00
+    1m      100     200m        0.52s    400.13    2620.61       0.00
+
+[    rma] rma_event ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_rma_event -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_rma_event -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    RMA write to server
+    Received a completion event for RMA write
+    Data check OK
+    Received data from client: Hello from Client!
+
+[    rma] rma_tx_completion ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_tx_completion -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_tx_completion -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    64      10k     625k        0.00s    374.71       0.17       5.85
+    256     10k     2.4m        0.00s   2776.57       0.09      10.85
+    1k      10k     9.7m        0.00s  11277.53       0.09      11.01
+    4k      10k     39m         0.80s     51.00      80.31       0.01
+    64k     1k      62m         0.25s    264.15     248.10       0.00
+    1m      100     100m        0.25s    415.84    2521.58       0.00
+
+[ atomic] rdm_atomic (all ops, DC) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_atomic -v -o all -I 1000 -U -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_atomic -v -o all -I 1000 -U -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Provider doesn't support FI_MIN atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_INT128
+    Provider doesn't support FI_MIN atomic operation on FI_UINT128
+    Provider doesn't support FI_MAX atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_INT128
+    Provider doesn't support FI_MAX atomic operation on FI_UINT128
+    name                                              bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    FI_INT8_FI_MIN_lat                                1       1k      1000        0.22s      0.00     217.83       0.00
+    FI_UINT8_FI_MIN_lat                               1       1k      1000        0.24s      0.00     237.21       0.00
+    FI_INT16_FI_MIN_lat                               2       1k      1.9k        0.24s      0.01     238.23       0.00
+    FI_UINT16_FI_MIN_lat                              2       1k      1.9k        0.25s      0.01     246.91       0.00
+    FI_INT32_FI_MIN_lat                               4       1k      3.9k        0.20s      0.02     198.82       0.01
+    FI_UINT32_FI_MIN_lat                              4       1k      3.9k        0.25s      0.02     245.07       0.00
+    FI_INT64_FI_MIN_lat                               8       1k      7.8k        0.26s      0.03     255.51       0.00
+    FI_UINT64_FI_MIN_lat                              8       1k      7.8k        0.24s      0.03     237.63       0.00
+    FI_FLOAT_FI_MIN_lat                               4       1k      3.9k        0.23s      0.02     234.61       0.00
+    FI_DOUBLE_FI_MIN_lat                              8       1k      7.8k        0.24s      0.03     238.00       0.00
+    FI_LONG_DOUBLE_FI_MIN_lat                         8       1k      7.8k        0.25s      0.03     253.21       0.00
+    FI_INT8_FI_MAX_lat                                1       1k      1000        0.25s      0.00     254.24       0.00
+    FI_UINT8_FI_MAX_lat                               1       1k      1000        0.15s      0.01     154.02       0.01
+    FI_INT16_FI_MAX_lat                               2       1k      1.9k        0.24s      0.01     240.18       0.00
+    FI_UINT16_FI_MAX_lat                              2       1k      1.9k        0.23s      0.01     232.35       0.00
+    FI_INT32_FI_MAX_lat                               4       1k      3.9k        0.24s      0.02     237.45       0.00
+    FI_UINT32_FI_MAX_lat                              4       1k      3.9k        0.24s      0.02     243.41       0.00
+    FI_INT64_FI_MAX_lat                               8       1k      7.8k        0.22s      0.04     221.63       0.00
+    FI_UINT64_FI_MAX_lat                              8       1k      7.8k        0.24s      0.03     238.62       0.00
+    FI_FLOAT_FI_MAX_lat                               4       1k      3.9k        0.25s      0.02     248.71       0.00
+    FI_DOUBLE_FI_MAX_lat                              8       1k      7.8k        0.19s      0.04     193.34       0.01
+    FI_LONG_DOUBLE_FI_MAX_lat                         8       1k      7.8k        0.21s      0.04     209.63       0.00
+    FI_INT8_FI_SUM_lat                                1       1k      1000        0.23s      0.00     228.43       0.00
+    FI_UINT8_FI_SUM_lat                               1       1k      1000        0.11s      0.01     112.61       0.01
+    FI_INT16_FI_SUM_lat                               2       1k      1.9k        0.25s      0.01     253.11       0.00
+    FI_UINT16_FI_SUM_lat                              2       1k      1.9k        0.22s      0.01     216.78       0.00
+    FI_INT32_FI_SUM_lat                               4       1k      3.9k        0.20s      0.02     198.52       0.01
+    FI_UINT32_FI_SUM_lat                              4       1k      3.9k        0.22s      0.02     223.79       0.00
+    FI_INT64_FI_SUM_lat                               8       1k      7.8k        0.25s      0.03     254.21       0.00
+    FI_UINT64_FI_SUM_lat                              8       1k      7.8k        0.25s      0.03     253.94       0.00
+    FI_FLOAT_FI_SUM_lat                               4       1k      3.9k        0.25s      0.02     249.52       0.00
+    FI_DOUBLE_FI_SUM_lat                              8       1k      7.8k        0.24s      0.03     237.51       0.00
+    FI_FLOAT_COMPLEX_FI_SUM_lat                       8       1k      7.8k        0.23s      0.03     233.21       0.00
+    FI_DOUBLE_COMPLEX_FI_SUM_lat                      16      1k      15k         0.24s      0.07     243.34       0.00
+    FI_LONG_DOUBLE_FI_SUM_lat       Provider doesn't support FI_SUM atomic operation on FI_INT128
+    Provider doesn't support FI_SUM atomic operation on FI_UINT128
+    Provider doesn't support FI_PROD atomic operation on FI_INT128
+    Provider doesn't support FI_PROD atomic operation on FI_UINT128
+    Provider doesn't support FI_LOR atomic operation on FI_INT128
+    Provider doesn't support FI_LOR atomic operation on FI_UINT128
+                      8       1k      7.8k        0.24s      0.03     244.57       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_SUM_lat                 16      1k      15k         0.22s      0.07     223.77       0.00
+    FI_INT8_FI_PROD_lat                               1       1k      1000        0.24s      0.00     236.34       0.00
+    FI_UINT8_FI_PROD_lat                              1       1k      1000        0.25s      0.00     248.44       0.00
+    FI_INT16_FI_PROD_lat                              2       1k      1.9k        0.18s      0.01     181.11       0.01
+    FI_UINT16_FI_PROD_lat                             2       1k      1.9k        0.07s      0.03      70.93       0.01
+    FI_INT32_FI_PROD_lat                              4       1k      3.9k        0.09s      0.05      88.87       0.01
+    FI_UINT32_FI_PROD_lat                             4       1k      3.9k        0.19s      0.02     187.15       0.01
+    FI_INT64_FI_PROD_lat                              8       1k      7.8k        0.24s      0.03     243.64       0.00
+    FI_UINT64_FI_PROD_lat                             8       1k      7.8k        0.23s      0.03     230.86       0.00
+    FI_FLOAT_FI_PROD_lat                              4       1k      3.9k        0.23s      0.02     226.28       0.00
+    FI_DOUBLE_FI_PROD_lat                             8       1k      7.8k        0.14s      0.06     136.15       0.01
+    FI_FLOAT_COMPLEX_FI_PROD_lat                      8       1k      7.8k        0.23s      0.03     232.98       0.00
+    FI_DOUBLE_COMPLEX_FI_PROD_lat                     16      1k      15k         0.22s      0.07     221.26       0.00
+    FI_LONG_DOUBLE_FI_PROD_lat                        8       1k      7.8k        0.24s      0.03     238.97       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_PROD_lat                16      1k      15k         0.24s      0.07     243.87       0.00
+    FI_INT8_FI_LOR_lat                                1       1k      1000        0.24s      0.00     238.00       0.00
+    FI_UINT8_FI_LOR_lat                               1       1k      1000        0.25s      0.00     249.69       0.00
+    FI_INT16_FI_LOR_lat                               2       1k      1.9k        0.26s      0.01     255.48       0.00
+    FI_UINT16_FI_LOR_lat                              2       1k      1.9k        0.25s      0.01     247.26       0.00
+    FI_INT32_FI_LOR_lat                               4       1k      3.9k        0.23s      0.02     228.32       0.00
+    FI_UINT32_FI_LOR_lat                              4       1k      3.9k        0.24s      0.02     235.14       0.00
+    FI_INT64_FI_LOR_lat                               8       1k      7.8k        0.25s      0.03     253.69       0.00
+    FI_UINT64_FI_LOR_lat                              8       1k      7.8k        0.24s      0.03     242.11       0.00
+    FI_FLOAT_FI_LOR_lat                               4       1k      3.9k        0.24s      0.02     238.58       0.00
+    FI_DOUBLE_FI_LOR_lat                              8       1k      7.8k        0.25s      0.03     251.12       0.00
+    FI_FLOAT_COMPLEX_FI_LOR_lat                       8       1k      7.8k        0.24s      0.03     243.04       0.00
+    FI_DOUBLE_COMPLEX_FI_LOR_lat                      16      1k      15k         0.24s      0.07     240.72       0.00
+    FI_LONG_DOUBLE_FI_LOR_lat                         8       1k      7.8k        0.19s      0.04     185.61       0.01
+    FI_LONG_DOUBLE_COMPLEX_FI_LOR_lat                 16      1k      15k         0.25s      0.06     248.65       0.00
+    FI_INT8_FI_LAND_lat                               1       1k      1000        0.24s      0.00     240.49       0.00
+    FI_UINT8_FI_LAND_lat                              1       1k      1000        0.24s      0.00     235.56       0.00
+    FI_INT16_FI_LAND_lat                              2       1k      1.9k        0.22s      0.01     222.74       0.00
+    FI_UINT16_FI_LAND_lat                             2       1k      1.9k        0.16s      0.01     162.11       0.01
+    FI_INT32_FI_LAND_lat                              4       1k      3.9k        0.20s      0.02     204.73       0.00
+    FI_UINT32_FI_LAND_lat                             4       1k      3.Provider doesn't support FI_LAND atomic operation on FI_INT128
+    Provider doesn't support FI_LAND atomic operation on FI_UINT128
+    Provider doesn't support FI_BOR atomic operation on FI_FLOAT
+    Provider doesn't support FI_BOR atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BOR atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BOR atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_INT128
+    Provider doesn't support FI_BOR atomic operation on FI_UINT128
+    Provider doesn't support FI_BAND atomic operation on FI_FLOAT
+    Provider doesn't support FI_BAND atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BAND atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BAND atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_INT128
+    Provider doesn't support FI_BAND atomic operation on FI_UINT128
+    9k        0.23s      0.02     229.25       0.00
+    FI_INT64_FI_LAND_lat                              8       1k      7.8k        0.25s      0.03     250.42       0.00
+    FI_UINT64_FI_LAND_lat                             8       1k      7.8k        0.24s      0.03     235.06       0.00
+    FI_FLOAT_FI_LAND_lat                              4       1k      3.9k        0.24s      0.02     243.44       0.00
+    FI_DOUBLE_FI_LAND_lat                             8       1k      7.8k        0.26s      0.03     255.58       0.00
+    FI_FLOAT_COMPLEX_FI_LAND_lat                      8       1k      7.8k        0.24s      0.03     240.84       0.00
+    FI_DOUBLE_COMPLEX_FI_LAND_lat                     16      1k      15k         0.23s      0.07     231.82       0.00
+    FI_LONG_DOUBLE_FI_LAND_lat                        8       1k      7.8k        0.24s      0.03     243.27       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_LAND_lat                16      1k      15k         0.23s      0.07     227.05       0.00
+    FI_INT8_FI_BOR_lat                                1       1k      1000        0.25s      0.00     250.38       0.00
+    FI_UINT8_FI_BOR_lat                               1       1k      1000        0.25s      0.00     246.58       0.00
+    FI_INT16_FI_BOR_lat                               2       1k      1.9k        0.24s      0.01     236.71       0.00
+    FI_UINT16_FI_BOR_lat                              2       1k      1.9k        0.24s      0.01     243.51       0.00
+    FI_INT32_FI_BOR_lat                               4       1k      3.9k        0.23s      0.02     233.38       0.00
+    FI_UINT32_FI_BOR_lat                              4       1k      3.9k        0.23s      0.02     226.85       0.00
+    FI_INT64_FI_BOR_lat                               8       1k      7.8k        0.21s      0.04     206.22       0.00
+    FI_UINT64_FI_BOR_lat                              8       1k      7.8k        0.24s      0.03     235.84       0.00
+    FI_INT8_FI_BAND_lat                               1       1k      1000        0.24s      0.00     239.33       0.00
+    FI_UINT8_FI_BAND_lat                              1       1k      1000        0.24s      0.00     237.59       0.00
+    FI_INT16_FI_BAND_lat                              2       1k      1.9k        0.24s      0.01     241.92       0.00
+    FI_UINT16_FI_BAND_lat                             2       1k      1.9k        0.14s      0.01     135.97       0.01
+    FI_INT32_FI_BAND_lat                              4       1k      3.9k        0.25s      0.02     252.64       0.00
+    FI_UINT32_FI_BAND_lat                             4       1k      3.9k        0.25s      0.02     254.33       0.00
+    FI_INT64_FI_BAND_lat                              8       1k      7.8k        0.23s      0.04     225.62       0.00
+    FI_UINT64_FI_BAND_lat                             8       1k      7.8k        0.19s      0.04     189.79       0.01
+    FI_INT8_FI_LXOR_lat                               1       1k      1000        0.24s      0.00     242.46       0.00
+    FI_UINT8_FI_LXOR_lat                              1       1k      1000        0.26s      0.00     255.27       0.00
+    FI_INT16_FI_LXOR_lat                              2       1k      1.9k        0.24s      0.01     237.68       0.00
+    FI_UINT16_FI_LXOR_lat                             2       1k      1.9k        0.24s      0.01     236.71       0.00
+    FI_INT32_FI_LXOR_lat                              4       1k      3.9k        0.25s      0.02     247.92       0.00
+    FI_UINT32_FI_LXOR_lat                             4       1k      3.9k        0.23s      0.02     234.06       0.00
+    FI_INT64_FI_LXOR_lat                              8       1k      7.8k        0.24s      0.03     236.07       0.00
+    FI_UINT64_FI_LXOR_lat                             8       1k      7.8k        0.23s      0.04     226.13       0.00
+    FI_FLOAT_FI_LXOR_lat                              4       1k      3.9k        0.24s      0.02     242.14       0.00
+    FI_DOUBLE_FI_LXOR_lat                             8       1k      7.8k        0.24s      0.03     235.89       0.00
+    FI_FLOAT_COMPLEX_FI_LXOR_lat                      8       1k      7.8k        0.24s      0.03     235.70Provider doesn't support FI_LXOR atomic operation on FI_INT128
+    Provider doesn't support FI_LXOR atomic operation on FI_UINT128
+    Provider doesn't support FI_BXOR atomic operation on FI_FLOAT
+    Provider doesn't support FI_BXOR atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BXOR atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BXOR atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_INT128
+    Provider doesn't support FI_BXOR atomic operation on FI_UINT128
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT8
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT8
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT16
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT16
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT32
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT32
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT64
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT64
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_FLOAT
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_DOUBLE
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT128
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT128
+    Provider doesn't support FI_ATOMIC_WRITE atomic operation on FI_INT128
+    Provider doesn't support FI_ATOMIC_WRITE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT128
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT8
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT8
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT16
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT16
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT32
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT32
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT64
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT64
+    Provider doesn't support FI_MSWAP atomic operation on FI_FLOAT
+    Provider doesn't support FI_MSWAP atomic operation on FI_DOUBLE
+    Provider doesn't support FI_MSWAP atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_MSWAP atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT128
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT128
+           0.00
+    FI_DOUBLE_COMPLEX_FI_LXOR_lat                     16      1k      15k         0.23s      0.07     232.42       0.00
+    FI_LONG_DOUBLE_FI_LXOR_lat                        8       1k      7.8k        0.25s      0.03     250.03       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_LXOR_lat                16      1k      15k         0.25s      0.06     250.85       0.00
+    FI_INT8_FI_BXOR_lat                               1       1k      1000        0.25s      0.00     254.21       0.00
+    FI_UINT8_FI_BXOR_lat                              1       1k      1000        0.23s      0.00     228.60       0.00
+    FI_INT16_FI_BXOR_lat                              2       1k      1.9k        0.21s      0.01     207.97       0.00
+    FI_UINT16_FI_BXOR_lat                             2       1k      1.9k        0.14s      0.01     139.71       0.01
+    FI_INT32_FI_BXOR_lat                              4       1k      3.9k        0.23s      0.02     227.98       0.00
+    FI_UINT32_FI_BXOR_lat                             4       1k      3.9k        0.24s      0.02     241.29       0.00
+    FI_INT64_FI_BXOR_lat                              8       1k      7.8k        0.23s      0.04     228.12       0.00
+    FI_UINT64_FI_BXOR_lat                             8       1k      7.8k        0.23s      0.04     227.81       0.00
+    FI_INT8_FI_ATOMIC_WRITE_lat                       1       1k      1000        0.24s      0.00     241.78       0.00
+    FI_UINT8_FI_ATOMIC_WRITE_lat                      1       1k      1000        0.23s      0.00     234.15       0.00
+    FI_INT16_FI_ATOMIC_WRITE_lat                      2       1k      1.9k        0.24s      0.01     238.18       0.00
+    FI_UINT16_FI_ATOMIC_WRITE_lat                     2       1k      1.9k        0.22s      0.01     223.60       0.00
+    FI_INT32_FI_ATOMIC_WRITE_lat                      4       1k      3.9k        0.24s      0.02     237.37       0.00
+    FI_UINT32_FI_ATOMIC_WRITE_lat                     4       1k      3.9k        0.23s      0.02     233.20       0.00
+    FI_INT64_FI_ATOMIC_WRITE_lat                      8       1k      7.8k        0.24s      0.03     243.21       0.00
+    FI_UINT64_FI_ATOMIC_WRITE_lat                     8       1k      7.8k        0.23s      0.03     232.50       0.00
+    FI_FLOAT_FI_ATOMIC_WRITE_lat                      4       1k      3.9k        0.23s      0.02     234.63       0.00
+    FI_DOUBLE_FI_ATOMIC_WRITE_lat                     8       1k      7.8k        0.25s      0.03     245.64       0.00
+    FI_FLOAT_COMPLEX_FI_ATOMIC_WRITE_lat              8       1k      7.8k        0.25s      0.03     249.59       0.00
+    FI_DOUBLE_COMPLEX_FI_ATOMIC_WRITE_lat             16      1k      15k         0.24s      0.07     237.41       0.00
+    FI_LONG_DOUBLE_FI_ATOMIC_WRITE_lat                8       1k      7.8k        0.23s      0.03     234.82       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_ATOMIC_WRITE_lat        16      1k      15k         0.25s      0.06     247.24       0.00
+    Provider doesn't support FI_MIN atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_INT128
+    Provider doesn't support FI_MIN atomic operation on FI_UINT128
+    Provider doesn't support FI_MAX atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_INT128
+    Provider doesn't support FI_MAX atomic operation on FI_UINT128
+    name                                              bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    FI_INT8_FI_MIN_lat                                1       1k      1000        0.22s      0.00     217.84       0.00
+    FI_UINT8_FI_MIN_lat                               1       1k      1000        0.24s      0.00     237.21       0.00
+    FI_INT16_FI_MIN_lat                               2       1k      1.9k        0.24s      0.01     238.24       0.00
+    FI_UINT16_FI_MIN_lat                              2       1k      1.9k        0.25s      0.01     246.90       0.00
+    FI_INT32_FI_MIN_lat                               4       1k      3.9k        0.20s      0.02     198.79       0.01
+    FI_UINT32_FI_MIN_lat                              4       1k      3.9k        0.25s      0.02     245.06       0.00
+    FI_INT64_FI_MIN_lat                               8       1k      7.8k        0.26s      0.03     255.54       0.00
+    FI_UINT64_FI_MIN_lat                              8       1k      7.8k        0.24s      0.03     237.63       0.00
+    FI_FLOAT_FI_MIN_lat                               4       1k      3.9k        0.23s      0.02     234.62       0.00
+    FI_DOUBLE_FI_MIN_lat                              8       1k      7.8k        0.24s      0.03     238.00       0.00
+    FI_LONG_DOUBLE_FI_MIN_lat                         8       1k      7.8k        0.25s      0.03     253.21       0.00
+    FI_INT8_FI_MAX_lat                                1       1k      1000        0.25s      0.00     254.21       0.00
+    FI_UINT8_FI_MAX_lat                               1       1k      1000        0.15s      0.01     154.07       0.01
+    FI_INT16_FI_MAX_lat                               2       1k      1.9k        0.24s      0.01     240.18       0.00
+    FI_UINT16_FI_MAX_lat                              2       1k      1.9k        0.23s      0.01     232.35       0.00
+    FI_INT32_FI_MAX_lat                               4       1k      3.9k        0.24s      0.02     237.45       0.00
+    FI_UINT32_FI_MAX_lat                              4       1k      3.9k        0.24s      0.02     243.37       0.00
+    FI_INT64_FI_MAX_lat                               8       1k      7.8k        0.22s      0.04     221.66       0.00
+    FI_UINT64_FI_MAX_lat                              8       1k      7.8k        0.24s      0.03     238.63       0.00
+    FI_FLOAT_FI_MAX_lat                               4       1k      3.9k        0.25s      0.02     248.72       0.00
+    FI_DOUBLE_FI_MAX_lat                              8       1k      7.8k        0.19s      0.04     193.30       0.01
+    FI_LONG_DOUBLE_FI_MAX_lat                         8       1k      7.8k        0.21s      0.04     209.67       0.00
+    FI_INT8_FI_SUM_lat                                1       1k      1000        0.23s      0.00     228.43       0.00
+    FI_UINT8_FI_SUM_lat                               1       1k      1000        0.11s      0.01     112.57       0.01
+    FI_INT16_FI_SUM_lat                               2       1k      1.9k        0.25s      0.01     253.15       0.00
+    FI_UINT16_FI_SUM_lat                              2       1k      1.9k        0.22s      0.01     216.78       0.00
+    FI_INT32_FI_SUM_lat                               4       1k      3.9k        0.20s      0.02     198.52       0.01
+    FI_UINT32_FI_SUM_lat                              4       1k      3.9k        0.22s      0.02     223.79       0.00
+    FI_INT64_FI_SUM_lat                               8       1k      7.8k        0.25s      0.03     254.21       0.00
+    FI_UINT64_FI_SUM_lat                              8       1k      7.8k        0.25s      0.03     253.95       0.00
+    FI_FLOAT_FI_SUM_lat                               4       1k      3.9k        0.25s      0.02     249.52       0.00
+    FI_DOUBLE_FI_SUM_lat                              8       1k      7.8k        0.24s      0.03     237.51       0.00
+    FI_FLOAT_COMPLEX_FI_SUM_lat                       8       1k      7.8k        0.23s      0.03     233.21       0.00
+    FI_DOUBLE_COMPLEX_FI_SUM_lat                      16      1k      15k         0.24s      0.07     243.35       0.00
+    FI_LONG_DOUBLE_FI_SUM_lat       Provider doesn't support FI_SUM atomic operation on FI_INT128
+    Provider doesn't support FI_SUM atomic operation on FI_UINT128
+    Provider doesn't support FI_PROD atomic operation on FI_INT128
+    Provider doesn't support FI_PROD atomic operation on FI_UINT128
+    Provider doesn't support FI_LOR atomic operation on FI_INT128
+    Provider doesn't support FI_LOR atomic operation on FI_UINT128
+                      8       1k      7.8k        0.24s      0.03     244.56       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_SUM_lat                 16      1k      15k         0.22s      0.07     223.73       0.00
+    FI_INT8_FI_PROD_lat                               1       1k      1000        0.24s      0.00     236.34       0.00
+    FI_UINT8_FI_PROD_lat                              1       1k      1000        0.25s      0.00     248.45       0.00
+    FI_INT16_FI_PROD_lat                              2       1k      1.9k        0.18s      0.01     181.06       0.01
+    FI_UINT16_FI_PROD_lat                             2       1k      1.9k        0.07s      0.03      70.93       0.01
+    FI_INT32_FI_PROD_lat                              4       1k      3.9k        0.09s      0.05      88.88       0.01
+    FI_UINT32_FI_PROD_lat                             4       1k      3.9k        0.19s      0.02     187.16       0.01
+    FI_INT64_FI_PROD_lat                              8       1k      7.8k        0.24s      0.03     243.61       0.00
+    FI_UINT64_FI_PROD_lat                             8       1k      7.8k        0.23s      0.03     230.89       0.00
+    FI_FLOAT_FI_PROD_lat                              4       1k      3.9k        0.23s      0.02     226.28       0.00
+    FI_DOUBLE_FI_PROD_lat                             8       1k      7.8k        0.14s      0.06     136.15       0.01
+    FI_FLOAT_COMPLEX_FI_PROD_lat                      8       1k      7.8k        0.23s      0.03     232.98       0.00
+    FI_DOUBLE_COMPLEX_FI_PROD_lat                     16      1k      15k         0.22s      0.07     221.26       0.00
+    FI_LONG_DOUBLE_FI_PROD_lat                        8       1k      7.8k        0.24s      0.03     238.97       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_PROD_lat                16      1k      15k         0.24s      0.07     243.88       0.00
+    FI_INT8_FI_LOR_lat                                1       1k      1000        0.24s      0.00     237.96       0.00
+    FI_UINT8_FI_LOR_lat                               1       1k      1000        0.25s      0.00     249.73       0.00
+    FI_INT16_FI_LOR_lat                               2       1k      1.9k        0.26s      0.01     255.48       0.00
+    FI_UINT16_FI_LOR_lat                              2       1k      1.9k        0.25s      0.01     247.26       0.00
+    FI_INT32_FI_LOR_lat                               4       1k      3.9k        0.23s      0.02     228.32       0.00
+    FI_UINT32_FI_LOR_lat                              4       1k      3.9k        0.24s      0.02     235.15       0.00
+    FI_INT64_FI_LOR_lat                               8       1k      7.8k        0.25s      0.03     253.70       0.00
+    FI_UINT64_FI_LOR_lat                              8       1k      7.8k        0.24s      0.03     242.12       0.00
+    FI_FLOAT_FI_LOR_lat                               4       1k      3.9k        0.24s      0.02     238.58       0.00
+    FI_DOUBLE_FI_LOR_lat                              8       1k      7.8k        0.25s      0.03     251.12       0.00
+    FI_FLOAT_COMPLEX_FI_LOR_lat                       8       1k      7.8k        0.24s      0.03     243.04       0.00
+    FI_DOUBLE_COMPLEX_FI_LOR_lat                      16      1k      15k         0.24s      0.07     240.68       0.00
+    FI_LONG_DOUBLE_FI_LOR_lat                         8       1k      7.8k        0.19s      0.04     185.64       0.01
+    FI_LONG_DOUBLE_COMPLEX_FI_LOR_lat                 16      1k      15k         0.25s      0.06     248.66       0.00
+    FI_INT8_FI_LAND_lat                               1       1k      1000        0.24s      0.00     240.46       0.00
+    FI_UINT8_FI_LAND_lat                              1       1k      1000        0.24s      0.00     235.59       0.00
+    FI_INT16_FI_LAND_lat                              2       1k      1.9k        0.22s      0.01     222.70       0.00
+    FI_UINT16_FI_LAND_lat                             2       1k      1.9k        0.16s      0.01     162.11       0.01
+    FI_INT32_FI_LAND_lat                              4       1k      3.9k        0.20s      0.02     204.77       0.00
+    FI_UINT32_FI_LAND_lat                             4       1k      3.Provider doesn't support FI_LAND atomic operation on FI_INT128
+    Provider doesn't support FI_LAND atomic operation on FI_UINT128
+    Provider doesn't support FI_BOR atomic operation on FI_FLOAT
+    Provider doesn't support FI_BOR atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BOR atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BOR atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_INT128
+    Provider doesn't support FI_BOR atomic operation on FI_UINT128
+    Provider doesn't support FI_BAND atomic operation on FI_FLOAT
+    Provider doesn't support FI_BAND atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BAND atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BAND atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_INT128
+    Provider doesn't support FI_BAND atomic operation on FI_UINT128
+    9k        0.23s      0.02     229.25       0.00
+    FI_INT64_FI_LAND_lat                              8       1k      7.8k        0.25s      0.03     250.42       0.00
+    FI_UINT64_FI_LAND_lat                             8       1k      7.8k        0.24s      0.03     235.03       0.00
+    FI_FLOAT_FI_LAND_lat                              4       1k      3.9k        0.24s      0.02     243.48       0.00
+    FI_DOUBLE_FI_LAND_lat                             8       1k      7.8k        0.26s      0.03     255.59       0.00
+    FI_FLOAT_COMPLEX_FI_LAND_lat                      8       1k      7.8k        0.24s      0.03     240.84       0.00
+    FI_DOUBLE_COMPLEX_FI_LAND_lat                     16      1k      15k         0.23s      0.07     231.82       0.00
+    FI_LONG_DOUBLE_FI_LAND_lat                        8       1k      7.8k        0.24s      0.03     243.32       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_LAND_lat                16      1k      15k         0.23s      0.07     227.05       0.00
+    FI_INT8_FI_BOR_lat                                1       1k      1000        0.25s      0.00     250.38       0.00
+    FI_UINT8_FI_BOR_lat                               1       1k      1000        0.25s      0.00     246.54       0.00
+    FI_INT16_FI_BOR_lat                               2       1k      1.9k        0.24s      0.01     236.76       0.00
+    FI_UINT16_FI_BOR_lat                              2       1k      1.9k        0.24s      0.01     243.52       0.00
+    FI_INT32_FI_BOR_lat                               4       1k      3.9k        0.23s      0.02     233.35       0.00
+    FI_UINT32_FI_BOR_lat                              4       1k      3.9k        0.23s      0.02     226.88       0.00
+    FI_INT64_FI_BOR_lat                               8       1k      7.8k        0.21s      0.04     206.23       0.00
+    FI_UINT64_FI_BOR_lat                              8       1k      7.8k        0.24s      0.03     235.84       0.00
+    FI_INT8_FI_BAND_lat                               1       1k      1000        0.24s      0.00     239.34       0.00
+    FI_UINT8_FI_BAND_lat                              1       1k      1000        0.24s      0.00     237.60       0.00
+    FI_INT16_FI_BAND_lat                              2       1k      1.9k        0.24s      0.01     241.93       0.00
+    FI_UINT16_FI_BAND_lat                             2       1k      1.9k        0.14s      0.01     135.97       0.01
+    FI_INT32_FI_BAND_lat                              4       1k      3.9k        0.25s      0.02     252.64       0.00
+    FI_UINT32_FI_BAND_lat                             4       1k      3.9k        0.25s      0.02     254.33       0.00
+    FI_INT64_FI_BAND_lat                              8       1k      7.8k        0.23s      0.04     225.63       0.00
+    FI_UINT64_FI_BAND_lat                             8       1k      7.8k        0.19s      0.04     189.79       0.01
+    FI_INT8_FI_LXOR_lat                               1       1k      1000        0.24s      0.00     242.46       0.00
+    FI_UINT8_FI_LXOR_lat                              1       1k      1000        0.26s      0.00     255.28       0.00
+    FI_INT16_FI_LXOR_lat                              2       1k      1.9k        0.24s      0.01     237.68       0.00
+    FI_UINT16_FI_LXOR_lat                             2       1k      1.9k        0.24s      0.01     236.67       0.00
+    FI_INT32_FI_LXOR_lat                              4       1k      3.9k        0.25s      0.02     247.92       0.00
+    FI_UINT32_FI_LXOR_lat                             4       1k      3.9k        0.23s      0.02     234.06       0.00
+    FI_INT64_FI_LXOR_lat                              8       1k      7.8k        0.24s      0.03     236.03       0.00
+    FI_UINT64_FI_LXOR_lat                             8       1k      7.8k        0.23s      0.04     226.13       0.00
+    FI_FLOAT_FI_LXOR_lat                              4       1k      3.9k        0.24s      0.02     242.14       0.00
+    FI_DOUBLE_FI_LXOR_lat                             8       1k      7.8k        0.24s      0.03     235.90       0.00
+    FI_FLOAT_COMPLEX_FI_LXOR_lat                      8       1k      7.8k        0.24s      0.03     235.71Provider doesn't support FI_LXOR atomic operation on FI_INT128
+    Provider doesn't support FI_LXOR atomic operation on FI_UINT128
+    Provider doesn't support FI_BXOR atomic operation on FI_FLOAT
+    Provider doesn't support FI_BXOR atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BXOR atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BXOR atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_INT128
+    Provider doesn't support FI_BXOR atomic operation on FI_UINT128
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT8
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT8
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT16
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT16
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT32
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT32
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT64
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT64
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_FLOAT
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_DOUBLE
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT128
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT128
+    Provider doesn't support FI_ATOMIC_WRITE atomic operation on FI_INT128
+    Provider doesn't support FI_ATOMIC_WRITE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT128
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT8
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT8
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT16
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT16
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT32
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT32
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT64
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT64
+    Provider doesn't support FI_MSWAP atomic operation on FI_FLOAT
+    Provider doesn't support FI_MSWAP atomic operation on FI_DOUBLE
+    Provider doesn't support FI_MSWAP atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_MSWAP atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT128
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT128
+           0.00
+    FI_DOUBLE_COMPLEX_FI_LXOR_lat                     16      1k      15k         0.23s      0.07     232.41       0.00
+    FI_LONG_DOUBLE_FI_LXOR_lat                        8       1k      7.8k        0.25s      0.03     250.02       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_LXOR_lat                16      1k      15k         0.25s      0.06     250.87       0.00
+    FI_INT8_FI_BXOR_lat                               1       1k      1000        0.25s      0.00     254.21       0.00
+    FI_UINT8_FI_BXOR_lat                              1       1k      1000        0.23s      0.00     228.57       0.00
+    FI_INT16_FI_BXOR_lat                              2       1k      1.9k        0.21s      0.01     208.00       0.00
+    FI_UINT16_FI_BXOR_lat                             2       1k      1.9k        0.14s      0.01     139.67       0.01
+    FI_INT32_FI_BXOR_lat                              4       1k      3.9k        0.23s      0.02     227.97       0.00
+    FI_UINT32_FI_BXOR_lat                             4       1k      3.9k        0.24s      0.02     241.27       0.00
+    FI_INT64_FI_BXOR_lat                              8       1k      7.8k        0.23s      0.04     228.15       0.00
+    FI_UINT64_FI_BXOR_lat                             8       1k      7.8k        0.23s      0.04     227.84       0.00
+    FI_INT8_FI_ATOMIC_WRITE_lat                       1       1k      1000        0.24s      0.00     241.76       0.00
+    FI_UINT8_FI_ATOMIC_WRITE_lat                      1       1k      1000        0.23s      0.00     234.18       0.00
+    FI_INT16_FI_ATOMIC_WRITE_lat                      2       1k      1.9k        0.24s      0.01     238.19       0.00
+    FI_UINT16_FI_ATOMIC_WRITE_lat                     2       1k      1.9k        0.22s      0.01     223.60       0.00
+    FI_INT32_FI_ATOMIC_WRITE_lat                      4       1k      3.9k        0.24s      0.02     237.36       0.00
+    FI_UINT32_FI_ATOMIC_WRITE_lat                     4       1k      3.9k        0.23s      0.02     233.22       0.00
+    FI_INT64_FI_ATOMIC_WRITE_lat                      8       1k      7.8k        0.24s      0.03     243.21       0.00
+    FI_UINT64_FI_ATOMIC_WRITE_lat                     8       1k      7.8k        0.23s      0.03     232.46       0.00
+    FI_FLOAT_FI_ATOMIC_WRITE_lat                      4       1k      3.9k        0.23s      0.02     234.63       0.00
+    FI_DOUBLE_FI_ATOMIC_WRITE_lat                     8       1k      7.8k        0.25s      0.03     245.64       0.00
+    FI_FLOAT_COMPLEX_FI_ATOMIC_WRITE_lat              8       1k      7.8k        0.25s      0.03     249.59       0.00
+    FI_DOUBLE_COMPLEX_FI_ATOMIC_WRITE_lat             16      1k      15k         0.24s      0.07     237.41       0.00
+    FI_LONG_DOUBLE_FI_ATOMIC_WRITE_lat                8       1k      7.8k        0.23s      0.03     234.82       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_ATOMIC_WRITE_lat        16      1k      15k         0.25s      0.06     247.23       0.00
+
+[ atomic] rdm_atomic (all ops) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_atomic -v -o all -I 1000 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_atomic -v -o all -I 1000 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Provider doesn't support FI_MIN atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_INT128
+    Provider doesn't support FI_MIN atomic operation on FI_UINT128
+    Provider doesn't support FI_MAX atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_INT128
+    Provider doesn't support FI_MAX atomic operation on FI_UINT128
+    name                                              bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    FI_INT8_FI_MIN_lat                                1       1k      1000        0.23s      0.00     227.34       0.00
+    FI_UINT8_FI_MIN_lat                               1       1k      1000        0.24s      0.00     237.25       0.00
+    FI_INT16_FI_MIN_lat                               2       1k      1.9k        0.25s      0.01     249.78       0.00
+    FI_UINT16_FI_MIN_lat                              2       1k      1.9k        0.25s      0.01     249.00       0.00
+    FI_INT32_FI_MIN_lat                               4       1k      3.9k        0.16s      0.03     159.44       0.01
+    FI_UINT32_FI_MIN_lat                              4       1k      3.9k        0.22s      0.02     216.84       0.00
+    FI_INT64_FI_MIN_lat                               8       1k      7.8k        0.24s      0.03     238.55       0.00
+    FI_UINT64_FI_MIN_lat                              8       1k      7.8k        0.24s      0.03     237.55       0.00
+    FI_FLOAT_FI_MIN_lat                               4       1k      3.9k        0.23s      0.02     228.63       0.00
+    FI_DOUBLE_FI_MIN_lat                              8       1k      7.8k        0.24s      0.03     242.01       0.00
+    FI_LONG_DOUBLE_FI_MIN_lat                         8       1k      7.8k        0.23s      0.04     226.44       0.00
+    FI_INT8_FI_MAX_lat                                1       1k      1000        0.23s      0.00     232.13       0.00
+    FI_UINT8_FI_MAX_lat                               1       1k      1000        0.23s      0.00     228.28       0.00
+    FI_INT16_FI_MAX_lat                               2       1k      1.9k        0.24s      0.01     236.28       0.00
+    FI_UINT16_FI_MAX_lat                              2       1k      1.9k        0.23s      0.01     230.16       0.00
+    FI_INT32_FI_MAX_lat                               4       1k      3.9k        0.24s      0.02     236.08       0.00
+    FI_UINT32_FI_MAX_lat                              4       1k      3.9k        0.20s      0.02     198.28       0.01
+    FI_INT64_FI_MAX_lat                               8       1k      7.8k        0.18s      0.04     178.66       0.01
+    FI_UINT64_FI_MAX_lat                              8       1k      7.8k        0.22s      0.04     224.86       0.00
+    FI_FLOAT_FI_MAX_lat                               4       1k      3.9k        0.22s      0.02     219.89       0.00
+    FI_DOUBLE_FI_MAX_lat                              8       1k      7.8k        0.24s      0.03     242.85       0.00
+    FI_LONG_DOUBLE_FI_MAX_lat                         8       1k      7.8k        0.25s      0.03     250.71       0.00
+    FI_INT8_FI_SUM_lat                                1       1k      1000        0.24s      0.00     237.05       0.00
+    FI_UINT8_FI_SUM_lat                               1       1k      1000        0.23s      0.00     228.22       0.00
+    FI_INT16_FI_SUM_lat                               2       1k      1.9k        0.23s      0.01     231.26       0.00
+    FI_UINT16_FI_SUM_lat                              2       1k      1.9k        0.25s      0.01     252.08       0.00
+    FI_INT32_FI_SUM_lat                               4       1k      3.9k        0.23s      0.02     230.82       0.00
+    FI_UINT32_FI_SUM_lat                              4       1k      3.9k        0.23s      0.02     231.02       0.00
+    FI_INT64_FI_SUM_lat                               8       1k      7.8k        0.21s      0.04     214.30       0.00
+    FI_UINT64_FI_SUM_lat                              8       1k      7.8k        0.24s      0.03     235.23       0.00
+    FI_FLOAT_FI_SUM_lat                               4       1k      3.9k        0.23s      0.02     232.62       0.00
+    FI_DOUBLE_FI_SUM_lat                              8       1k      7.8k        0.24s      0.03     235.77       0.00
+    FI_FLOAT_COMPLEX_FI_SUM_lat                       8       1k      7.8k        0.21s      0.04     209.05       0.00
+    FI_DOUBLE_COMPLEX_FI_SUM_lat                      16      1k      15k         0.22s      0.07     223.45       0.00
+    FI_LONG_DOUBLE_FI_SUM_lat       Provider doesn't support FI_SUM atomic operation on FI_INT128
+    Provider doesn't support FI_SUM atomic operation on FI_UINT128
+    Provider doesn't support FI_PROD atomic operation on FI_INT128
+    Provider doesn't support FI_PROD atomic operation on FI_UINT128
+    Provider doesn't support FI_LOR atomic operation on FI_INT128
+    Provider doesn't support FI_LOR atomic operation on FI_UINT128
+                      8       1k      7.8k        0.23s      0.03     229.93       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_SUM_lat                 16      1k      15k         0.24s      0.07     237.57       0.00
+    FI_INT8_FI_PROD_lat                               1       1k      1000        0.22s      0.00     216.98       0.00
+    FI_UINT8_FI_PROD_lat                              1       1k      1000        0.25s      0.00     248.72       0.00
+    FI_INT16_FI_PROD_lat                              2       1k      1.9k        0.25s      0.01     246.34       0.00
+    FI_UINT16_FI_PROD_lat                             2       1k      1.9k        0.15s      0.01     147.34       0.01
+    FI_INT32_FI_PROD_lat                              4       1k      3.9k        0.24s      0.02     240.81       0.00
+    FI_UINT32_FI_PROD_lat                             4       1k      3.9k        0.21s      0.02     213.35       0.00
+    FI_INT64_FI_PROD_lat                              8       1k      7.8k        0.24s      0.03     242.65       0.00
+    FI_UINT64_FI_PROD_lat                             8       1k      7.8k        0.25s      0.03     251.24       0.00
+    FI_FLOAT_FI_PROD_lat                              4       1k      3.9k        0.23s      0.02     227.71       0.00
+    FI_DOUBLE_FI_PROD_lat                             8       1k      7.8k        0.21s      0.04     211.48       0.00
+    FI_FLOAT_COMPLEX_FI_PROD_lat                      8       1k      7.8k        0.25s      0.03     246.99       0.00
+    FI_DOUBLE_COMPLEX_FI_PROD_lat                     16      1k      15k         0.23s      0.07     232.84       0.00
+    FI_LONG_DOUBLE_FI_PROD_lat                        8       1k      7.8k        0.23s      0.03     229.89       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_PROD_lat                16      1k      15k         0.23s      0.07     228.44       0.00
+    FI_INT8_FI_LOR_lat                                1       1k      1000        0.23s      0.00     229.72       0.00
+    FI_UINT8_FI_LOR_lat                               1       1k      1000        0.22s      0.00     217.95       0.00
+    FI_INT16_FI_LOR_lat                               2       1k      1.9k        0.23s      0.01     232.76       0.00
+    FI_UINT16_FI_LOR_lat                              2       1k      1.9k        0.24s      0.01     239.82       0.00
+    FI_INT32_FI_LOR_lat                               4       1k      3.9k        0.20s      0.02     197.39       0.01
+    FI_UINT32_FI_LOR_lat                              4       1k      3.9k        0.19s      0.02     188.29       0.01
+    FI_INT64_FI_LOR_lat                               8       1k      7.8k        0.24s      0.03     243.68       0.00
+    FI_UINT64_FI_LOR_lat                              8       1k      7.8k        0.25s      0.03     247.44       0.00
+    FI_FLOAT_FI_LOR_lat                               4       1k      3.9k        0.22s      0.02     223.23       0.00
+    FI_DOUBLE_FI_LOR_lat                              8       1k      7.8k        0.23s      0.04     227.44       0.00
+    FI_FLOAT_COMPLEX_FI_LOR_lat                       8       1k      7.8k        0.23s      0.04     226.64       0.00
+    FI_DOUBLE_COMPLEX_FI_LOR_lat                      16      1k      15k         0.23s      0.07     231.83       0.00
+    FI_LONG_DOUBLE_FI_LOR_lat                         8       1k      7.8k        0.13s      0.06     132.78       0.01
+    FI_LONG_DOUBLE_COMPLEX_FI_LOR_lat                 16      1k      15k         0.22s      0.07     217.74       0.00
+    FI_INT8_FI_LAND_lat                               1       1k      1000        0.22s      0.00     215.31       0.00
+    FI_UINT8_FI_LAND_lat                              1       1k      1000        0.22s      0.00     221.25       0.00
+    FI_INT16_FI_LAND_lat                              2       1k      1.9k        0.22s      0.01     222.83       0.00
+    FI_UINT16_FI_LAND_lat                             2       1k      1.9k        0.21s      0.01     214.70       0.00
+    FI_INT32_FI_LAND_lat                              4       1k      3.9k        0.24s      0.02     237.71       0.00
+    FI_UINT32_FI_LAND_lat                             4       1k      3.Provider doesn't support FI_LAND atomic operation on FI_INT128
+    Provider doesn't support FI_LAND atomic operation on FI_UINT128
+    Provider doesn't support FI_BOR atomic operation on FI_FLOAT
+    Provider doesn't support FI_BOR atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BOR atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BOR atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_INT128
+    Provider doesn't support FI_BOR atomic operation on FI_UINT128
+    Provider doesn't support FI_BAND atomic operation on FI_FLOAT
+    Provider doesn't support FI_BAND atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BAND atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BAND atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_INT128
+    Provider doesn't support FI_BAND atomic operation on FI_UINT128
+    9k        0.23s      0.02     231.80       0.00
+    FI_INT64_FI_LAND_lat                              8       1k      7.8k        0.22s      0.04     218.09       0.00
+    FI_UINT64_FI_LAND_lat                             8       1k      7.8k        0.22s      0.04     221.81       0.00
+    FI_FLOAT_FI_LAND_lat                              4       1k      3.9k        0.22s      0.02     215.10       0.00
+    FI_DOUBLE_FI_LAND_lat                             8       1k      7.8k        0.24s      0.03     237.86       0.00
+    FI_FLOAT_COMPLEX_FI_LAND_lat                      8       1k      7.8k        0.21s      0.04     211.09       0.00
+    FI_DOUBLE_COMPLEX_FI_LAND_lat                     16      1k      15k         0.23s      0.07     229.01       0.00
+    FI_LONG_DOUBLE_FI_LAND_lat                        8       1k      7.8k        0.21s      0.04     212.82       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_LAND_lat                16      1k      15k         0.23s      0.07     232.52       0.00
+    FI_INT8_FI_BOR_lat                                1       1k      1000        0.23s      0.00     226.35       0.00
+    FI_UINT8_FI_BOR_lat                               1       1k      1000        0.24s      0.00     236.17       0.00
+    FI_INT16_FI_BOR_lat                               2       1k      1.9k        0.21s      0.01     210.98       0.00
+    FI_UINT16_FI_BOR_lat                              2       1k      1.9k        0.22s      0.01     217.09       0.00
+    FI_INT32_FI_BOR_lat                               4       1k      3.9k        0.23s      0.02     232.75       0.00
+    FI_UINT32_FI_BOR_lat                              4       1k      3.9k        0.21s      0.02     209.18       0.00
+    FI_INT64_FI_BOR_lat                               8       1k      7.8k        0.22s      0.04     220.27       0.00
+    FI_UINT64_FI_BOR_lat                              8       1k      7.8k        0.29s      0.03     285.67       0.00
+    FI_INT8_FI_BAND_lat                               1       1k      1000        0.18s      0.01     181.70       0.01
+    FI_UINT8_FI_BAND_lat                              1       1k      1000        0.22s      0.00     216.70       0.00
+    FI_INT16_FI_BAND_lat                              2       1k      1.9k        0.22s      0.01     215.03       0.00
+    FI_UINT16_FI_BAND_lat                             2       1k      1.9k        0.20s      0.01     199.30       0.01
+    FI_INT32_FI_BAND_lat                              4       1k      3.9k        0.21s      0.02     209.53       0.00
+    FI_UINT32_FI_BAND_lat                             4       1k      3.9k        0.22s      0.02     215.26       0.00
+    FI_INT64_FI_BAND_lat                              8       1k      7.8k        0.21s      0.04     213.85       0.00
+    FI_UINT64_FI_BAND_lat                             8       1k      7.8k        0.22s      0.04     217.14       0.00
+    FI_INT8_FI_LXOR_lat                               1       1k      1000        0.20s      0.01     199.70       0.01
+    FI_UINT8_FI_LXOR_lat                              1       1k      1000        0.22s      0.00     219.62       0.00
+    FI_INT16_FI_LXOR_lat                              2       1k      1.9k        0.21s      0.01     206.39       0.00
+    FI_UINT16_FI_LXOR_lat                             2       1k      1.9k        0.24s      0.01     236.87       0.00
+    FI_INT32_FI_LXOR_lat                              4       1k      3.9k        0.24s      0.02     239.62       0.00
+    FI_UINT32_FI_LXOR_lat                             4       1k      3.9k        0.22s      0.02     217.52       0.00
+    FI_INT64_FI_LXOR_lat                              8       1k      7.8k        0.23s      0.04     228.11       0.00
+    FI_UINT64_FI_LXOR_lat                             8       1k      7.8k        0.21s      0.04     206.96       0.00
+    FI_FLOAT_FI_LXOR_lat                              4       1k      3.9k        0.21s      0.02     208.55       0.00
+    FI_DOUBLE_FI_LXOR_lat                             8       1k      7.8k        0.19s      0.04     188.83       0.01
+    FI_FLOAT_COMPLEX_FI_LXOR_lat                      8       1k      7.8k        0.20s      0.04     197.65Provider doesn't support FI_LXOR atomic operation on FI_INT128
+    Provider doesn't support FI_LXOR atomic operation on FI_UINT128
+    Provider doesn't support FI_BXOR atomic operation on FI_FLOAT
+    Provider doesn't support FI_BXOR atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BXOR atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BXOR atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_INT128
+    Provider doesn't support FI_BXOR atomic operation on FI_UINT128
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT8
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT8
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT16
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT16
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT32
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT32
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT64
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT64
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_FLOAT
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_DOUBLE
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT128
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT128
+    Provider doesn't support FI_ATOMIC_WRITE atomic operation on FI_INT128
+    Provider doesn't support FI_ATOMIC_WRITE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT128
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT8
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT8
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT16
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT16
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT32
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT32
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT64
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT64
+    Provider doesn't support FI_MSWAP atomic operation on FI_FLOAT
+    Provider doesn't support FI_MSWAP atomic operation on FI_DOUBLE
+    Provider doesn't support FI_MSWAP atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_MSWAP atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT128
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT128
+           0.01
+    FI_DOUBLE_COMPLEX_FI_LXOR_lat                     16      1k      15k         0.20s      0.08     202.64       0.00
+    FI_LONG_DOUBLE_FI_LXOR_lat                        8       1k      7.8k        0.23s      0.03     229.95       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_LXOR_lat                16      1k      15k         0.21s      0.08     211.01       0.00
+    FI_INT8_FI_BXOR_lat                               1       1k      1000        0.21s      0.00     209.46       0.00
+    FI_UINT8_FI_BXOR_lat                              1       1k      1000        0.20s      0.01     199.65       0.01
+    FI_INT16_FI_BXOR_lat                              2       1k      1.9k        0.13s      0.02     127.59       0.01
+    FI_UINT16_FI_BXOR_lat                             2       1k      1.9k        0.22s      0.01     218.97       0.00
+    FI_INT32_FI_BXOR_lat                              4       1k      3.9k        0.21s      0.02     211.16       0.00
+    FI_UINT32_FI_BXOR_lat                             4       1k      3.9k        0.21s      0.02     208.22       0.00
+    FI_INT64_FI_BXOR_lat                              8       1k      7.8k        0.20s      0.04     199.35       0.01
+    FI_UINT64_FI_BXOR_lat                             8       1k      7.8k        0.22s      0.04     218.70       0.00
+    FI_INT8_FI_ATOMIC_WRITE_lat                       1       1k      1000        0.23s      0.00     230.74       0.00
+    FI_UINT8_FI_ATOMIC_WRITE_lat                      1       1k      1000        0.22s      0.00     222.11       0.00
+    FI_INT16_FI_ATOMIC_WRITE_lat                      2       1k      1.9k        0.21s      0.01     205.36       0.00
+    FI_UINT16_FI_ATOMIC_WRITE_lat                     2       1k      1.9k        0.22s      0.01     215.22       0.00
+    FI_INT32_FI_ATOMIC_WRITE_lat                      4       1k      3.9k        0.22s      0.02     218.02       0.00
+    FI_UINT32_FI_ATOMIC_WRITE_lat                     4       1k      3.9k        0.21s      0.02     208.28       0.00
+    FI_INT64_FI_ATOMIC_WRITE_lat                      8       1k      7.8k        0.18s      0.04     180.20       0.01
+    FI_UINT64_FI_ATOMIC_WRITE_lat                     8       1k      7.8k        0.20s      0.04     196.40       0.01
+    FI_FLOAT_FI_ATOMIC_WRITE_lat                      4       1k      3.9k        0.19s      0.02     193.17       0.01
+    FI_DOUBLE_FI_ATOMIC_WRITE_lat                     8       1k      7.8k        0.14s      0.06     140.90       0.01
+    FI_FLOAT_COMPLEX_FI_ATOMIC_WRITE_lat              8       1k      7.8k        0.18s      0.05     176.88       0.01
+    FI_DOUBLE_COMPLEX_FI_ATOMIC_WRITE_lat             16      1k      15k         0.21s      0.07     214.24       0.00
+    FI_LONG_DOUBLE_FI_ATOMIC_WRITE_lat                8       1k      7.8k        0.19s      0.04     192.86       0.01
+    FI_LONG_DOUBLE_COMPLEX_FI_ATOMIC_WRITE_lat        16      1k      15k         0.16s      0.10     162.83       0.01
+    Provider doesn't support FI_MIN atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MIN atomic operation on FI_INT128
+    Provider doesn't support FI_MIN atomic operation on FI_UINT128
+    Provider doesn't support FI_MAX atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MAX atomic operation on FI_INT128
+    Provider doesn't support FI_MAX atomic operation on FI_UINT128
+    name                                              bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    FI_INT8_FI_MIN_lat                                1       1k      1000        0.23s      0.00     227.35       0.00
+    FI_UINT8_FI_MIN_lat                               1       1k      1000        0.24s      0.00     237.29       0.00
+    FI_INT16_FI_MIN_lat                               2       1k      1.9k        0.25s      0.01     249.83       0.00
+    FI_UINT16_FI_MIN_lat                              2       1k      1.9k        0.25s      0.01     249.00       0.00
+    FI_INT32_FI_MIN_lat                               4       1k      3.9k        0.16s      0.03     159.40       0.01
+    FI_UINT32_FI_MIN_lat                              4       1k      3.9k        0.22s      0.02     216.85       0.00
+    FI_INT64_FI_MIN_lat                               8       1k      7.8k        0.24s      0.03     238.58       0.00
+    FI_UINT64_FI_MIN_lat                              8       1k      7.8k        0.24s      0.03     237.56       0.00
+    FI_FLOAT_FI_MIN_lat                               4       1k      3.9k        0.23s      0.02     228.64       0.00
+    FI_DOUBLE_FI_MIN_lat                              8       1k      7.8k        0.24s      0.03     242.01       0.00
+    FI_LONG_DOUBLE_FI_MIN_lat                         8       1k      7.8k        0.23s      0.04     226.44       0.00
+    FI_INT8_FI_MAX_lat                                1       1k      1000        0.23s      0.00     232.13       0.00
+    FI_UINT8_FI_MAX_lat                               1       1k      1000        0.23s      0.00     228.29       0.00
+    FI_INT16_FI_MAX_lat                               2       1k      1.9k        0.24s      0.01     236.29       0.00
+    FI_UINT16_FI_MAX_lat                              2       1k      1.9k        0.23s      0.01     230.16       0.00
+    FI_INT32_FI_MAX_lat                               4       1k      3.9k        0.24s      0.02     236.09       0.00
+    FI_UINT32_FI_MAX_lat                              4       1k      3.9k        0.20s      0.02     198.24       0.01
+    FI_INT64_FI_MAX_lat                               8       1k      7.8k        0.18s      0.04     178.67       0.01
+    FI_UINT64_FI_MAX_lat                              8       1k      7.8k        0.22s      0.04     224.89       0.00
+    FI_FLOAT_FI_MAX_lat                               4       1k      3.9k        0.22s      0.02     219.89       0.00
+    FI_DOUBLE_FI_MAX_lat                              8       1k      7.8k        0.24s      0.03     242.85       0.00
+    FI_LONG_DOUBLE_FI_MAX_lat                         8       1k      7.8k        0.25s      0.03     250.72       0.00
+    FI_INT8_FI_SUM_lat                                1       1k      1000        0.24s      0.00     237.06       0.00
+    FI_UINT8_FI_SUM_lat                               1       1k      1000        0.23s      0.00     228.21       0.00
+    FI_INT16_FI_SUM_lat                               2       1k      1.9k        0.23s      0.01     231.28       0.00
+    FI_UINT16_FI_SUM_lat                              2       1k      1.9k        0.25s      0.01     252.09       0.00
+    FI_INT32_FI_SUM_lat                               4       1k      3.9k        0.23s      0.02     230.82       0.00
+    FI_UINT32_FI_SUM_lat                              4       1k      3.9k        0.23s      0.02     230.98       0.00
+    FI_INT64_FI_SUM_lat                               8       1k      7.8k        0.21s      0.04     214.28       0.00
+    FI_UINT64_FI_SUM_lat                              8       1k      7.8k        0.24s      0.03     235.22       0.00
+    FI_FLOAT_FI_SUM_lat                               4       1k      3.9k        0.23s      0.02     232.58       0.00
+    FI_DOUBLE_FI_SUM_lat                              8       1k      7.8k        0.24s      0.03     235.73       0.00
+    FI_FLOAT_COMPLEX_FI_SUM_lat                       8       1k      7.8k        0.21s      0.04     209.09       0.00
+    FI_DOUBLE_COMPLEX_FI_SUM_lat                      16      1k      15k         0.22s      0.07     223.41       0.00
+    FI_LONG_DOUBLE_FI_SUM_lat       Provider doesn't support FI_SUM atomic operation on FI_INT128
+    Provider doesn't support FI_SUM atomic operation on FI_UINT128
+    Provider doesn't support FI_PROD atomic operation on FI_INT128
+    Provider doesn't support FI_PROD atomic operation on FI_UINT128
+    Provider doesn't support FI_LOR atomic operation on FI_INT128
+    Provider doesn't support FI_LOR atomic operation on FI_UINT128
+                      8       1k      7.8k        0.23s      0.03     229.93       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_SUM_lat                 16      1k      15k         0.24s      0.07     237.57       0.00
+    FI_INT8_FI_PROD_lat                               1       1k      1000        0.22s      0.00     216.98       0.00
+    FI_UINT8_FI_PROD_lat                              1       1k      1000        0.25s      0.00     248.73       0.00
+    FI_INT16_FI_PROD_lat                              2       1k      1.9k        0.25s      0.01     246.34       0.00
+    FI_UINT16_FI_PROD_lat                             2       1k      1.9k        0.15s      0.01     147.33       0.01
+    FI_INT32_FI_PROD_lat                              4       1k      3.9k        0.24s      0.02     240.83       0.00
+    FI_UINT32_FI_PROD_lat                             4       1k      3.9k        0.21s      0.02     213.34       0.00
+    FI_INT64_FI_PROD_lat                              8       1k      7.8k        0.24s      0.03     242.67       0.00
+    FI_UINT64_FI_PROD_lat                             8       1k      7.8k        0.25s      0.03     251.24       0.00
+    FI_FLOAT_FI_PROD_lat                              4       1k      3.9k        0.23s      0.02     227.71       0.00
+    FI_DOUBLE_FI_PROD_lat                             8       1k      7.8k        0.21s      0.04     211.44       0.00
+    FI_FLOAT_COMPLEX_FI_PROD_lat                      8       1k      7.8k        0.25s      0.03     247.01       0.00
+    FI_DOUBLE_COMPLEX_FI_PROD_lat                     16      1k      15k         0.23s      0.07     232.82       0.00
+    FI_LONG_DOUBLE_FI_PROD_lat                        8       1k      7.8k        0.23s      0.03     229.91       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_PROD_lat                16      1k      15k         0.23s      0.07     228.45       0.00
+    FI_INT8_FI_LOR_lat                                1       1k      1000        0.23s      0.00     229.68       0.00
+    FI_UINT8_FI_LOR_lat                               1       1k      1000        0.22s      0.00     217.92       0.00
+    FI_INT16_FI_LOR_lat                               2       1k      1.9k        0.23s      0.01     232.80       0.00
+    FI_UINT16_FI_LOR_lat                              2       1k      1.9k        0.24s      0.01     239.82       0.00
+    FI_INT32_FI_LOR_lat                               4       1k      3.9k        0.20s      0.02     197.37       0.01
+    FI_UINT32_FI_LOR_lat                              4       1k      3.9k        0.19s      0.02     188.31       0.01
+    FI_INT64_FI_LOR_lat                               8       1k      7.8k        0.24s      0.03     243.69       0.00
+    FI_UINT64_FI_LOR_lat                              8       1k      7.8k        0.25s      0.03     247.44       0.00
+    FI_FLOAT_FI_LOR_lat                               4       1k      3.9k        0.22s      0.02     223.24       0.00
+    FI_DOUBLE_FI_LOR_lat                              8       1k      7.8k        0.23s      0.04     227.43       0.00
+    FI_FLOAT_COMPLEX_FI_LOR_lat                       8       1k      7.8k        0.23s      0.04     226.63       0.00
+    FI_DOUBLE_COMPLEX_FI_LOR_lat                      16      1k      15k         0.23s      0.07     231.85       0.00
+    FI_LONG_DOUBLE_FI_LOR_lat                         8       1k      7.8k        0.13s      0.06     132.79       0.01
+    FI_LONG_DOUBLE_COMPLEX_FI_LOR_lat                 16      1k      15k         0.22s      0.07     217.75       0.00
+    FI_INT8_FI_LAND_lat                               1       1k      1000        0.22s      0.00     215.31       0.00
+    FI_UINT8_FI_LAND_lat                              1       1k      1000        0.22s      0.00     221.22       0.00
+    FI_INT16_FI_LAND_lat                              2       1k      1.9k        0.22s      0.01     222.87       0.00
+    FI_UINT16_FI_LAND_lat                             2       1k      1.9k        0.21s      0.01     214.65       0.00
+    FI_INT32_FI_LAND_lat                              4       1k      3.9k        0.24s      0.02     237.67       0.00
+    FI_UINT32_FI_LAND_lat                             4       1k      3.Provider doesn't support FI_LAND atomic operation on FI_INT128
+    Provider doesn't support FI_LAND atomic operation on FI_UINT128
+    Provider doesn't support FI_BOR atomic operation on FI_FLOAT
+    Provider doesn't support FI_BOR atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BOR atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BOR atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BOR atomic operation on FI_INT128
+    Provider doesn't support FI_BOR atomic operation on FI_UINT128
+    Provider doesn't support FI_BAND atomic operation on FI_FLOAT
+    Provider doesn't support FI_BAND atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BAND atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BAND atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BAND atomic operation on FI_INT128
+    Provider doesn't support FI_BAND atomic operation on FI_UINT128
+    9k        0.23s      0.02     231.80       0.00
+    FI_INT64_FI_LAND_lat                              8       1k      7.8k        0.22s      0.04     218.09       0.00
+    FI_UINT64_FI_LAND_lat                             8       1k      7.8k        0.22s      0.04     221.81       0.00
+    FI_FLOAT_FI_LAND_lat                              4       1k      3.9k        0.22s      0.02     215.10       0.00
+    FI_DOUBLE_FI_LAND_lat                             8       1k      7.8k        0.24s      0.03     237.87       0.00
+    FI_FLOAT_COMPLEX_FI_LAND_lat                      8       1k      7.8k        0.21s      0.04     211.09       0.00
+    FI_DOUBLE_COMPLEX_FI_LAND_lat                     16      1k      15k         0.23s      0.07     228.97       0.00
+    FI_LONG_DOUBLE_FI_LAND_lat                        8       1k      7.8k        0.21s      0.04     212.82       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_LAND_lat                16      1k      15k         0.23s      0.07     232.56       0.00
+    FI_INT8_FI_BOR_lat                                1       1k      1000        0.23s      0.00     226.35       0.00
+    FI_UINT8_FI_BOR_lat                               1       1k      1000        0.24s      0.00     236.13       0.00
+    FI_INT16_FI_BOR_lat                               2       1k      1.9k        0.21s      0.01     211.01       0.00
+    FI_UINT16_FI_BOR_lat                              2       1k      1.9k        0.22s      0.01     217.09       0.00
+    FI_INT32_FI_BOR_lat                               4       1k      3.9k        0.23s      0.02     232.71       0.00
+    FI_UINT32_FI_BOR_lat                              4       1k      3.9k        0.21s      0.02     209.22       0.00
+    FI_INT64_FI_BOR_lat                               8       1k      7.8k        0.22s      0.04     220.23       0.00
+    FI_UINT64_FI_BOR_lat                              8       1k      7.8k        0.29s      0.03     285.66       0.00
+    FI_INT8_FI_BAND_lat                               1       1k      1000        0.18s      0.01     181.73       0.01
+    FI_UINT8_FI_BAND_lat                              1       1k      1000        0.22s      0.00     216.70       0.00
+    FI_INT16_FI_BAND_lat                              2       1k      1.9k        0.22s      0.01     215.03       0.00
+    FI_UINT16_FI_BAND_lat                             2       1k      1.9k        0.20s      0.01     199.29       0.01
+    FI_INT32_FI_BAND_lat                              4       1k      3.9k        0.21s      0.02     209.55       0.00
+    FI_UINT32_FI_BAND_lat                             4       1k      3.9k        0.22s      0.02     215.26       0.00
+    FI_INT64_FI_BAND_lat                              8       1k      7.8k        0.21s      0.04     213.84       0.00
+    FI_UINT64_FI_BAND_lat                             8       1k      7.8k        0.22s      0.04     217.15       0.00
+    FI_INT8_FI_LXOR_lat                               1       1k      1000        0.20s      0.01     199.69       0.01
+    FI_UINT8_FI_LXOR_lat                              1       1k      1000        0.22s      0.00     219.65       0.00
+    FI_INT16_FI_LXOR_lat                              2       1k      1.9k        0.21s      0.01     206.42       0.00
+    FI_UINT16_FI_LXOR_lat                             2       1k      1.9k        0.24s      0.01     236.83       0.00
+    FI_INT32_FI_LXOR_lat                              4       1k      3.9k        0.24s      0.02     239.61       0.00
+    FI_UINT32_FI_LXOR_lat                             4       1k      3.9k        0.22s      0.02     217.54       0.00
+    FI_INT64_FI_LXOR_lat                              8       1k      7.8k        0.23s      0.04     228.10       0.00
+    FI_UINT64_FI_LXOR_lat                             8       1k      7.8k        0.21s      0.04     206.99       0.00
+    FI_FLOAT_FI_LXOR_lat                              4       1k      3.9k        0.21s      0.02     208.57       0.00
+    FI_DOUBLE_FI_LXOR_lat                             8       1k      7.8k        0.19s      0.04     188.81       0.01
+    FI_FLOAT_COMPLEX_FI_LXOR_lat                      8       1k      7.8k        0.20s      0.04     197.67Provider doesn't support FI_LXOR atomic operation on FI_INT128
+    Provider doesn't support FI_LXOR atomic operation on FI_UINT128
+    Provider doesn't support FI_BXOR atomic operation on FI_FLOAT
+    Provider doesn't support FI_BXOR atomic operation on FI_DOUBLE
+    Provider doesn't support FI_BXOR atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_BXOR atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_BXOR atomic operation on FI_INT128
+    Provider doesn't support FI_BXOR atomic operation on FI_UINT128
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT8
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT8
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT16
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT16
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT32
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT32
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT64
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT64
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_FLOAT
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_DOUBLE
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_INT128
+    Provider doesn't support FI_ATOMIC_READ atomic operation on FI_UINT128
+    Provider doesn't support FI_ATOMIC_WRITE atomic operation on FI_INT128
+    Provider doesn't support FI_ATOMIC_WRITE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_NE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_LE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_LT atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_GE atomic operation on FI_UINT128
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT8
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT8
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT16
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT16
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT32
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT32
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT64
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT64
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_FLOAT
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_DOUBLE
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_INT128
+    Provider doesn't support FI_CSWAP_GT atomic operation on FI_UINT128
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT8
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT8
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT16
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT16
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT32
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT32
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT64
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT64
+    Provider doesn't support FI_MSWAP atomic operation on FI_FLOAT
+    Provider doesn't support FI_MSWAP atomic operation on FI_DOUBLE
+    Provider doesn't support FI_MSWAP atomic operation on FI_FLOAT_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_DOUBLE_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_LONG_DOUBLE
+    Provider doesn't support FI_MSWAP atomic operation on FI_LONG_DOUBLE_COMPLEX
+    Provider doesn't support FI_MSWAP atomic operation on FI_INT128
+    Provider doesn't support FI_MSWAP atomic operation on FI_UINT128
+           0.01
+    FI_DOUBLE_COMPLEX_FI_LXOR_lat                     16      1k      15k         0.20s      0.08     202.61       0.00
+    FI_LONG_DOUBLE_FI_LXOR_lat                        8       1k      7.8k        0.23s      0.03     229.96       0.00
+    FI_LONG_DOUBLE_COMPLEX_FI_LXOR_lat                16      1k      15k         0.21s      0.08     211.01       0.00
+    FI_INT8_FI_BXOR_lat                               1       1k      1000        0.21s      0.00     209.45       0.00
+    FI_UINT8_FI_BXOR_lat                              1       1k      1000        0.20s      0.01     199.63       0.01
+    FI_INT16_FI_BXOR_lat                              2       1k      1.9k        0.13s      0.02     127.64       0.01
+    FI_UINT16_FI_BXOR_lat                             2       1k      1.9k        0.22s      0.01     218.98       0.00
+    FI_INT32_FI_BXOR_lat                              4       1k      3.9k        0.21s      0.02     211.12       0.00
+    FI_UINT32_FI_BXOR_lat                             4       1k      3.9k        0.21s      0.02     208.27       0.00
+    FI_INT64_FI_BXOR_lat                              8       1k      7.8k        0.20s      0.04     199.36       0.01
+    FI_UINT64_FI_BXOR_lat                             8       1k      7.8k        0.22s      0.04     218.70       0.00
+    FI_INT8_FI_ATOMIC_WRITE_lat                       1       1k      1000        0.23s      0.00     230.74       0.00
+    FI_UINT8_FI_ATOMIC_WRITE_lat                      1       1k      1000        0.22s      0.00     222.10       0.00
+    FI_INT16_FI_ATOMIC_WRITE_lat                      2       1k      1.9k        0.21s      0.01     205.37       0.00
+    FI_UINT16_FI_ATOMIC_WRITE_lat                     2       1k      1.9k        0.22s      0.01     215.24       0.00
+    FI_INT32_FI_ATOMIC_WRITE_lat                      4       1k      3.9k        0.22s      0.02     218.02       0.00
+    FI_UINT32_FI_ATOMIC_WRITE_lat                     4       1k      3.9k        0.21s      0.02     208.30       0.00
+    FI_INT64_FI_ATOMIC_WRITE_lat                      8       1k      7.8k        0.18s      0.04     180.16       0.01
+    FI_UINT64_FI_ATOMIC_WRITE_lat                     8       1k      7.8k        0.20s      0.04     196.39       0.01
+    FI_FLOAT_FI_ATOMIC_WRITE_lat                      4       1k      3.9k        0.19s      0.02     193.20       0.01
+    FI_DOUBLE_FI_ATOMIC_WRITE_lat                     8       1k      7.8k        0.14s      0.06     140.89       0.01
+    FI_FLOAT_COMPLEX_FI_ATOMIC_WRITE_lat              8       1k      7.8k        0.18s      0.05     176.90       0.01
+    FI_DOUBLE_COMPLEX_FI_ATOMIC_WRITE_lat             16      1k      15k         0.21s      0.07     214.25       0.00
+    FI_LONG_DOUBLE_FI_ATOMIC_WRITE_lat                8       1k      7.8k        0.19s      0.04     192.81       0.01
+    FI_LONG_DOUBLE_COMPLEX_FI_ATOMIC_WRITE_lat        16      1k      15k         0.16s      0.10     162.81       0.01
+
+[    rdm] unexpected_msg (high concurrency) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_unexpected_msg -e rdm -I 1000 -M 16 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_unexpected_msg -e rdm -I 1000 -M 16 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    PID 34063 GOOD iter 0/1000 completed
+    PID 34063 GOOD iter 100/1000 completed
+    PID 34063 GOOD iter 200/1000 completed
+    PID 34063 GOOD iter 300/1000 completed
+    PID 34063 GOOD iter 400/1000 completed
+    PID 34063 GOOD iter 500/1000 completed
+    PID 34063 GOOD iter 600/1000 completed
+    PID 34063 GOOD iter 700/1000 completed
+    PID 34063 GOOD iter 800/1000 completed
+    PID 34063 GOOD iter 900/1000 completed
+    PID 34063 GOOD all done
+    PID 34058 GOOD iter 0/1000 completed
+    PID 34058 GOOD iter 100/1000 completed
+    PID 34058 GOOD iter 200/1000 completed
+    PID 34058 GOOD iter 300/1000 completed
+    PID 34058 GOOD iter 400/1000 completed
+    PID 34058 GOOD iter 500/1000 completed
+    PID 34058 GOOD iter 600/1000 completed
+    PID 34058 GOOD iter 700/1000 completed
+    PID 34058 GOOD iter 800/1000 completed
+    PID 34058 GOOD iter 900/1000 completed
+    PID 34058 GOOD all done
+
+[    rdm] unexpected_msg (DC) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_unexpected_msg -e rdm -I 1000 -U -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_unexpected_msg -e rdm -I 1000 -U -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    PID 34073 GOOD iter 0/1000 completed
+    PID 34073 GOOD iter 100/1000 completed
+    PID 34073 GOOD iter 200/1000 completed
+    PID 34073 GOOD iter 300/1000 completed
+    PID 34073 GOOD iter 400/1000 completed
+    PID 34073 GOOD iter 500/1000 completed
+    PID 34073 GOOD iter 600/1000 completed
+    PID 34073 GOOD iter 700/1000 completed
+    PID 34073 GOOD iter 800/1000 completed
+    PID 34073 GOOD iter 900/1000 completed
+    PID 34073 GOOD all done
+    PID 34069 GOOD iter 0/1000 completed
+    PID 34069 GOOD iter 100/1000 completed
+    PID 34069 GOOD iter 200/1000 completed
+    PID 34069 GOOD iter 300/1000 completed
+    PID 34069 GOOD iter 400/1000 completed
+    PID 34069 GOOD iter 500/1000 completed
+    PID 34069 GOOD iter 600/1000 completed
+    PID 34069 GOOD iter 700/1000 completed
+    PID 34069 GOOD iter 800/1000 completed
+    PID 34069 GOOD iter 900/1000 completed
+    PID 34069 GOOD all done
+
+[    rdm] rdm (DC) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm -U -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm -U -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Sending message...
+    Send completion received
+    Waiting for message from client...
+    Data check OK
+    Received data from client: Hello from Client!
+
+[    rdm] multi_recv (recvmsg) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_multi_recv -e rdm -M -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_multi_recv -e rdm -M -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    1k      1k      1000k       0.05s     19.75      51.83       0.02
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    1k      1k      1000k       0.05s     19.76      51.83       0.02
+
+[    rdm] rdm_bw (1MB) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw -v -S 1048576 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_bw -v -S 1048576 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    1m      200     200m        1.68s    124.81    8401.61       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    1m      200     200m        1.69s    124.00    8456.21       0.00
+
+[    rdm] rdm_multi_client ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_multi_client -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_multi_client -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    Starting client: 0
+    Start ping-pong.
+    Ping-pong succeeds.
+    Start ping-pong.
+    Ping-pong succeeds.
+
+[ tagged] recv_cancel (verify) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_recv_cancel -e rdm -V -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_recv_cancel -e rdm -V -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    STANDARD msg posted to server
+    CANCEL msg posted to server
+    GOOD: detected error cq entry
+    GOOD: error entry has expected values
+    GOOD: no extra error entries detected
+    GOOD: Completed uncancelled recv
+    GOOD: Completed reposted cancelled recv
+    GOOD: Completed Recv Cancel Test
+
+[    rma] rma_bw (write, 1MB) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_bw -v -S 1048576 -p 'udp;ofi_suet' -o write -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rma_bw -v -S 1048576 -p 'udp;ofi_suet' -o write 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    1m      200     200m        1.88s    111.61    9394.96       0.00
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    1m      200     200m        1.88s    111.61    9395.03       0.00
+
+[    rdm] rdm_pingpong (zero length) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_pingpong -v -S 0 -I 100 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_rdm_pingpong -v -S 0 -I 100 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    0       100     0           0.01s      0.00      25.81       0.04
+    bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+    0       100     0           0.01s      0.00      25.80       0.04
+
+[    rdm] unexpected_msg (segmented, verify) ... 
+  Server: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_unexpected_msg -v -e rdm -S 65537 -I 10 -p 'udp;ofi_suet' -s 127.0.0.1
+  Client: /Users/mkhalilov-work/Development/suet/build-validation/baseline/bin/fi_unexpected_msg -v -e rdm -S 65537 -I 10 -p 'udp;ofi_suet' 127.0.0.1
+PASS
+    PID 34129 GOOD iter 0/10 completed
+    PID 34129 GOOD all done
+    PID 34124 GOOD iter 0/10 completed
+    PID 34124 GOOD all done
+
+============================================================
+Results: 35 passed, 0 failed, 35 total
+
+All tests passed!

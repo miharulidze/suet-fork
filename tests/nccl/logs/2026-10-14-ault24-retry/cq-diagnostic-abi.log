@@ -1,0 +1,192 @@
+Function "suet_ses_cq_write" not defined.
+Breakpoint 1 (suet_ses_cq_write) pending.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib64/libthread_db.so.1".
+# nccl-tests version 2.21.1 (afd59ab) nccl-headers=23203 nccl-library=23203
+# Collective test starting: all_reduce_perf
+# nThread 1 nGpus 2 minBytes 8 maxBytes 8 step: 2(factor) warmup iters: 0 iters: 1 agg iters: 1 validation: 1 graph: 0 unalign: 0
+#
+# Using devices
+Missing separate debuginfo for /usr/lib64/libcuda.so.1
+Try: yum --enablerepo='*debug*' install /usr/lib/debug/.build-id/00/fe86755e78630ad9bd65f322e047577d51f0d8.debug
+[New Thread 0x15554d692000 (LWP 344299)]
+#  Rank  0 Group  0 Pid 344295 on     ault24 device  0 [0000:1c:00] Tesla V100-PCIE-16GB
+#  Rank  1 Group  0 Pid 344295 on     ault24 device  1 [0000:1e:00] Tesla V100-PCIE-16GB
+[New Thread 0x15553e99c000 (LWP 344312)]
+[New Thread 0x15553e19b000 (LWP 344313)]
+[New Thread 0x155523fff000 (LWP 344314)]
+NCCL version 2.32.3+cuda12.8
+[New Thread 0x1555223dd000 (LWP 344315)]
+[New Thread 0x155521bdc000 (LWP 344316)]
+Missing separate debuginfo for /usr/lib64/libnvidia-ptxjitcompiler.so.1
+Try: yum --enablerepo='*debug*' install /usr/lib/debug/.build-id/4f/31738155a86d028944864fa029e51fb82fcdbb.debug
+BFD: warning: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libicudata.so.78: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0010001
+BFD: warning: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libicudata.so.78: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0010002
+
+[2026-10-14 13:16:39] ault24:344295:344316 [1] ncclResult_t nccl_ofi_gin_init(void**, uint64_t, ncclDebugLogger_t):50 NCCL WARN NET/OFI GIN only supports RDMA transport protocol.
+[New Thread 0x155504fea000 (LWP 344317)]
+
+[2026-10-14 13:16:39] ault24:344295:344316 [1] transport/rma_socket.cc:32 (ncclRmaSocketProxyInit) NCCL WARN RMA/Socket : rma_socket requires GDRCopy; and GDR Copy is not available
+
+[2026-10-14 13:16:39] ault24:344295:344316 [1] ncclResult_t nccl_ofi_gin_init(void**, uint64_t, ncclDebugLogger_t):50 NCCL WARN NET/OFI GIN only supports RDMA transport protocol.
+Missing separate debuginfo for /usr/lib64/libnvidia-ml.so.1
+Try: yum --enablerepo='*debug*' install /usr/lib/debug/.build-id/9a/f8e628a53308e85ab92bce05b9cb83c460af3d.debug
+[Thread 0x15553e99c000 (LWP 344312) exited]
+[New Thread 0x15553e99c000 (LWP 344318)]
+[New Thread 0x1554f8fa1000 (LWP 344319)]
+[New Thread 0x1554c4863000 (LWP 344320)]
+[New Thread 0x1554b462d000 (LWP 344321)]
+[New Thread 0x1554b3e2c000 (LWP 344322)]
+[Thread 0x155521bdc000 (LWP 344316) exited]
+[Thread 0x1555223dd000 (LWP 344315) exited]
+#
+#                                                              out-of-place                       in-place
+#       size         count      type   redop    root     time   algbw   busbw  #wrong     time   algbw   busbw  #wrong
+#        (B)    (elements)                               (us)  (GB/s)  (GB/s)             (us)  (GB/s)  (GB/s)        
+[New Thread 0x1555223dd000 (LWP 344323)]
+[New Thread 0x155521bdc000 (LWP 344324)]
+[New Thread 0x1554b362b000 (LWP 344325)]
+[New Thread 0x1554b2e2a000 (LWP 344326)]
+[Switching to Thread 0x1554c4863000 (LWP 344320)]
+SUET_CQ context=0x1554ac115790 flags=0x402 len=160 buf=0x155555357f00 tag=0
+0x155555357f00:	0x0000000000000000	0x0000000000000002
+0x155555357f10:	0x0000000000000000	0x00e7000000000001
+SUET_CQ context=0x1554ac00b480 flags=0x802 len=160 buf=0x155555356500 tag=0
+SUET_CQ context=0x1554a80d2e40 flags=0x402 len=160 buf=0x155555355f00 tag=0
+0x155555355f00:	0x0000000000000000	0x0000000000000002
+0x155555355f10:	0x0000000000000000	0x00e7000000000001
+SUET_CQ context=0x1554a800b480 flags=0x802 len=160 buf=0x155555354500 tag=0
+[Switching to Thread 0x1554f8fa1000 (LWP 344319)]
+SUET_CQ context=0x1554a80d2eb0 flags=0x402 len=160 buf=0x155555355e60 tag=0
+0x155555355e60:	0x0000000000000001	0x0000000000000000
+0x155555355e70:	0x0000000000000002	0x00e7000000000001
+SUET_CQ context=0x1554a81267d0 flags=0x802 len=160 buf=0x155555354500 tag=0
+[Switching to Thread 0x1554c4863000 (LWP 344320)]
+SUET_CQ context=0x1554ac115c60 flags=0x402 len=160 buf=0x155555357e60 tag=0
+0x155555357e60:	0x0000000000000001	0x0000000000000000
+0x155555357e70:	0x0000000000000002	0x00e7000000000001
+SUET_CQ context=0x1554ac1b94f0 flags=0x802 len=160 buf=0x155555356500 tag=0
+[Switching to Thread 0x1554f8fa1000 (LWP 344319)]
+SUET_CQ context=0x1554ac115cd0 flags=0x402 len=160 buf=0x155555357dc0 tag=0
+0x155555357dc0:	0x0000000000000000	0x0000000000000003
+0x155555357dd0:	0x0000000000000001	0x00e7000000000001
+SUET_CQ context=0x1554ac1bd180 flags=0x802 len=160 buf=0x155555356500 tag=0
+SUET_CQ context=0x1554a80d2f20 flags=0x402 len=160 buf=0x155555355dc0 tag=0
+0x155555355dc0:	0x0000000000000000	0x0000000000000003
+0x155555355dd0:	0x0000000000000001	0x00e7000000000001
+SUET_CQ context=0x1554a812a390 flags=0x802 len=160 buf=0x155555354500 tag=0
+SUET_CQ context=0x1554ac115d40 flags=0x402 len=160 buf=0x155555357d20 tag=0
+0x155555357d20:	0x0000000000000001	0x0000000000000000
+0x155555357d30:	0x0000000000000003	0x00e7000000000001
+SUET_CQ context=0x1554ac1b94f0 flags=0x802 len=160 buf=0x155555356500 tag=0
+[Switching to Thread 0x1554c4863000 (LWP 344320)]
+SUET_CQ context=0x1554a80d2f90 flags=0x402 len=160 buf=0x155555355d20 tag=0
+0x155555355d20:	0x0000000000000001	0x0000000000000000
+0x155555355d30:	0x0000000000000003	0x00e7000000000001
+SUET_CQ context=0x1554a81267d0 flags=0x802 len=160 buf=0x155555354500 tag=0
+[Thread 0x155521bdc000 (LWP 344324) exited]
+[Thread 0x1555223dd000 (LWP 344323) exited]
+[Switching to Thread 0x1554b362b000 (LWP 344325)]
+SUET_CQ context=0x15554c014f90 flags=0x408 len=8 buf=0x15550c930000 tag=0x1
+0x15550c930000:	0x2ea7178c8f0ab3ba
+SUET_CQ context=0x155555353f90 flags=0x808 len=8 buf=0x15550bf30000 tag=0x1
+SUET_CQ context=0x15554c014f18 flags=0x408 len=0 buf=0x15550ca30000 tag=0x1
+SUET_CQ context=0x155555353f18 flags=0x808 len=0 buf=0x15550c030000 tag=0x1
+SUET_CQ context=0x15554c014ea0 flags=0x408 len=0 buf=0x15550cb30000 tag=0x1
+SUET_CQ context=0x155555353f18 flags=0x808 len=0 buf=0x15550c130000 tag=0x1
+SUET_CQ context=0x15554c014e28 flags=0x408 len=0 buf=0x15550cc30000 tag=0x1
+SUET_CQ context=0x155555353f90 flags=0x808 len=0 buf=0x15550c230000 tag=0x1
+[Switching to Thread 0x1554b2e2a000 (LWP 344326)]
+SUET_CQ context=0x15554c015f90 flags=0x408 len=0 buf=0x15550d330000 tag=0x1
+SUET_CQ context=0x15554c016f90 flags=0x808 len=0 buf=0x15550b530000 tag=0x1
+SUET_CQ context=0x15554c015f18 flags=0x408 len=0 buf=0x15550d430000 tag=0x1
+SUET_CQ context=0x15554c016f18 flags=0x808 len=0 buf=0x15550b630000 tag=0x1
+SUET_CQ context=0x15554c015ea0 flags=0x408 len=8 buf=0x15550d530000 tag=0x1
+0x15550d530000:	0xaeebca700f101047
+SUET_CQ context=0x15554c016f18 flags=0x808 len=8 buf=0x15550b730000 tag=0x1
+SUET_CQ context=0x15554c015e28 flags=0x408 len=0 buf=0x15550d630000 tag=0x1
+SUET_CQ context=0x15554c016f90 flags=0x808 len=0 buf=0x15550b830000 tag=0x1
+[Switching to Thread 0x1554b362b000 (LWP 344325)]
+SUET_CQ context=0x15554c014e28 flags=0x408 len=8 buf=0x15550c930000 tag=0x1
+0x15550c930000:	0x2e86d69772e59b20
+SUET_CQ context=0x155555353f90 flags=0x808 len=8 buf=0x15550bf30000 tag=0x1
+SUET_CQ context=0x15554c014ea0 flags=0x408 len=0 buf=0x15550ca30000 tag=0x1
+SUET_CQ context=0x155555353f18 flags=0x808 len=0 buf=0x15550c030000 tag=0x1
+SUET_CQ context=0x15554c014f18 flags=0x408 len=0 buf=0x15550cb30000 tag=0x1
+SUET_CQ context=0x155555353f18 flags=0x808 len=0 buf=0x15550c130000 tag=0x1
+[Switching to Thread 0x1554b2e2a000 (LWP 344326)]
+SUET_CQ context=0x15554c015e28 flags=0x408 len=0 buf=0x15550d330000 tag=0x1
+SUET_CQ context=0x15554c016f90 flags=0x808 len=0 buf=0x15550b530000 tag=0x1
+SUET_CQ context=0x15554c015ea0 flags=0x408 len=0 buf=0x15550d430000 tag=0x1
+SUET_CQ context=0x15554c016f18 flags=0x808 len=0 buf=0x15550b630000 tag=0x1
+[Switching to Thread 0x1554b362b000 (LWP 344325)]
+SUET_CQ context=0x15554c014f90 flags=0x408 len=0 buf=0x15550cc30000 tag=0x1
+SUET_CQ context=0x155555353f90 flags=0x808 len=0 buf=0x15550c230000 tag=0x1
+[Switching to Thread 0x1554b2e2a000 (LWP 344326)]
+SUET_CQ context=0x15554c015f18 flags=0x408 len=8 buf=0x15550d530000 tag=0x1
+0x15550d530000:	0xaed8d835f2d0d892
+SUET_CQ context=0x15554c016f18 flags=0x808 len=8 buf=0x15550b730000 tag=0x1
+SUET_CQ context=0x15554c015f90 flags=0x408 len=0 buf=0x15550d630000 tag=0x1
+SUET_CQ context=0x15554c016f90 flags=0x808 len=0 buf=0x15550b830000 tag=0x1
+[Switching to Thread 0x1554b362b000 (LWP 344325)]
+SUET_CQ context=0x15554c014f90 flags=0x408 len=8 buf=0x15550c930000 tag=0x1
+0x15550c930000:	0x2ea7178c8f0ab3ba
+SUET_CQ context=0x155555353f90 flags=0x808 len=8 buf=0x15550bf30000 tag=0x1
+SUET_CQ context=0x15554c014f18 flags=0x408 len=0 buf=0x15550ca30000 tag=0x1
+SUET_CQ context=0x155555353f18 flags=0x808 len=0 buf=0x15550c030000 tag=0x1
+SUET_CQ context=0x15554c014ea0 flags=0x408 len=0 buf=0x15550cb30000 tag=0x1
+SUET_CQ context=0x155555353f18 flags=0x808 len=0 buf=0x15550c130000 tag=0x1
+SUET_CQ context=0x15554c014e28 flags=0x408 len=0 buf=0x15550cc30000 tag=0x1
+SUET_CQ context=0x155555353f90 flags=0x808 len=0 buf=0x15550c230000 tag=0x1
+[Switching to Thread 0x1554b2e2a000 (LWP 344326)]
+SUET_CQ context=0x15554c015f90 flags=0x408 len=0 buf=0x15550d330000 tag=0x1
+SUET_CQ context=0x15554c016f90 flags=0x808 len=0 buf=0x15550b530000 tag=0x1
+SUET_CQ context=0x15554c015f18 flags=0x408 len=0 buf=0x15550d430000 tag=0x1
+SUET_CQ context=0x15554c016f18 flags=0x808 len=0 buf=0x15550b630000 tag=0x1
+SUET_CQ context=0x15554c015ea0 flags=0x408 len=8 buf=0x15550d530000 tag=0x1
+0x15550d530000:	0xaeebca700f101047
+SUET_CQ context=0x15554c016f18 flags=0x808 len=8 buf=0x15550b730000 tag=0x1
+SUET_CQ context=0x15554c015e28 flags=0x408 len=0 buf=0x15550d630000 tag=0x1
+SUET_CQ context=0x15554c016f90 flags=0x808 len=0 buf=0x15550b830000 tag=0x1
+[Switching to Thread 0x1554b362b000 (LWP 344325)]
+SUET_CQ context=0x15554c014e28 flags=0x408 len=8 buf=0x15550c930000 tag=0x1
+0x15550c930000:	0xb364a0a597b9cd1c
+SUET_CQ context=0x155555353f90 flags=0x808 len=8 buf=0x15550bf30000 tag=0x1
+SUET_CQ context=0x15554c014ea0 flags=0x408 len=0 buf=0x15550ca30000 tag=0x1
+SUET_CQ context=0x155555353f18 flags=0x808 len=0 buf=0x15550c030000 tag=0x1
+SUET_CQ context=0x15554c014f18 flags=0x408 len=0 buf=0x15550cb30000 tag=0x1
+SUET_CQ context=0x155555353f18 flags=0x808 len=0 buf=0x15550c130000 tag=0x1
+SUET_CQ context=0x15554c014f90 flags=0x408 len=0 buf=0x15550cc30000 tag=0x1
+SUET_CQ context=0x155555353f90 flags=0x808 len=0 buf=0x15550c230000 tag=0x1
+[Switching to Thread 0x1554b2e2a000 (LWP 344326)]
+SUET_CQ context=0x15554c015e28 flags=0x408 len=0 buf=0x15550d330000 tag=0x1
+SUET_CQ context=0x15554c016f90 flags=0x808 len=0 buf=0x15550b530000 tag=0x1
+SUET_CQ context=0x15554c015ea0 flags=0x408 len=0 buf=0x15550d430000 tag=0x1
+SUET_CQ context=0x15554c016f18 flags=0x808 len=0 buf=0x15550b630000 tag=0x1
+SUET_CQ context=0x15554c015f18 flags=0x408 len=8 buf=0x15550d530000 tag=0x1
+0x15550d530000:	0x3304e86517b5cf1d
+SUET_CQ context=0x15554c016f18 flags=0x808 len=8 buf=0x15550b730000 tag=0x1
+SUET_CQ context=0x15554c015f90 flags=0x408 len=0 buf=0x15550d630000 tag=0x1
+SUET_CQ context=0x15554c016f90 flags=0x808 len=0 buf=0x15550b830000 tag=0x1
+           8             2     float     sum      -1   202398    0.00    0.00       4  29292.0    0.00    0.00       4
+[New Thread 0x155521bdc000 (LWP 344327)]
+[Thread 0x155521bdc000 (LWP 344327) exited]
+[Thread 0x1554b362b000 (LWP 344325) exited]
+[Thread 0x1554b2e2a000 (LWP 344326) exited]
+[Thread 0x1554f8fa1000 (LWP 344319) exited]
+[Thread 0x1554c4863000 (LWP 344320) exited]
+[Thread 0x1554b462d000 (LWP 344321) exited]
+[Thread 0x1554b3e2c000 (LWP 344322) exited]
+# Out of bounds values : 2 FAILED
+# Avg bus bandwidth    : 1.56319e-07 
+#
+# Collective test concluded: all_reduce_perf
+#
+
+[Thread 0x155523fff000 (LWP 344314) exited]
+ .. ault24 pid 344295: Test failure common.cu:1545
+[Thread 0x15553e99c000 (LWP 344318) exited]
+[Thread 0x155504fea000 (LWP 344317) exited]
+[Thread 0x15553e19b000 (LWP 344313) exited]
+[Thread 0x15554d692000 (LWP 344299) exited]
+[Inferior 1 (process 344295) exited with code 07]

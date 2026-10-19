@@ -1,0 +1,61 @@
++ set -ex
++ cd /tmp/suet-nccl-mkhalilo-20261014/suet
++ export 'GIT_COMMITTER_NAME=SUET baseline build'
++ GIT_COMMITTER_NAME='SUET baseline build'
++ export GIT_COMMITTER_EMAIL=mkhalilo@ault24
++ GIT_COMMITTER_EMAIL=mkhalilo@ault24
++ export JOBS=8 WORKDIR=/tmp/suet-nccl-mkhalilo-20261014/suet-workspace
++ JOBS=8
++ WORKDIR=/tmp/suet-nccl-mkhalilo-20261014/suet-workspace
++ export LIBFABRIC_REF=0d52314b7e1d9329f9843e46040fa4f8a74ed121
++ LIBFABRIC_REF=0d52314b7e1d9329f9843e46040fa4f8a74ed121
++ bash ./build.sh
+
+==> cloning https://github.com/ofiwg/libfabric.git -> /tmp/suet-nccl-mkhalilo-20261014/suet-workspace/libfabric
+Cloning into '/tmp/suet-nccl-mkhalilo-20261014/suet-workspace/libfabric'...
+
+==> fetching
+
+==> checking out 0d52314b7e1d9329f9843e46040fa4f8a74ed121
+Note: switching to '0d52314b7e1d9329f9843e46040fa4f8a74ed121'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 0d52314b7 prov/hook: ensure tick_max always initialized
+HEAD is now at 0d52314b7 prov/hook: ensure tick_max always initialized
+
+==> fetching cherry-pick source https://github.com/miharulidze/libfabric.git
+
+==> cherry-pick 304fe27a299042685c029d03d692c54abeb44409
+[detached HEAD ece3934bf] prov/udp: support FI_SOURCE_ERR
+ Author: Mikhail Khalilov <miharulidze@gmail.com>
+ Date: Mon May 11 15:27:38 2026 +0200
+ 3 files changed, 45 insertions(+), 18 deletions(-)
+
+==> cherry-pick 5ea1ba6ed6d56973b516cc24d3489d1c703b500a
+Auto-merging prov/verbs/src/verbs_ofi.h
+Auto-merging prov/verbs/src/verbs_info.c
+Auto-merging prov/verbs/src/verbs_dgram_av.c
+Auto-merging prov/verbs/src/verbs_cq.c
+[detached HEAD e8e1fa348] prov/verbs: add FI_SOURCE and FI_SOURCE_ERR support for DGRAM endpoints
+ Author: Mikhail Khalilov <miharulidze@gmail.com>
+ Date: Mon May 11 16:06:42 2026 +0200
+ 5 files changed, 158 insertions(+), 19 deletions(-)
+
+==> syncing suet provider source from /tmp/suet-nccl-mkhalilo-20261014/suet/suet
+
+==> applying integration patch
+sendmsg EV patch does not match 0d52314b7e1d9329f9843e46040fa4f8a74ed121

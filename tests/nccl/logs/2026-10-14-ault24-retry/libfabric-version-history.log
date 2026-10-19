@@ -1,0 +1,56 @@
+2026-10-14T12:34:59+02:00
+5c374b38278918380f1b3cec431f61b5af174c1c 2026-10-01T11:41:44-07:00 core: add endpoint flush calls and define FI_MORE scoping
+3a2484ccf5b766cf8a9b371f06dcdaf3101f8b13 2026-10-08T09:49:55-07:00 core: Change flush return type to int and update man page
+AC_INIT([libfabric], [2.7.0], [ofiwg@lists.openfabrics.org])
+AC_INIT([libfabric], [2.8.0a1], [ofiwg@lists.openfabrics.org])
+commit 3a2484ccf5b766cf8a9b371f06dcdaf3101f8b13
+Author: Jessie Yang <jiaxiyan@amazon.com>
+Date:   Mon Oct 5 17:09:42 2026 -0700
+
+    core: Change flush return type to int and update man page
+    
+    ssize_t encodes a transfer size, but flush has nothing to size.
+    Also clarify that fi_flush failures are considered fatal.
+    
+    Signed-off-by: Jessie Yang <jiaxiyan@amazon.com>
+
+diff --git a/include/rdma/fi_endpoint.h b/include/rdma/fi_endpoint.h
+index 11069d1e5..f126656a3 100644
+--- a/include/rdma/fi_endpoint.h
++++ b/include/rdma/fi_endpoint.h
+@@ -109,7 +109,7 @@ struct fi_ops_ep {
+ 	ssize_t (*tx_size_left)(struct fid_ep *ep);
+ 	int	(*export_xpu)(struct fid_ep *ep, uint64_t flags,
+ 			struct fid_xpu_ep *xpu_ep);
+-	ssize_t	(*tx_flush)(struct fid_ep *ep, uint64_t flags);
++	int	(*tx_flush)(struct fid_ep *ep, uint64_t flags);
+ };
+ 
+ struct fi_ops_msg {
+@@ -132,7 +132,7 @@ struct fi_ops_msg {
+ 			uint64_t data, fi_addr_t dest_addr, void *context);
+ 	ssize_t	(*injectdata)(struct fid_ep *ep, const void *buf, size_t len,
+ 			uint64_t data, fi_addr_t dest_addr);
+-	ssize_t	(*recv_flush)(struct fid_ep *ep, uint64_t flags);
++	int	(*recv_flush)(struct fid_ep *ep, uint64_t flags);
+ };
+ 
+ struct fi_ops_cm;
+@@ -292,7 +292,7 @@ fi_tx_size_left(struct fid_ep *ep)
+ 	return ep->ops->tx_size_left(ep);
+ }
+ 
+-static inline ssize_t
++static inline int
+ fi_tx_flush(struct fid_ep *ep, uint64_t flags)
+ {
+ 	return FI_CHECK_OP(ep->ops, struct fi_ops_ep, tx_flush) ?
+@@ -373,7 +373,7 @@ fi_injectdata(struct fid_ep *ep, const void *buf, size_t len,
+ 	return ep->msg->injectdata(ep, buf, len, data, dest_addr);
+ }
+ 
+-static inline ssize_t
++static inline int
+ fi_recv_flush(struct fid_ep *ep, uint64_t flags)
+ {
+ 	return FI_CHECK_OP(ep->msg, struct fi_ops_msg, recv_flush) ?

@@ -1,0 +1,1142 @@
++ set -ex
++ cd /tmp/suet-nccl-retry-mkhalilo-20261014/src/suet
++ JOBS=12
++ WORKDIR=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace
++ LIBFABRIC_REF=94f3b1ac6c3e08ca47804bd327f7c328b60f67d2
++ bash ./build.sh
+
+==> fetching
+
+==> checking out 94f3b1ac6c3e08ca47804bd327f7c328b60f67d2
+Warning: you are leaving 2 commits behind, not connected to
+any of your branches:
+
+  e8e1fa348 prov/verbs: add FI_SOURCE and FI_SOURCE_ERR support for DGRAM endpoints
+  ece3934bf prov/udp: support FI_SOURCE_ERR
+
+If you want to keep them by creating a new branch, this may be a good time
+to do so with:
+
+ git branch <new-branch-name> e8e1fa348
+
+HEAD is now at 94f3b1ac6 prov/cxi: Fixes refcount assertions and unclosed EQ in tests
+HEAD is now at 94f3b1ac6 prov/cxi: Fixes refcount assertions and unclosed EQ in tests
+
+==> fetching cherry-pick source https://github.com/miharulidze/libfabric.git
+
+==> cherry-pick 304fe27a299042685c029d03d692c54abeb44409
+[detached HEAD 7096cf210] prov/udp: support FI_SOURCE_ERR
+ Author: Mikhail Khalilov <miharulidze@gmail.com>
+ Date: Mon May 11 15:27:38 2026 +0200
+ 3 files changed, 45 insertions(+), 18 deletions(-)
+
+==> cherry-pick 5ea1ba6ed6d56973b516cc24d3489d1c703b500a
+Auto-merging prov/verbs/src/verbs_ofi.h
+Auto-merging prov/verbs/src/verbs_info.c
+Auto-merging prov/verbs/src/verbs_dgram_av.c
+Auto-merging prov/verbs/src/verbs_cq.c
+[detached HEAD 0c270f748] prov/verbs: add FI_SOURCE and FI_SOURCE_ERR support for DGRAM endpoints
+ Author: Mikhail Khalilov <miharulidze@gmail.com>
+ Date: Mon May 11 16:06:42 2026 +0200
+ 5 files changed, 158 insertions(+), 19 deletions(-)
+
+==> syncing suet provider source from /tmp/suet-nccl-retry-mkhalilo-20261014/src/suet/suet
+
+==> applying integration patch
+
+==> building libfabric (-> /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build)
++ autoreconf -ivf
+autoreconf: export WARNINGS=
+autoreconf: Entering directory '.'
+autoreconf: configure.ac: not using Gettext
+autoreconf: running: aclocal --force -I config
+autoreconf: configure.ac: tracing
+autoreconf: running: libtoolize --copy --force
+libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'config'.
+libtoolize: copying file 'config/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'config'.
+libtoolize: copying file 'config/libtool.m4'
+libtoolize: copying file 'config/ltoptions.m4'
+libtoolize: copying file 'config/ltsugar.m4'
+libtoolize: copying file 'config/ltversion.m4'
+libtoolize: copying file 'config/lt~obsolete.m4'
+autoreconf: configure.ac: not using Intltool
+autoreconf: configure.ac: not using Gtkdoc
+autoreconf: running: aclocal --force -I config
+autoreconf: running: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/autoconf --force
+configure.ac:666: warning: The macro 'AC_HELP_STRING' is obsolete.
+configure.ac:666: You should run autoupdate.
+./lib/autoconf/general.m4:204: AC_HELP_STRING is expanded from...
+./lib/autoconf/general.m4:1534: AC_ARG_ENABLE is expanded from...
+configure.ac:666: the top level
+configure.ac:679: warning: The macro 'AC_HELP_STRING' is obsolete.
+configure.ac:679: You should run autoupdate.
+./lib/autoconf/general.m4:204: AC_HELP_STRING is expanded from...
+./lib/autoconf/general.m4:1534: AC_ARG_ENABLE is expanded from...
+configure.ac:679: the top level
+autoreconf: running: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/autoheader --force
+autoreconf: running: automake --add-missing --copy --force-missing
+configure.ac:71: installing 'config/ar-lib'
+configure.ac:67: installing 'config/compile'
+configure.ac:23: installing 'config/config.guess'
+configure.ac:23: installing 'config/config.sub'
+configure.ac:18: installing 'config/install-sh'
+configure.ac:18: installing 'config/missing'
+Makefile.am: installing 'config/depcomp'
+parallel-tests: installing 'config/test-driver'
+autoreconf: Leaving directory '.'
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether sleep supports fractional seconds... yes
+checking filesystem timestamp resolution... 0.01
+checking whether build environment is sane... yes
+checking for a race-free mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking xargs -n works... yes
+checking how to create a pax tar archive... gnutar
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking whether make supports the include directive... yes (GNU style)
+checking for gcc... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc accepts -g... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to enable C11 features... none needed
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc understands -c and -o together... yes
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... gcc3
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... gcc3
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking for gcc... (cached) /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc
+checking whether the compiler supports GNU C... (cached) yes
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc accepts -g... (cached) yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to enable C11 features... (cached) none needed
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc understands -c and -o together... (cached) yes
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... (cached) gcc3
+checking for C compiler conformance level... c11
+checking whether the compiler supports GNU C++... yes
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ accepts -g... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ option to enable C++11 features... none needed
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++... gcc3
+checking how to run the C preprocessor... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc -E
+checking for typeof syntax and keyword spelling... typeof
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld
+checking if the linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 3458764513820540925
+checking how to convert x86_64-pc-linux-gnu file names to x86_64-pc-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-pc-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld option to reload object files... -r
+checking for file... file
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for ranlib... ranlib
+checking for archiver @FILE support... @
+checking for strip... strip
+checking command to parse /usr/bin/nm -B output from /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc object... ok
+checking for sysroot... no
+checking for a working dd... /usr/bin/dd
+checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
+checking for mt... no
+checking if : is a manifest tool... no
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for strings.h... yes
+checking for sys/stat.h... yes
+checking for sys/types.h... yes
+checking for unistd.h... yes
+checking for elf.h... yes
+checking for sys/auxv.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -fno-rtti -fno-exceptions... no
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to produce PIC... -fPIC -DPIC
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc PIC flag -fPIC -DPIC works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc static flag -static works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -c -o file.o... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -c -o file.o... (cached) yes
+checking whether the /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking how to run the C++ preprocessor... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ -E
+checking for ld used by /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64
+checking if the linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) is GNU ld... yes
+checking whether the /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) supports shared libraries... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ option to produce PIC... -fPIC -DPIC
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ PIC flag -fPIC -DPIC works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ static flag -static works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ supports -c -o file.o... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ supports -c -o file.o... (cached) yes
+checking whether the /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+configure: creating ./config.lt
+config.lt: creating libtool
+checking for dlopen in -ldl... yes
+checking for pthread_mutex_init in -lpthread... yes
+checking for pthread_spin_init... yes
+checking for shm_open... no
+checking for library containing shm_open... -lrt
+checking for kqueue... no
+checking for epoll_create... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc options needed to detect all undeclared functions... none needed
+checking for linux/perf_event.h... yes
+checking whether __builtin_ia32_rdpmc is declared... yes
+checking compiler support for c11 atomics... yes
+checking compiler support for c11 atomic `least` types... yes
+checking compiler support for built-in atomics... yes
+checking for library containing __atomic_load_8... -latomic
+checking compiler support for built-in memory model aware atomics... yes
+checking for __int128... yes
+checking compiler support for built-in memory model aware 128-bit atomics... no
+checking compiler support for cpuid... yes
+checking whether ld accepts --version-script... yes
+checking for xpmem.h... no
+checking for .symver assembler support... yes
+checking for __alias__ attribute support... yes
+checking for getifaddrs... yes
+checking ethtool support... yes
+checking whether ethtool_cmd_speed is declared... yes
+checking whether SPEED_UNKNOWN is declared... yes
+checking for linux/userfaultfd.h... yes
+checking whether __NR_userfaultfd is declared... yes
+checking for userfaultfd unmap support... yes
+checking for userfaultfd thread id support... yes
+checking for linux/kdreg2.h... no
+checking for library containing clock_gettime... none required
+checking for liburing.h... no
+checking for cuda_runtime.h... yes
+configure: looking for library without search path
+checking for cudaMemcpy in -lcudart... no
+checking whether cuMemGetHandleForAddressRange is declared... yes
+checking whether CU_DEVICE_ATTRIBUTE_DMA_BUF_SUPPORTED is declared... yes
+checking whether CU_MEM_RANGE_HANDLE_TYPE_DMA_BUF_FD is declared... yes
+checking whether CU_CTX_SYNC_MEMOPS is declared... yes
+checking for level_zero/ze_api.h... no
+checking for nrt/nrt.h... no
+checking for habanalabs/synapse_api.h... no
+checking for __curbrk... yes
+checking for __clear_cache... yes
+checking for linux/mman.h... yes
+checking for sys/syscall.h... yes
+checking whether __syscall is declared... no
+checking for __syscall... no
+checking for hsa/hsa_ext_amd.h... no
+checking size of void *... 8
+configure: *** Configuring psm2 provider
+checking for psm2.h... no
+configure: configure: recheck psm2 without psm2_info_query.
+checking for psm2.h... no
+configure: recheck psm2 without psm2_mq_ipeek_dequeue_multi.
+checking for psm2.h... no
+configure: recheck psm2 without psm2_mq_fp_msg.
+checking for psm2.h... no
+configure: recheck psm2 without psm2_am_register_handlers_2.
+checking for psm2.h... no
+configure: psm2 provider: disabled
+configure: *** Configuring psm3 provider
+checking for sys/mman.h... yes
+configure: looking for library without search path
+checking for shm_open in -lrt... yes
+checking for numa.h... no
+checking for infiniband/verbs.h... no
+checking for uuid/uuid.h... yes
+configure: looking for library without search path
+checking for uuid_parse in -luuid... yes
+checking for -msse4.2 support... yes
+checking for -mavx2 support (recommended)... no
+configure: psm3 recommends minimum of avx2 instruction set for best performance
+checking for grep that handles long lines and -e... (cached) /usr/bin/grep
+checking for -Wno-address-of-packed-member support... yes
+checking for rdma/rv_user_ioctls.h... no
+checking for linux/idxd.h... yes
+checking for full Intel DSA support... yes
+checking for hwloc.h... yes
+configure: looking for library without search path
+checking for hwloc_topology_init in -lhwloc... yes
+configure: psm3 provider: disabled
+configure: *** Configuring sockets provider
+checking for sys/socket.h... yes
+checking for shm_open... (cached) no
+checking for sys/mman.h... yes
+configure: looking for library without search path
+checking for shm_open in -lrt... yes
+checking for getifaddrs... (cached) yes
+configure: sockets provider: include in libfabric
+configure: *** Configuring verbs provider
+checking for infiniband/verbs.h... no
+checking for rdma/rdma_cma.h... no
+checking for rdma/rdma_cma.h... no
+checking for hwloc.h... yes
+configure: looking for library without search path
+checking for hwloc_topology_init in -lhwloc... yes
+checking for asm/types.h... yes
+configure: verbs provider: disabled
+configure: *** Configuring efa provider
+checking for infiniband/verbs.h... no
+checking for GCC... yes
+checking for infiniband/efadv.h... no
+configure: WARNING: The EFA provider requires rdma-core v31 or newer.
+configure: efa provider: disabled
+configure: *** Configuring cxi provider
+checking for cxi_prov_hw.h... no
+checking for uapi/misc/cxi.h... no
+checking for libcxi/libcxi.h... no
+checking for curl/curl.h... yes
+configure: looking for library without search path
+checking for curl_global_init in -lcurl... yes
+checking whether cxil_modify_cp is declared... no
+checking whether cxil_svc_get_vni_range is declared... no
+checking whether cxil_alloc_trig_cp is declared... no
+checking whether cxil_svc_get_netns is declared... no
+configure: After coll_dlopen_curl check, cxi_LIBS =  -lcurl 
+checking for json-c/json.h... no
+configure: After coll_dlopen_json check, cxi_LIBS =  -lcurl  
+configure: cxi provider: disabled
+configure: *** Configuring usnic provider
+checking for infiniband/verbs.h... (cached) no
+configure: usnic provider: disabled
+configure: *** Configuring udp provider
+checking for sys/socket.h... (cached) yes
+configure: udp provider: include in libfabric
+configure: *** Configuring tcp provider
+configure: tcp provider: include in libfabric
+configure: *** Configuring rxm provider
+configure: rxm provider: include in libfabric
+configure: *** Configuring mrail provider
+configure: mrail provider: include in libfabric
+configure: *** Configuring rxd provider
+configure: rxd provider: include in libfabric
+configure: *** Configuring suet provider
+configure: suet provider: include in libfabric
+configure: *** Configuring shm provider
+checking for shm_open... (cached) no
+checking for sys/mman.h... yes
+configure: looking for library without search path
+checking for shm_open in -lrt... yes
+checking for accel-config/libaccel_config.h... no
+checking whether HAVE_ATOMICS is declared... yes
+configure: shm provider: include in libfabric
+configure: *** Configuring sm2 provider
+checking for shm_open... (cached) no
+checking for sys/mman.h... yes
+configure: looking for library without search path
+checking for shm_open in -lrt... yes
+checking whether HAVE_ATOMICS is declared... (cached) yes
+configure: sm2 provider: include in libfabric
+configure: *** Configuring ucx provider
+configure: ucx provider: disabled
+configure: *** Configuring lpp provider
+checking whether HAVE_ATOMICS is declared... (cached) yes
+checking if have lpp thread safe support... yes
+configure: lpp provider: include in libfabric
+configure: *** Configuring perf provider
+configure: perf provider: include in libfabric
+configure: *** Configuring trace provider
+configure: trace provider: include in libfabric
+configure: *** Configuring profile provider
+configure: profile provider: disabled
+configure: *** Configuring monitor provider
+configure: monitor provider: include in libfabric
+configure: *** Configuring hook_debug provider
+configure: hook_debug provider: include in libfabric
+configure: *** Configuring hook_hmem provider
+configure: hook_hmem provider: include in libfabric
+configure: *** Configuring dmabuf_peer_mem provider
+configure: dmabuf_peer_mem provider: include in libfabric
+configure: *** Configuring opx provider
+checking for opx provider... checking for uuid/uuid.h... yes
+configure: looking for library without search path
+checking for uuid_parse in -luuid... yes
+checking for numa.h... no
+checking for rdma/hfi/hfi1_user.h... yes
+checking for infiniband/hfi1dv.h... no
+configure: WARNING: Did not detect system hfi1 direct verbs rdma-core support.
+checking for infiniband/hfisvc_client.h... no
+configure: WARNING: Did not detect system default rdma-core support for hfisvc.
+checking whether HAVE_ATOMICS is declared... (cached) yes
+configure: opx provider: disabled
+configure: *** Configuring lnx provider
+configure: lnx provider: include in libfabric
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating libfabric.pc
+config.status: creating Makefile
+config.status: creating libfabric.spec
+config.status: creating libfabric.map
+config.status: creating config.h
+config.status: executing depfiles commands
+config.status: executing libtool commands
+***
+*** Built-in providers:	lnx dmabuf_peer_mem hook_hmem hook_debug monitor trace perf lpp sm2 shm suet rxd mrail rxm tcp udp sockets 
+*** DSO providers:	
+***
+make  all-am
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric'
+  CC       src/libfabric_la-hmem.lo
+  CC       src/libfabric_la-hmem_rocr.lo
+  CC       src/libfabric_la-hmem_cuda.lo
+  CC       src/libfabric_la-hmem_cuda_gdrcopy.lo
+  CC       src/libfabric_la-hmem_ze.lo
+  CC       src/libfabric_la-hmem_neuron.lo
+  CC       src/libfabric_la-hmem_synapseai.lo
+  CC       src/libfabric_la-hmem_ipc_cache.lo
+  CC       src/libfabric_la-xpmem.lo
+  CC       src/libfabric_la-xpmem_cache.lo
+  CC       src/libfabric_la-common.lo
+  CC       src/libfabric_la-enosys.lo
+  CC       src/libfabric_la-rbtree.lo
+  CC       src/libfabric_la-tree.lo
+  CC       src/libfabric_la-fasthash.lo
+  CC       src/libfabric_la-indexer.lo
+  CC       src/libfabric_la-mem.lo
+  CC       src/libfabric_la-iov.lo
+  CC       src/libfabric_la-ofi_str.lo
+  CC       util/strerror.o
+  CC       util/pingpong.o
+  CC       util/mon_sampler.o
+  CC       util/info.o
+  CC       src/libfabric_la-fabric.lo
+  CC       src/libfabric_la-fi_tostr.lo
+  CC       src/libfabric_la-perf.lo
+  CC       src/libfabric_la-log.lo
+  CC       src/libfabric_la-var.lo
+  CC       src/libfabric_la-abi_1_0.lo
+  CC       prov/hook/src/src_libfabric_la-hook.lo
+  CC       prov/hook/src/src_libfabric_la-hook_av.lo
+  CC       prov/hook/src/src_libfabric_la-hook_cm.lo
+  CC       prov/hook/src/src_libfabric_la-hook_cntr.lo
+  CC       prov/hook/src/src_libfabric_la-hook_cq.lo
+  CC       prov/hook/src/src_libfabric_la-hook_domain.lo
+  CC       prov/hook/src/src_libfabric_la-hook_ep.lo
+  CC       prov/hook/src/src_libfabric_la-hook_eq.lo
+  CC       prov/hook/src/src_libfabric_la-hook_wait.lo
+  CC       prov/hook/src/src_libfabric_la-hook_xfer.lo
+  CC       prov/util/src/src_libfabric_la-util_atomic.lo
+  CC       prov/util/src/src_libfabric_la-util_attr.lo
+  CC       prov/util/src/src_libfabric_la-util_av.lo
+  CC       prov/util/src/src_libfabric_la-rxm_av.lo
+  CC       prov/util/src/src_libfabric_la-util_cq.lo
+  CC       prov/util/src/src_libfabric_la-util_cntr.lo
+  CC       prov/util/src/src_libfabric_la-util_domain.lo
+  CC       prov/util/src/src_libfabric_la-util_ep.lo
+  CC       prov/util/src/src_libfabric_la-util_pep.lo
+  CC       prov/util/src/src_libfabric_la-util_eq.lo
+  CC       prov/util/src/src_libfabric_la-util_fabric.lo
+  CC       prov/util/src/src_libfabric_la-util_main.lo
+  CC       prov/util/src/src_libfabric_la-util_poll.lo
+  CC       prov/util/src/src_libfabric_la-util_wait.lo
+  CC       prov/util/src/src_libfabric_la-util_buf.lo
+  CC       prov/util/src/src_libfabric_la-util_mr_map.lo
+  CC       prov/util/src/src_libfabric_la-util_ns.lo
+  CC       prov/util/src/src_libfabric_la-util_srx.lo
+  CC       prov/util/src/src_libfabric_la-util_mem_monitor.lo
+  CC       prov/util/src/src_libfabric_la-util_mem_hooks.lo
+  CC       prov/util/src/src_libfabric_la-util_mr_cache.lo
+  CC       prov/util/src/src_libfabric_la-cuda_mem_monitor.lo
+  CC       prov/util/src/src_libfabric_la-rocr_mem_monitor.lo
+  CC       prov/util/src/src_libfabric_la-ze_mem_monitor.lo
+  CC       prov/util/src/src_libfabric_la-cuda_ipc_monitor.lo
+  CC       prov/util/src/src_libfabric_la-rocr_ipc_monitor.lo
+  CC       prov/util/src/src_libfabric_la-ze_ipc_monitor.lo
+  CC       prov/util/src/src_libfabric_la-xpmem_monitor.lo
+  CC       prov/util/src/src_libfabric_la-kdreg2_mem_monitor.lo
+  CC       prov/util/src/src_libfabric_la-uffd_mem_monitor.lo
+  CC       prov/util/src/src_libfabric_la-import_mem_monitor.lo
+  CC       prov/util/src/src_libfabric_la-util_profile.lo
+  CC       prov/coll/src/src_libfabric_la-coll_attr.lo
+  CC       prov/coll/src/src_libfabric_la-coll_av.lo
+  CC       prov/coll/src/src_libfabric_la-coll_av_set.lo
+  CC       prov/coll/src/src_libfabric_la-coll_coll.lo
+  CC       prov/coll/src/src_libfabric_la-coll_cq.lo
+  CC       prov/coll/src/src_libfabric_la-coll_domain.lo
+  CC       prov/coll/src/src_libfabric_la-coll_ep.lo
+  CC       prov/coll/src/src_libfabric_la-coll_eq.lo
+  CC       prov/coll/src/src_libfabric_la-coll_fabric.lo
+  CC       prov/coll/src/src_libfabric_la-coll_init.lo
+  CC       src/unix/libfabric_la-osd.lo
+  CC       src/linux/libfabric_la-osd.lo
+  CC       src/linux/libfabric_la-rdpmc.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_attr.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_av.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_dom.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_mr.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_eq.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_cq.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_cntr.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_poll.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_wait.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_ep_rdm.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_ep_dgram.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_ep_msg.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_fabric.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_ep.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_ctx.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_rx_entry.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_progress.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_comm.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_conn.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_msg.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_rma.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_atomic.lo
+  CC       prov/sockets/src/src_libfabric_la-sock_trigger.lo
+  CC       prov/udp/src/src_libfabric_la-udpx_attr.lo
+  CC       prov/udp/src/src_libfabric_la-udpx_cq.lo
+  CC       prov/udp/src/src_libfabric_la-udpx_domain.lo
+  CC       prov/udp/src/src_libfabric_la-udpx_ep.lo
+  CC       prov/udp/src/src_libfabric_la-udpx_fabric.lo
+  CC       prov/udp/src/src_libfabric_la-udpx_init.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_attr.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_init.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_fabric.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_domain.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_conn.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_ep.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_msg.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_tagged.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_cq.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_rma.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_atomic.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_eq.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_hmem.lo
+  CC       prov/rxm/src/src_libfabric_la-rxm_ep_selector.lo
+  CC       prov/mrail/src/src_libfabric_la-mrail_init.lo
+  CC       prov/mrail/src/src_libfabric_la-mrail_attr.lo
+  CC       prov/mrail/src/src_libfabric_la-mrail_fabric.lo
+  CC       prov/mrail/src/src_libfabric_la-mrail_domain.lo
+  CC       prov/mrail/src/src_libfabric_la-mrail_cq.lo
+  CC       prov/mrail/src/src_libfabric_la-mrail_ep.lo
+  CC       prov/mrail/src/src_libfabric_la-mrail_av.lo
+  CC       prov/mrail/src/src_libfabric_la-mrail_rma.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_attr.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_init.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_fabric.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_domain.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_av.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_cq.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_cntr.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_ep.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_msg.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_tagged.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_rma.lo
+  CC       prov/rxd/src/src_libfabric_la-rxd_atomic.lo
+  CC       prov/shm/src/src_libfabric_la-smr_attr.lo
+  CC       prov/shm/src/src_libfabric_la-smr_cq.lo
+  CC       prov/shm/src/src_libfabric_la-smr_domain.lo
+  CC       prov/shm/src/src_libfabric_la-smr_progress.lo
+  CC       prov/shm/src/src_libfabric_la-smr_comp.lo
+  CC       prov/shm/src/src_libfabric_la-smr_cntr.lo
+  CC       prov/shm/src/src_libfabric_la-smr_msg.lo
+  CC       prov/shm/src/src_libfabric_la-smr_rma.lo
+  CC       prov/shm/src/src_libfabric_la-smr_atomic.lo
+  CC       prov/shm/src/src_libfabric_la-smr_ep.lo
+  CC       prov/shm/src/src_libfabric_la-smr_fabric.lo
+  CC       prov/shm/src/src_libfabric_la-smr_init.lo
+  CC       prov/shm/src/src_libfabric_la-smr_av.lo
+  CC       prov/shm/src/src_libfabric_la-smr_dsa.lo
+  CC       prov/shm/src/src_libfabric_la-smr_util.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_attr.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_cq.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_domain.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_progress.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_comp.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_cntr.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_msg.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_ep.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_fabric.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_init.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_av.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_coordination.lo
+  CC       prov/sm2/src/src_libfabric_la-sm2_atomic.lo
+  CC       prov/suet/src/src_libfabric_la-suet_attr.lo
+  CC       prov/suet/src/src_libfabric_la-suet_init.lo
+  CC       prov/suet/src/src_libfabric_la-suet_fabric.lo
+  CC       prov/suet/src/src_libfabric_la-suet_domain.lo
+  CC       prov/suet/src/src_libfabric_la-suet_dgram.lo
+  CC       prov/suet/src/src_libfabric_la-suet_av.lo
+  CC       prov/suet/src/src_libfabric_la-suet_cq.lo
+  CC       prov/suet/src/src_libfabric_la-suet_cntr.lo
+  CC       prov/suet/src/src_libfabric_la-suet_ep.lo
+  CC       prov/suet/src/src_libfabric_la-suet_lb.lo
+  CC       prov/suet/src/src_libfabric_la-suet_cc.lo
+  CC       prov/suet/src/src_libfabric_la-suet_rel.lo
+  CC       prov/suet/src/src_libfabric_la-suet_pds.lo
+  CC       prov/suet/src/src_libfabric_la-suet_ses.lo
+  CC       prov/suet/src/src_libfabric_la-suet_msg.lo
+  CC       prov/suet/src/src_libfabric_la-suet_tagged.lo
+  CC       prov/suet/src/src_libfabric_la-suet_rma.lo
+  CC       prov/suet/src/src_libfabric_la-suet_atomic.lo
+  CC       prov/suet/src/src_libfabric_la-suet_mr.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_fabric.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_attr.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_cm.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_rdm_cm.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_domain.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_av.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_rma.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_msg.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_ep.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_rdm.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_pep.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_srx.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_cq.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_eq.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_init.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_progress.lo
+  CC       prov/tcp/src/src_libfabric_la-xnet_profile.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_init.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_atomic.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_av.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_cm.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_cntr.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_completion.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_control.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_cq.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_ctx.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_hmem.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_domain.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_ep.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_eq.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_fabric.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_getinfo.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_io.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_klpp.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_memcpy.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_mr.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_msg.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_rma.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_rx.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_stx.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_tagged.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_umc.lo
+  CC       prov/lpp/src/src_libfabric_la-lpp_util.lo
+  CC       prov/lnx/src/src_libfabric_la-lnx_cq.lo
+  CC       prov/lnx/src/src_libfabric_la-lnx_domain.lo
+  CC       prov/lnx/src/src_libfabric_la-lnx_ep.lo
+  CC       prov/lnx/src/src_libfabric_la-lnx_init.lo
+  CC       prov/lnx/src/src_libfabric_la-lnx_srx.lo
+  CC       prov/lnx/src/src_libfabric_la-lnx_mr.lo
+  CC       prov/lnx/src/src_libfabric_la-lnx_av.lo
+  CC       prov/lnx/src/src_libfabric_la-lnx_msg.lo
+  CC       prov/hook/perf/src/src_libfabric_la-hook_perf.lo
+  CC       prov/hook/trace/src/src_libfabric_la-hook_trace.lo
+  CC       prov/hook/monitor/src/src_libfabric_la-hook_monitor.lo
+  CC       prov/hook/hook_debug/src/src_libfabric_la-hook_debug.lo
+  CC       prov/hook/hook_hmem/src/src_libfabric_la-hook_hmem.lo
+  CC       prov/hook/dmabuf_peer_mem/src/src_libfabric_la-hook_dmabuf_peer_mem.lo
+  CCLD     src/libfabric.la
+copying selected object files to avoid basename conflicts...
+  CCLD     util/fi_info
+  CCLD     util/fi_strerror
+  CCLD     util/fi_pingpong
+  CCLD     util/fi_mon_sampler
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric'
+make  install-am
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric'
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib'
+ /bin/sh ./libtool   --mode=install /usr/bin/install -c   src/libfabric.la '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib'
+libtool: install: /usr/bin/install -c src/.libs/libfabric.so.1.33.0 /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libfabric.so.1.33.0
+libtool: install: (cd /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib && { ln -s -f libfabric.so.1.33.0 libfabric.so.1 || { rm -f libfabric.so.1 && ln -s libfabric.so.1.33.0 libfabric.so.1; }; })
+libtool: install: (cd /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib && { ln -s -f libfabric.so.1.33.0 libfabric.so || { rm -f libfabric.so && ln -s libfabric.so.1.33.0 libfabric.so; }; })
+libtool: install: /usr/bin/install -c src/.libs/libfabric.lai /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libfabric.la
+libtool: install: /usr/bin/install -c src/.libs/libfabric.a /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libfabric.a
+libtool: install: chmod 644 /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libfabric.a
+libtool: install: ranlib /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libfabric.a
+libtool: finish: PATH="/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin:/usr/bin:/bin:/sbin" ldconfig -n /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the '-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the 'LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the 'LD_RUN_PATH' environment variable
+     during linking
+   - use the '-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to '/etc/ld.so.conf'
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin'
+  /bin/sh ./libtool   --mode=install /usr/bin/install -c util/fi_info util/fi_strerror util/fi_pingpong util/fi_mon_sampler '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin'
+libtool: install: /usr/bin/install -c util/.libs/fi_info /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_info
+libtool: install: /usr/bin/install -c util/.libs/fi_strerror /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_strerror
+libtool: install: /usr/bin/install -c util/.libs/fi_pingpong /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_pingpong
+libtool: install: /usr/bin/install -c util/.libs/fi_mon_sampler /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_mon_sampler
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man1'
+ /usr/bin/install -c -m 644 man/man1/fi_info.1 man/man1/fi_pingpong.1 man/man1/fi_strerror.1 man/man1/fi_mon_sampler.1 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man1'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man3'
+ /usr/bin/install -c -m 644 man/man3/fi_atomic.3 man/man3/fi_av.3 man/man3/fi_av_set.3 man/man3/fi_cm.3 man/man3/fi_cntr.3 man/man3/fi_collective.3 man/man3/fi_control.3 man/man3/fi_cq.3 man/man3/fi_domain.3 man/man3/fi_endpoint.3 man/man3/fi_errno.3 man/man3/fi_eq.3 man/man3/fi_fabric.3 man/man3/fi_peer.3 man/man3/fi_provider.3 man/man3/fi_getinfo.3 man/man3/fi_mr.3 man/man3/fi_msg.3 man/man3/fi_nic.3 man/man3/fi_poll.3 man/man3/fi_profile.3 man/man3/fi_rma.3 man/man3/fi_tagged.3 man/man3/fi_trigger.3 man/man3/fi_wr.3 man/man3/fi_xpu.3 man/man3/fi_version.3 man/man3/fi_accept.3 man/man3/fi_alias.3 man/man3/fi_allgather.3 man/man3/fi_allreduce.3 man/man3/fi_alltoall.3 man/man3/fi_atomic_valid.3 man/man3/fi_atomicmsg.3 man/man3/fi_atomicv.3 man/man3/fi_av_bind.3 man/man3/fi_av_insert.3 man/man3/fi_av_insertsvc.3 man/man3/fi_av_lookup.3 man/man3/fi_av_open.3 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man3'
+ /usr/bin/install -c -m 644 man/man3/fi_av_remove.3 man/man3/fi_av_set_diff.3 man/man3/fi_av_set_insert.3 man/man3/fi_av_set_intersect.3 man/man3/fi_av_set_remove.3 man/man3/fi_av_set_union.3 man/man3/fi_av_straddr.3 man/man3/fi_barrier.3 man/man3/fi_broadcast.3 man/man3/fi_cancel.3 man/man3/fi_close.3 man/man3/fi_cntr_add.3 man/man3/fi_cntr_open.3 man/man3/fi_cntr_read.3 man/man3/fi_cntr_set.3 man/man3/fi_cntr_wait.3 man/man3/fi_compare_atomic.3 man/man3/fi_compare_atomic_valid.3 man/man3/fi_compare_atomicmsg.3 man/man3/fi_compare_atomicv.3 man/man3/fi_connect.3 man/man3/fi_cq_open.3 man/man3/fi_cq_read.3 man/man3/fi_cq_readerr.3 man/man3/fi_cq_readfrom.3 man/man3/fi_cq_sread.3 man/man3/fi_cq_sreadfrom.3 man/man3/fi_cq_strerror.3 man/man3/fi_cq_signal.3 man/man3/fi_domain_bind.3 man/man3/fi_domain_query.3 man/man3/fi_dupinfo.3 man/man3/fi_enable.3 man/man3/fi_ep.3 man/man3/fi_ep_bind.3 man/man3/fi_eq_open.3 man/man3/fi_eq_read.3 man/man3/fi_eq_readerr.3 man/man3/fi_eq_sread.3 man/man3/fi_eq_strerror.3 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man3'
+ /usr/bin/install -c -m 644 man/man3/fi_eq_write.3 man/man3/fi_fabric2.3 man/man3/fi_fetch_atomic.3 man/man3/fi_fetch_atomic_valid.3 man/man3/fi_fetch_atomicmsg.3 man/man3/fi_fetch_atomicv.3 man/man3/fi_freeinfo.3 man/man3/fi_getname.3 man/man3/fi_getopt.3 man/man3/fi_getpeer.3 man/man3/fi_inject.3 man/man3/fi_injectdata.3 man/man3/fi_inject_atomic.3 man/man3/fi_inject_write.3 man/man3/fi_inject_writedata.3 man/man3/fi_join.3 man/man3/fi_join_collective.3 man/man3/fi_leave.3 man/man3/fi_listen.3 man/man3/fi_mr_bind.3 man/man3/fi_mr_desc.3 man/man3/fi_mr_key.3 man/man3/fi_mr_reg.3 man/man3/fi_mr_regattr.3 man/man3/fi_mr_regv.3 man/man3/fi_open.3 man/man3/fi_open_ops.3 man/man3/fi_passive_ep.3 man/man3/fi_pep_bind.3 man/man3/fi_poll_add.3 man/man3/fi_poll_del.3 man/man3/fi_poll_open.3 man/man3/fi_query_atomic.3 man/man3/fi_query_collective.3 man/man3/fi_read.3 man/man3/fi_readmsg.3 man/man3/fi_readv.3 man/man3/fi_recv.3 man/man3/fi_recvmsg.3 man/man3/fi_recvv.3 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man3'
+ /usr/bin/install -c -m 644 man/man3/fi_reduce_scatter.3 man/man3/fi_reject.3 man/man3/fi_rx_addr.3 man/man3/fi_rx_size_left.3 man/man3/fi_scalable_ep_bind.3 man/man3/fi_send.3 man/man3/fi_senddata.3 man/man3/fi_sendmsg.3 man/man3/fi_sendv.3 man/man3/fi_setname.3 man/man3/fi_setopt.3 man/man3/fi_shutdown.3 man/man3/fi_strerror.3 man/man3/fi_tinject.3 man/man3/fi_tinjectdata.3 man/man3/fi_tostr.3 man/man3/fi_trecv.3 man/man3/fi_trecvmsg.3 man/man3/fi_trecvv.3 man/man3/fi_trywait.3 man/man3/fi_tsend.3 man/man3/fi_tsenddata.3 man/man3/fi_tsendmsg.3 man/man3/fi_tsendv.3 man/man3/fi_tx_size_left.3 man/man3/fi_wait.3 man/man3/fi_wait_open.3 man/man3/fi_write.3 man/man3/fi_writedata.3 man/man3/fi_writemsg.3 man/man3/fi_writev.3 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man3'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man7'
+ /usr/bin/install -c -m 644 man/man7/fabric.7 man/man7/fi_arch.7 man/man7/fi_direct.7 man/man7/fi_guide.7 man/man7/fi_hook.7 man/man7/fi_intro.7 man/man7/fi_provider.7 man/man7/fi_setup.7 man/man7/fi_sockets.7 man/man7/fi_udp.7 man/man7/fi_rxm.7 man/man7/fi_mrail.7 man/man7/fi_shm.7 man/man7/fi_tcp.7 man/man7/fi_lpp.7 man/man7/fi_lnx.7 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man7'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/pkgconfig'
+ /usr/bin/install -c -m 644 libfabric.pc '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/pkgconfig'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/include/rdma/providers'
+ /usr/bin/install -c -m 644 ./include/rdma/providers/fi_log.h ./include/rdma/providers/fi_peer.h ./include/rdma/providers/fi_prov.h '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/include/rdma/providers'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/include/rdma'
+ /usr/bin/install -c -m 644 ./include/rdma/fabric.h ./include/rdma/fi_atomic.h ./include/rdma/fi_cm.h ./include/rdma/fi_collective.h ./include/rdma/fi_domain.h ./include/rdma/fi_eq.h ./include/rdma/fi_ext.h ./include/rdma/fi_rma.h ./include/rdma/fi_endpoint.h ./include/rdma/fi_errno.h ./include/rdma/fi_tagged.h ./include/rdma/fi_trigger.h ./include/rdma/fi_profile.h ./include/rdma/fi_wr.h ./include/rdma/fi_xpu.h ./include/rdma/fi_xpu_device.h '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/include/rdma'
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric'
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric'
+
+==> building fabtests
++ test '!' -d config
++ mkdir config
++ autoreconf -ivf
+autoreconf: export WARNINGS=
+autoreconf: Entering directory '.'
+autoreconf: configure.ac: not using Gettext
+autoreconf: running: aclocal --force -I config
+autoreconf: configure.ac: tracing
+autoreconf: running: libtoolize --copy --force
+libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'config'.
+libtoolize: copying file 'config/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'config'.
+libtoolize: copying file 'config/libtool.m4'
+libtoolize: copying file 'config/ltoptions.m4'
+libtoolize: copying file 'config/ltsugar.m4'
+libtoolize: copying file 'config/ltversion.m4'
+libtoolize: copying file 'config/lt~obsolete.m4'
+autoreconf: configure.ac: not using Intltool
+autoreconf: configure.ac: not using Gtkdoc
+autoreconf: running: aclocal --force -I config
+autoreconf: running: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/autoconf --force
+configure.ac:113: warning: The macro 'AM_PROG_LIBTOOL' is obsolete.
+configure.ac:113: You should run autoupdate.
+config/libtool.m4:101: AM_PROG_LIBTOOL is expanded from...
+configure.ac:113: the top level
+configure.ac:262: warning: The macro 'AC_HEADER_STDC' is obsolete.
+configure.ac:262: You should run autoupdate.
+./lib/autoconf/headers.m4:663: AC_HEADER_STDC is expanded from...
+configure.ac:262: the top level
+autoreconf: running: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/autoheader --force
+autoreconf: running: automake --add-missing --copy --force-missing
+configure.ac:111: installing 'config/ar-lib'
+configure.ac:57: installing 'config/compile'
+configure.ac:15: installing 'config/config.guess'
+configure.ac:15: installing 'config/config.sub'
+configure.ac:12: installing 'config/install-sh'
+configure.ac:12: installing 'config/missing'
+Makefile.am: installing 'config/depcomp'
+autoreconf: Leaving directory '.'
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether sleep supports fractional seconds... yes
+checking filesystem timestamp resolution... 0.01
+checking whether build environment is sane... yes
+checking for a race-free mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking xargs -n works... yes
+checking how to create a pax tar archive... gnutar
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking whether make supports the include directive... yes (GNU style)
+checking for gcc... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc accepts -g... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to enable C11 features... none needed
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc understands -c and -o together... yes
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... gcc3
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for strings.h... yes
+checking for sys/stat.h... yes
+checking for sys/types.h... yes
+checking for unistd.h... yes
+checking size of void *... 8
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld
+checking if the linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 3458764513820540925
+checking how to convert x86_64-pc-linux-gnu file names to x86_64-pc-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-pc-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld option to reload object files... -r
+checking for file... file
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for ranlib... ranlib
+checking for archiver @FILE support... @
+checking for strip... strip
+checking command to parse /usr/bin/nm -B output from /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc object... ok
+checking for sysroot... no
+checking for a working dd... /usr/bin/dd
+checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
+checking for mt... no
+checking if : is a manifest tool... no
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -fno-rtti -fno-exceptions... no
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to produce PIC... -fPIC -DPIC
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc PIC flag -fPIC -DPIC works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc static flag -static works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -c -o file.o... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -c -o file.o... (cached) yes
+checking whether the /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking for gcc... (cached) /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc
+checking whether the compiler supports GNU C... (cached) yes
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc accepts -g... (cached) yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to enable C11 features... (cached) none needed
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc understands -c and -o together... (cached) yes
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... (cached) gcc3
+checking for library containing clock_gettime... none required
+checking for pthread_create in -lpthread... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc options needed to detect all undeclared functions... none needed
+checking for fi_getinfo in -lfabric... yes
+checking for egrep... (cached) /usr/bin/grep -E
+checking for rdma/fabric.h... yes
+checking for dlopen in -ldl... yes
+checking for level_zero/ze_api.h... no
+checking for infiniband/verbs.h... no
+checking for fi_trywait support... yes
+checking for epoll_create1... yes
+checking for __int128... yes
+checking for random_r... yes
+checking for rdma/fi_ext_efa.h... no
+configure: EFA fabtests are disabled: <rdma/fi_ext_efa.h> not found, libfabric was built without the efa provider
+checking for infiniband/efadv.h... no
+checking whether FI_EFA_WR_HIGH_PPS is declared... no
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating fabtests.spec
+config.status: creating config.h
+config.status: executing depfiles commands
+config.status: executing libtool commands
+make  all-recursive
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric/fabtests'
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric/fabtests'
+  CC       functional/msg.o
+  CC       functional/msg_sockets.o
+  CC       functional/rdm.o
+  CC       functional/rdm_rma_event.o
+  CC       functional/rdm_rma_trigger.o
+  CC       functional/rdm_deferred_wq.o
+  CC       functional/dgram.o
+  CC       functional/mcast.o
+  CC       functional/rdm_tagged_peek.o
+  CC       functional/cq_data.o
+  CC       functional/scalable_ep.o
+  CC       functional/shared_ctx.o
+  CC       functional/msg_epoll.o
+  CC       functional/rdm_shared_av.o
+  CC       functional/cm_data.o
+  CC       functional/multi_mr.o
+  CC       functional/rdm_multi_domain.o
+  CC       functional/multi_ep.o
+  CC       functional/recv_cancel.o
+  CC       functional/unexpected_msg.o
+  CC       functional/unmap_mem.o
+  CC       functional/inject_test.o
+  CC       functional/resmgmt_test.o
+  CC       functional/rdm_atomic.o
+  CC       functional/rdm_stress.o
+  CC       functional/multi_recv.o
+  CC       functional/flood.o
+  CC       functional/rdm_multi_client.o
+  CC       functional/loopback.o
+  CC       functional/av_xfer.o
+  CC       common/shared.lo
+  CC       common/hmem.lo
+  CC       common/hmem_cuda.lo
+  CC       common/hmem_rocr.lo
+  CC       common/hmem_ze.lo
+  CC       common/hmem_neuron.lo
+  CC       common/hmem_synapseai.lo
+  CC       common/ofi_atomic.lo
+  CC       benchmarks/msg_pingpong.o
+  CC       benchmarks/benchmark_shared.o
+  CC       benchmarks/msg_bw.o
+  CC       benchmarks/rma_bw.o
+  CC       benchmarks/rdm_cntr_pingpong.o
+  CC       benchmarks/dgram_pingpong.o
+  CC       benchmarks/rdm_pingpong.o
+  CC       benchmarks/rma_pingpong.o
+  CC       benchmarks/rdm_tagged_pingpong.o
+  CC       benchmarks/rdm_bw.o
+  CC       benchmarks/rdm_bw_mt.o
+  CC       benchmarks/rdm_tagged_bw.o
+  CC       benchmarks/rma_tx_completion.o
+  CC       unit/eq_test.o
+  CC       unit/common.o
+  CC       unit/cq_test.o
+  CC       unit/mr_test.o
+  CC       unit/mr_cache_evict.o
+  CC       unit/cntr_test.o
+  CC       unit/av_test.o
+  CC       unit/dom_test.o
+  CC       unit/getinfo_test.o
+  CC       unit/setopt_test.o
+  CC       unit/fi_check_hmem-check_hmem.o
+  CC       ubertest/uber.o
+  CC       ubertest/connect.o
+  CC       ubertest/cq.o
+  CC       ubertest/config.o
+  CC       ubertest/domain.o
+  CC       ubertest/ep.o
+  CC       ubertest/xfer.o
+  CC       ubertest/verify.o
+  CC       ubertest/test_ctrl.o
+  CC       multinode/src/fi_multinode-harness.o
+  CC       multinode/src/fi_multinode-pattern.o
+  CC       multinode/src/fi_multinode-core.o
+  CC       multinode/src/fi_multinode-timing.o
+  CC       multinode/src/fi_multinode_coll-harness.o
+  CC       multinode/src/fi_multinode_coll-core_coll.o
+  CC       component/sock_test-sock_test.o
+  CC       component/dmabuf-rdma/cuda_check_dmabuf-check_cuda_dmabuf.o
+  CC       regression/sighandler_test-sighandler_test.o
+  CC       regression/pep_close_eq_read-pep_close_eq_read.o
+  CC       prov/lpp/src/rcq_data.o
+  CC       prov/lpp/src/main.o
+  CC       prov/lpp/src/ipc.o
+  CC       prov/lpp/src/error.o
+  CC       prov/lpp/src/test_util.o
+  CC       prov/lpp/src/rma.o
+  CC       prov/lpp/src/msg.o
+  CC       prov/lpp/src/atomic.o
+  CC       prov/verbs/src/nic_affinity_test.o
+  CCLD     libfabtests.la
+  CCLD     functional/fi_av_xfer
+  CCLD     functional/fi_msg
+  CCLD     functional/fi_msg_sockets
+  CCLD     functional/fi_rdm
+  CCLD     functional/fi_rdm_rma_event
+  CCLD     functional/fi_rdm_rma_trigger
+  CCLD     functional/fi_rdm_deferred_wq
+  CCLD     functional/fi_dgram
+  CCLD     functional/fi_mcast
+  CCLD     functional/fi_rdm_tagged_peek
+  CCLD     functional/fi_cq_data
+  CCLD     functional/fi_scalable_ep
+  CCLD     functional/fi_shared_ctx
+  CCLD     functional/fi_msg_epoll
+  CCLD     functional/fi_rdm_shared_av
+  CCLD     functional/fi_cm_data
+  CCLD     functional/fi_multi_mr
+  CCLD     functional/fi_rdm_multi_domain
+  CCLD     functional/fi_multi_ep
+  CCLD     functional/fi_recv_cancel
+  CCLD     functional/fi_unexpected_msg
+  CCLD     functional/fi_unmap_mem
+  CCLD     functional/fi_inject_test
+  CCLD     functional/fi_resmgmt_test
+  CCLD     functional/fi_rdm_atomic
+  CCLD     functional/fi_rdm_stress
+  CCLD     functional/fi_multi_recv
+  CCLD     functional/fi_flood
+  CCLD     functional/fi_rdm_multi_client
+  CCLD     functional/fi_loopback
+  CCLD     benchmarks/fi_msg_pingpong
+  CCLD     benchmarks/fi_msg_bw
+  CCLD     benchmarks/fi_rma_bw
+  CCLD     benchmarks/fi_rdm_cntr_pingpong
+  CCLD     benchmarks/fi_dgram_pingpong
+  CCLD     benchmarks/fi_rdm_pingpong
+  CCLD     benchmarks/fi_rma_pingpong
+  CCLD     benchmarks/fi_rdm_tagged_pingpong
+  CCLD     benchmarks/fi_rdm_bw
+  CCLD     benchmarks/fi_rdm_bw_mt
+  CCLD     benchmarks/fi_rdm_tagged_bw
+  CCLD     benchmarks/fi_rma_tx_completion
+  CCLD     unit/fi_eq_test
+  CCLD     unit/fi_cq_test
+  CCLD     unit/fi_mr_test
+  CCLD     unit/fi_mr_cache_evict
+  CCLD     unit/fi_cntr_test
+  CCLD     unit/fi_av_test
+  CCLD     unit/fi_dom_test
+  CCLD     unit/fi_getinfo_test
+  CCLD     unit/fi_setopt_test
+  CCLD     unit/fi_check_hmem
+  CCLD     ubertest/fi_ubertest
+  CCLD     multinode/fi_multinode
+  CCLD     multinode/fi_multinode_coll
+  CCLD     component/sock_test
+  CCLD     component/dmabuf-rdma/cuda_check_dmabuf
+  CCLD     regression/sighandler_test
+  CCLD     regression/pep_close_eq_read
+  CCLD     prov/lpp/src/lpp_regression
+  CCLD     prov/verbs/src/fi_nic_affinity_test
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric/fabtests'
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric/fabtests'
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric/fabtests'
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric/fabtests'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin'
+  /bin/sh ./libtool   --mode=install /usr/bin/install -c functional/fi_av_xfer functional/fi_msg functional/fi_msg_sockets functional/fi_rdm functional/fi_rdm_rma_event functional/fi_rdm_rma_trigger functional/fi_rdm_deferred_wq functional/fi_dgram functional/fi_mcast functional/fi_rdm_tagged_peek functional/fi_cq_data functional/fi_scalable_ep functional/fi_shared_ctx functional/fi_msg_epoll functional/fi_rdm_shared_av functional/fi_cm_data functional/fi_multi_mr functional/fi_rdm_multi_domain functional/fi_multi_ep functional/fi_recv_cancel functional/fi_unexpected_msg functional/fi_unmap_mem functional/fi_inject_test functional/fi_resmgmt_test functional/fi_rdm_atomic functional/fi_rdm_stress functional/fi_multi_recv functional/fi_flood functional/fi_rdm_multi_client functional/fi_loopback benchmarks/fi_msg_pingpong benchmarks/fi_msg_bw benchmarks/fi_rma_bw benchmarks/fi_rdm_cntr_pingpong benchmarks/fi_dgram_pingpong benchmarks/fi_rdm_pingpong benchmarks/fi_rma_pingpong benchmarks/fi_rdm_tagged_pingpong benchmarks/fi_rdm_bw benchmarks/fi_rdm_bw_mt benchmarks/fi_rdm_tagged_bw benchmarks/fi_rma_tx_completion unit/fi_eq_test unit/fi_cq_test unit/fi_mr_test unit/fi_mr_cache_evict unit/fi_cntr_test unit/fi_av_test unit/fi_dom_test unit/fi_getinfo_test unit/fi_setopt_test unit/fi_check_hmem ubertest/fi_ubertest multinode/fi_multinode multinode/fi_multinode_coll component/sock_test component/dmabuf-rdma/cuda_check_dmabuf regression/sighandler_test regression/pep_close_eq_read prov/lpp/src/lpp_regression prov/verbs/src/fi_nic_affinity_test '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin'
+libtool: install: /usr/bin/install -c functional/fi_av_xfer /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_av_xfer
+libtool: install: /usr/bin/install -c functional/fi_msg /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_msg
+libtool: install: /usr/bin/install -c functional/fi_msg_sockets /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_msg_sockets
+libtool: install: /usr/bin/install -c functional/fi_rdm /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm
+libtool: install: /usr/bin/install -c functional/fi_rdm_rma_event /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_rma_event
+libtool: install: /usr/bin/install -c functional/fi_rdm_rma_trigger /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_rma_trigger
+libtool: install: /usr/bin/install -c functional/fi_rdm_deferred_wq /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_deferred_wq
+libtool: install: /usr/bin/install -c functional/fi_dgram /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_dgram
+libtool: install: /usr/bin/install -c functional/fi_mcast /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_mcast
+libtool: install: /usr/bin/install -c functional/fi_rdm_tagged_peek /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_tagged_peek
+libtool: install: /usr/bin/install -c functional/fi_cq_data /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_cq_data
+libtool: install: /usr/bin/install -c functional/fi_scalable_ep /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_scalable_ep
+libtool: install: /usr/bin/install -c functional/fi_shared_ctx /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_shared_ctx
+libtool: install: /usr/bin/install -c functional/fi_msg_epoll /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_msg_epoll
+libtool: install: /usr/bin/install -c functional/fi_rdm_shared_av /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_shared_av
+libtool: install: /usr/bin/install -c functional/fi_cm_data /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_cm_data
+libtool: install: /usr/bin/install -c functional/fi_multi_mr /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_multi_mr
+libtool: install: /usr/bin/install -c functional/fi_rdm_multi_domain /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_multi_domain
+libtool: install: /usr/bin/install -c functional/fi_multi_ep /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_multi_ep
+libtool: install: /usr/bin/install -c functional/fi_recv_cancel /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_recv_cancel
+libtool: install: /usr/bin/install -c functional/fi_unexpected_msg /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_unexpected_msg
+libtool: install: /usr/bin/install -c functional/fi_unmap_mem /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_unmap_mem
+libtool: install: /usr/bin/install -c functional/fi_inject_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_inject_test
+libtool: install: /usr/bin/install -c functional/fi_resmgmt_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_resmgmt_test
+libtool: install: /usr/bin/install -c functional/fi_rdm_atomic /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_atomic
+libtool: install: /usr/bin/install -c functional/fi_rdm_stress /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_stress
+libtool: install: /usr/bin/install -c functional/fi_multi_recv /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_multi_recv
+libtool: install: /usr/bin/install -c functional/fi_flood /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_flood
+libtool: install: /usr/bin/install -c functional/fi_rdm_multi_client /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_multi_client
+libtool: install: /usr/bin/install -c functional/fi_loopback /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_loopback
+libtool: install: /usr/bin/install -c benchmarks/fi_msg_pingpong /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_msg_pingpong
+libtool: install: /usr/bin/install -c benchmarks/fi_msg_bw /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_msg_bw
+libtool: install: /usr/bin/install -c benchmarks/fi_rma_bw /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rma_bw
+libtool: install: /usr/bin/install -c benchmarks/fi_rdm_cntr_pingpong /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_cntr_pingpong
+libtool: install: /usr/bin/install -c benchmarks/fi_dgram_pingpong /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_dgram_pingpong
+libtool: install: /usr/bin/install -c benchmarks/fi_rdm_pingpong /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_pingpong
+libtool: install: /usr/bin/install -c benchmarks/fi_rma_pingpong /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rma_pingpong
+libtool: install: /usr/bin/install -c benchmarks/fi_rdm_tagged_pingpong /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_tagged_pingpong
+libtool: install: /usr/bin/install -c benchmarks/fi_rdm_bw /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_bw
+libtool: install: /usr/bin/install -c benchmarks/fi_rdm_bw_mt /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_bw_mt
+libtool: install: /usr/bin/install -c benchmarks/fi_rdm_tagged_bw /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rdm_tagged_bw
+libtool: install: /usr/bin/install -c benchmarks/fi_rma_tx_completion /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_rma_tx_completion
+libtool: install: /usr/bin/install -c unit/fi_eq_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_eq_test
+libtool: install: /usr/bin/install -c unit/fi_cq_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_cq_test
+libtool: install: /usr/bin/install -c unit/fi_mr_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_mr_test
+libtool: install: /usr/bin/install -c unit/fi_mr_cache_evict /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_mr_cache_evict
+libtool: install: /usr/bin/install -c unit/fi_cntr_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_cntr_test
+libtool: install: /usr/bin/install -c unit/fi_av_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_av_test
+libtool: install: /usr/bin/install -c unit/fi_dom_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_dom_test
+libtool: install: /usr/bin/install -c unit/fi_getinfo_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_getinfo_test
+libtool: install: /usr/bin/install -c unit/fi_setopt_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_setopt_test
+libtool: install: /usr/bin/install -c unit/fi_check_hmem /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_check_hmem
+libtool: install: /usr/bin/install -c ubertest/fi_ubertest /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_ubertest
+libtool: install: /usr/bin/install -c multinode/fi_multinode /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_multinode
+libtool: install: /usr/bin/install -c multinode/fi_multinode_coll /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_multinode_coll
+libtool: install: /usr/bin/install -c component/sock_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/sock_test
+libtool: install: /usr/bin/install -c component/dmabuf-rdma/cuda_check_dmabuf /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/cuda_check_dmabuf
+libtool: install: /usr/bin/install -c regression/sighandler_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/sighandler_test
+libtool: install: /usr/bin/install -c regression/pep_close_eq_read /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/pep_close_eq_read
+libtool: install: /usr/bin/install -c prov/lpp/src/lpp_regression /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/lpp_regression
+libtool: install: /usr/bin/install -c prov/verbs/src/fi_nic_affinity_test /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_nic_affinity_test
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin'
+ /usr/bin/install -c scripts/runfabtests.sh scripts/runfabtests.py scripts/runmultinode.sh scripts/runmultinode.py scripts/rft_yaml_to_junit_xml '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man1'
+ /usr/bin/install -c -m 644 man/man1/fi_av_xfer.1 man/man1/fi_cm_data.1 man/man1/fi_cq_data.1 man/man1/fi_dgram.1 man/man1/fi_inj_complete.1 man/man1/fi_mcast.1 man/man1/fi_msg.1 man/man1/fi_msg_epoll.1 man/man1/fi_msg_sockets.1 man/man1/fi_multi_ep.1 man/man1/fi_multi_mr.1 man/man1/fi_rdm.1 man/man1/fi_rdm_atomic.1 man/man1/fi_rdm_deferred_wq.1 man/man1/fi_rdm_multi_domain.1 man/man1/fi_multi_recv.1 man/man1/fi_rdm_rma_event.1 man/man1/fi_rdm_rma_trigger.1 man/man1/fi_rdm_shared_av.1 man/man1/fi_rdm_tagged_peek.1 man/man1/fi_rdm_stress.1 man/man1/fi_recv_cancel.1 man/man1/fi_resmgmt_test.1 man/man1/fi_scalable_ep.1 man/man1/fi_shared_ctx.1 man/man1/fi_unexpected_msg.1 man/man1/fi_unmap_mem.1 man/man1/fi_dgram_pingpong.1 man/man1/fi_msg_bw.1 man/man1/fi_msg_pingpong.1 man/man1/fi_rdm_cntr_pingpong.1 man/man1/fi_rdm_pingpong.1 man/man1/fi_rdm_tagged_bw.1 man/man1/fi_rdm_tagged_pingpong.1 man/man1/fi_rma_bw.1 man/man1/fi_av_test.1 man/man1/fi_cntr_test.1 man/man1/fi_cq_test.1 man/man1/fi_dom_test.1 man/man1/fi_eq_test.1 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man1'
+ /usr/bin/install -c -m 644 man/man1/fi_getinfo_test.1 man/man1/fi_mr_test.1 man/man1/fi_flood.1 man/man1/fi_rdm_multi_client.1 man/man1/fi_ubertest.1 man/man1/fi_efa_ep_rnr_retry.1 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man1'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man7'
+ /usr/bin/install -c -m 644 man/man7/fabtests.7 '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/man/man7'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/lnx'
+ /usr/bin/install -c -m 644  test_configs/lnx/lnx.exclude test_configs/lnx/all.test '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/lnx'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/udp'
+ /usr/bin/install -c -m 644  test_configs/udp/all.test test_configs/udp/lat_bw.test test_configs/udp/quick.test test_configs/udp/functional.test test_configs/udp/udp.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/udp'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest/sm2'
+ /usr/bin/install -c -m 644  pytest/sm2/conftest.py pytest/sm2/sm2_common.py pytest/sm2/test_rdm.py pytest/sm2/test_av.py pytest/sm2/test_cntr.py pytest/sm2/test_cq.py pytest/sm2/test_dom.py pytest/sm2/test_eq.py pytest/sm2/test_mr.py pytest/sm2/test_sighandler.py pytest/sm2/test_ubertest.py '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest/sm2'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/ofi_rxd'
+ /usr/bin/install -c -m 644  test_configs/ofi_rxd/udp.test test_configs/ofi_rxd/verbs.test test_configs/ofi_rxd/ofi_rxd.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/ofi_rxd'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/sm2'
+ /usr/bin/install -c -m 644  test_configs/sm2/quick.test test_configs/sm2/verify.test '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/sm2'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest/shm'
+ /usr/bin/install -c -m 644  pytest/shm/conftest.py pytest/shm/shm_common.py pytest/shm/test_av.py pytest/shm/test_cntr.py pytest/shm/test_cq.py pytest/shm/test_dom.py pytest/shm/test_eq.py pytest/shm/test_getinfo.py pytest/shm/test_mr.py pytest/shm/test_multi_recv.py pytest/shm/test_rdm.py pytest/shm/test_rma_bw.py pytest/shm/test_rma_pingpong.py pytest/shm/test_ubertest.py pytest/shm/test_unexpected_msg.py pytest/shm/test_sighandler.py '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest/shm'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest/default'
+ /usr/bin/install -c -m 644  pytest/default/test_av.py pytest/default/test_cm.py pytest/default/test_cntr.py pytest/default/test_cq.py pytest/default/test_dgram.py pytest/default/test_dom.py pytest/default/test_eq.py pytest/default/test_getinfo.py pytest/default/test_mr.py pytest/default/test_inject_test.py pytest/default/test_msg.py pytest/default/test_multinode.py pytest/default/test_multi_recv.py pytest/default/test_rdm.py pytest/default/test_recv_cancel.py pytest/default/test_rma_bw.py pytest/default/test_rma_pingpong.py pytest/default/test_scalable_ep.py pytest/default/test_shared_ctx.py pytest/default/test_ubertest.py pytest/default/test_unexpected_msg.py pytest/default/test_sighandler.py '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest/default'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/sockets'
+ /usr/bin/install -c -m 644  test_configs/sockets/all.test test_configs/sockets/quick.test test_configs/sockets/complete.test test_configs/sockets/verify.test test_configs/sockets/sockets.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/sockets'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/shm'
+ /usr/bin/install -c -m 644  test_configs/shm/all.test test_configs/shm/shm.exclude test_configs/shm/cuda.exclude test_configs/shm/quick.test test_configs/shm/verify.test '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/shm'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/verbs'
+ /usr/bin/install -c -m 644  test_configs/verbs/all.test test_configs/verbs/quick.test test_configs/verbs/verbs.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/verbs'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest'
+ /usr/bin/install -c -m 644  pytest/pytest.ini pytest/options.yaml pytest/conftest.py pytest/common.py '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/psm2'
+ /usr/bin/install -c -m 644  test_configs/psm2/all.test test_configs/psm2/verify.test test_configs/psm2/psm2.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/psm2'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/usnic'
+ /usr/bin/install -c -m 644  test_configs/usnic/all.test test_configs/usnic/quick.test '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/usnic'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/lpp'
+ /usr/bin/install -c -m 644  test_configs/lpp/all.test test_configs/lpp/complete.test test_configs/lpp/lpp.exclude test_configs/lpp/quick.test test_configs/lpp/verify.test '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/lpp'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/psm3'
+ /usr/bin/install -c -m 644  test_configs/psm3/all.test test_configs/psm3/verify.test test_configs/psm3/psm3.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/psm3'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/ucx'
+ /usr/bin/install -c -m 644  test_configs/ucx/all.test test_configs/ucx/quick.test test_configs/ucx/ucx.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/ucx'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/tcp'
+ /usr/bin/install -c -m 644  test_configs/tcp/all.test test_configs/tcp/tcp.exclude test_configs/tcp/io_uring.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/tcp'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs'
+ /usr/bin/install -c -m 644  test_configs/osx.exclude test_configs/eq_cq.test test_configs/lat_bw.test '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest/efa'
+ /usr/bin/install -c -m 644  pytest/efa/conftest.py pytest/efa/efa_common.py pytest/efa/test_flood_peer.py pytest/efa/test_mr_abort.py pytest/efa/test_from_default.py pytest/efa/test_av.py pytest/efa/test_cq.py pytest/efa/test_setopt.py pytest/efa/test_dgram.py pytest/efa/test_rdm.py pytest/efa/test_rma_bw.py pytest/efa/test_rma_pingpong.py pytest/efa/test_unexpected_msg.py pytest/efa/test_multi_recv.py pytest/efa/test_rnr.py pytest/efa/test_remote_exit_early.py pytest/efa/test_efa_info.py pytest/efa/test_efa_protocol_selection.py pytest/efa/test_efa_device_selection.py pytest/efa/test_runt.py pytest/efa/test_fork_support.py pytest/efa/test_mr.py pytest/efa/test_efa_shm_addr.py pytest/efa/test_env.py pytest/efa/test_multi_ep.py pytest/efa/test_gda.py pytest/efa/test_multi_ep_stress.py pytest/efa/test_efa_mmap.py pytest/efa/test_hw_cntr.py '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/pytest/efa'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/ofi_rxm'
+ /usr/bin/install -c -m 644  test_configs/ofi_rxm/tcp.test test_configs/ofi_rxm/verbs.test test_configs/ofi_rxm/ofi_rxm.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/ofi_rxm'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/efa'
+ /usr/bin/install -c -m 644  test_configs/efa/efa-neuron.exclude test_configs/efa/efa.exclude '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/share/fabtests/test_configs/efa'
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric/fabtests'
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/libfabric/fabtests'
+
+==> done. install prefix: /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build
+
+==>   fi_info:        /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_info -p 'udp;ofi_suet'
+
+==>   fabtests:       /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_*
+
+==>   run test suite: ./build.sh --test

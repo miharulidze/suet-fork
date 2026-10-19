@@ -1,0 +1,720 @@
++ set -ex
++ cd /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl
++ make -j12 src.build CUDA_HOME=/tmp/suet-nccl-retry-mkhalilo-20261014/cuda CUDA_INC=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/include CUDA_LIB=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib NVCC_GENCODE=-gencode=arch=compute_70,code=sm_70
+make -C src build BUILDDIR=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/src'
+NVCC_GENCODE is -gencode=arch=compute_70,code=sm_70
+Grabbing   include/nccl_device.h               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device.h
+Generating nccl.h.in                           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl.h
+Grabbing   include/nccl_device/barrier.h       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/barrier.h
+Grabbing   include/nccl_device/cft.h           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/cft.h
+Grabbing   include/nccl_device/cft_barrier.h   > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/cft_barrier.h
+Grabbing   include/nccl_device/comm.h          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/comm.h
+Grabbing   include/nccl_device/coop.h          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/coop.h
+Grabbing   include/nccl_device/core.h          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/core.h
+Grabbing   include/nccl_device/gin.h           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin.h
+Grabbing   include/nccl_device/gin_barrier.h   > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin_barrier.h
+Grabbing   include/nccl_device/gin_win_stub.h  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin_win_stub.h
+Grabbing   include/nccl_device/host.h          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/host.h
+Grabbing   include/nccl_device/ll_a2a.h        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/ll_a2a.h
+Grabbing   include/nccl_device/lsa_barrier.h   > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/lsa_barrier.h
+Grabbing   include/nccl_device/net_device.h    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/net_device.h
+Grabbing   include/nccl_device/ptr.h           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/ptr.h
+Grabbing   include/nccl_device/reduce_copy.h   > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/reduce_copy.h
+Grabbing   include/nccl_device/utility.h       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/utility.h
+Grabbing   include/nccl_device/gin/gin_device_api.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gin_device_api.h
+Grabbing   include/nccl_device/gin/gin_device_common.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gin_device_common.h
+Grabbing   include/nccl_device/gin/gin_device_host_common.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gin_device_host_common.h
+Grabbing   include/nccl_device/impl/barrier__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/barrier__funcs.h
+Grabbing   include/nccl_device/impl/barrier__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/barrier__types.h
+Grabbing   include/nccl_device/impl/cft__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/cft__funcs.h
+Grabbing   include/nccl_device/impl/cft__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/cft__types.h
+Grabbing   include/nccl_device/impl/cft_barrier__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/cft_barrier__funcs.h
+Grabbing   include/nccl_device/impl/cft_barrier__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/cft_barrier__types.h
+Grabbing   include/nccl_device/impl/comm__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/comm__funcs.h
+Grabbing   include/nccl_device/impl/comm__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/comm__types.h
+Grabbing   include/nccl_device/impl/core__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/core__funcs.h
+Grabbing   include/nccl_device/impl/core__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/core__types.h
+Grabbing   include/nccl_device/impl/gin__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/gin__funcs.h
+Grabbing   include/nccl_device/impl/gin__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/gin__types.h
+Grabbing   include/nccl_device/impl/gin_barrier__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/gin_barrier__funcs.h
+Grabbing   include/nccl_device/impl/gin_barrier__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/gin_barrier__types.h
+Grabbing   include/nccl_device/impl/ll_a2a__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/ll_a2a__funcs.h
+Grabbing   include/nccl_device/impl/ll_a2a__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/ll_a2a__types.h
+Grabbing   include/nccl_device/impl/lsa_barrier__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/lsa_barrier__funcs.h
+Grabbing   include/nccl_device/impl/lsa_barrier__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/lsa_barrier__types.h
+Grabbing   include/nccl_device/impl/multimem__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/multimem__funcs.h
+Grabbing   include/nccl_device/impl/ptr__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/ptr__funcs.h
+Grabbing   include/nccl_device/impl/ptr__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/ptr__types.h
+Grabbing   include/nccl_device/impl/reduce_copy__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/reduce_copy__funcs.h
+Grabbing   include/nccl_device/impl/reduce_copy__impl.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/reduce_copy__impl.h
+Grabbing   include/nccl_device/impl/reduce_copy__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/reduce_copy__types.h
+Grabbing   include/nccl_device/impl/vector__funcs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/vector__funcs.h
+Grabbing   include/nccl_device/impl/vector__types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/impl/vector__types.h
+Grabbing   include/nccl_device/gin/efa_gda/gin_efa_gda.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/efa_gda/gin_efa_gda.h
+Grabbing   include/nccl_device/gin/efa_gda/gin_efa_gda_dev.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/efa_gda/gin_efa_gda_dev.h
+Grabbing   include/nccl_device/gin/gdaki/gin_gdaki.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/gin_gdaki.h
+Grabbing   include/nccl_device/gin/gdaki/gin_gdaki_device_host_common.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/gin_gdaki_device_host_common.h
+Grabbing   include/nccl_device/gin/gpi/gin_gpi.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gpi/gin_gpi.h
+Grabbing   include/nccl_device/gin/gpi/gin_gpi_device_host_common.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gpi/gin_gpi_device_host_common.h
+Grabbing   include/nccl_device/gin/proxy/gin_proxy.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/proxy/gin_proxy.h
+Grabbing   include/nccl_device/gin/proxy/gin_proxy_device_host_common.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/proxy/gin_proxy_device_host_common.h
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/doca_gpunetio_device.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/doca_gpunetio_device.h
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/common/doca_gpunetio_verbs_def.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/common/doca_gpunetio_verbs_def.h
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/common/doca_gpunetio_verbs_dev.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/common/doca_gpunetio_verbs_dev.h
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_common.cuh > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_common.cuh
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_counter.cuh > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_counter.cuh
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_cq.cuh > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_cq.cuh
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_onesided.cuh > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_onesided.cuh
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_qp.cuh > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_qp.cuh
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/device/efa_cuda_dp_defs.cuh > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/device/efa_cuda_dp_defs.cuh
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/device/efa_cuda_dp_impl.cuh > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/device/efa_cuda_dp_impl.cuh
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/common/efa_cuda_dp_types.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/common/efa_cuda_dp_types.h
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/common/efa_cuda_dp_version.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/common/efa_cuda_dp_version.h
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/common/efa_io_defs.h > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/common/efa_io_defs.h
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_qp.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_qp.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_cq.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_cq.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_device_attr.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_device_attr.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_umem.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_umem.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_srq.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_srq.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_uar.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_uar.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_dev.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_dev.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_gpunetio.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_gpunetio.o
+Updated  /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/include/nccl_git_version.h
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_gpunetio_log.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_gpunetio_log.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_gpunetio_high_level.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_gpunetio_high_level.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_gpunetio_cuda_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_gpunetio_cuda_wrapper.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_mlx5dv_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_mlx5dv_wrapper.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_ibv_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_ibv_wrapper.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_gpunetio_gdrcopy.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_gpunetio_gdrcopy.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_gpunetio_sdk_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_gpunetio_sdk_wrapper.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_dev_sdk_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_dev_sdk_wrapper.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_umem_sdk_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_umem_sdk_wrapper.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_uar_sdk_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_uar_sdk_wrapper.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_cq_sdk_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_cq_sdk_wrapper.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_qp_sdk_wrapper.cpp > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_qp_sdk_wrapper.o
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/src/device'
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/src/diagnostics/device'
+NVCC_GENCODE is -gencode=arch=compute_70,code=sm_70
+Generating nccl.pc.in                          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/pkgconfig/nccl.pc
+Compiling  ras/client.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/client.o
+Compiling  ras/ras_param.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/ras_param_client.o
+NVCC_GENCODE is -gencode=arch=compute_70,code=sm_70
+Compiling  param/ncclparam.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/param/ncclparam.o
+Dependencies    src/diagnostics/device/p2p.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  bootstrap.cc                        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/bootstrap.o
+Compiling  channel.cc                          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/channel.o
+Compiling  collectives.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/collectives.o
+NVCC_GENCODE is -gencode=arch=compute_70,code=sm_70
+Dependencies    src/device/common.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  debug.cc                            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/debug.o
+Compiling  group.cc                            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/group.o
+Compiling  init.cc                             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/init.o
+Compiling  proxy.cc                            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/proxy.o
+Compiling  transport.cc                        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport.o
+Compiling  mnnvl.cc                            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/mnnvl.o
+Compiling  allocator.cc                        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/allocator.o
+Compiling       src/diagnostics/device/p2p.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/src/diagnostics/device'
+Compiling  dev_runtime.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/dev_runtime.o
+Dependencies    src/device/onerank.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  cft_dev_runtime.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/cft_dev_runtime.o
+Compiling  dev_runtime_segments.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/dev_runtime_segments.o
+Dependencies    build/obj/device/gensrc/all_gather.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  sym_kernels.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/sym_kernels.o
+Compiling  ce_coll.cc                          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ce_coll.o
+Compiling  mem_manager.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/mem_manager.o
+Dependencies    build/obj/device/gensrc/all_gather_v.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  config/algorithm_parser.cc          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/config/algorithm_parser.o
+Dependencies    build/obj/device/gensrc/all_reduce.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Dependencies    build/obj/device/gensrc/broadcast.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  config/algorithm_registry.cc        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/config/algorithm_registry.o
+Dependencies    build/obj/device/gensrc/reduce.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Dependencies    build/obj/device/gensrc/reduce_scatter.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  config/collconfig.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/config/collconfig.o
+Compiling  graph/connect.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/graph/connect.o
+Compiling  graph/paths.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/graph/paths.o
+Dependencies    build/obj/device/gensrc/sendrecv.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  graph/rings.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/graph/rings.o
+Dependencies    build/obj/device/gensrc/host_table.cc
+Compiling  graph/search.cc                     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/graph/search.o
+Dependencies    build/obj/device/gensrc/device_table.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Dependencies    build/obj/device/gensrc/symmetric/all_gather.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Dependencies    build/obj/device/gensrc/symmetric/all_gather_gin.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  graph/topo.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/graph/topo.o
+Dependencies    build/obj/device/gensrc/symmetric/all_reduce.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  graph/trees.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/graph/trees.o
+Dependencies    build/obj/device/gensrc/symmetric/reduce_scatter.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  graph/xml.cc                        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/graph/xml.o
+Compiling  enqueue/enqueue.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/enqueue.o
+Compiling  enqueue/mgmt_task_enq.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/mgmt_task_enq.o
+Dependencies    build/obj/device/gensrc/symmetric/reduce_scatter_gin.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_gather_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  enqueue/task_prep/task_classify.cc  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_prep/task_classify.o
+Compiling       build/obj/device/gensrc/symmetric/all_gather_gin_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  enqueue/task_prep/task_posttuning.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_prep/task_posttuning.o
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_bf16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  enqueue/task_prep/task_prep.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_prep/task_prep.o
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  enqueue/task_prep/task_pretuning.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_prep/task_pretuning.o
+Compiling  enqueue/task_sched/allgatherv_sched.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_sched/allgatherv_sched.o
+Compiling  enqueue/task_sched/ce_sched.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_sched/ce_sched.o
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f32_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  enqueue/task_sched/legacy_sched.cc  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_sched/legacy_sched.o
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f8e4m3_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  enqueue/task_sched/p2p_sched.cc     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_sched/p2p_sched.o
+Compiling  enqueue/task_sched/rma_sched.cc     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_sched/rma_sched.o
+Compiling  enqueue/task_sched/sym_sched.cc     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_sched/sym_sched.o
+Compiling  enqueue/task_sched/task_sched.cc    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enqueue/task_sched/task_sched.o
+Compiling  misc/argcheck.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/argcheck.o
+Compiling  misc/crypt.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/crypt.o
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f8e4m3_RSxLDMC_AGxSTMC_profile.cu
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f8e5m2_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  misc/cudawrap.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/cudawrap.o
+Compiling  misc/gdrwrap.cc                     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/gdrwrap.o
+Compiling  misc/git_version.cc                 > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/git_version.o
+Compiling  misc/ibvsymbols.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/ibvsymbols.o
+Compiling  misc/ibvwrap.cc                     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/ibvwrap.o
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f8e5m2_RSxLDMC_AGxSTMC_profile.cu
+Compiling  misc/mlx5dvsymbols.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/mlx5dvsymbols.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_bf16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  misc/mlx5dvwrap.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/mlx5dvwrap.o
+Compiling  misc/nvmlwrap.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/nvmlwrap.o
+Compiling  misc/param.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/param.o
+Compiling  misc/shmutils.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/shmutils.o
+Compiling  misc/socket.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/socket.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  misc/strongstream.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/strongstream.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f32_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  misc/utils.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/misc/utils.o
+Compiling  transport/coll_net.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/coll_net.o
+Compiling  transport/generic.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/generic.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f8e4m3_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/mc_arena.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/mc_arena.o
+Compiling  transport/multicast.cc              > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/multicast.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f8e4m3_LDMC_profile.cu
+Compiling  transport/net.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net.o
+Compiling  transport/net_socket.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_socket.o
+Compiling  transport/nvls.cc                   > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/nvls.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f8e5m2_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/nvls_ub.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/nvls_ub.o
+Compiling  transport/p2p.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/p2p.o
+Compiling  transport/rma_socket.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/rma_socket.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f8e5m2_LDMC_profile.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_bf16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f32_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/rma_socket_mem.cc         > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/rma_socket_mem.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f8e4m3_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/rma_socket_progress_recver.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/rma_socket_progress_recver.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f8e4m3_RailA2A_LsaLDMC_profile.cu
+Compiling  transport/rma_socket_setup.cc       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/rma_socket_setup.o
+Compiling  transport/shm.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/shm.o
+Compiling  transport/net_socket/common.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_socket/common.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f8e5m2_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/net_ib/common.cc          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/common.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f8e5m2_RailA2A_LsaLDMC_profile.cu
+Compiling  transport/net_ib/connect.cc         > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/connect.o
+Compiling  transport/net_ib/gdr.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdr.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_bf16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/net_ib/gin.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gin.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/net_ib/init.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/init.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f32_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/net_ib/p2p.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/p2p.o
+Compiling  transport/net_ib/p2p_resiliency.cc  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/p2p_resiliency.o
+Compiling  transport/net_ib/p2p_resiliency_recovery.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/p2p_resiliency_recovery.o
+Compiling  transport/net_ib/reg.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/reg.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f8e4m3_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/net_ib/wqe_lat_mon.cc     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/wqe_lat_mon.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f8e4m3_RailA2A_LsaLDMC_profile.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f8e5m2_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/net_ib/gdaki/gin_host_gdaki.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/gin_host_gdaki.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f8e5m2_RailA2A_LsaLDMC_profile.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_bf16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f16_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  transport/net_ib/gdaki/gpucontext/gpucontext.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/gpucontext/gpucontext.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f32_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f8e4m3_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f8e4m3_LDMC_profile.cu
+Compiling  transport/net_ib/gdaki/gpucontext/gpucontext_v1.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/transport/net_ib/gdaki/gpucontext/gpucontext_v1.o
+Compiling  register/coll_reg.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/register/coll_reg.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f8e5m2_profile.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  register/register.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/register/register.o
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f8e5m2_LDMC_profile.cu
+Dependencies    build/obj/device/gensrc/symmetric/sym_kernels_host.cc
+Compiling       src/device/common.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       src/device/onerank.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_gather.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_gather_v.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_minmax_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  register/sendrecv_reg.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/register/sendrecv_reg.o
+Compiling       build/obj/device/gensrc/all_reduce_minmax_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/env.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/env.o
+Compiling       build/obj/device/gensrc/all_reduce_minmax_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/gin.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/gin.o
+Compiling       build/obj/device/gensrc/all_reduce_minmax_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/net.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/net.o
+Compiling       build/obj/device/gensrc/all_reduce_minmax_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_minmax_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_minmax_i32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_minmax_i64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/plugin_open.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/plugin_open.o
+Compiling       build/obj/device/gensrc/all_reduce_minmax_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/profiler.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/profiler.o
+Compiling  plugin/rma.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/rma.o
+Compiling       build/obj/device/gensrc/all_reduce_minmax_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_minmax_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/tuner.cc                     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/tuner.o
+Compiling  plugin/net/net_v10.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/net/net_v10.o
+Compiling  plugin/net/net_v11.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/net/net_v11.o
+Compiling  plugin/net/net_v12.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/net/net_v12.o
+Compiling  plugin/net/net_v6.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/net/net_v6.o
+Compiling  plugin/net/net_v7.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/net/net_v7.o
+Compiling  plugin/net/net_v8.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/net/net_v8.o
+Compiling  plugin/net/net_v9.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/net/net_v9.o
+Compiling  plugin/gin/gin_v13.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/gin/gin_v13.o
+Compiling  plugin/gin/gin_v14.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/gin/gin_v14.o
+Compiling  plugin/rma/rma_v13.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/rma/rma_v13.o
+Compiling  plugin/rma/rma_v14.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/rma/rma_v14.o
+Compiling  plugin/rma/rma_v15.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/rma/rma_v15.o
+Compiling  plugin/rma/rma_v16.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/rma/rma_v16.o
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/tuner/tuner_v2.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/tuner/tuner_v2.o
+Compiling  plugin/tuner/tuner_v3.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/tuner/tuner_v3.o
+Compiling  plugin/tuner/tuner_v4.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/tuner/tuner_v4.o
+Compiling  plugin/tuner/tuner_v5.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/tuner/tuner_v5.o
+Compiling  plugin/tuner/tuner_v6.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/tuner/tuner_v6.o
+Compiling  plugin/profiler/profiler_v1.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/profiler/profiler_v1.o
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/profiler/profiler_v2.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/profiler/profiler_v2.o
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_premulsum_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_prod_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_prod_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_prod_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/profiler/profiler_v3.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/profiler/profiler_v3.o
+Compiling  plugin/profiler/profiler_v4.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/profiler/profiler_v4.o
+Compiling       build/obj/device/gensrc/all_reduce_prod_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_prod_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/profiler/profiler_v5.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/profiler/profiler_v5.o
+Compiling  plugin/profiler/profiler_v6.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/profiler/profiler_v6.o
+Compiling       build/obj/device/gensrc/all_reduce_prod_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/profiler/profiler_v7.cc      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/profiler/profiler_v7.o
+Compiling       build/obj/device/gensrc/all_reduce_prod_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/env/default_env.cc           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/env/default_env.o
+Compiling       build/obj/device/gensrc/all_reduce_prod_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/env/env_v1.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/env/env_v1.o
+Compiling       build/obj/device/gensrc/all_reduce_prod_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  plugin/env/env_v2.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/plugin/env/env_v2.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  nccl_device/cft_barrier.cc          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/nccl_device/cft_barrier.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  nccl_device/core.cc                 > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/nccl_device/core.o
+Compiling  nccl_device/gin_barrier.cc          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/nccl_device/gin_barrier.o
+Compiling  nccl_device/gin_scratch.cc          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/nccl_device/gin_scratch.o
+Compiling  nccl_device/ll_a2a.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/nccl_device/ll_a2a.o
+Compiling  nccl_device/lsa_barrier.cc          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/nccl_device/lsa_barrier.o
+Compiling  scheduler/allgatherv_sched.cc       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/scheduler/allgatherv_sched.o
+Compiling  scheduler/symmetric_sched.cc        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/scheduler/symmetric_sched.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  gin/gin_host.cc                     > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/gin/gin_host.o
+Compiling  gin/gin_host_proxy.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/gin/gin_host_proxy.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+scheduler/symmetric_sched.cc: In function 'ncclResult_t ncclSymmetricTaskScheduler(ncclComm*, ncclIntruQueue<ncclTaskColl, &ncclTaskColl::next>*, ncclKernelPlan*)':
+scheduler/symmetric_sched.cc:327:43: warning: enumerated and non-enumerated type in conditional expression [-Wextra]
+  327 |   argsBuf->profilerMode = profilerEnabled ? ncclProfilerDeviceMode(headTask->eActivationMask) : ncclDevProfilerModeNone;
+      |                           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Compiling  gin/proxy_gpucontext/gpucontext.cc  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/gin/proxy_gpucontext/gpucontext.o
+Compiling  gin/proxy_gpucontext/gpucontext_v1.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/gin/proxy_gpucontext/gpucontext_v1.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  gin/proxy_gpucontext/gpucontext_v2.cc > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/gin/proxy_gpucontext/gpucontext_v2.o
+Compiling  rma/rma.cc                          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/rma/rma.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  rma/rma_ce.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/rma/rma_ce.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  rma/rma_proxy.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/rma/rma_proxy.o
+Compiling  rma/rma_proxy_launch.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/rma/rma_proxy_launch.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  rma/rma_proxy_progress.cc           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/rma/rma_proxy_progress.o
+Compiling  devcomm/devcomm_v22902.cc           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/devcomm/devcomm_v22902.o
+Compiling       build/obj/device/gensrc/all_reduce_sum_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_sumpostdiv_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/all_reduce_sumpostdiv_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  devcomm/devcomm_v22907.cc           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/devcomm/devcomm_v22907.o
+Compiling       build/obj/device/gensrc/all_reduce_sumpostdiv_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  devcomm/devcomm_v23000.cc           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/devcomm/devcomm_v23000.o
+Compiling       build/obj/device/gensrc/broadcast.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_minmax_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  devcomm/devcomm_v23100.cc           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/devcomm/devcomm_v23100.o
+Compiling  tuning/ce_model.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/ce_model.o
+Compiling       build/obj/device/gensrc/reduce_minmax_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  tuning/collnet.cc                   > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/collnet.o
+Compiling  tuning/cost_model.cc                > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/cost_model.o
+Compiling  tuning/nvls.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/nvls.o
+Compiling  tuning/pat.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/pat.o
+Compiling  tuning/ring.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/ring.o
+Compiling       build/obj/device/gensrc/reduce_minmax_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  tuning/sym_model.cc                 > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/sym_model.o
+Compiling       build/obj/device/gensrc/reduce_minmax_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  tuning/tree.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/tree.o
+Compiling       build/obj/device/gensrc/reduce_minmax_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  tuning/tuning.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/tuning.o
+Compiling  tuning/tuning_general.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/tuning_general.o
+Compiling  tuning/sym_model/gin.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/sym_model/gin.o
+Compiling       build/obj/device/gensrc/reduce_minmax_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_minmax_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  tuning/sym_model/lsa.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/sym_model/lsa.o
+Compiling  tuning/sym_model/lsa_a2a.cc         > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/sym_model/lsa_a2a.o
+Compiling  tuning/sym_model/lsa_base.cc        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/tuning/sym_model/lsa_base.o
+Compiling  param/c_api.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/param/c_api.o
+Compiling  param/param.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/param/param.o
+Compiling  param/param_registry.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/param/param_registry.o
+Compiling  ras/client_support.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/client_support.o
+Compiling  ras/collectives.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/collectives.o
+Compiling  ras/diagnostics.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/diagnostics.o
+Compiling       build/obj/device/gensrc/reduce_minmax_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  ras/diagnostics_checks_common.cc    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/diagnostics_checks_common.o
+Compiling  ras/diagnostics_env.cc              > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/diagnostics_env.o
+Compiling       build/obj/device/gensrc/reduce_minmax_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_premulsum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  ras/diagnostics_gpu.cc              > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/diagnostics_gpu.o
+Compiling  ras/diagnostics_paths.cc            > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/diagnostics_paths.o
+Compiling  ras/diagnostics_pci.cc              > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/diagnostics_pci.o
+Compiling       build/obj/device/gensrc/reduce_premulsum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_premulsum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_premulsum_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  ras/diagnostics_xid.cc              > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/diagnostics_xid.o
+Compiling  ras/peers.cc                        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/peers.o
+Compiling  ras/progress_monitor.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/progress_monitor.o
+Compiling       build/obj/device/gensrc/reduce_premulsum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  ras/ras.cc                          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/ras.o
+Compiling  ras/ras_param.cc                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/ras_param.o
+Compiling  ras/rasnet.cc                       > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/ras/rasnet.o
+Compiling  os/linux.cc                         > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/os/linux.o
+Compiling  os/linux_ipcsocket.cc               > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/os/linux_ipcsocket.o
+Compiling  os/linux_socket_pair.cc             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/os/linux_socket_pair.o
+Compiling  diagnostics.cc                      > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/diagnostics.o
+Compiling  diagnostics/ib_write_bw.cc          > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/diagnostics/ib_write_bw.o
+Compiling       build/obj/device/gensrc/reduce_premulsum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  diagnostics/p2p.cc                  > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/diagnostics/p2p.o
+Compiling       build/obj/device/gensrc/reduce_premulsum_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling  init_nvtx.cc                        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/init_nvtx.o
+Compiling  enhcompat.cc                        > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/obj/enhcompat.o
+Linking    ncclras                             > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/bin/ncclras
+Compiling       build/obj/device/gensrc/reduce_premulsum_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_premulsum_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_prod_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_i32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_i64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_minmax_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_premulsum_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_prod_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sum_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sumpostdiv_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sumpostdiv_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_scatter_sumpostdiv_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_f64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sum_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sumpostdiv_u32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sumpostdiv_u64.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/reduce_sumpostdiv_u8.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/sendrecv.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/host_table.cc
+Compiling       build/obj/device/gensrc/device_table.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_gather.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_gather_gin.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f8e4m3_RSxLDMC_AGxSTMC.cu
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/all_reduce_sum_f8e5m2_RSxLDMC_AGxSTMC.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f8e4m3_LDMC.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_avg_f8e5m2_LDMC.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f8e4m3_RailA2A_LsaLDMC.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_avg_f8e5m2_RailA2A_LsaLDMC.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f8e4m3_RailA2A_LsaLDMC.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_gin_sum_f8e5m2_RailA2A_LsaLDMC.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_bf16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f16.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f32.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f8e4m3.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f8e4m3_LDMC.cu
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f8e5m2.cu
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Compiling       build/obj/device/gensrc/symmetric/reduce_scatter_sum_f8e5m2_LDMC.cu
+Compiling       build/obj/device/gensrc/symmetric/sym_kernels_host.cc
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/src/device'
+Linking    libnccl.so.2.32.3                   > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl.so.2.32.3
+Archiving  libnccl_static.a                    > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl_static.a
+Linking    ncclparam                           > /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/bin/ncclparam
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/src'

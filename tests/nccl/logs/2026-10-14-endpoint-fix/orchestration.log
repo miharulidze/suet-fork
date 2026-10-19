@@ -1,0 +1,30 @@
+Cloning into '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/libfabric'...
+done.
+Note: switching to '0c270f7482fa8a5cbc1e8f52551d389c645c7483'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+autogen=0
+configure=0
+build=0
+install=0
+endpoint-build=0
+endpoint-test=0
+probe-build=0
+endpoint-probe=0
+nccl-2gpu=124
+nccl-4gpu=3
+finished

@@ -1,0 +1,12 @@
+ROD: distinct endpoint AV entries: PASS
+RI 0/1 -> RI 2: message posted directed, 65537 bytes: PASS
+RI 0/1 -> RI 3: tagged posted directed, 17 bytes: PASS
+RI 0/1 -> RI 2: tagged unexpected directed, 65537 bytes: PASS
+RI 0/1 -> RI 3: tagged posted wildcard, 17 bytes: PASS
+RI 0/1 -> RI 3: tagged posted wildcard, 0 bytes: PASS
+RUD: distinct endpoint AV entries: PASS
+RI 0/1 -> RI 2: message posted directed, 65537 bytes: PASS
+RI 0/1 -> RI 3: tagged posted directed, 17 bytes: PASS
+RI 0/1 -> RI 2: tagged unexpected directed, 65537 bytes: PASS
+RI 0/1 -> RI 3: tagged posted wildcard, 17 bytes: PASS
+RI 0/1 -> RI 3: tagged posted wildcard, 0 bytes: PASS

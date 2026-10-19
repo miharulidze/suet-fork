@@ -1,0 +1,23 @@
+2026-10-14T13:25:03+02:00
+suet 05120e5afd5b675d9f1df97d6c60e70cb02731ef
+nccl 3e46c089f4ae4732722a419eb6096aead7e47a30
+aws-ofi-nccl 745b951f443511bbc79beb0868cd8a967907eb42
+nccl-tests afd59abab774a6a4b492eb344bd0c845a0b7bb4d
+0c270f7482fa8a5cbc1e8f52551d389c645c7483
+nccl_build=0
+suet_build=0
+plugin_build=0
+fi_info_suet=0
+nccl_tests_build=0
+all_reduce_2gpu=124
+all_reduce_4gpu=3
+socket_control_2gpu=0
+socket_control_4gpu=0
+host_rdm_pingpong_client=0 server=0
+host_rdm_tagged_pingpong_client=0 server=0
+ofi_tcp_control_2gpu=0
+ofi_tcp_control_4gpu=0
+cq_diagnostic=1
+cq_diagnostic_abi_debugger=0
+endpoint_identity_probe=127
+endpoint_identity_probe_corrected=1

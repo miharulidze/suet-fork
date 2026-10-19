@@ -1,0 +1,7 @@
++ /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc -std=c11 /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe.c -I /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/include -L /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib -lfabric -o /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe
++ timeout --kill-after=3s 15s /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe
+endpoint_0_name (52 bytes): 0100000000003a0100000100000000000200922694bb692200000000000000000000000000000000000000000000000010000000
+endpoint_0_fi_addr=0
+endpoint_1_name (52 bytes): 0100000000003a0101000100000000000200922694bb692200000000000000000000000000000000000000000000000010000000
+endpoint_1_fi_addr=0
+distinct_endpoint_names=YES; address_vector_alias=YES

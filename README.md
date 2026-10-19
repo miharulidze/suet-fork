@@ -167,6 +167,32 @@ Many of the UET specification features are not yet supported, including but not 
 - Basic header formats tested against Wireshark UET dissector
 - SES/PDS regression and mixed-build compatibility checks: see [tests/README.md](tests/README.md)
 
+### NCCL support experiment
+
+Follow the [NCCL test guide](tests/nccl/TESTING.md) for reproducible builds,
+the checked 2-/4-GPU matrix, and library/transport verification.
+
+The 2026-10-14 CSCS Ault retry successfully built unmodified NCCL, AWS OFI
+NCCL and SUET `refactor` on the approved replacement node `ault24`, using
+scratch-installed Conda GCC 13.4/CUDA 12.8 and approved libfabric base
+`94f3b1ac`. The existing SUET patches apply to that revision unchanged.
+
+The baseline failed at runtime: incorrect values with 2 GPUs and an OFI
+connection-management error with 4 GPUs. The authorized endpoint-addressing
+fix now passes both GPU counts from 8 bytes through 1 MiB, with zero
+validation errors. These ROD tests force the Libfabric network path with
+GPU P2P/SHM and GDR disabled. The OFI plugin source is unchanged and was
+rebuilt against the corrected SUET/libfabric install.
+
+The [NCCL experiment index](tests/nccl/README.md) preserves the initial
+build failure. The [retry report](tests/nccl/retry-2026-10-14.md) records
+toolchain installation, exact commands, raw logs, the endpoint-identity
+reproduction, and the proposed fix. The [implementation and validation
+report](tests/nccl/endpoint-fix-2026-10-14.md) records the applied fix, passing
+GPU logs, and the plugin RPATH issue encountered during validation. A new
+four-endpoint UDP regression also passes with both ROD and RUD; the NCCL
+GPU runs exercise ROD.
+
 ### libfabric API mapping and feature support
 
 SUET provider employs the following mapping between libfabric and UET abstractions:

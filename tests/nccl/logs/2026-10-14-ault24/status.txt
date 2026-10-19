@@ -1,0 +1,5 @@
+nccl_build=2
+suet_build=1
+plugin_build=77
+gpu_tests=BLOCKED: NCCL and/or OFI plugin did not build; no fallback transport tested.
+nccl_build_corrected=2

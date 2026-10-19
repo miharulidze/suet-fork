@@ -1,0 +1,17 @@
+nccl_build=0
+suet_build=0
+plugin_build=0
+fi_info_suet=0
+nccl_tests_build=0
+all_reduce_2gpu=124
+all_reduce_4gpu=3
+socket_control_2gpu=0
+socket_control_4gpu=0
+host_rdm_pingpong_client=0 server=0
+host_rdm_tagged_pingpong_client=0 server=0
+ofi_tcp_control_2gpu=0
+ofi_tcp_control_4gpu=0
+cq_diagnostic=1
+cq_diagnostic_abi_debugger=0
+endpoint_identity_probe=127
+endpoint_identity_probe_corrected=1

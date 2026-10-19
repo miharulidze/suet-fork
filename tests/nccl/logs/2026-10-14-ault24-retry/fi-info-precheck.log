@@ -1,0 +1,320 @@
+---
+fi_info:
+    caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_WRITE, FI_RECV, FI_SEND, FI_REMOTE_WRITE, FI_MULTI_RECV, FI_LOCAL_COMM, FI_REMOTE_COMM, FI_RMA_EVENT, FI_SOURCE, FI_DIRECTED_RECV ]
+    mode: [  ]
+    addr_format: FI_SOCKADDR_IN
+    src_addrlen: 52
+    dest_addrlen: 0
+    src_addr: 
+    dest_addr: (null)
+    handle: (nil)
+    fi_tx_attr:
+        caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_WRITE, FI_SEND ]
+        mode: [  ]
+        op_flags: [  ]
+        msg_order: [ FI_ORDER_RAR, FI_ORDER_RAW, FI_ORDER_RAS, FI_ORDER_WAW, FI_ORDER_WAS, FI_ORDER_SAW, FI_ORDER_SAS, FI_ORDER_RMA_RAR, FI_ORDER_RMA_RAW, FI_ORDER_RMA_WAW, FI_ORDER_ATOMIC_RAR, FI_ORDER_ATOMIC_RAW, FI_ORDER_ATOMIC_WAR, FI_ORDER_ATOMIC_WAW ]
+        inject_size: 1456
+        size: 1024
+        iov_limit: 4
+        rma_iov_limit: 1
+        tclass: 0x0
+    fi_rx_attr:
+        caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_RECV, FI_REMOTE_WRITE, FI_MULTI_RECV, FI_RMA_EVENT, FI_SOURCE, FI_DIRECTED_RECV ]
+        mode: [  ]
+        op_flags: [  ]
+        msg_order: [ FI_ORDER_RAR, FI_ORDER_RAW, FI_ORDER_RAS, FI_ORDER_WAW, FI_ORDER_WAS, FI_ORDER_SAW, FI_ORDER_SAS, FI_ORDER_RMA_RAR, FI_ORDER_RMA_RAW, FI_ORDER_RMA_WAW, FI_ORDER_ATOMIC_RAR, FI_ORDER_ATOMIC_RAW, FI_ORDER_ATOMIC_WAR, FI_ORDER_ATOMIC_WAW ]
+        size: 1024
+        iov_limit: 4
+    fi_ep_attr:
+        type: FI_EP_RDM
+        protocol: Unknown
+        protocol_version: 1
+        max_msg_size: 4294967295
+        msg_prefix_size: 0
+        max_order_raw_size: 4294967295
+        max_order_war_size: 0
+        max_order_waw_size: 4294967295
+        mem_tag_format: 0xaaaaaaaaaaaaaaaa
+        tx_ctx_cnt: 1
+        rx_ctx_cnt: 1
+        auth_key_size: 0
+        xpu_ctx: (nil)
+        max_tx_wr_size: 0
+        max_rx_wr_size: 0
+    fi_domain_attr:
+        domain: (nil)
+        name: enp134s0f0
+        threading: FI_THREAD_SAFE
+        progress: FI_PROGRESS_MANUAL
+        resource_mgmt: FI_RM_ENABLED
+        av_type: FI_AV_UNSPEC
+        mr_mode: [  ]
+        mr_key_size: 8
+        cq_data_size: 8
+        cq_cnt: 128
+        ep_cnt: 128
+        tx_ctx_cnt: 1
+        rx_ctx_cnt: 1
+        max_ep_tx_ctx: 1
+        max_ep_rx_ctx: 1
+        max_ep_stx_ctx: 0
+        max_ep_srx_ctx: 0
+        cntr_cnt: 0
+        mr_iov_limit: 1
+        caps: [ FI_LOCAL_COMM, FI_REMOTE_COMM ]
+        mode: [  ]
+        auth_key_size: 0
+        max_err_data: 0
+        mr_cnt: 0
+        tclass: 0x0
+        max_ep_auth_key: 0
+        max_group_id: 0
+        max_cntr_value: 18446744073709551615
+        max_err_cntr_value: 18446744073709551615
+        max_xpu_ctx_cnt: 0
+    fi_fabric_attr:
+        name: 148.187.105.0/24
+        prov_name: udp;ofi_suet
+        prov_version: 207.0
+        api_version: 2.7
+    nic: (nil)
+---
+fi_info:
+    caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_WRITE, FI_RECV, FI_SEND, FI_REMOTE_WRITE, FI_MULTI_RECV, FI_LOCAL_COMM, FI_REMOTE_COMM, FI_RMA_EVENT, FI_SOURCE, FI_DIRECTED_RECV ]
+    mode: [  ]
+    addr_format: FI_SOCKADDR_IN6
+    src_addrlen: 52
+    dest_addrlen: 0
+    src_addr: 
+    dest_addr: (null)
+    handle: (nil)
+    fi_tx_attr:
+        caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_WRITE, FI_SEND ]
+        mode: [  ]
+        op_flags: [  ]
+        msg_order: [ FI_ORDER_RAR, FI_ORDER_RAW, FI_ORDER_RAS, FI_ORDER_WAW, FI_ORDER_WAS, FI_ORDER_SAW, FI_ORDER_SAS, FI_ORDER_RMA_RAR, FI_ORDER_RMA_RAW, FI_ORDER_RMA_WAW, FI_ORDER_ATOMIC_RAR, FI_ORDER_ATOMIC_RAW, FI_ORDER_ATOMIC_WAR, FI_ORDER_ATOMIC_WAW ]
+        inject_size: 1456
+        size: 1024
+        iov_limit: 4
+        rma_iov_limit: 1
+        tclass: 0x0
+    fi_rx_attr:
+        caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_RECV, FI_REMOTE_WRITE, FI_MULTI_RECV, FI_RMA_EVENT, FI_SOURCE, FI_DIRECTED_RECV ]
+        mode: [  ]
+        op_flags: [  ]
+        msg_order: [ FI_ORDER_RAR, FI_ORDER_RAW, FI_ORDER_RAS, FI_ORDER_WAW, FI_ORDER_WAS, FI_ORDER_SAW, FI_ORDER_SAS, FI_ORDER_RMA_RAR, FI_ORDER_RMA_RAW, FI_ORDER_RMA_WAW, FI_ORDER_ATOMIC_RAR, FI_ORDER_ATOMIC_RAW, FI_ORDER_ATOMIC_WAR, FI_ORDER_ATOMIC_WAW ]
+        size: 1024
+        iov_limit: 4
+    fi_ep_attr:
+        type: FI_EP_RDM
+        protocol: Unknown
+        protocol_version: 1
+        max_msg_size: 4294967295
+        msg_prefix_size: 0
+        max_order_raw_size: 4294967295
+        max_order_war_size: 0
+        max_order_waw_size: 4294967295
+        mem_tag_format: 0xaaaaaaaaaaaaaaaa
+        tx_ctx_cnt: 1
+        rx_ctx_cnt: 1
+        auth_key_size: 0
+        xpu_ctx: (nil)
+        max_tx_wr_size: 0
+        max_rx_wr_size: 0
+    fi_domain_attr:
+        domain: (nil)
+        name: enp134s0f0
+        threading: FI_THREAD_SAFE
+        progress: FI_PROGRESS_MANUAL
+        resource_mgmt: FI_RM_ENABLED
+        av_type: FI_AV_UNSPEC
+        mr_mode: [  ]
+        mr_key_size: 8
+        cq_data_size: 8
+        cq_cnt: 128
+        ep_cnt: 128
+        tx_ctx_cnt: 1
+        rx_ctx_cnt: 1
+        max_ep_tx_ctx: 1
+        max_ep_rx_ctx: 1
+        max_ep_stx_ctx: 0
+        max_ep_srx_ctx: 0
+        cntr_cnt: 0
+        mr_iov_limit: 1
+        caps: [ FI_LOCAL_COMM, FI_REMOTE_COMM ]
+        mode: [  ]
+        auth_key_size: 0
+        max_err_data: 0
+        mr_cnt: 0
+        tclass: 0x0
+        max_ep_auth_key: 0
+        max_group_id: 0
+        max_cntr_value: 18446744073709551615
+        max_err_cntr_value: 18446744073709551615
+        max_xpu_ctx_cnt: 0
+    fi_fabric_attr:
+        name: fe80::/64
+        prov_name: udp;ofi_suet
+        prov_version: 207.0
+        api_version: 2.7
+    nic: (nil)
+---
+fi_info:
+    caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_WRITE, FI_RECV, FI_SEND, FI_REMOTE_WRITE, FI_MULTI_RECV, FI_LOCAL_COMM, FI_RMA_EVENT, FI_SOURCE, FI_DIRECTED_RECV ]
+    mode: [  ]
+    addr_format: FI_SOCKADDR_IN
+    src_addrlen: 52
+    dest_addrlen: 0
+    src_addr: 
+    dest_addr: (null)
+    handle: (nil)
+    fi_tx_attr:
+        caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_WRITE, FI_SEND ]
+        mode: [  ]
+        op_flags: [  ]
+        msg_order: [ FI_ORDER_RAR, FI_ORDER_RAW, FI_ORDER_RAS, FI_ORDER_WAW, FI_ORDER_WAS, FI_ORDER_SAW, FI_ORDER_SAS, FI_ORDER_RMA_RAR, FI_ORDER_RMA_RAW, FI_ORDER_RMA_WAW, FI_ORDER_ATOMIC_RAR, FI_ORDER_ATOMIC_RAW, FI_ORDER_ATOMIC_WAR, FI_ORDER_ATOMIC_WAW ]
+        inject_size: 1456
+        size: 1024
+        iov_limit: 4
+        rma_iov_limit: 1
+        tclass: 0x0
+    fi_rx_attr:
+        caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_RECV, FI_REMOTE_WRITE, FI_MULTI_RECV, FI_RMA_EVENT, FI_SOURCE, FI_DIRECTED_RECV ]
+        mode: [  ]
+        op_flags: [  ]
+        msg_order: [ FI_ORDER_RAR, FI_ORDER_RAW, FI_ORDER_RAS, FI_ORDER_WAW, FI_ORDER_WAS, FI_ORDER_SAW, FI_ORDER_SAS, FI_ORDER_RMA_RAR, FI_ORDER_RMA_RAW, FI_ORDER_RMA_WAW, FI_ORDER_ATOMIC_RAR, FI_ORDER_ATOMIC_RAW, FI_ORDER_ATOMIC_WAR, FI_ORDER_ATOMIC_WAW ]
+        size: 1024
+        iov_limit: 4
+    fi_ep_attr:
+        type: FI_EP_RDM
+        protocol: Unknown
+        protocol_version: 1
+        max_msg_size: 4294967295
+        msg_prefix_size: 0
+        max_order_raw_size: 4294967295
+        max_order_war_size: 0
+        max_order_waw_size: 4294967295
+        mem_tag_format: 0xaaaaaaaaaaaaaaaa
+        tx_ctx_cnt: 1
+        rx_ctx_cnt: 1
+        auth_key_size: 0
+        xpu_ctx: (nil)
+        max_tx_wr_size: 0
+        max_rx_wr_size: 0
+    fi_domain_attr:
+        domain: (nil)
+        name: lo
+        threading: FI_THREAD_SAFE
+        progress: FI_PROGRESS_MANUAL
+        resource_mgmt: FI_RM_ENABLED
+        av_type: FI_AV_UNSPEC
+        mr_mode: [  ]
+        mr_key_size: 8
+        cq_data_size: 8
+        cq_cnt: 128
+        ep_cnt: 128
+        tx_ctx_cnt: 1
+        rx_ctx_cnt: 1
+        max_ep_tx_ctx: 1
+        max_ep_rx_ctx: 1
+        max_ep_stx_ctx: 0
+        max_ep_srx_ctx: 0
+        cntr_cnt: 0
+        mr_iov_limit: 1
+        caps: [ FI_LOCAL_COMM, FI_REMOTE_COMM ]
+        mode: [  ]
+        auth_key_size: 0
+        max_err_data: 0
+        mr_cnt: 0
+        tclass: 0x0
+        max_ep_auth_key: 0
+        max_group_id: 0
+        max_cntr_value: 18446744073709551615
+        max_err_cntr_value: 18446744073709551615
+        max_xpu_ctx_cnt: 0
+    fi_fabric_attr:
+        name: 127.0.0.1/32
+        prov_name: udp;ofi_suet
+        prov_version: 207.0
+        api_version: 2.7
+    nic: (nil)
+---
+fi_info:
+    caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_WRITE, FI_RECV, FI_SEND, FI_REMOTE_WRITE, FI_MULTI_RECV, FI_LOCAL_COMM, FI_RMA_EVENT, FI_SOURCE, FI_DIRECTED_RECV ]
+    mode: [  ]
+    addr_format: FI_SOCKADDR_IN6
+    src_addrlen: 52
+    dest_addrlen: 0
+    src_addr: 
+    dest_addr: (null)
+    handle: (nil)
+    fi_tx_attr:
+        caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_WRITE, FI_SEND ]
+        mode: [  ]
+        op_flags: [  ]
+        msg_order: [ FI_ORDER_RAR, FI_ORDER_RAW, FI_ORDER_RAS, FI_ORDER_WAW, FI_ORDER_WAS, FI_ORDER_SAW, FI_ORDER_SAS, FI_ORDER_RMA_RAR, FI_ORDER_RMA_RAW, FI_ORDER_RMA_WAW, FI_ORDER_ATOMIC_RAR, FI_ORDER_ATOMIC_RAW, FI_ORDER_ATOMIC_WAR, FI_ORDER_ATOMIC_WAW ]
+        inject_size: 1456
+        size: 1024
+        iov_limit: 4
+        rma_iov_limit: 1
+        tclass: 0x0
+    fi_rx_attr:
+        caps: [ FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_RECV, FI_REMOTE_WRITE, FI_MULTI_RECV, FI_RMA_EVENT, FI_SOURCE, FI_DIRECTED_RECV ]
+        mode: [  ]
+        op_flags: [  ]
+        msg_order: [ FI_ORDER_RAR, FI_ORDER_RAW, FI_ORDER_RAS, FI_ORDER_WAW, FI_ORDER_WAS, FI_ORDER_SAW, FI_ORDER_SAS, FI_ORDER_RMA_RAR, FI_ORDER_RMA_RAW, FI_ORDER_RMA_WAW, FI_ORDER_ATOMIC_RAR, FI_ORDER_ATOMIC_RAW, FI_ORDER_ATOMIC_WAR, FI_ORDER_ATOMIC_WAW ]
+        size: 1024
+        iov_limit: 4
+    fi_ep_attr:
+        type: FI_EP_RDM
+        protocol: Unknown
+        protocol_version: 1
+        max_msg_size: 4294967295
+        msg_prefix_size: 0
+        max_order_raw_size: 4294967295
+        max_order_war_size: 0
+        max_order_waw_size: 4294967295
+        mem_tag_format: 0xaaaaaaaaaaaaaaaa
+        tx_ctx_cnt: 1
+        rx_ctx_cnt: 1
+        auth_key_size: 0
+        xpu_ctx: (nil)
+        max_tx_wr_size: 0
+        max_rx_wr_size: 0
+    fi_domain_attr:
+        domain: (nil)
+        name: lo
+        threading: FI_THREAD_SAFE
+        progress: FI_PROGRESS_MANUAL
+        resource_mgmt: FI_RM_ENABLED
+        av_type: FI_AV_UNSPEC
+        mr_mode: [  ]
+        mr_key_size: 8
+        cq_data_size: 8
+        cq_cnt: 128
+        ep_cnt: 128
+        tx_ctx_cnt: 1
+        rx_ctx_cnt: 1
+        max_ep_tx_ctx: 1
+        max_ep_rx_ctx: 1
+        max_ep_stx_ctx: 0
+        max_ep_srx_ctx: 0
+        cntr_cnt: 0
+        mr_iov_limit: 1
+        caps: [ FI_LOCAL_COMM, FI_REMOTE_COMM ]
+        mode: [  ]
+        auth_key_size: 0
+        max_err_data: 0
+        mr_cnt: 0
+        tclass: 0x0
+        max_ep_auth_key: 0
+        max_group_id: 0
+        max_cntr_value: 18446744073709551615
+        max_err_cntr_value: 18446744073709551615
+        max_xpu_ctx_cnt: 0
+    fi_fabric_attr:
+        name: ::1/128
+        prov_name: udp;ofi_suet
+        prov_version: 207.0
+        api_version: 2.7
+    nic: (nil)

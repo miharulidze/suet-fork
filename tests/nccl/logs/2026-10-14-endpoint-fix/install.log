@@ -1,0 +1,54 @@
+make  install-am
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/libfabric'
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/libfabric'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib'
+ /bin/sh ./libtool   --mode=install /usr/bin/install -c   src/libfabric.la '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib'
+libtool: install: /usr/bin/install -c src/.libs/libfabric.so.1.33.0 /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libfabric.so.1.33.0
+libtool: install: (cd /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib && { ln -s -f libfabric.so.1.33.0 libfabric.so.1 || { rm -f libfabric.so.1 && ln -s libfabric.so.1.33.0 libfabric.so.1; }; })
+libtool: install: (cd /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib && { ln -s -f libfabric.so.1.33.0 libfabric.so || { rm -f libfabric.so && ln -s libfabric.so.1.33.0 libfabric.so; }; })
+libtool: install: /usr/bin/install -c src/.libs/libfabric.lai /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libfabric.la
+libtool: install: /usr/bin/install -c src/.libs/libfabric.a /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libfabric.a
+libtool: install: chmod 644 /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libfabric.a
+libtool: install: ranlib /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libfabric.a
+libtool: finish: PATH="/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin:/usr/bin:/bin:/sbin" ldconfig -n /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the '-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the 'LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the 'LD_RUN_PATH' environment variable
+     during linking
+   - use the '-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to '/etc/ld.so.conf'
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/bin'
+  /bin/sh ./libtool   --mode=install /usr/bin/install -c util/fi_info util/fi_strerror util/fi_pingpong util/fi_mon_sampler '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/bin'
+libtool: install: /usr/bin/install -c util/.libs/fi_info /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/bin/fi_info
+libtool: install: /usr/bin/install -c util/.libs/fi_strerror /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/bin/fi_strerror
+libtool: install: /usr/bin/install -c util/.libs/fi_pingpong /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/bin/fi_pingpong
+libtool: install: /usr/bin/install -c util/.libs/fi_mon_sampler /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/bin/fi_mon_sampler
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man1'
+ /usr/bin/install -c -m 644 man/man1/fi_info.1 man/man1/fi_pingpong.1 man/man1/fi_strerror.1 man/man1/fi_mon_sampler.1 '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man1'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man3'
+ /usr/bin/install -c -m 644 man/man3/fi_atomic.3 man/man3/fi_av.3 man/man3/fi_av_set.3 man/man3/fi_cm.3 man/man3/fi_cntr.3 man/man3/fi_collective.3 man/man3/fi_control.3 man/man3/fi_cq.3 man/man3/fi_domain.3 man/man3/fi_endpoint.3 man/man3/fi_errno.3 man/man3/fi_eq.3 man/man3/fi_fabric.3 man/man3/fi_peer.3 man/man3/fi_provider.3 man/man3/fi_getinfo.3 man/man3/fi_mr.3 man/man3/fi_msg.3 man/man3/fi_nic.3 man/man3/fi_poll.3 man/man3/fi_profile.3 man/man3/fi_rma.3 man/man3/fi_tagged.3 man/man3/fi_trigger.3 man/man3/fi_wr.3 man/man3/fi_xpu.3 man/man3/fi_version.3 man/man3/fi_accept.3 man/man3/fi_alias.3 man/man3/fi_allgather.3 man/man3/fi_allreduce.3 man/man3/fi_alltoall.3 man/man3/fi_atomic_valid.3 man/man3/fi_atomicmsg.3 man/man3/fi_atomicv.3 man/man3/fi_av_bind.3 man/man3/fi_av_insert.3 man/man3/fi_av_insertsvc.3 man/man3/fi_av_lookup.3 man/man3/fi_av_open.3 '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man3'
+ /usr/bin/install -c -m 644 man/man3/fi_av_remove.3 man/man3/fi_av_set_diff.3 man/man3/fi_av_set_insert.3 man/man3/fi_av_set_intersect.3 man/man3/fi_av_set_remove.3 man/man3/fi_av_set_union.3 man/man3/fi_av_straddr.3 man/man3/fi_barrier.3 man/man3/fi_broadcast.3 man/man3/fi_cancel.3 man/man3/fi_close.3 man/man3/fi_cntr_add.3 man/man3/fi_cntr_open.3 man/man3/fi_cntr_read.3 man/man3/fi_cntr_set.3 man/man3/fi_cntr_wait.3 man/man3/fi_compare_atomic.3 man/man3/fi_compare_atomic_valid.3 man/man3/fi_compare_atomicmsg.3 man/man3/fi_compare_atomicv.3 man/man3/fi_connect.3 man/man3/fi_cq_open.3 man/man3/fi_cq_read.3 man/man3/fi_cq_readerr.3 man/man3/fi_cq_readfrom.3 man/man3/fi_cq_sread.3 man/man3/fi_cq_sreadfrom.3 man/man3/fi_cq_strerror.3 man/man3/fi_cq_signal.3 man/man3/fi_domain_bind.3 man/man3/fi_domain_query.3 man/man3/fi_dupinfo.3 man/man3/fi_enable.3 man/man3/fi_ep.3 man/man3/fi_ep_bind.3 man/man3/fi_eq_open.3 man/man3/fi_eq_read.3 man/man3/fi_eq_readerr.3 man/man3/fi_eq_sread.3 man/man3/fi_eq_strerror.3 '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man3'
+ /usr/bin/install -c -m 644 man/man3/fi_eq_write.3 man/man3/fi_fabric2.3 man/man3/fi_fetch_atomic.3 man/man3/fi_fetch_atomic_valid.3 man/man3/fi_fetch_atomicmsg.3 man/man3/fi_fetch_atomicv.3 man/man3/fi_freeinfo.3 man/man3/fi_getname.3 man/man3/fi_getopt.3 man/man3/fi_getpeer.3 man/man3/fi_inject.3 man/man3/fi_injectdata.3 man/man3/fi_inject_atomic.3 man/man3/fi_inject_write.3 man/man3/fi_inject_writedata.3 man/man3/fi_join.3 man/man3/fi_join_collective.3 man/man3/fi_leave.3 man/man3/fi_listen.3 man/man3/fi_mr_bind.3 man/man3/fi_mr_desc.3 man/man3/fi_mr_key.3 man/man3/fi_mr_reg.3 man/man3/fi_mr_regattr.3 man/man3/fi_mr_regv.3 man/man3/fi_open.3 man/man3/fi_open_ops.3 man/man3/fi_passive_ep.3 man/man3/fi_pep_bind.3 man/man3/fi_poll_add.3 man/man3/fi_poll_del.3 man/man3/fi_poll_open.3 man/man3/fi_query_atomic.3 man/man3/fi_query_collective.3 man/man3/fi_read.3 man/man3/fi_readmsg.3 man/man3/fi_readv.3 man/man3/fi_recv.3 man/man3/fi_recvmsg.3 man/man3/fi_recvv.3 '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man3'
+ /usr/bin/install -c -m 644 man/man3/fi_reduce_scatter.3 man/man3/fi_reject.3 man/man3/fi_rx_addr.3 man/man3/fi_rx_size_left.3 man/man3/fi_scalable_ep_bind.3 man/man3/fi_send.3 man/man3/fi_senddata.3 man/man3/fi_sendmsg.3 man/man3/fi_sendv.3 man/man3/fi_setname.3 man/man3/fi_setopt.3 man/man3/fi_shutdown.3 man/man3/fi_strerror.3 man/man3/fi_tinject.3 man/man3/fi_tinjectdata.3 man/man3/fi_tostr.3 man/man3/fi_trecv.3 man/man3/fi_trecvmsg.3 man/man3/fi_trecvv.3 man/man3/fi_trywait.3 man/man3/fi_tsend.3 man/man3/fi_tsenddata.3 man/man3/fi_tsendmsg.3 man/man3/fi_tsendv.3 man/man3/fi_tx_size_left.3 man/man3/fi_wait.3 man/man3/fi_wait_open.3 man/man3/fi_write.3 man/man3/fi_writedata.3 man/man3/fi_writemsg.3 man/man3/fi_writev.3 '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man3'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man7'
+ /usr/bin/install -c -m 644 man/man7/fabric.7 man/man7/fi_arch.7 man/man7/fi_direct.7 man/man7/fi_guide.7 man/man7/fi_hook.7 man/man7/fi_intro.7 man/man7/fi_provider.7 man/man7/fi_setup.7 man/man7/fi_sockets.7 man/man7/fi_udp.7 man/man7/fi_rxm.7 man/man7/fi_mrail.7 man/man7/fi_shm.7 man/man7/fi_tcp.7 man/man7/fi_lpp.7 man/man7/fi_lnx.7 '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/share/man/man7'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/pkgconfig'
+ /usr/bin/install -c -m 644 libfabric.pc '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/pkgconfig'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/include/rdma/providers'
+ /usr/bin/install -c -m 644 ./include/rdma/providers/fi_log.h ./include/rdma/providers/fi_peer.h ./include/rdma/providers/fi_prov.h '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/include/rdma/providers'
+ /usr/bin/mkdir -p '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/include/rdma'
+ /usr/bin/install -c -m 644 ./include/rdma/fabric.h ./include/rdma/fi_atomic.h ./include/rdma/fi_cm.h ./include/rdma/fi_collective.h ./include/rdma/fi_domain.h ./include/rdma/fi_eq.h ./include/rdma/fi_ext.h ./include/rdma/fi_rma.h ./include/rdma/fi_endpoint.h ./include/rdma/fi_errno.h ./include/rdma/fi_tagged.h ./include/rdma/fi_trigger.h ./include/rdma/fi_profile.h ./include/rdma/fi_wr.h ./include/rdma/fi_xpu.h ./include/rdma/fi_xpu_device.h '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/include/rdma'
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/libfabric'
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/libfabric'

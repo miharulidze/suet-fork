@@ -1,0 +1,148 @@
+Start testing: Oct 14 14:20 CEST
+----------------------------------------------------------
+1/5 Testing: suet_reliability
+1/5 Test: suet_reliability
+Command: "/tmp/suet-endpoint-fix-20261014/htsim/suet_rel_test"
+Directory: /tmp/suet-endpoint-fix-20261014/htsim
+"suet_reliability" start time: Oct 14 14:20 CEST
+Output:
+----------------------------------------------------------
+Reliability windows, wraparound, SACK, GBN/SR and NACK recovery: PASS
+<end of output>
+Test time =   0.33 sec
+----------------------------------------------------------
+Test Passed.
+"suet_reliability" end time: Oct 14 14:20 CEST
+"suet_reliability" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/5 Testing: suet_congestion_control
+2/5 Test: suet_congestion_control
+Command: "/tmp/suet-endpoint-fix-20261014/htsim/suet_cc_test"
+Directory: /tmp/suet-endpoint-fix-20261014/htsim
+"suet_congestion_control" start time: Oct 14 14:20 CEST
+Output:
+----------------------------------------------------------
+Fixed CC and ECN/trimming AIMD: PASS
+<end of output>
+Test time =   0.23 sec
+----------------------------------------------------------
+Test Passed.
+"suet_congestion_control" end time: Oct 14 14:20 CEST
+"suet_congestion_control" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/5 Testing: suet_load_balancing
+3/5 Test: suet_load_balancing
+Command: "/tmp/suet-endpoint-fix-20261014/htsim/suet_lb_test"
+Directory: /tmp/suet-endpoint-fix-20261014/htsim
+"suet_load_balancing" start time: Oct 14 14:20 CEST
+Output:
+----------------------------------------------------------
+Load balancing: stable EV, cyclic spraying, wraparound and independent contexts PASS
+<end of output>
+Test time =   0.23 sec
+----------------------------------------------------------
+Test Passed.
+"suet_load_balancing" end time: Oct 14 14:20 CEST
+"suet_load_balancing" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/5 Testing: fabric_dgram_contract
+4/5 Test: fabric_dgram_contract
+Command: "/tmp/suet-endpoint-fix-20261014/htsim/fabric_dgram_test"
+Directory: /tmp/suet-endpoint-fix-20261014/htsim
+"fabric_dgram_contract" start time: Oct 14 14:20 CEST
+Output:
+----------------------------------------------------------
+Datagram completion timing, source discovery, overflow, cancellation and lifetime: PASS
+<end of output>
+Test time =   0.56 sec
+----------------------------------------------------------
+Test Passed.
+"fabric_dgram_contract" end time: Oct 14 14:20 CEST
+"fabric_dgram_contract" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/5 Testing: suet_simulation
+5/5 Test: suet_simulation
+Command: "/opt/anaconda3/bin/python3.12" "/Users/mkhalilov-work/Development/suet/suet/htsim/simulation_test.py" "/tmp/suet-endpoint-fix-20261014/htsim/htsim_suet" "/Users/mkhalilov-work/Development/suet/uet-htsim/htsim/sim/datacenter/topologies/leaf_spine_tiny.topo"
+Directory: /tmp/suet-endpoint-fix-20261014/htsim
+"suet_simulation" start time: Oct 14 14:20 CEST
+Output:
+----------------------------------------------------------
+segmented: PASS
+deterministic: PASS
+slower_link: PASS
+empty: PASS
+loss_recovery: PASS
+incast: PASS
+triggers: PASS
+topology_file: PASS
+rod_sr0_normal: PASS
+rod_sr1_normal: PASS
+rod_sr0_reorder: PASS
+rod_sr1_reorder: PASS
+rod_sr0_random_loss: PASS
+rod_sr1_random_loss: PASS
+rod_sr0_burst_loss: PASS
+rod_sr1_burst_loss: PASS
+rud_sr0_normal: PASS
+rud_sr1_normal: PASS
+rud_sr0_reorder: PASS
+rud_sr1_reorder: PASS
+rud_sr0_random_loss: PASS
+rud_sr1_random_loss: PASS
+rud_sr0_burst_loss: PASS
+rud_sr1_burst_loss: PASS
+rod_sr0_ecn: PASS
+rod_sr0_trim_queues: PASS
+rod_sr0_trim_injection0: PASS
+rod_sr0_trim_injection1: PASS
+rod_sr1_ecn: PASS
+rod_sr1_trim_queues: PASS
+rod_sr1_trim_injection0: PASS
+rod_sr1_trim_injection1: PASS
+rud_sr0_ecn: PASS
+rud_sr0_trim_queues: PASS
+rud_sr0_trim_injection0: PASS
+rud_sr0_trim_injection1: PASS
+rud_sr1_ecn: PASS
+rud_sr1_trim_queues: PASS
+rud_sr1_trim_injection0: PASS
+rud_sr1_trim_injection1: PASS
+rod_sr0_spray_normal: PASS
+rod_sr0_spray_reorder: PASS
+rod_sr0_spray_random_loss: PASS
+rod_sr0_spray_burst_loss: PASS
+rod_sr0_spray_trim: PASS
+rod_sr0_spray_congested: PASS
+rod_sr1_spray_normal: PASS
+rod_sr1_spray_reorder: PASS
+rod_sr1_spray_random_loss: PASS
+rod_sr1_spray_burst_loss: PASS
+rod_sr1_spray_trim: PASS
+rod_sr1_spray_congested: PASS
+rud_sr0_spray_normal: PASS
+rud_sr0_spray_reorder: PASS
+rud_sr0_spray_random_loss: PASS
+rud_sr0_spray_burst_loss: PASS
+rud_sr0_spray_trim: PASS
+rud_sr0_spray_congested: PASS
+rud_sr1_spray_normal: PASS
+rud_sr1_spray_reorder: PASS
+rud_sr1_spray_random_loss: PASS
+rud_sr1_spray_burst_loss: PASS
+rud_sr1_spray_trim: PASS
+rud_sr1_spray_congested: PASS
+timeout: PASS
+All simulator integration checks passed
+<end of output>
+Test time =   2.24 sec
+----------------------------------------------------------
+Test Passed.
+"suet_simulation" end time: Oct 14 14:20 CEST
+"suet_simulation" time elapsed: 00:00:02
+----------------------------------------------------------
+
+End testing: Oct 14 14:20 CEST

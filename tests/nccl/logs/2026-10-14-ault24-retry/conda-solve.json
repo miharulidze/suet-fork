@@ -1,0 +1,25 @@
+{
+  "allow_retry": false,
+  "caused_by": "None",
+  "channel_urls": [
+    {
+      "auth": null,
+      "location": "conda.anaconda.org",
+      "name": "conda-forge",
+      "package_filename": null,
+      "platform": null,
+      "scheme": "https",
+      "token": null
+    }
+  ],
+  "channels_formatted": "  - https://conda.anaconda.org/conda-forge",
+  "error": "PackagesNotFoundError: The following packages are not available from current channels:\n\n  - hwloc\n\nCurrent channels:\n\n  - https://conda.anaconda.org/conda-forge\n\nTo search for alternate channels that may provide the conda package you're\nlooking for, navigate to\n\n    https://anaconda.org\n\nand use the search bar at the top of the page.\n",
+  "exception_name": "PackagesNotFoundError",
+  "exception_type": "<class 'conda.exceptions.PackagesNotFoundError'>",
+  "message": "The following packages are not available from current channels:\n\n  - hwloc\n\nCurrent channels:\n\n  - https://conda.anaconda.org/conda-forge\n\nTo search for alternate channels that may provide the conda package you're\nlooking for, navigate to\n\n    https://anaconda.org\n\nand use the search bar at the top of the page.\n",
+  "packages": [
+    "hwloc"
+  ],
+  "packages_formatted": "  - hwloc"
+}
+

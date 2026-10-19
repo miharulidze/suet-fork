@@ -1,0 +1,103 @@
+Making all in include
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/include'
+make  all-am
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/include'
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/include'
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/include'
+Making all in 3rd-party
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/3rd-party'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/3rd-party'
+Making all in src
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/src'
+  CXX      nccl_ofi_api.lo
+  CXX      nccl_ofi_assert.lo
+  CXX      nccl_ofi_compat.lo
+  CXX      nccl_ofi_gdrcopy.lo
+  CXX      nccl_ofi_net.lo
+  CXX      nccl_ofi_sendrecv.lo
+  CXX      nccl_ofi_system.lo
+  CXX      nccl_ofi_rdma.lo
+  CXX      nccl_ofi_scheduler.lo
+  CXX      nccl_ofi_topo.lo
+  CXX      nccl_ofi_mr.lo
+  CXX      nccl_ofi_msgbuff.lo
+  CXX      nccl_ofi_nccl_compat.lo
+  CXX      nccl_ofi_freelist.lo
+  CXX      nccl_ofi_idpool.lo
+  CXX      nccl_ofi_ofiutils.lo
+  CXX      nccl_ofi_pthread.lo
+  CXX      nccl_ofi_dmabuf.lo
+  CXX      nccl_ofi_param.lo
+  CXX      nccl_ofi_ep_addr_list.lo
+  CXX      nccl_ofi_platform.lo
+  CXX      tracepoint.lo
+  CXX      nccl_ofi_cuda.lo
+  CXX      nccl_ofi_interface_nvidia.lo
+  CXX      cm/nccl_ofi_cm.lo
+  CXX      cm/nccl_ofi_cm_resources.lo
+  CXX      cm/nccl_ofi_cm_reqs.lo
+  CXX      stats/histogram.lo
+  CXX      rdma/gin/nccl_ofi_gin.lo
+  CXX      rdma/gin/nccl_ofi_gin_allgather.lo
+  CXX      rdma/gin/nccl_ofi_gin_api.lo
+  CXX      rdma/gin/nccl_ofi_gin_reqs.lo
+  CXX      rdma/gin/nccl_ofi_gin_resources.lo
+  CXXLD    libinternal_plugin.la
+  CCLD     libnccl-net.la
+  CCLD     libnccl-net-ofi.la
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/src'
+Making all in topology
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/topology'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/topology'
+Making all in tests
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/tests'
+Making all in functional
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/tests/functional'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/tests/functional'
+Making all in unit
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/tests/unit'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/tests/unit'
+make[2]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/tests'
+make[2]: Nothing to be done for 'all-am'.
+make[2]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/tests'
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl/tests'
+make[1]: Entering directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl'
+Checking for CUDA Runtime symbols
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+nm: just-symbols: invalid output format
+make[1]: Leaving directory '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/aws-ofi-nccl'

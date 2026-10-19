@@ -1,0 +1,305 @@
++ timeout --kill-after=10s 60s /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf -b 8 -e 1M -f 2 -g 4 -w 2 -n 5 -c 1
+# nccl-tests version 2.21.1 (afd59ab) nccl-headers=23203 nccl-library=23203
+# Collective test starting: all_reduce_perf
+# nThread 1 nGpus 4 minBytes 8 maxBytes 1048576 step: 2(factor) warmup iters: 2 iters: 5 agg iters: 1 validation: 1 graph: 0 unalign: 0
+#
+# Using devices
+#  Rank  0 Group  0 Pid 344150 on     ault24 device  0 [0000:1c:00] Tesla V100-PCIE-16GB
+#  Rank  1 Group  0 Pid 344150 on     ault24 device  1 [0000:1e:00] Tesla V100-PCIE-16GB
+#  Rank  2 Group  0 Pid 344150 on     ault24 device  2 [0000:40:00] Tesla V100-PCIE-16GB
+#  Rank  3 Group  0 Pid 344150 on     ault24 device  3 [0000:41:00] Tesla V100-PCIE-16GB
+ault24:344150:344150 [0] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+ault24:344150:344150 [0] NCCL INFO Stack size limit (unlimited) is unsafe; will use 8192KB for newly launched threads
+ault24:344150:344150 [0] NCCL INFO cudaDriverVersion 12080
+ault24:344150:344150 [0] NCCL INFO NCCL version 2.32.3+cuda12.8
+ault24:344150:344150 [0] NCCL INFO NCCL git version master 3e46c089
+ault24:344150:344172 [3] NCCL INFO NET/Plugin: Loaded net plugin Libfabric (v12)
+ault24:344150:344172 [3] NCCL INFO Successfully loaded external network plugin /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so
+ault24:344150:344172 [3] NCCL INFO NET/OFI Initializing aws-ofi-nccl git-745b951
+ault24:344150:344172 [3] NCCL INFO NET/OFI Using Libfabric version 2.7
+ault24:344150:344172 [3] NCCL INFO NET/OFI Using CUDA driver version 12080 with runtime 12080
+ault24:344150:344172 [3] NCCL INFO NET/OFI Plugin selected platform: Default
+ault24:344150:344172 [3] NCCL INFO NET/OFI Using transport protocol SENDRECV (user set)
+ault24:344150:344172 [3] NCCL INFO NET/OFI Selected provider is tcp;ofi_rxm, fabric is 148.187.105.0/24 (found 3 nics)
+ault24:344150:344172 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344172 [3] NCCL INFO NET/OFI Support for global registrations: false
+ault24:344150:344172 [3] NCCL INFO NET/OFI Support for DMA-BUF registrations: false
+ault24:344150:344172 [3] NCCL INFO NET/OFI MR cache 0 hits 0 misses
+ault24:344150:344172 [3] NCCL INFO NET/OFI Need to force simple protocol: GDR not supported
+ault24:344150:344172 [3] NCCL INFO NET/OFI Skipping adding NCCL_PROTO=Simple to environment, already set
+ault24:344150:344172 [3] NCCL INFO Initialized NET plugin Libfabric
+ault24:344150:344172 [3] NCCL INFO NET/OFI No NIC info for dev 0. Supplying default values for NIC properties.
+ault24:344150:344172 [3] NCCL INFO Assigned NET plugin Libfabric to comm
+ault24:344150:344171 [2] NCCL INFO Initialized NET plugin Libfabric
+ault24:344150:344171 [2] NCCL INFO NET/OFI No NIC info for dev 0. Supplying default values for NIC properties.
+ault24:344150:344171 [2] NCCL INFO Assigned NET plugin Libfabric to comm
+ault24:344150:344169 [0] NCCL INFO Initialized NET plugin Libfabric
+ault24:344150:344169 [0] NCCL INFO NET/OFI No NIC info for dev 0. Supplying default values for NIC properties.
+ault24:344150:344169 [0] NCCL INFO Assigned NET plugin Libfabric to comm
+ault24:344150:344170 [1] NCCL INFO Initialized NET plugin Libfabric
+ault24:344150:344170 [1] NCCL INFO NET/OFI No NIC info for dev 0. Supplying default values for NIC properties.
+ault24:344150:344170 [1] NCCL INFO Assigned NET plugin Libfabric to comm
+ault24:344150:344172 [3] NCCL INFO RMA/Plugin: Could not find: libnccl-rma.so
+ault24:344150:344172 [3] NCCL INFO RMA/Plugin: Loaded rma plugin Libfabric (v15)
+ault24:344150:344172 [3] NCCL INFO RMA/Plugin: Successfully loaded external plugin /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so
+
+[2026-10-14 13:13:04] ault24:344150:344172 [3] ncclResult_t nccl_ofi_gin_init(void**, uint64_t, ncclDebugLogger_t):50 NCCL WARN NET/OFI GIN only supports RDMA transport protocol.
+ault24:344150:344172 [3] NCCL INFO RMA/Plugin: Failed to initialize plugin libnccl-net.so
+ault24:344150:344172 [3] NCCL INFO dlvsym failed on mlx5dv_get_data_direct_sysfs_path - /usr/lib64/libmlx5.so: undefined symbol: mlx5dv_get_data_direct_sysfs_path, version MLX5_1.25 version MLX5_1.25
+ault24:344150:344172 [3] NCCL INFO dlvsym failed on mlx5dv_reg_dmabuf_mr - /usr/lib64/libmlx5.so: undefined symbol: mlx5dv_reg_dmabuf_mr, version MLX5_1.25 version MLX5_1.25
+ault24:344150:344172 [3] NCCL INFO NET/IB: [1] mlx5_1:uverbs1:1/RoCE provider=Mlx5 speed=100000 context=0x1554bfdba510 pciPath=/sys/devices/pci0000:85/0000:85:00.0/0000:86:00.0 ar=0 oooRqSize=0
+ault24:344150:344172 [3] NCCL INFO NET/IB : Made virtual device [0] name=mlx5_1 speed=100000 ndevs=1 rail=-1 plane=-1
+ault24:344150:344172 [3] NCCL INFO NET/IB : Using [0]mlx5_1:1/RoCE [RO]; OOB enp134s0f0:148.187.105.34<0>
+ault24:344150:344172 [3] NCCL INFO Unable to use GIN: Peermem is not supported, nor DMA-BUF.
+ault24:344150:344172 [3] NCCL INFO RMA/Plugin: Failed to initialize plugin 
+
+[2026-10-14 13:13:04] ault24:344150:344172 [3] transport/rma_socket.cc:32 (ncclRmaSocketProxyInit) NCCL WARN RMA/Socket : rma_socket requires GDRCopy; and GDR Copy is not available
+ault24:344150:344172 [3] NCCL INFO RMA/Plugin: Failed to initialize plugin 
+ault24:344150:344172 [3] NCCL INFO RMA/Plugin: Failed to initialize any plugin
+ault24:344150:344171 [2] NCCL INFO RMA/Plugin: Failed to initialize any plugin
+ault24:344150:344169 [0] NCCL INFO RMA/Plugin: Failed to initialize any plugin
+ault24:344150:344170 [1] NCCL INFO RMA/Plugin: Failed to initialize any plugin
+ault24:344150:344172 [3] NCCL INFO GIN/Plugin: Could not find: libnccl-gin.so
+ault24:344150:344172 [3] NCCL INFO GIN/Plugin: Loaded gin plugin Libfabric (v13)
+ault24:344150:344172 [3] NCCL INFO GIN/Plugin: Successfully loaded external plugin /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so
+
+[2026-10-14 13:13:04] ault24:344150:344172 [3] ncclResult_t nccl_ofi_gin_init(void**, uint64_t, ncclDebugLogger_t):50 NCCL WARN NET/OFI GIN only supports RDMA transport protocol.
+ault24:344150:344172 [3] NCCL INFO Unable to use GIN: Peermem is not supported, nor DMA-BUF.
+ault24:344150:344172 [3] NCCL INFO GIN/Plugin: Failed to initialize any GIN plugin
+ault24:344150:344172 [3] NCCL INFO Using network Libfabric
+ault24:344150:344171 [2] NCCL INFO GIN/Plugin: Failed to initialize any GIN plugin
+ault24:344150:344171 [2] NCCL INFO Using network Libfabric
+ault24:344150:344169 [0] NCCL INFO GIN/Plugin: Failed to initialize any GIN plugin
+ault24:344150:344169 [0] NCCL INFO Using network Libfabric
+ault24:344150:344170 [1] NCCL INFO GIN/Plugin: Failed to initialize any GIN plugin
+ault24:344150:344170 [1] NCCL INFO Using network Libfabric
+ault24:344150:344172 [3] NCCL INFO Loaded NVML from libnvidia-ml.so.1
+ault24:344150:344172 [3] NCCL INFO [Rank 3] ncclCommInitRankConfig comm 0x555558d8e670 rank 3 nranks 4 cudaDev 3 nvmlDev 3 busId 41000 commId 0x845748a3a11207c9 - Init START
+ault24:344150:344170 [1] NCCL INFO [Rank 1] ncclCommInitRankConfig comm 0x555558aeb4d0 rank 1 nranks 4 cudaDev 1 nvmlDev 1 busId 1e000 commId 0x845748a3a11207c9 - Init START
+ault24:344150:344169 [0] NCCL INFO [Rank 0] ncclCommInitRankConfig comm 0x555558999b60 rank 0 nranks 4 cudaDev 0 nvmlDev 0 busId 1c000 commId 0x845748a3a11207c9 - Init START
+ault24:344150:344171 [2] NCCL INFO [Rank 2] ncclCommInitRankConfig comm 0x555558c3ce40 rank 2 nranks 4 cudaDev 2 nvmlDev 2 busId 40000 commId 0x845748a3a11207c9 - Init START
+ault24:344150:344169 [0] NCCL INFO RAS client listening socket at ::1<28028>
+ault24:344150:344172 [3] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+ault24:344150:344170 [1] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+ault24:344150:344171 [2] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+ault24:344150:344169 [0] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+ault24:344150:344171 [2] NCCL INFO NET/OFI No NIC info for dev 0. Supplying default values for NIC properties.
+ault24:344150:344171 [2] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 0 'enp134s0f0'
+ault24:344150:344171 [2] NCCL INFO NET/OFI No NIC info for dev 1. Supplying default values for NIC properties.
+
+[2026-10-14 13:13:04] ault24:344150:344171 [2] graph/topo.cc:1766 (ncclTopoPopulateNics) NCCL ATTN TOPO/NET : Changing Libfabric dev index from 0 to 1. This device is shared by NET   plugin(s). This can be due to outdated plugin or topology xml file. The former may cause performance degradation. Try setting NCCL_IB_DEVICE_PCI_ORDER=0 or upgrading your net plugin to resolve this warning.
+ault24:344150:344171 [2] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 1 'enp134s0f0'
+ault24:344150:344171 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+
+[2026-10-14 13:13:04] ault24:344150:344171 [2] graph/topo.cc:1766 (ncclTopoPopulateNics) NCCL ATTN TOPO/NET : Changing Libfabric dev index from 1 to 2. This device is shared by NET   plugin(s). This can be due to outdated plugin or topology xml file. The former may cause performance degradation. Try setting NCCL_IB_DEVICE_PCI_ORDER=0 or upgrading your net plugin to resolve this warning.
+ault24:344150:344171 [2] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 2 'enp134s0f0'
+ault24:344150:344169 [0] NCCL INFO NET/OFI No NIC info for dev 0. Supplying default values for NIC properties.
+ault24:344150:344169 [0] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 0 'enp134s0f0'
+ault24:344150:344169 [0] NCCL INFO NET/OFI No NIC info for dev 1. Supplying default values for NIC properties.
+
+[2026-10-14 13:13:04] ault24:344150:344169 [0] graph/topo.cc:1766 (ncclTopoPopulateNics) NCCL ATTN TOPO/NET : Changing Libfabric dev index from 0 to 1. This device is shared by NET   plugin(s). This can be due to outdated plugin or topology xml file. The former may cause performance degradation. Try setting NCCL_IB_DEVICE_PCI_ORDER=0 or upgrading your net plugin to resolve this warning.
+ault24:344150:344169 [0] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 1 'enp134s0f0'
+ault24:344150:344169 [0] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+
+[2026-10-14 13:13:04] ault24:344150:344169 [0] graph/topo.cc:1766 (ncclTopoPopulateNics) NCCL ATTN TOPO/NET : Changing Libfabric dev index from 1 to 2. This device is shared by NET   plugin(s). This can be due to outdated plugin or topology xml file. The former may cause performance degradation. Try setting NCCL_IB_DEVICE_PCI_ORDER=0 or upgrading your net plugin to resolve this warning.
+ault24:344150:344169 [0] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 2 'enp134s0f0'
+ault24:344150:344172 [3] NCCL INFO NET/OFI No NIC info for dev 0. Supplying default values for NIC properties.
+ault24:344150:344172 [3] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 0 'enp134s0f0'
+ault24:344150:344172 [3] NCCL INFO NET/OFI No NIC info for dev 1. Supplying default values for NIC properties.
+
+[2026-10-14 13:13:04] ault24:344150:344172 [3] graph/topo.cc:1766 (ncclTopoPopulateNics) NCCL ATTN TOPO/NET : Changing Libfabric dev index from 0 to 1. This device is shared by NET   plugin(s). This can be due to outdated plugin or topology xml file. The former may cause performance degradation. Try setting NCCL_IB_DEVICE_PCI_ORDER=0 or upgrading your net plugin to resolve this warning.
+ault24:344150:344172 [3] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 1 'enp134s0f0'
+ault24:344150:344172 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+
+[2026-10-14 13:13:04] ault24:344150:344172 [3] graph/topo.cc:1766 (ncclTopoPopulateNics) NCCL ATTN TOPO/NET : Changing Libfabric dev index from 1 to 2. This device is shared by NET   plugin(s). This can be due to outdated plugin or topology xml file. The former may cause performance degradation. Try setting NCCL_IB_DEVICE_PCI_ORDER=0 or upgrading your net plugin to resolve this warning.
+ault24:344150:344172 [3] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 2 'enp134s0f0'
+ault24:344150:344170 [1] NCCL INFO NET/OFI No NIC info for dev 0. Supplying default values for NIC properties.
+ault24:344150:344170 [1] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 0 'enp134s0f0'
+ault24:344150:344170 [1] NCCL INFO NET/OFI No NIC info for dev 1. Supplying default values for NIC properties.
+
+[2026-10-14 13:13:04] ault24:344150:344170 [1] graph/topo.cc:1766 (ncclTopoPopulateNics) NCCL ATTN TOPO/NET : Changing Libfabric dev index from 0 to 1. This device is shared by NET   plugin(s). This can be due to outdated plugin or topology xml file. The former may cause performance degradation. Try setting NCCL_IB_DEVICE_PCI_ORDER=0 or upgrading your net plugin to resolve this warning.
+ault24:344150:344170 [1] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 1 'enp134s0f0'
+ault24:344150:344170 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+
+[2026-10-14 13:13:04] ault24:344150:344170 [1] graph/topo.cc:1766 (ncclTopoPopulateNics) NCCL ATTN TOPO/NET : Changing Libfabric dev index from 1 to 2. This device is shared by NET   plugin(s). This can be due to outdated plugin or topology xml file. The former may cause performance degradation. Try setting NCCL_IB_DEVICE_PCI_ORDER=0 or upgrading your net plugin to resolve this warning.
+ault24:344150:344170 [1] NCCL INFO NET/Libfabric : GPU Direct RDMA Disabled for HCA 2 'enp134s0f0'
+ault24:344150:344172 [3] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 3 is 0-7,32-39. (GPU affinity = 0-15,32-47 ; CPU affinity = 0-7,32-39).
+ault24:344150:344171 [2] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 2 is 0-7,32-39. (GPU affinity = 0-15,32-47 ; CPU affinity = 0-7,32-39).
+ault24:344150:344169 [0] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 0 is 0-7,32-39. (GPU affinity = 0-15,32-47 ; CPU affinity = 0-7,32-39).
+ault24:344150:344169 [0] NCCL INFO Rank 0: 3 Net devices
+ault24:344150:344169 [0] NCCL INFO Rank 0: 0 CollNet devices
+ault24:344150:344172 [3] NCCL INFO Rank 3: 3 Net devices
+ault24:344150:344172 [3] NCCL INFO Rank 3: 0 CollNet devices
+ault24:344150:344171 [2] NCCL INFO Rank 2: 3 Net devices
+ault24:344150:344171 [2] NCCL INFO Rank 2: 0 CollNet devices
+ault24:344150:344170 [1] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 1 is 0-7,32-39. (GPU affinity = 0-15,32-47 ; CPU affinity = 0-7,32-39).
+ault24:344150:344170 [1] NCCL INFO Rank 1: 3 Net devices
+ault24:344150:344170 [1] NCCL INFO Rank 1: 0 CollNet devices
+ault24:344150:344172 [3] NCCL INFO comm 0x555558d8e670 rank 3 nRanks 4 nNodes 4 localRanks 1 localRank 0 MNNVL 0
+ault24:344150:344169 [0] NCCL INFO Local Net device counts across ranks: min 3 max 3
+ault24:344150:344169 [0] NCCL INFO Local CollNet device counts across ranks: min 0 max 0
+ault24:344150:344170 [1] NCCL INFO comm 0x555558aeb4d0 rank 1 nRanks 4 nNodes 4 localRanks 1 localRank 0 MNNVL 0
+ault24:344150:344172 [3] NCCL INFO Trees [0] -1/-1/-1->3->2 [1] 1/-1/-1->3->-1
+ault24:344150:344170 [1] NCCL INFO Trees [0] -1/-1/-1->1->2 [1] 2/0/-1->1->3
+ault24:344150:344172 [3] NCCL INFO P2P Chunksize set to 131072
+ault24:344150:344171 [2] NCCL INFO comm 0x555558c3ce40 rank 2 nRanks 4 nNodes 4 localRanks 1 localRank 0 MNNVL 0
+ault24:344150:344170 [1] NCCL INFO P2P Chunksize set to 131072
+ault24:344150:344171 [2] NCCL INFO Trees [0] 1/3/-1->2->0 [1] -1/-1/-1->2->1
+ault24:344150:344172 [3] NCCL INFO Tuning P2P operations with maxP2pPeers = 4
+ault24:344150:344170 [1] NCCL INFO Tuning P2P operations with maxP2pPeers = 4
+ault24:344150:344171 [2] NCCL INFO P2P Chunksize set to 131072
+ault24:344150:344171 [2] NCCL INFO Tuning P2P operations with maxP2pPeers = 4
+ault24:344150:344169 [0] NCCL INFO comm 0x555558999b60 rank 0 nRanks 4 nNodes 4 localRanks 1 localRank 0 MNNVL 0
+ault24:344150:344169 [0] NCCL INFO Channel 00/02 : 0 1 2 3
+ault24:344150:344169 [0] NCCL INFO Channel 01/02 : 0 1 2 3
+ault24:344150:344169 [0] NCCL INFO Trees [0] 2/-1/-1->0->-1 [1] -1/-1/-1->0->1
+ault24:344150:344169 [0] NCCL INFO P2P Chunksize set to 131072
+ault24:344150:344169 [0] NCCL INFO Tuning P2P operations with maxP2pPeers = 4
+ault24:344150:344172 [3] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+ault24:344150:344172 [3] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+ault24:344150:344170 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+ault24:344150:344175 [0] NCCL INFO [Proxy Service] Device 3 CPU core 2
+ault24:344150:344170 [1] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+ault24:344150:344176 [0] NCCL INFO [Proxy Service UDS] Device 3 CPU core 36
+ault24:344150:344171 [2] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+ault24:344150:344175 [3] NCCL INFO proxy listening socket at 148.187.105.34<55945>
+ault24:344150:344171 [2] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+ault24:344150:344177 [0] NCCL INFO [Proxy Service] Device 1 CPU core 0
+ault24:344150:344179 [0] NCCL INFO [Proxy Service] Device 2 CPU core 2
+ault24:344150:344169 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+ault24:344150:344178 [0] NCCL INFO [Proxy Service UDS] Device 1 CPU core 35
+ault24:344150:344177 [1] NCCL INFO proxy listening socket at 148.187.105.34<40757>
+ault24:344150:344179 [2] NCCL INFO proxy listening socket at 148.187.105.34<58429>
+ault24:344150:344169 [0] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+ault24:344150:344180 [0] NCCL INFO [Proxy Service UDS] Device 2 CPU core 36
+ault24:344150:344181 [0] NCCL INFO [Proxy Service] Device 0 CPU core 38
+ault24:344150:344181 [0] NCCL INFO proxy listening socket at 148.187.105.34<42393>
+ault24:344150:344182 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 0
+ault24:344150:344172 [3] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+ault24:344150:344172 [3] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+ault24:344150:344172 [3] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+ault24:344150:344170 [1] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+ault24:344150:344170 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+ault24:344150:344170 [1] NCCL INFO symmetricSupport 0, cuMemEnable 1, globalGinSupport 0, cuMemGdrSupport 1, contiguousRanksPerHost 4, crossNicSupport 1
+ault24:344150:344172 [3] NCCL INFO symmetricSupport 0, cuMemEnable 1, globalGinSupport 0, cuMemGdrSupport 1, contiguousRanksPerHost 4, crossNicSupport 1
+ault24:344150:344169 [0] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+ault24:344150:344171 [2] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+ault24:344150:344171 [2] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+ault24:344150:344171 [2] NCCL INFO symmetricSupport 0, cuMemEnable 1, globalGinSupport 0, cuMemGdrSupport 1, contiguousRanksPerHost 4, crossNicSupport 1
+ault24:344150:344169 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+ault24:344150:344169 [0] NCCL INFO symmetricSupport 0, cuMemEnable 1, globalGinSupport 0, cuMemGdrSupport 1, contiguousRanksPerHost 4, crossNicSupport 1
+ault24:344150:344169 [0] NCCL INFO CC Off, workFifoBytes 1048576
+ault24:344150:344170 [1] NCCL INFO ncclCommInitRankConfig comm 0x555558aeb4d0 rank 1 nranks 4 cudaDev 1 nvmlDev 1 busId 1e000 commId 0x845748a3a11207c9 - Init COMPLETE
+ault24:344150:344170 [1] NCCL INFO Init timings - ncclCommInitRankConfig: rank 1 nranks 4 total 0.67 (kernels 0.46, alloc 0.18, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+ault24:344150:344172 [3] NCCL INFO ncclCommInitRankConfig comm 0x555558d8e670 rank 3 nranks 4 cudaDev 3 nvmlDev 3 busId 41000 commId 0x845748a3a11207c9 - Init COMPLETE
+ault24:344150:344172 [3] NCCL INFO Init timings - ncclCommInitRankConfig: rank 3 nranks 4 total 0.67 (kernels 0.46, alloc 0.18, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+ault24:344150:344171 [2] NCCL INFO ncclCommInitRankConfig comm 0x555558c3ce40 rank 2 nranks 4 cudaDev 2 nvmlDev 2 busId 40000 commId 0x845748a3a11207c9 - Init COMPLETE
+ault24:344150:344171 [2] NCCL INFO Init timings - ncclCommInitRankConfig: rank 2 nranks 4 total 0.67 (kernels 0.46, alloc 0.18, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+ault24:344150:344169 [0] NCCL INFO ncclCommInitRankConfig comm 0x555558999b60 rank 0 nranks 4 cudaDev 0 nvmlDev 0 busId 1c000 commId 0x845748a3a11207c9 - Init COMPLETE
+ault24:344150:344169 [0] NCCL INFO Init timings - ncclCommInitRankConfig: rank 0 nranks 4 total 0.67 (kernels 0.46, alloc 0.18, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+#
+#                                                              out-of-place                       in-place
+#       size         count      type   redop    root     time   algbw   busbw  #wrong     time   algbw   busbw  #wrong
+#        (B)    (elements)                               (us)  (GB/s)  (GB/s)             (us)  (GB/s)  (GB/s)        
+           8             2     float     sum      -1ault24:344150:344187 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 35
+ault24:344150:344188 [0] NCCL INFO [Proxy Progress] Device 1 CPU core 32
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344181 [0] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344186 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/Libfabric/2
+ault24:344150:344189 [0] NCCL INFO [Proxy Progress] Device 3 CPU core 35
+ault24:344150:344175 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344190 [0] NCCL INFO [Proxy Progress] Device 2 CPU core 36
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344185 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/Libfabric/2
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344185 [1] NCCL INFO Channel 00/0 : 1[1] -> 2[2] [send] via NET/Libfabric/2
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344185 [1] NCCL INFO Channel 01/0 : 1[1] -> 2[2] [send] via NET/Libfabric/2
+ault24:344150:344181 [0] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344183 [3] NCCL INFO Channel 00/0 : 2[2] -> 3[3] [receive] via NET/Libfabric/2
+ault24:344150:344184 [2] NCCL INFO Channel 00/0 : 1[1] -> 2[2] [receive] via NET/Libfabric/2
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344184 [2] NCCL INFO Channel 01/0 : 1[1] -> 2[2] [receive] via NET/Libfabric/2
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344184 [2] NCCL INFO Channel 00/0 : 2[2] -> 3[3] [send] via NET/Libfabric/2
+ault24:344150:344186 [0] NCCL INFO Channel 00/0 : 2[2] -> 0[0] [receive] via NET/Libfabric/2
+ault24:344150:344181 [0] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344186 [0] NCCL INFO Channel 00/0 : 0[0] -> 2[2] [send] via NET/Libfabric/2
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344175 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344185 [1] NCCL INFO Channel 01/0 : 3[3] -> 1[1] [receive] via NET/Libfabric/2
+ault24:344150:344184 [2] NCCL INFO Channel 00/0 : 0[0] -> 2[2] [receive] via NET/Libfabric/2
+ault24:344150:344183 [3] NCCL INFO Channel 01/0 : 1[1] -> 3[3] [receive] via NET/Libfabric/2
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344185 [1] NCCL INFO Channel 01/0 : 1[1] -> 3[3] [send] via NET/Libfabric/2
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344175 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344184 [2] NCCL INFO Channel 00/0 : 2[2] -> 0[0] [send] via NET/Libfabric/2
+ault24:344150:344183 [3] NCCL INFO Channel 01/0 : 3[3] -> 1[1] [send] via NET/Libfabric/2
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344181 [0] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344185 [1] NCCL INFO Channel 00/0 : 2[2] -> 1[1] [receive] via NET/Libfabric/2
+ault24:344150:344186 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/Libfabric/2
+ault24:344150:344175 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344183 [3] NCCL INFO Channel 00/0 : 3[3] -> 2[2] [send] via NET/Libfabric/2
+ault24:344150:344184 [2] NCCL INFO Channel 00/0 : 3[3] -> 2[2] [receive] via NET/Libfabric/2
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344185 [1] NCCL INFO Channel 01/0 : 2[2] -> 1[1] [receive] via NET/Libfabric/2
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344184 [2] NCCL INFO Channel 00/0 : 2[2] -> 1[1] [send] via NET/Libfabric/2
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344185 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/Libfabric/2
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344184 [2] NCCL INFO Channel 01/0 : 2[2] -> 1[1] [send] via NET/Libfabric/2
+ault24:344150:344186 [0] NCCL INFO Connected all trees
+ault24:344150:344183 [3] NCCL INFO Connected all trees
+ault24:344150:344185 [1] NCCL INFO Connected all trees
+ault24:344150:344184 [2] NCCL INFO Connected all trees
+   384.83    0.00    0.00       0   348.16    0.00    0.00       0
+          16             4     float     sum      -1   410.01    0.00    0.00       0   342.22    0.00    0.00       0
+          32             8     float     sum      -1   383.79    0.00    0.00       0   334.52    0.00    0.00       0
+          64            16     float     sum      -1   336.68    0.00    0.00       0   324.84    0.00    0.00       0
+         128            32     float     sum      -1   354.61    0.00    0.00       0   421.58    0.00    0.00       0
+         256            64     float     sum      -1   387.18    0.00    0.00       0   376.78    0.00    0.00       0
+         512           128     float     sum      -1   347.80    0.00    0.00       0   335.99    0.00    0.00       0
+        1024           256     float     sum      -1   376.58    0.00    0.00       0   363.56    0.00    0.00       0
+        2048           512     float     sum      -1   360.63    0.01    0.01       0   356.84    0.01    0.01       0
+        4096          1024     float     sum      -1   367.32    0.01    0.02       0   354.22    0.01    0.02       0
+        8192          2048     float     sum      -1   366.77    0.02    0.03       0   374.61    0.02    0.03       0
+       16384          4096     float     sum      -1   403.59    0.04    0.06       0   451.67    0.04    0.05       0
+       32768          8192     float     sum      -1   532.47    0.06    0.09       0   528.48    0.06    0.09       0
+       65536         16384     float     sum      -1ault24:344150:344175 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344179 [2] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344177 [1] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344191 [3] NCCL INFO Channel 01/0 : 2[2] -> 3[3] [receive] via NET/Libfabric/2
+ault24:344150:344181 [0] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344192 [2] NCCL INFO Channel 01/0 : 2[2] -> 3[3] [send] via NET/Libfabric/2
+ault24:344150:344193 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/Libfabric/2
+ault24:344150:344194 [0] NCCL INFO Channel 00/0 : 3[3] -> 0[0] [receive] via NET/Libfabric/2
+ault24:344150:344175 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344191 [3] NCCL INFO Channel 00/0 : 3[3] -> 0[0] [send] via NET/Libfabric/2
+ault24:344150:344181 [0] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344194 [0] NCCL INFO Channel 01/0 : 3[3] -> 0[0] [receive] via NET/Libfabric/2
+ault24:344150:344175 [3] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344191 [3] NCCL INFO Channel 01/0 : 3[3] -> 0[0] [send] via NET/Libfabric/2
+ault24:344150:344181 [0] NCCL INFO NET/OFI No NIC info for dev 2. Supplying default values for NIC properties.
+ault24:344150:344194 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/Libfabric/2
+ault24:344150:344191 [3] NCCL INFO Connected all rings, use ring PXN 0 GDR 0
+ault24:344150:344193 [1] NCCL INFO Connected all rings, use ring PXN 0 GDR 0
+ault24:344150:344192 [2] NCCL INFO Connected all rings, use ring PXN 0 GDR 0
+ault24:344150:344194 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 0
+  2114.73    0.03    0.05       0  2100.54    0.03    0.05       0
+      131072         32768     float     sum      -1  2335.38    0.06    0.08       0  2329.02    0.06    0.08       0
+      262144         65536     float     sum      -1  3421.24    0.08    0.11       0  3369.42    0.08    0.12       0
+      524288        131072     float     sum      -1  4645.64    0.11    0.17       0  4753.27    0.11    0.17       0
+     1048576        262144     float     sum      -1  8088.99    0.13    0.19       0  9169.93    0.11    0.17       0
+ault24:344150:344179 [2] NCCL INFO NET/OFI MR cache 0 hits 96 misses
+ault24:344150:344150 [1] NCCL INFO Unloading plugin libnccl-net.so
+# Out of bounds values : 0 OK
+# Avg bus bandwidth    : 0.0452556 
+#
+# Collective test concluded: all_reduce_perf
+#
+

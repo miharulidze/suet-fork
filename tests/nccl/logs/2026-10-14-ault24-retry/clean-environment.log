@@ -1,0 +1,15 @@
+2026-10-14T12:24:27+02:00
+ault24.cscs.ch
+ls: cannot access '/apps/ault': No such file or directory
+ls: cannot access '/users/mkhalilo': No such file or directory
+ls: cannot access '/scratch/mkhalilo': No such file or directory
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        755G     0  755G   0% /dev
+tmpfs           756G     0  756G   0% /dev/shm
+tmpfs           756G  115M  755G   1% /run
+tmpfs           756G     0  756G   0% /sys/fs/cgroup
+/dev/sda2       219G   18G  190G   9% /
+/dev/sda1       511M   11M  501M   3% /boot/efi
+SLURM_JOB_ID=892432
+/usr/bin/gcc
+/usr/bin/g++

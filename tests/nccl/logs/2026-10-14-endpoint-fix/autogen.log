@@ -1,0 +1,40 @@
++ autoreconf -ivf
+autoreconf: export WARNINGS=
+autoreconf: Entering directory '.'
+autoreconf: configure.ac: not using Gettext
+autoreconf: running: aclocal --force -I config
+autoreconf: configure.ac: tracing
+autoreconf: running: libtoolize --copy --force
+libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'config'.
+libtoolize: copying file 'config/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'config'.
+libtoolize: copying file 'config/libtool.m4'
+libtoolize: copying file 'config/ltoptions.m4'
+libtoolize: copying file 'config/ltsugar.m4'
+libtoolize: copying file 'config/ltversion.m4'
+libtoolize: copying file 'config/lt~obsolete.m4'
+autoreconf: configure.ac: not using Intltool
+autoreconf: configure.ac: not using Gtkdoc
+autoreconf: running: aclocal --force -I config
+autoreconf: running: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/autoconf --force
+configure.ac:666: warning: The macro 'AC_HELP_STRING' is obsolete.
+configure.ac:666: You should run autoupdate.
+./lib/autoconf/general.m4:204: AC_HELP_STRING is expanded from...
+./lib/autoconf/general.m4:1534: AC_ARG_ENABLE is expanded from...
+configure.ac:666: the top level
+configure.ac:679: warning: The macro 'AC_HELP_STRING' is obsolete.
+configure.ac:679: You should run autoupdate.
+./lib/autoconf/general.m4:204: AC_HELP_STRING is expanded from...
+./lib/autoconf/general.m4:1534: AC_ARG_ENABLE is expanded from...
+configure.ac:679: the top level
+autoreconf: running: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/autoheader --force
+autoreconf: running: automake --add-missing --copy --force-missing
+configure.ac:71: installing 'config/ar-lib'
+configure.ac:67: installing 'config/compile'
+configure.ac:23: installing 'config/config.guess'
+configure.ac:23: installing 'config/config.sub'
+configure.ac:18: installing 'config/install-sh'
+configure.ac:18: installing 'config/missing'
+Makefile.am: installing 'config/depcomp'
+parallel-tests: installing 'config/test-driver'
+autoreconf: Leaving directory '.'

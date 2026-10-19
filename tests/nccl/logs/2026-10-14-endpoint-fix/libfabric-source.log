@@ -1,0 +1,12 @@
+0c270f7482fa8a5cbc1e8f52551d389c645c7483
+ M Makefile.am
+ M configure.ac
+ M include/ofi.h
+ M include/ofi_prov.h
+ M include/rdma/fabric.h
+ M include/rdma/fi_endpoint.h
+ M man/fi_msg.3.md
+ M src/fabric.c
+ M src/fi_tostr.c
+ M util/info.c
+?? prov/suet/

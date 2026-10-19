@@ -1,0 +1,134 @@
++ date -Is
+2026-10-14T12:34:11+02:00
++ hostname
+ault24.cscs.ch
++ /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc --version
+x86_64-conda-linux-gnu-gcc (conda-forge gcc 13.4.0-20) 13.4.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ --version
+x86_64-conda-linux-gnu-g++ (conda-forge gcc 13.4.0-20) 13.4.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ nvcc --version
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:23:50_PST_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0
++ nvidia-smi
+Wed Oct 14 12:34:11 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.86.15              Driver Version: 570.86.15      CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla V100-PCIE-16GB           On  |   00000000:1C:00.0 Off |                    0 |
+| N/A   28C    P0             25W /  250W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   1  Tesla V100-PCIE-16GB           On  |   00000000:1E:00.0 Off |                    0 |
+| N/A   30C    P0             24W /  250W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   2  Tesla V100-PCIE-16GB           On  |   00000000:40:00.0 Off |                    0 |
+| N/A   29C    P0             25W /  250W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   3  Tesla V100-PCIE-16GB           On  |   00000000:41:00.0 Off |                    0 |
+| N/A   29C    P0             25W /  250W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
++ pkg-config --modversion hwloc
+2.15.0
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/suet rev-parse HEAD
+05120e5afd5b675d9f1df97d6c60e70cb02731ef
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/suet status --short
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl rev-parse HEAD
+3e46c089f4ae4732722a419eb6096aead7e47a30
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl status --short
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/aws-ofi-nccl rev-parse HEAD
+745b951f443511bbc79beb0868cd8a967907eb42
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/aws-ofi-nccl status --short
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests rev-parse HEAD
+afd59abab774a6a4b492eb344bd0c845a0b7bb4d
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests status --short
++ nccl_pid=288531
++ build_nccl
++ suet_pid=288532
++ wait 288531
++ build_suet
++ nccl_rc=0
++ printf 'nccl_build=%s\n' 0
++ wait 288532
++ suet_rc=0
++ printf 'suet_build=%s\n' 0
++ plugin_rc=99
++ tests_rc=99
++ test 0 -eq 0
++ export LD_LIBRARY_PATH=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib:/usr/lib64
++ LD_LIBRARY_PATH=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib:/usr/lib64
++ plugin_rc=0
++ printf 'plugin_build=%s\n' 0
++ cp /tmp/suet-nccl-retry-mkhalilo-20261014/src/aws-ofi-nccl/config.log /tmp/suet-nccl-retry-mkhalilo-20261014/logs/plugin-config.log
++ /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/bin/fi_info -p 'udp;ofi_suet' -t FI_EP_RDM
++ printf 'fi_info_suet=%s\n' 0
++ test 0 -eq 0
++ tests_rc=0
++ printf 'nccl_tests_build=%s\n' 0
++ test 0 -eq 0
++ test 0 -eq 0
++ export LD_LIBRARY_PATH=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib:/usr/lib64
++ LD_LIBRARY_PATH=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib:/usr/lib64
++ export 'FI_PROVIDER=udp;ofi_suet'
++ FI_PROVIDER='udp;ofi_suet'
++ export OFI_NCCL_PROTOCOL=SENDRECV
++ OFI_NCCL_PROTOCOL=SENDRECV
++ export NCCL_NET=Libfabric
++ NCCL_NET=Libfabric
++ export NCCL_P2P_DISABLE=1 NCCL_SHM_DISABLE=1
++ NCCL_P2P_DISABLE=1
++ NCCL_SHM_DISABLE=1
++ export NCCL_NET_GDR_LEVEL=LOC NCCL_PROTO=Simple
++ NCCL_NET_GDR_LEVEL=LOC
++ NCCL_PROTO=Simple
++ export NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,NET,GRAPH
++ NCCL_DEBUG=INFO
++ NCCL_DEBUG_SUBSYS=INIT,NET,GRAPH
++ for gpus in 2 4
++ printf 'all_reduce_%sgpu=%s\n' 2 124
++ for gpus in 2 4
++ printf 'all_reduce_%sgpu=%s\n' 4 3
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/suet diff --stat
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/suet diff --cached --stat
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl diff --stat
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl diff --cached --stat
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/aws-ofi-nccl diff --stat
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/aws-ofi-nccl diff --cached --stat
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests diff --stat
++ git -C /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests diff --cached --stat
++ date -Is
+2026-10-14T12:59:32+02:00
++ touch /tmp/suet-nccl-retry-mkhalilo-20261014/logs/builds-finished

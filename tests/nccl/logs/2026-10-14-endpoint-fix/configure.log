@@ -1,0 +1,308 @@
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether sleep supports fractional seconds... yes
+checking filesystem timestamp resolution... 0.01
+checking whether build environment is sane... yes
+checking for a race-free mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking xargs -n works... yes
+checking how to create a pax tar archive... gnutar
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking whether make supports the include directive... yes (GNU style)
+checking for gcc... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc accepts -g... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to enable C11 features... none needed
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc understands -c and -o together... yes
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... gcc3
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... gcc3
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking for gcc... (cached) /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc
+checking whether the compiler supports GNU C... (cached) yes
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc accepts -g... (cached) yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to enable C11 features... (cached) none needed
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc understands -c and -o together... (cached) yes
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... (cached) gcc3
+checking for C compiler conformance level... c11
+checking whether the compiler supports GNU C++... yes
+checking whether /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ accepts -g... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ option to enable C++11 features... none needed
+checking dependency style of /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++... gcc3
+checking how to run the C preprocessor... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc -E
+checking for typeof syntax and keyword spelling... typeof
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld
+checking if the linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 3458764513820540925
+checking how to convert x86_64-pc-linux-gnu file names to x86_64-pc-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-pc-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld option to reload object files... -r
+checking for file... file
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for ranlib... ranlib
+checking for archiver @FILE support... @
+checking for strip... strip
+checking command to parse /usr/bin/nm -B output from /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc object... ok
+checking for sysroot... no
+checking for a working dd... /usr/bin/dd
+checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
+checking for mt... no
+checking if : is a manifest tool... no
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for strings.h... yes
+checking for sys/stat.h... yes
+checking for sys/types.h... yes
+checking for unistd.h... yes
+checking for elf.h... yes
+checking for sys/auxv.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -fno-rtti -fno-exceptions... no
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc option to produce PIC... -fPIC -DPIC
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc PIC flag -fPIC -DPIC works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc static flag -static works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -c -o file.o... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc supports -c -o file.o... (cached) yes
+checking whether the /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking how to run the C++ preprocessor... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ -E
+checking for ld used by /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++... /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64
+checking if the linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) is GNU ld... yes
+checking whether the /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) supports shared libraries... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ option to produce PIC... -fPIC -DPIC
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ PIC flag -fPIC -DPIC works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ static flag -static works... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ supports -c -o file.o... yes
+checking if /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ supports -c -o file.o... (cached) yes
+checking whether the /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-g++ linker (/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/libexec/gcc/x86_64-conda-linux-gnu/13.4.0/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+configure: creating ./config.lt
+config.lt: creating libtool
+checking for dlopen in -ldl... yes
+checking for pthread_mutex_init in -lpthread... yes
+checking for pthread_spin_init... yes
+checking for shm_open... no
+checking for library containing shm_open... -lrt
+checking for kqueue... no
+checking for epoll_create... yes
+checking for /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc options needed to detect all undeclared functions... none needed
+checking for linux/perf_event.h... yes
+checking whether __builtin_ia32_rdpmc is declared... yes
+checking compiler support for c11 atomics... yes
+checking compiler support for c11 atomic `least` types... yes
+checking compiler support for built-in atomics... yes
+checking for library containing __atomic_load_8... -latomic
+checking compiler support for built-in memory model aware atomics... yes
+checking for __int128... yes
+checking compiler support for built-in memory model aware 128-bit atomics... no
+checking compiler support for cpuid... yes
+checking whether ld accepts --version-script... yes
+checking for xpmem.h... no
+checking for .symver assembler support... yes
+checking for __alias__ attribute support... yes
+checking for getifaddrs... yes
+checking ethtool support... yes
+checking whether ethtool_cmd_speed is declared... yes
+checking whether SPEED_UNKNOWN is declared... yes
+checking for linux/userfaultfd.h... yes
+checking whether __NR_userfaultfd is declared... yes
+checking for userfaultfd unmap support... yes
+checking for userfaultfd thread id support... yes
+checking for linux/kdreg2.h... no
+checking for library containing clock_gettime... none required
+checking for liburing.h... no
+checking for cuda_runtime.h... yes
+configure: looking for library without search path
+checking for cudaMemcpy in -lcudart... no
+checking whether cuMemGetHandleForAddressRange is declared... yes
+checking whether CU_DEVICE_ATTRIBUTE_DMA_BUF_SUPPORTED is declared... yes
+checking whether CU_MEM_RANGE_HANDLE_TYPE_DMA_BUF_FD is declared... yes
+checking whether CU_CTX_SYNC_MEMOPS is declared... yes
+checking for level_zero/ze_api.h... no
+checking for nrt/nrt.h... no
+checking for habanalabs/synapse_api.h... no
+checking for __curbrk... yes
+checking for __clear_cache... yes
+checking for linux/mman.h... yes
+checking for sys/syscall.h... yes
+checking whether __syscall is declared... no
+checking for __syscall... no
+checking for hsa/hsa_ext_amd.h... no
+checking size of void *... 8
+configure: *** Configuring psm2 provider
+checking for psm2.h... no
+configure: configure: recheck psm2 without psm2_info_query.
+checking for psm2.h... no
+configure: recheck psm2 without psm2_mq_ipeek_dequeue_multi.
+checking for psm2.h... no
+configure: recheck psm2 without psm2_mq_fp_msg.
+checking for psm2.h... no
+configure: recheck psm2 without psm2_am_register_handlers_2.
+checking for psm2.h... no
+configure: psm2 provider: disabled
+configure: *** Configuring psm3 provider
+checking for sys/mman.h... yes
+configure: looking for library without search path
+checking for shm_open in -lrt... yes
+checking for numa.h... no
+checking for infiniband/verbs.h... no
+checking for uuid/uuid.h... yes
+configure: looking for library without search path
+checking for uuid_parse in -luuid... yes
+checking for -msse4.2 support... yes
+checking for -mavx2 support (recommended)... no
+configure: psm3 recommends minimum of avx2 instruction set for best performance
+checking for grep that handles long lines and -e... (cached) /usr/bin/grep
+checking for -Wno-address-of-packed-member support... yes
+checking for rdma/rv_user_ioctls.h... no
+checking for linux/idxd.h... yes
+checking for full Intel DSA support... yes
+checking for hwloc.h... yes
+configure: looking for library without search path
+checking for hwloc_topology_init in -lhwloc... yes
+configure: psm3 provider: disabled
+configure: *** Configuring sockets provider
+checking for sys/socket.h... yes
+checking for shm_open... (cached) no
+checking for sys/mman.h... yes
+configure: looking for library without search path
+checking for shm_open in -lrt... yes
+checking for getifaddrs... (cached) yes
+configure: sockets provider: include in libfabric
+configure: *** Configuring verbs provider
+checking for infiniband/verbs.h... no
+checking for rdma/rdma_cma.h... no
+checking for rdma/rdma_cma.h... no
+checking for hwloc.h... yes
+configure: looking for library without search path
+checking for hwloc_topology_init in -lhwloc... yes
+checking for asm/types.h... yes
+configure: verbs provider: disabled
+configure: *** Configuring efa provider
+checking for infiniband/verbs.h... no
+checking for GCC... yes
+checking for infiniband/efadv.h... no
+configure: WARNING: The EFA provider requires rdma-core v31 or newer.
+configure: efa provider: disabled
+configure: *** Configuring cxi provider
+checking for cxi_prov_hw.h... no
+checking for uapi/misc/cxi.h... no
+checking for libcxi/libcxi.h... no
+checking for curl/curl.h... yes
+configure: looking for library without search path
+checking for curl_global_init in -lcurl... yes
+checking whether cxil_modify_cp is declared... no
+checking whether cxil_svc_get_vni_range is declared... no
+checking whether cxil_alloc_trig_cp is declared... no
+checking whether cxil_svc_get_netns is declared... no
+configure: After coll_dlopen_curl check, cxi_LIBS =  -lcurl 
+checking for json-c/json.h... no
+configure: After coll_dlopen_json check, cxi_LIBS =  -lcurl  
+configure: cxi provider: disabled
+configure: *** Configuring usnic provider
+checking for infiniband/verbs.h... (cached) no
+configure: usnic provider: disabled
+configure: *** Configuring udp provider
+checking for sys/socket.h... (cached) yes
+configure: udp provider: include in libfabric
+configure: *** Configuring tcp provider
+configure: tcp provider: include in libfabric
+configure: *** Configuring rxm provider
+configure: rxm provider: include in libfabric
+configure: *** Configuring mrail provider
+configure: mrail provider: include in libfabric
+configure: *** Configuring rxd provider
+configure: rxd provider: include in libfabric
+configure: *** Configuring suet provider
+configure: suet provider: include in libfabric
+configure: *** Configuring shm provider
+checking for shm_open... (cached) no
+checking for sys/mman.h... yes
+configure: looking for library without search path
+checking for shm_open in -lrt... yes
+checking for accel-config/libaccel_config.h... no
+checking whether HAVE_ATOMICS is declared... yes
+configure: shm provider: include in libfabric
+configure: *** Configuring sm2 provider
+checking for shm_open... (cached) no
+checking for sys/mman.h... yes
+configure: looking for library without search path
+checking for shm_open in -lrt... yes
+checking whether HAVE_ATOMICS is declared... (cached) yes
+configure: sm2 provider: include in libfabric
+configure: *** Configuring ucx provider
+configure: ucx provider: disabled
+configure: *** Configuring lpp provider
+checking whether HAVE_ATOMICS is declared... (cached) yes
+checking if have lpp thread safe support... yes
+configure: lpp provider: include in libfabric
+configure: *** Configuring perf provider
+configure: perf provider: include in libfabric
+configure: *** Configuring trace provider
+configure: trace provider: include in libfabric
+configure: *** Configuring profile provider
+configure: profile provider: disabled
+configure: *** Configuring monitor provider
+configure: monitor provider: include in libfabric
+configure: *** Configuring hook_debug provider
+configure: hook_debug provider: include in libfabric
+configure: *** Configuring hook_hmem provider
+configure: hook_hmem provider: include in libfabric
+configure: *** Configuring dmabuf_peer_mem provider
+configure: dmabuf_peer_mem provider: include in libfabric
+configure: *** Configuring opx provider
+checking for opx provider... checking for uuid/uuid.h... yes
+configure: looking for library without search path
+checking for uuid_parse in -luuid... yes
+checking for numa.h... no
+checking for rdma/hfi/hfi1_user.h... yes
+checking for infiniband/hfi1dv.h... no
+configure: WARNING: Did not detect system hfi1 direct verbs rdma-core support.
+checking for infiniband/hfisvc_client.h... no
+configure: WARNING: Did not detect system default rdma-core support for hfisvc.
+checking whether HAVE_ATOMICS is declared... (cached) yes
+configure: opx provider: disabled
+configure: *** Configuring lnx provider
+configure: lnx provider: include in libfabric
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating libfabric.pc
+config.status: creating Makefile
+config.status: creating libfabric.spec
+config.status: creating libfabric.map
+config.status: creating config.h
+config.status: executing depfiles commands
+config.status: executing libtool commands
+***
+*** Built-in providers:	lnx dmabuf_peer_mem hook_hmem hook_debug monitor trace perf lpp sm2 shm suet rxd mrail rxm tcp udp sockets 
+*** DSO providers:	
+***

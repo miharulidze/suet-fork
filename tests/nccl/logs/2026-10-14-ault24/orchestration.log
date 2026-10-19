@@ -1,0 +1,103 @@
++ date -Is
+2026-10-14T12:00:38+02:00
++ hostname
+ault24.cscs.ch
++ nvidia-smi
+Wed Oct 14 12:00:38 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.86.15              Driver Version: 570.86.15      CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla V100-PCIE-16GB           On  |   00000000:1C:00.0 Off |                    0 |
+| N/A   28C    P0             25W /  250W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   1  Tesla V100-PCIE-16GB           On  |   00000000:1E:00.0 Off |                    0 |
+| N/A   29C    P0             24W /  250W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   2  Tesla V100-PCIE-16GB           On  |   00000000:40:00.0 Off |                    0 |
+| N/A   29C    P0             25W /  250W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   3  Tesla V100-PCIE-16GB           On  |   00000000:41:00.0 Off |                    0 |
+| N/A   29C    P0             25W /  250W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
++ gcc --version
+gcc (GCC) 8.4.1 20200928 (Red Hat 8.4.1-1)
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ g++ --version
+g++ (GCC) 8.4.1 20200928 (Red Hat 8.4.1-1)
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ autoconf --version
+autoconf (GNU Autoconf) 2.69
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+/Autoconf: GNU GPL version 3 or later
+<http://gnu.org/licenses/gpl.html>, <http://gnu.org/licenses/exceptions.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by David J. MacKenzie and Akim Demaille.
++ automake --version
+automake (GNU automake) 1.16.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv2+: GNU GPL version 2 or later <https://gnu.org/licenses/gpl-2.0.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Tom Tromey <tromey@redhat.com>
+       and Alexandre Duret-Lutz <adl@gnu.org>.
++ libtoolize --version
+libtoolize (GNU libtool) 2.4.6
+Written by Gary V. Vaughan <gary@gnu.org>, 2003
+
+Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++ command -v nvcc
++ true
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C suet rev-parse HEAD
+05120e5afd5b675d9f1df97d6c60e70cb02731ef
++ git -C suet status --short
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C nccl rev-parse HEAD
+3e46c089f4ae4732722a419eb6096aead7e47a30
++ git -C nccl status --short
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C aws-ofi-nccl rev-parse HEAD
+745b951f443511bbc79beb0868cd8a967907eb42
++ git -C aws-ofi-nccl status --short
++ for repo in suet nccl aws-ofi-nccl nccl-tests
++ git -C nccl-tests rev-parse HEAD
+afd59abab774a6a4b492eb344bd0c845a0b7bb4d
++ git -C nccl-tests status --short
++ CUDA_ROOT=/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d
++ HWLOC_ROOT=/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/hwloc-2.5.0-gwltaenwfu2fe6elj2k2img2ospfhwvm
++ printf 'nccl_build=%s\n' 2
++ printf 'suet_build=%s\n' 1
++ printf 'plugin_build=%s\n' 77
++ test -x /tmp/suet-nccl-mkhalilo-20261014/suet-workspace/build/bin/fi_info
++ test -f /tmp/suet-nccl-mkhalilo-20261014/nccl/build/lib/libnccl.so
++ printf '%s\n' 'gpu_tests=BLOCKED: NCCL and/or OFI plugin did not build; no fallback transport tested.'
++ date -Is
+2026-10-14T12:01:00+02:00
++ touch logs/builds-finished

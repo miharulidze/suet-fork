@@ -1,0 +1,24 @@
+provider: udp;ofi_suet
+    fabric: 148.187.105.0/24
+    domain: enp134s0f0
+    version: 207.0
+    type: FI_EP_RDM
+    protocol: Unknown
+provider: udp;ofi_suet
+    fabric: fe80::/64
+    domain: enp134s0f0
+    version: 207.0
+    type: FI_EP_RDM
+    protocol: Unknown
+provider: udp;ofi_suet
+    fabric: 127.0.0.1/32
+    domain: lo
+    version: 207.0
+    type: FI_EP_RDM
+    protocol: Unknown
+provider: udp;ofi_suet
+    fabric: ::1/128
+    domain: lo
+    version: 207.0
+    type: FI_EP_RDM
+    protocol: Unknown

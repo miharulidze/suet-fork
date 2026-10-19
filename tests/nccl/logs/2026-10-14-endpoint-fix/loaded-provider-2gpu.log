@@ -1,0 +1,1690 @@
+    366129:	find library=librt.so.1 [0]; searching
+    366129:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/avx512_1/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/x86_64/librt.so.1
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/librt.so.1
+    366129:	 search path=/usr/lib64/glibc-hwcaps/x86-64-v4:/usr/lib64/glibc-hwcaps/x86-64-v3:/usr/lib64/glibc-hwcaps/x86-64-v2:/usr/lib64/tls/haswell/avx512_1/x86_64:/usr/lib64/tls/haswell/avx512_1:/usr/lib64/tls/haswell/x86_64:/usr/lib64/tls/haswell:/usr/lib64/tls/avx512_1/x86_64:/usr/lib64/tls/avx512_1:/usr/lib64/tls/x86_64:/usr/lib64/tls:/usr/lib64/haswell/avx512_1/x86_64:/usr/lib64/haswell/avx512_1:/usr/lib64/haswell/x86_64:/usr/lib64/haswell:/usr/lib64/avx512_1/x86_64:/usr/lib64/avx512_1:/usr/lib64/x86_64:/usr/lib64		(system search path)
+    366129:	  trying file=/usr/lib64/glibc-hwcaps/x86-64-v4/librt.so.1
+    366129:	  trying file=/usr/lib64/glibc-hwcaps/x86-64-v3/librt.so.1
+    366129:	  trying file=/usr/lib64/glibc-hwcaps/x86-64-v2/librt.so.1
+    366129:	  trying file=/usr/lib64/tls/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/usr/lib64/tls/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/usr/lib64/tls/haswell/x86_64/librt.so.1
+    366129:	  trying file=/usr/lib64/tls/haswell/librt.so.1
+    366129:	  trying file=/usr/lib64/tls/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/usr/lib64/tls/avx512_1/librt.so.1
+    366129:	  trying file=/usr/lib64/tls/x86_64/librt.so.1
+    366129:	  trying file=/usr/lib64/tls/librt.so.1
+    366129:	  trying file=/usr/lib64/haswell/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/usr/lib64/haswell/avx512_1/librt.so.1
+    366129:	  trying file=/usr/lib64/haswell/x86_64/librt.so.1
+    366129:	  trying file=/usr/lib64/haswell/librt.so.1
+    366129:	  trying file=/usr/lib64/avx512_1/x86_64/librt.so.1
+    366129:	  trying file=/usr/lib64/avx512_1/librt.so.1
+    366129:	  trying file=/usr/lib64/x86_64/librt.so.1
+    366129:	  trying file=/usr/lib64/librt.so.1
+    366129:	
+    366129:	find library=libpthread.so.0 [0]; searching
+    366129:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libpthread.so.0
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libpthread.so.0
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libpthread.so.0
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpthread.so.0
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libpthread.so.0
+    366129:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366129:	  trying file=/usr/lib64/tls/libpthread.so.0
+    366129:	  trying file=/usr/lib64/libpthread.so.0
+    366129:	
+    366129:	find library=libc.so.6 [0]; searching
+    366129:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libc.so.6
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libc.so.6
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libc.so.6
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libc.so.6
+    366129:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libc.so.6
+    366129:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366129:	  trying file=/usr/lib64/tls/libc.so.6
+    366129:	  trying file=/usr/lib64/libc.so.6
+    366129:	
+    366129:	
+    366129:	calling init: /usr/lib64/libpthread.so.0
+    366129:	
+    366129:	
+    366129:	calling init: /usr/lib64/libc.so.6
+    366129:	
+    366129:	
+    366129:	calling init: /usr/lib64/librt.so.1
+    366129:	
+    366129:	
+    366129:	initialize program: timeout
+    366129:	
+    366129:	
+    366129:	transferring control: timeout
+    366129:	
+    366130:	find library=libcudart.so.12 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v4/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v3/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/glibc-hwcaps/x86-64-v2/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/avx512_1/x86_64/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/avx512_1/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/x86_64/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/haswell/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/avx512_1/x86_64/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/avx512_1/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/x86_64/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/tls/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/avx512_1/x86_64/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/avx512_1/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/x86_64/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/haswell/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/avx512_1/x86_64/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/avx512_1/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/x86_64/libcudart.so.12
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcudart.so.12
+    366130:	
+    366130:	find library=librt.so.1 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librt.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/haswell/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/tls/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/haswell/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/haswell/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/tls/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/haswell/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/haswell/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/tls/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/haswell/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/librt.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librt.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v4/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v3/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/glibc-hwcaps/x86-64-v2/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/haswell/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/tls/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/haswell/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/avx512_1/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/x86_64/librt.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/librt.so.1
+    366130:	 search path=/usr/lib64/glibc-hwcaps/x86-64-v4:/usr/lib64/glibc-hwcaps/x86-64-v3:/usr/lib64/glibc-hwcaps/x86-64-v2:/usr/lib64/tls/haswell/avx512_1/x86_64:/usr/lib64/tls/haswell/avx512_1:/usr/lib64/tls/haswell/x86_64:/usr/lib64/tls/haswell:/usr/lib64/tls/avx512_1/x86_64:/usr/lib64/tls/avx512_1:/usr/lib64/tls/x86_64:/usr/lib64/tls:/usr/lib64/haswell/avx512_1/x86_64:/usr/lib64/haswell/avx512_1:/usr/lib64/haswell/x86_64:/usr/lib64/haswell:/usr/lib64/avx512_1/x86_64:/usr/lib64/avx512_1:/usr/lib64/x86_64:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/glibc-hwcaps/x86-64-v4/librt.so.1
+    366130:	  trying file=/usr/lib64/glibc-hwcaps/x86-64-v3/librt.so.1
+    366130:	  trying file=/usr/lib64/glibc-hwcaps/x86-64-v2/librt.so.1
+    366130:	  trying file=/usr/lib64/tls/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/usr/lib64/tls/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/usr/lib64/tls/haswell/x86_64/librt.so.1
+    366130:	  trying file=/usr/lib64/tls/haswell/librt.so.1
+    366130:	  trying file=/usr/lib64/tls/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/usr/lib64/tls/avx512_1/librt.so.1
+    366130:	  trying file=/usr/lib64/tls/x86_64/librt.so.1
+    366130:	  trying file=/usr/lib64/tls/librt.so.1
+    366130:	  trying file=/usr/lib64/haswell/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/usr/lib64/haswell/avx512_1/librt.so.1
+    366130:	  trying file=/usr/lib64/haswell/x86_64/librt.so.1
+    366130:	  trying file=/usr/lib64/haswell/librt.so.1
+    366130:	  trying file=/usr/lib64/avx512_1/x86_64/librt.so.1
+    366130:	  trying file=/usr/lib64/avx512_1/librt.so.1
+    366130:	  trying file=/usr/lib64/x86_64/librt.so.1
+    366130:	  trying file=/usr/lib64/librt.so.1
+    366130:	
+    366130:	find library=libnccl.so.2 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl.so.2
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnccl.so.2
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl.so.2
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl.so.2
+    366130:	
+    366130:	find library=libpthread.so.0 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpthread.so.0
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libpthread.so.0
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libpthread.so.0
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libpthread.so.0
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpthread.so.0
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libpthread.so.0
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libpthread.so.0
+    366130:	  trying file=/usr/lib64/libpthread.so.0
+    366130:	
+    366130:	find library=libdl.so.2 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libdl.so.2
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libdl.so.2
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libdl.so.2
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libdl.so.2
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libdl.so.2
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libdl.so.2
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libdl.so.2
+    366130:	  trying file=/usr/lib64/libdl.so.2
+    366130:	
+    366130:	find library=libstdc++.so.6 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libstdc++.so.6
+    366130:	
+    366130:	find library=libm.so.6 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libm.so.6
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libm.so.6
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libm.so.6
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libm.so.6
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libm.so.6
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libm.so.6
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libm.so.6
+    366130:	  trying file=/usr/lib64/libm.so.6
+    366130:	
+    366130:	find library=libgcc_s.so.1 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libgcc_s.so.1
+    366130:	
+    366130:	find library=libc.so.6 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libc.so.6
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libc.so.6
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libc.so.6
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libc.so.6
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libc.so.6
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libc.so.6
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libc.so.6
+    366130:	  trying file=/usr/lib64/libc.so.6
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libpthread.so.0
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libc.so.6
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libgcc_s.so.1
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libm.so.6
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libdl.so.2
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libstdc++.so.6
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/librt.so.1
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl.so.2
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcudart.so.12
+    366130:	
+    366130:	
+    366130:	initialize program: /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf
+    366130:	
+    366130:	
+    366130:	transferring control: /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf
+    366130:	
+# nccl-tests version 2.21.1 (afd59ab) nccl-headers=23203 nccl-library=23203
+# Collective test starting: all_reduce_perf
+# nThread 1 nGpus 2 minBytes 8 maxBytes 8 step: 2(factor) warmup iters: 1 iters: 1 agg iters: 1 validation: 1 graph: 0 unalign: 0
+#
+# Using devices
+    366130:	find library=libcuda.so.1 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcuda.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcuda.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libcuda.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libcuda.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libcuda.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcuda.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libcuda.so.1
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libcuda.so.1
+    366130:	  trying file=/usr/lib64/libcuda.so.1
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libcuda.so.1
+    366130:	
+#  Rank  0 Group  0 Pid 366130 on     ault24 device  0 [0000:1c:00] Tesla V100-PCIE-16GB
+#  Rank  1 Group  0 Pid 366130 on     ault24 device  1 [0000:1e:00] Tesla V100-PCIE-16GB
+    366130:	find library=libnccl-env.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-env.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-env.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-env.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnccl-env.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-env.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl-env.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-env.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-env.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnccl-env.so
+    366130:	  trying file=/usr/lib64/libnccl-env.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/glibc-hwcaps/x86-64-v4:/lib64/glibc-hwcaps/x86-64-v3:/lib64/glibc-hwcaps/x86-64-v2:/lib64/tls/haswell/avx512_1/x86_64:/lib64/tls/haswell/avx512_1:/lib64/tls/haswell/x86_64:/lib64/tls/haswell:/lib64/tls/avx512_1/x86_64:/lib64/tls/avx512_1:/lib64/tls/x86_64:/lib64/tls:/lib64/haswell/avx512_1/x86_64:/lib64/haswell/avx512_1:/lib64/haswell/x86_64:/lib64/haswell:/lib64/avx512_1/x86_64:/lib64/avx512_1:/lib64/x86_64:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/glibc-hwcaps/x86-64-v4/libnccl-env.so
+    366130:	  trying file=/lib64/glibc-hwcaps/x86-64-v3/libnccl-env.so
+    366130:	  trying file=/lib64/glibc-hwcaps/x86-64-v2/libnccl-env.so
+    366130:	  trying file=/lib64/tls/haswell/avx512_1/x86_64/libnccl-env.so
+    366130:	  trying file=/lib64/tls/haswell/avx512_1/libnccl-env.so
+    366130:	  trying file=/lib64/tls/haswell/x86_64/libnccl-env.so
+    366130:	  trying file=/lib64/tls/haswell/libnccl-env.so
+    366130:	  trying file=/lib64/tls/avx512_1/x86_64/libnccl-env.so
+    366130:	  trying file=/lib64/tls/avx512_1/libnccl-env.so
+    366130:	  trying file=/lib64/tls/x86_64/libnccl-env.so
+    366130:	  trying file=/lib64/tls/libnccl-env.so
+    366130:	  trying file=/lib64/haswell/avx512_1/x86_64/libnccl-env.so
+    366130:	  trying file=/lib64/haswell/avx512_1/libnccl-env.so
+    366130:	  trying file=/lib64/haswell/x86_64/libnccl-env.so
+    366130:	  trying file=/lib64/haswell/libnccl-env.so
+    366130:	  trying file=/lib64/avx512_1/x86_64/libnccl-env.so
+    366130:	  trying file=/lib64/avx512_1/libnccl-env.so
+    366130:	  trying file=/lib64/x86_64/libnccl-env.so
+    366130:	  trying file=/lib64/libnccl-env.so
+    366130:	  trying file=/usr/lib64/tls/libnccl-env.so
+    366130:	  trying file=/usr/lib64/libnccl-env.so
+    366130:	
+NCCL version 2.32.3+cuda12.8
+    366130:	find library=libnvidia-ptxjitcompiler.so.1 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnvidia-ptxjitcompiler.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnvidia-ptxjitcompiler.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnvidia-ptxjitcompiler.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnvidia-ptxjitcompiler.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnvidia-ptxjitcompiler.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnvidia-ptxjitcompiler.so.1
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnvidia-ptxjitcompiler.so.1
+    366130:	  trying file=/usr/lib64/libnvidia-ptxjitcompiler.so.1
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libnvidia-ptxjitcompiler.so.1
+    366130:	
+    366130:	find library=libnccl-net.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-net.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-net.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-net.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnccl-net.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so
+    366130:	
+    366130:	find library=libhwloc.so.15 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/glibc-hwcaps/x86-64-v4/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/glibc-hwcaps/x86-64-v3/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/glibc-hwcaps/x86-64-v2/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/haswell/avx512_1/x86_64/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/haswell/avx512_1/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/haswell/x86_64/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/haswell/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/avx512_1/x86_64/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/avx512_1/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/x86_64/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/tls/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/haswell/avx512_1/x86_64/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/haswell/avx512_1/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/haswell/x86_64/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/haswell/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/avx512_1/x86_64/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/avx512_1/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/x86_64/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhwloc.so.15
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhwloc.so.15
+    366130:	
+    366130:	find library=libfabric.so.1 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libfabric.so.1
+    366130:	
+    366130:	find library=libatomic.so.1 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libatomic.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libatomic.so.1
+    366130:	
+    366130:	find library=libxml2.so.16 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/.		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhwloc.so.15)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./glibc-hwcaps/x86-64-v4/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./glibc-hwcaps/x86-64-v3/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./glibc-hwcaps/x86-64-v2/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/haswell/avx512_1/x86_64/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/haswell/avx512_1/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/haswell/x86_64/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/haswell/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/avx512_1/x86_64/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/avx512_1/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/x86_64/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./tls/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./haswell/avx512_1/x86_64/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./haswell/avx512_1/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./haswell/x86_64/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./haswell/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./avx512_1/x86_64/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./avx512_1/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./x86_64/libxml2.so.16
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./libxml2.so.16
+    366130:	
+    366130:	find library=libz.so.1 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././glibc-hwcaps/x86-64-v4:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././glibc-hwcaps/x86-64-v3:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././glibc-hwcaps/x86-64-v2:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././haswell/avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././haswell/avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././haswell/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././haswell:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././avx512_1/x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././avx512_1:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././x86_64:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./.		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./libxml2.so.16)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././glibc-hwcaps/x86-64-v4/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././glibc-hwcaps/x86-64-v3/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././glibc-hwcaps/x86-64-v2/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/haswell/avx512_1/x86_64/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/haswell/avx512_1/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/haswell/x86_64/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/haswell/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/avx512_1/x86_64/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/avx512_1/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/x86_64/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././tls/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././haswell/avx512_1/x86_64/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././haswell/avx512_1/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././haswell/x86_64/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././haswell/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././avx512_1/x86_64/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././avx512_1/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././x86_64/libz.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libz.so.1
+    366130:	
+    366130:	find library=libiconv.so.2 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./.		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./libxml2.so.16)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libiconv.so.2
+    366130:	
+    366130:	find library=libicuuc.so.78 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./.		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./libxml2.so.16)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libicuuc.so.78
+    366130:	
+    366130:	find library=libicudata.so.78 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./.		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./libxml2.so.16)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libicudata.so.78
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libicuuc.so.78
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libiconv.so.2
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libz.so.1
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./libxml2.so.16
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libatomic.so.1
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libfabric.so.1
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhwloc.so.15
+    366130:	
+    366130:	
+    366130:	calling init: /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so
+    366130:	
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclCollNetPlugin_v12 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclCollNetPlugin_v11 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclCollNetPlugin_v10 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclCollNetPlugin_v9 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclCollNetPlugin_v8 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclCollNetPlugin_v7 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclCollNetPlugin_v6 (fatal)
+    366130:	find library=libefa-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libefa-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libefa-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libefa-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libefa-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libefa-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libefa-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libefa-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libefa-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libefa-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libefa-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libefa-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libefa-fi.so
+    366130:	  trying file=/usr/lib64/libefa-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libefa-fi.so
+    366130:	  trying file=/lib64/libefa-fi.so
+    366130:	  trying file=/usr/lib64/tls/libefa-fi.so
+    366130:	  trying file=/usr/lib64/libefa-fi.so
+    366130:	
+    366130:	find library=libpsmx2-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpsmx2-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libpsmx2-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libpsmx2-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpsmx2-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libpsmx2-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpsmx2-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libpsmx2-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libpsmx2-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libpsmx2-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpsmx2-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libpsmx2-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libpsmx2-fi.so
+    366130:	  trying file=/usr/lib64/libpsmx2-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libpsmx2-fi.so
+    366130:	  trying file=/lib64/libpsmx2-fi.so
+    366130:	  trying file=/usr/lib64/tls/libpsmx2-fi.so
+    366130:	  trying file=/usr/lib64/libpsmx2-fi.so
+    366130:	
+    366130:	find library=libopx-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libopx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libopx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libopx-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libopx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libopx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libopx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libopx-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libopx-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libopx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libopx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libopx-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libopx-fi.so
+    366130:	  trying file=/usr/lib64/libopx-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libopx-fi.so
+    366130:	  trying file=/lib64/libopx-fi.so
+    366130:	  trying file=/usr/lib64/tls/libopx-fi.so
+    366130:	  trying file=/usr/lib64/libopx-fi.so
+    366130:	
+    366130:	find library=libusnic-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libusnic-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libusnic-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libusnic-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libusnic-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libusnic-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libusnic-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libusnic-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libusnic-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libusnic-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libusnic-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libusnic-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libusnic-fi.so
+    366130:	  trying file=/usr/lib64/libusnic-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libusnic-fi.so
+    366130:	  trying file=/lib64/libusnic-fi.so
+    366130:	  trying file=/usr/lib64/tls/libusnic-fi.so
+    366130:	  trying file=/usr/lib64/libusnic-fi.so
+    366130:	
+    366130:	find library=libverbs-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libverbs-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libverbs-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libverbs-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libverbs-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libverbs-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libverbs-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libverbs-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libverbs-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libverbs-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libverbs-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libverbs-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libverbs-fi.so
+    366130:	  trying file=/usr/lib64/libverbs-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libverbs-fi.so
+    366130:	  trying file=/lib64/libverbs-fi.so
+    366130:	  trying file=/usr/lib64/tls/libverbs-fi.so
+    366130:	  trying file=/usr/lib64/libverbs-fi.so
+    366130:	
+    366130:	find library=libcxi-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcxi-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libcxi-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libcxi-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcxi-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libcxi-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcxi-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libcxi-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libcxi-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libcxi-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcxi-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libcxi-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libcxi-fi.so
+    366130:	  trying file=/usr/lib64/libcxi-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libcxi-fi.so
+    366130:	  trying file=/lib64/libcxi-fi.so
+    366130:	  trying file=/usr/lib64/tls/libcxi-fi.so
+    366130:	  trying file=/usr/lib64/libcxi-fi.so
+    366130:	
+    366130:	find library=libpsm3-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpsm3-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libpsm3-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libpsm3-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpsm3-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libpsm3-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpsm3-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libpsm3-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libpsm3-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libpsm3-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libpsm3-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libpsm3-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libpsm3-fi.so
+    366130:	  trying file=/usr/lib64/libpsm3-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libpsm3-fi.so
+    366130:	  trying file=/lib64/libpsm3-fi.so
+    366130:	  trying file=/usr/lib64/tls/libpsm3-fi.so
+    366130:	  trying file=/usr/lib64/libpsm3-fi.so
+    366130:	
+    366130:	find library=libucx-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libucx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libucx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libucx-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libucx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libucx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libucx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libucx-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libucx-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libucx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libucx-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libucx-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libucx-fi.so
+    366130:	  trying file=/usr/lib64/libucx-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libucx-fi.so
+    366130:	  trying file=/lib64/libucx-fi.so
+    366130:	  trying file=/usr/lib64/tls/libucx-fi.so
+    366130:	  trying file=/usr/lib64/libucx-fi.so
+    366130:	
+    366130:	find library=librxm-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librxm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/librxm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/librxm-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librxm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/librxm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librxm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/librxm-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/librxm-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/librxm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librxm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/librxm-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/librxm-fi.so
+    366130:	  trying file=/usr/lib64/librxm-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/librxm-fi.so
+    366130:	  trying file=/lib64/librxm-fi.so
+    366130:	  trying file=/usr/lib64/tls/librxm-fi.so
+    366130:	  trying file=/usr/lib64/librxm-fi.so
+    366130:	
+    366130:	find library=librxd-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librxd-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/librxd-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/librxd-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librxd-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/librxd-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librxd-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/librxd-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/librxd-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/librxd-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/librxd-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/librxd-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/librxd-fi.so
+    366130:	  trying file=/usr/lib64/librxd-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/librxd-fi.so
+    366130:	  trying file=/lib64/librxd-fi.so
+    366130:	  trying file=/usr/lib64/tls/librxd-fi.so
+    366130:	  trying file=/usr/lib64/librxd-fi.so
+    366130:	
+    366130:	find library=libshm-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libshm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libshm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libshm-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libshm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libshm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libshm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libshm-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libshm-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libshm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libshm-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libshm-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libshm-fi.so
+    366130:	  trying file=/usr/lib64/libshm-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libshm-fi.so
+    366130:	  trying file=/lib64/libshm-fi.so
+    366130:	  trying file=/usr/lib64/tls/libshm-fi.so
+    366130:	  trying file=/usr/lib64/libshm-fi.so
+    366130:	
+    366130:	find library=libudp-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libudp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libudp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libudp-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libudp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libudp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libudp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libudp-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libudp-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libudp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libudp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libudp-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libudp-fi.so
+    366130:	  trying file=/usr/lib64/libudp-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libudp-fi.so
+    366130:	  trying file=/lib64/libudp-fi.so
+    366130:	  trying file=/usr/lib64/tls/libudp-fi.so
+    366130:	  trying file=/usr/lib64/libudp-fi.so
+    366130:	
+    366130:	find library=libtcp-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libtcp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libtcp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libtcp-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libtcp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libtcp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libtcp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libtcp-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libtcp-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libtcp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libtcp-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libtcp-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libtcp-fi.so
+    366130:	  trying file=/usr/lib64/libtcp-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libtcp-fi.so
+    366130:	  trying file=/lib64/libtcp-fi.so
+    366130:	  trying file=/usr/lib64/tls/libtcp-fi.so
+    366130:	  trying file=/usr/lib64/libtcp-fi.so
+    366130:	
+    366130:	find library=libsockets-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libsockets-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libsockets-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libsockets-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libsockets-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libsockets-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libsockets-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libsockets-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libsockets-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libsockets-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libsockets-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libsockets-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libsockets-fi.so
+    366130:	  trying file=/usr/lib64/libsockets-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libsockets-fi.so
+    366130:	  trying file=/lib64/libsockets-fi.so
+    366130:	  trying file=/usr/lib64/tls/libsockets-fi.so
+    366130:	  trying file=/usr/lib64/libsockets-fi.so
+    366130:	
+    366130:	find library=libnet-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnet-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnet-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libnet-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnet-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnet-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnet-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnet-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnet-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnet-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnet-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnet-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnet-fi.so
+    366130:	  trying file=/usr/lib64/libnet-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libnet-fi.so
+    366130:	  trying file=/lib64/libnet-fi.so
+    366130:	  trying file=/usr/lib64/tls/libnet-fi.so
+    366130:	  trying file=/usr/lib64/libnet-fi.so
+    366130:	
+    366130:	find library=libhook_perf-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_perf-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_perf-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhook_perf-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_perf-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_perf-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_perf-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libhook_perf-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libhook_perf-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libhook_perf-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_perf-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_perf-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libhook_perf-fi.so
+    366130:	  trying file=/usr/lib64/libhook_perf-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libhook_perf-fi.so
+    366130:	  trying file=/lib64/libhook_perf-fi.so
+    366130:	  trying file=/usr/lib64/tls/libhook_perf-fi.so
+    366130:	  trying file=/usr/lib64/libhook_perf-fi.so
+    366130:	
+    366130:	find library=libhook_trace-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_trace-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_trace-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhook_trace-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_trace-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_trace-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_trace-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libhook_trace-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libhook_trace-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libhook_trace-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_trace-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_trace-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libhook_trace-fi.so
+    366130:	  trying file=/usr/lib64/libhook_trace-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libhook_trace-fi.so
+    366130:	  trying file=/lib64/libhook_trace-fi.so
+    366130:	  trying file=/usr/lib64/tls/libhook_trace-fi.so
+    366130:	  trying file=/usr/lib64/libhook_trace-fi.so
+    366130:	
+    366130:	find library=libhook_profile-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_profile-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_profile-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhook_profile-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_profile-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_profile-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_profile-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libhook_profile-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libhook_profile-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libhook_profile-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_profile-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_profile-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libhook_profile-fi.so
+    366130:	  trying file=/usr/lib64/libhook_profile-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libhook_profile-fi.so
+    366130:	  trying file=/lib64/libhook_profile-fi.so
+    366130:	  trying file=/usr/lib64/tls/libhook_profile-fi.so
+    366130:	  trying file=/usr/lib64/libhook_profile-fi.so
+    366130:	
+    366130:	find library=libhook_monitor-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_monitor-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_monitor-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhook_monitor-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_monitor-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_monitor-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_monitor-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libhook_monitor-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libhook_monitor-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libhook_monitor-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_monitor-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_monitor-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libhook_monitor-fi.so
+    366130:	  trying file=/usr/lib64/libhook_monitor-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libhook_monitor-fi.so
+    366130:	  trying file=/lib64/libhook_monitor-fi.so
+    366130:	  trying file=/usr/lib64/tls/libhook_monitor-fi.so
+    366130:	  trying file=/usr/lib64/libhook_monitor-fi.so
+    366130:	
+    366130:	find library=libhook_debug-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_debug-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_debug-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhook_debug-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_debug-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_debug-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_debug-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libhook_debug-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libhook_debug-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libhook_debug-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_debug-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_debug-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libhook_debug-fi.so
+    366130:	  trying file=/usr/lib64/libhook_debug-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libhook_debug-fi.so
+    366130:	  trying file=/lib64/libhook_debug-fi.so
+    366130:	  trying file=/usr/lib64/tls/libhook_debug-fi.so
+    366130:	  trying file=/usr/lib64/libhook_debug-fi.so
+    366130:	
+    366130:	find library=libhook_noop-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_noop-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_noop-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhook_noop-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_noop-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_noop-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_noop-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libhook_noop-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libhook_noop-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libhook_noop-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_noop-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_noop-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libhook_noop-fi.so
+    366130:	  trying file=/usr/lib64/libhook_noop-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libhook_noop-fi.so
+    366130:	  trying file=/lib64/libhook_noop-fi.so
+    366130:	  trying file=/usr/lib64/tls/libhook_noop-fi.so
+    366130:	  trying file=/usr/lib64/libhook_noop-fi.so
+    366130:	
+    366130:	find library=libhook_hmem-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_hmem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_hmem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhook_hmem-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_hmem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_hmem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_hmem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libhook_hmem-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libhook_hmem-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libhook_hmem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_hmem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_hmem-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libhook_hmem-fi.so
+    366130:	  trying file=/usr/lib64/libhook_hmem-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libhook_hmem-fi.so
+    366130:	  trying file=/lib64/libhook_hmem-fi.so
+    366130:	  trying file=/usr/lib64/tls/libhook_hmem-fi.so
+    366130:	  trying file=/usr/lib64/libhook_hmem-fi.so
+    366130:	
+    366130:	find library=libhook_dmabuf_peer_mem-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libhook_dmabuf_peer_mem-fi.so
+    366130:	  trying file=/usr/lib64/libhook_dmabuf_peer_mem-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libhook_dmabuf_peer_mem-fi.so
+    366130:	  trying file=/lib64/libhook_dmabuf_peer_mem-fi.so
+    366130:	  trying file=/usr/lib64/tls/libhook_dmabuf_peer_mem-fi.so
+    366130:	  trying file=/usr/lib64/libhook_dmabuf_peer_mem-fi.so
+    366130:	
+    366130:	find library=libcoll-fi.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcoll-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libcoll-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libcoll-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcoll-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libcoll-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcoll-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libcoll-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libcoll-fi.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libcoll-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcoll-fi.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libcoll-fi.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libcoll-fi.so
+    366130:	  trying file=/usr/lib64/libcoll-fi.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libcoll-fi.so
+    366130:	  trying file=/lib64/libcoll-fi.so
+    366130:	  trying file=/usr/lib64/tls/libcoll-fi.so
+    366130:	  trying file=/usr/lib64/libcoll-fi.so
+    366130:	
+    366130:	find library=libnccl-rma.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-rma.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-rma.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-rma.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnccl-rma.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-rma.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl-rma.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-rma.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-rma.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnccl-rma.so
+    366130:	  trying file=/usr/lib64/libnccl-rma.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libnccl-rma.so
+    366130:	  trying file=/lib64/libnccl-rma.so
+    366130:	  trying file=/usr/lib64/tls/libnccl-rma.so
+    366130:	  trying file=/usr/lib64/libnccl-rma.so
+    366130:	
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclRmaPlugin_v16 (fatal)
+
+[2026-10-14 14:29:11] ault24:366130:366147 [0] ncclResult_t nccl_ofi_gin_init(void**, uint64_t, ncclDebugLogger_t):50 NCCL WARN NET/OFI GIN only supports RDMA transport protocol.
+    366130:	find library=libibverbs.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libibverbs.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libibverbs.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libibverbs.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libibverbs.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libibverbs.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libibverbs.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libibverbs.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libibverbs.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libibverbs.so
+    366130:	  trying file=/usr/lib64/libibverbs.so
+    366130:	
+    366130:	find library=libnl-route-3.so.200 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnl-route-3.so.200
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnl-route-3.so.200
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnl-route-3.so.200
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnl-route-3.so.200
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnl-route-3.so.200
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnl-route-3.so.200
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnl-route-3.so.200
+    366130:	  trying file=/usr/lib64/libnl-route-3.so.200
+    366130:	
+    366130:	find library=libnl-3.so.200 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnl-3.so.200
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnl-3.so.200
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnl-3.so.200
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnl-3.so.200
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnl-3.so.200
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnl-3.so.200
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnl-3.so.200
+    366130:	  trying file=/usr/lib64/libnl-3.so.200
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libnl-3.so.200
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libnl-route-3.so.200
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libibverbs.so
+    366130:	
+    366130:	/usr/lib64/libibverbs.so: error: symbol lookup error: undefined symbol: ibv_query_port_speed, version IBVERBS_1.16 (fatal)
+    366130:	find library=libmlx5.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libmlx5.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libmlx5.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libmlx5.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libmlx5.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libmlx5.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libmlx5.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libmlx5.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libmlx5.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libmlx5.so
+    366130:	  trying file=/usr/lib64/libmlx5.so
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libmlx5.so
+    366130:	
+    366130:	/usr/lib64/libmlx5.so: error: symbol lookup error: undefined symbol: mlx5dv_get_data_direct_sysfs_path, version MLX5_1.25 (fatal)
+    366130:	/usr/lib64/libmlx5.so: error: symbol lookup error: undefined symbol: mlx5dv_reg_dmabuf_mr, version MLX5_1.25 (fatal)
+
+[2026-10-14 14:29:11] ault24:366130:366147 [0] transport/rma_socket.cc:32 (ncclRmaSocketProxyInit) NCCL WARN RMA/Socket : rma_socket requires GDRCopy; and GDR Copy is not available
+    366130:	find library=libnccl-gin.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-gin.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-gin.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-gin.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnccl-gin.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-gin.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl-gin.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-gin.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-gin.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnccl-gin.so
+    366130:	  trying file=/usr/lib64/libnccl-gin.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libnccl-gin.so
+    366130:	  trying file=/lib64/libnccl-gin.so
+    366130:	  trying file=/usr/lib64/tls/libnccl-gin.so
+    366130:	  trying file=/usr/lib64/libnccl-gin.so
+    366130:	
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclGinPlugin_v14 (fatal)
+
+[2026-10-14 14:29:11] ault24:366130:366147 [0] ncclResult_t nccl_ofi_gin_init(void**, uint64_t, ncclDebugLogger_t):50 NCCL WARN NET/OFI GIN only supports RDMA transport protocol.
+    366130:	find library=libnvidia-ml.so.1 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnvidia-ml.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnvidia-ml.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnvidia-ml.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnvidia-ml.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnvidia-ml.so.1
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnvidia-ml.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnvidia-ml.so.1
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnvidia-ml.so.1
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnvidia-ml.so.1
+    366130:	  trying file=/usr/lib64/libnvidia-ml.so.1
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libnvidia-ml.so.1
+    366130:	
+    366130:	find library=libnss_files.so.2 [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnss_files.so.2
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnss_files.so.2
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnss_files.so.2
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnss_files.so.2
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnss_files.so.2
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnss_files.so.2
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnss_files.so.2
+    366130:	  trying file=/usr/lib64/libnss_files.so.2
+    366130:	
+    366130:	
+    366130:	calling init: /usr/lib64/libnss_files.so.2
+    366130:	
+    366130:	find library=libnccl-profiler.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnccl-profiler.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-profiler.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-profiler.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnccl-profiler.so
+    366130:	  trying file=/usr/lib64/libnccl-profiler.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libnccl-profiler.so
+    366130:	  trying file=/lib64/libnccl-profiler.so
+    366130:	  trying file=/usr/lib64/tls/libnccl-profiler.so
+    366130:	  trying file=/usr/lib64/libnccl-profiler.so
+    366130:	
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v7 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v6 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v5 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v4 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v3 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v2 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v1 (fatal)
+    366130:	find library=libnccl-profiler.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnccl-profiler.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-profiler.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-profiler.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-profiler.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnccl-profiler.so
+    366130:	  trying file=/usr/lib64/libnccl-profiler.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libnccl-profiler.so
+    366130:	  trying file=/lib64/libnccl-profiler.so
+    366130:	  trying file=/usr/lib64/tls/libnccl-profiler.so
+    366130:	  trying file=/usr/lib64/libnccl-profiler.so
+    366130:	
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v7 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v6 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v5 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v4 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v3 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v2 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclProfiler_v1 (fatal)
+    366130:	find library=libnccl-tuner.so [0]; searching
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-tuner.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-tuner.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-tuner.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib:/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-fix/install/lib/libnccl-tuner.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-tuner.so
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl-tuner.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib		(RPATH from file /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libnccl-tuner.so
+    366130:	 search path=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib		(LD_LIBRARY_PATH)
+    366130:	  trying file=/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/targets/x86_64-linux/lib/libnccl-tuner.so
+    366130:	 search path=/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/usr/lib64/tls/libnccl-tuner.so
+    366130:	  trying file=/usr/lib64/libnccl-tuner.so
+    366130:	 search cache=/etc/ld.so.cache
+    366130:	 search path=/lib64/tls:/lib64:/usr/lib64/tls:/usr/lib64		(system search path)
+    366130:	  trying file=/lib64/tls/libnccl-tuner.so
+    366130:	  trying file=/lib64/libnccl-tuner.so
+    366130:	  trying file=/usr/lib64/tls/libnccl-tuner.so
+    366130:	  trying file=/usr/lib64/libnccl-tuner.so
+    366130:	
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclTunerPlugin_v6 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclTunerPlugin_v5 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclTunerPlugin_v4 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclTunerPlugin_v3 (fatal)
+    366130:	/tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so: error: symbol lookup error: undefined symbol: ncclTunerPlugin_v2 (fatal)
+#
+#                                                              out-of-place                       in-place
+#       size         count      type   redop    root     time   algbw   busbw  #wrong     time   algbw   busbw  #wrong
+#        (B)    (elements)                               (us)  (GB/s)  (GB/s)             (us)  (GB/s)  (GB/s)        
+           8             2     float     sum      -1   326.89    0.00    0.00       4   253.12    0.00    0.00       4
+# Out of bounds values : 2 FAILED
+# Avg bus bandwidth    : 2.80397e-05 
+#
+# Collective test concluded: all_reduce_perf
+#
+
+ .. ault24 pid 366130: Test failure common.cu:1545
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl-tests/build/all_reduce_perf [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libcudart.so.12 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/src/nccl/build/lib/libnccl.so.2 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libcuda.so.1 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libnvidia-ptxjitcompiler.so.1 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/plugin-install/lib/libnccl-net.so [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libhwloc.so.15 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib/libfabric.so.1 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libatomic.so.1 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/./libxml2.so.16 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libz.so.1 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libiconv.so.2 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/././libicuuc.so.78 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libstdc++.so.6 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/lib/libgcc_s.so.1 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libmlx5.so [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libibverbs.so [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libnl-route-3.so.200 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libnl-3.so.200 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libnvidia-ml.so.1 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libm.so.6 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libdl.so.2 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/librt.so.1 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libpthread.so.0 [0]
+    366130:	
+    366130:	
+    366130:	calling fini: /usr/lib64/libnss_files.so.2 [0]
+    366130:	

@@ -1,5 +1,9 @@
 # SES/PDS regression checks
 
+For NCCL all-reduce over SUET/UDP, see the [NCCL test guide](nccl/TESTING.md):
+build the pinned stack, verify the loaded provider, and validate 2-/4-GPU
+SENDRECV host-staging runs with shared-memory and GPU-direct paths disabled.
+
 The normal suite retains all 33 original cases and adds zero-length messaging
 and verified, segmented unexpected messages (65,537 bytes):
 

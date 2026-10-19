@@ -1,0 +1,101 @@
++ set -ex
++ cd /tmp/suet-nccl-mkhalilo-20261014/nccl
++ make -j4 src.build CUDA_HOME=/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d NVCC_GENCODE=-gencode=arch=compute_70,code=sm_70+
+make -C src build BUILDDIR=/tmp/suet-nccl-mkhalilo-20261014/nccl/build
+make[1]: Entering directory '/tmp/suet-nccl-mkhalilo-20261014/nccl/src'
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+NVCC_GENCODE is -gencode=arch=compute_70,code=sm_70+
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+Grabbing   include/nccl_device.h               > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device.h
+Grabbing   include/nccl_device/lsa_barrier.h   > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/lsa_barrier.h
+Generating nccl.h.in                           > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl.h
+Grabbing   include/nccl_device/gin.h           > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin.h
+Grabbing   include/nccl_device/reduce_copy.h   > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/reduce_copy.h
+Grabbing   include/nccl_device/core.h          > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/core.h
+Grabbing   include/nccl_device/coop.h          > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/coop.h
+Grabbing   include/nccl_device/net_device.h    > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/net_device.h
+Grabbing   include/nccl_device/cft_barrier.h   > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/cft_barrier.h
+Grabbing   include/nccl_device/comm.h          > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/comm.h
+Grabbing   include/nccl_device/ptr.h           > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/ptr.h
+Grabbing   include/nccl_device/utility.h       > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/utility.h
+Grabbing   include/nccl_device/gin_win_stub.h  > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin_win_stub.h
+Grabbing   include/nccl_device/barrier.h       > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/barrier.h
+Grabbing   include/nccl_device/gin_barrier.h   > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin_barrier.h
+Grabbing   include/nccl_device/host.h          > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/host.h
+Grabbing   include/nccl_device/ll_a2a.h        > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/ll_a2a.h
+Grabbing   include/nccl_device/cft.h           > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/cft.h
+Grabbing   include/nccl_device/gin/gin_device_host_common.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gin_device_host_common.h
+Grabbing   include/nccl_device/gin/gin_device_api.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gin_device_api.h
+Grabbing   include/nccl_device/gin/gin_device_common.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gin_device_common.h
+Grabbing   include/nccl_device/impl/lsa_barrier__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/lsa_barrier__types.h
+Grabbing   include/nccl_device/impl/gin__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/gin__types.h
+Grabbing   include/nccl_device/impl/reduce_copy__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/reduce_copy__types.h
+Grabbing   include/nccl_device/impl/lsa_barrier__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/lsa_barrier__funcs.h
+Grabbing   include/nccl_device/impl/core__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/core__types.h
+Grabbing   include/nccl_device/impl/multimem__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/multimem__funcs.h
+Grabbing   include/nccl_device/impl/reduce_copy__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/reduce_copy__funcs.h
+Grabbing   include/nccl_device/impl/core__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/core__funcs.h
+Grabbing   include/nccl_device/impl/cft_barrier__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/cft_barrier__types.h
+Grabbing   include/nccl_device/impl/reduce_copy__impl.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/reduce_copy__impl.h
+Grabbing   include/nccl_device/impl/cft_barrier__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/cft_barrier__funcs.h
+Grabbing   include/nccl_device/impl/vector__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/vector__types.h
+Grabbing   include/nccl_device/impl/ptr__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/ptr__types.h
+Grabbing   include/nccl_device/impl/comm__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/comm__types.h
+Grabbing   include/nccl_device/impl/vector__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/vector__funcs.h
+Grabbing   include/nccl_device/impl/ptr__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/ptr__funcs.h
+Grabbing   include/nccl_device/impl/barrier__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/barrier__types.h
+Grabbing   include/nccl_device/impl/gin_barrier__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/gin_barrier__types.h
+Grabbing   include/nccl_device/impl/barrier__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/barrier__funcs.h
+Grabbing   include/nccl_device/impl/gin_barrier__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/gin_barrier__funcs.h
+Grabbing   include/nccl_device/impl/ll_a2a__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/ll_a2a__types.h
+Grabbing   include/nccl_device/impl/gin__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/gin__funcs.h
+Grabbing   include/nccl_device/impl/cft__types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/cft__types.h
+Grabbing   include/nccl_device/impl/ll_a2a__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/ll_a2a__funcs.h
+Grabbing   include/nccl_device/impl/cft__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/cft__funcs.h
+Grabbing   include/nccl_device/impl/comm__funcs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/impl/comm__funcs.h
+Grabbing   include/nccl_device/gin/gpi/gin_gpi.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gpi/gin_gpi.h
+Grabbing   include/nccl_device/gin/gpi/gin_gpi_device_host_common.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gpi/gin_gpi_device_host_common.h
+Grabbing   include/nccl_device/gin/proxy/gin_proxy_device_host_common.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/proxy/gin_proxy_device_host_common.h
+Grabbing   include/nccl_device/gin/proxy/gin_proxy.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/proxy/gin_proxy.h
+Grabbing   include/nccl_device/gin/efa_gda/gin_efa_gda_dev.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/efa_gda/gin_efa_gda_dev.h
+Grabbing   include/nccl_device/gin/efa_gda/gin_efa_gda.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/efa_gda/gin_efa_gda.h
+Grabbing   include/nccl_device/gin/gdaki/gin_gdaki.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/gin_gdaki.h
+Grabbing   include/nccl_device/gin/gdaki/gin_gdaki_device_host_common.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/gin_gdaki_device_host_common.h
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/doca_gpunetio_device.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/doca_gpunetio_device.h
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/common/doca_gpunetio_verbs_dev.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/common/doca_gpunetio_verbs_dev.h
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/common/doca_gpunetio_verbs_def.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/common/doca_gpunetio_verbs_def.h
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_counter.cuh > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_counter.cuh
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_onesided.cuh > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_onesided.cuh
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_cq.cuh > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_cq.cuh
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_qp.cuh > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_qp.cuh
+Grabbing   transport/net_ib/gdaki/doca-gpunetio/include/device/doca_gpunetio_dev_verbs_common.cuh > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/gin/gdaki/doca_gpunetio/device/doca_gpunetio_dev_verbs_common.cuh
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/device/efa_cuda_dp_impl.cuh > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/device/efa_cuda_dp_impl.cuh
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/device/efa_cuda_dp_defs.cuh > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/device/efa_cuda_dp_defs.cuh
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/common/efa_cuda_dp_version.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/common/efa_cuda_dp_version.h
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/common/efa_io_defs.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/common/efa_io_defs.h
+Grabbing   transport/net_efa_gda/efa-dp-direct/include/common/efa_cuda_dp_types.h > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/include/nccl_device/transport/net_efa_gda/efa-dp-direct/include/common/efa_cuda_dp_types.h
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_qp.cpp > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_qp.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_cq.cpp > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_cq.o
+Compiling  transport/net_ib/gdaki/doca-gpunetio/src/doca_verbs_device_attr.cpp > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_device_attr.o
+make[1]: /apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/g++: Command not found
+make[1]: *** [Makefile:301: /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_qp.o] Error 127
+make[1]: *** Waiting for unfinished jobs....
+make[1]: /apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/g++: Command not found
+make[1]: *** [Makefile:301: /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_device_attr.o] Error 127
+make[1]: /apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/g++: Command not found
+make[1]: *** [Makefile:301: /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/transport/net_ib/gdaki/doca-gpunetio/doca_verbs_cq.o] Error 127
+Updated  /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/include/nccl_git_version.h
+make[1]: Leaving directory '/tmp/suet-nccl-mkhalilo-20261014/nccl/src'
+make: *** [Makefile:45: src.build] Error 2

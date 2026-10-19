@@ -1,0 +1,13 @@
++ /tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-gcc -std=c11 /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe.c -I /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/include -L /tmp/suet-nccl-retry-mkhalilo-20261014/suet-workspace/build/lib -lfabric -o /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe
+/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe.c: In function 'main':
+/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe.c:48:15: warning: implicit declaration of function 'fi_getname' [-Wimplicit-function-declaration]
+   48 |         CHECK(fi_getname(&ep[n]->fid, addresses[n], &sizes[n]));
+      |               ^~~~~~~~~~
+/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe.c:12:36: note: in definition of macro 'CHECK'
+   12 | #define CHECK(call) do { int rc = (call); if (rc) { \
+      |                                    ^~~~
+/tmp/suet-nccl-retry-mkhalilo-20261014/toolchain/bin/x86_64-conda-linux-gnu-ld: /tmp/ccdEdZ6a.o: in function `main':
+endpoint-identity-probe.c:(.text+0x796): undefined reference to `fi_getname'
+collect2: error: ld returned 1 exit status
++ timeout --kill-after=3s 15s /tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe
+timeout: failed to run command '/tmp/suet-nccl-retry-mkhalilo-20261014/endpoint-identity-probe': No such file or directory

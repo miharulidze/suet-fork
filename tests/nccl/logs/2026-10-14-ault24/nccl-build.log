@@ -1,0 +1,34 @@
++ cd nccl
++ make -j4 src.build CUDA_HOME=/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d NVCC_GENCODE=-gencode=arch=compute_70,code=sm_70
+make -C src build BUILDDIR=/tmp/suet-nccl-mkhalilo-20261014/nccl/build
+make[1]: Entering directory '/tmp/suet-nccl-mkhalilo-20261014/nccl/src'
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+NVCC_GENCODE is -gencode=arch=compute_70,code=sm_70
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+/usr/bin/which: no nvcc in (/apps/ault/spack/opt/spack/linux-centos8-zen2/gcc-10.2.0/cuda-11.4.0-udyaakpt7oztg7gnj764dhkhdf5ory5d/bin)
+Compiling  bootstrap.cc                        > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/bootstrap.o
+Compiling  channel.cc                          > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/channel.o
+Compiling  collectives.cc                      > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/collectives.o
+Compiling  debug.cc                            > /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/debug.o
+make[1]: /apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/g++: Command not found
+make[1]: /apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/g++: Command not found
+make[1]: *** [Makefile:288: /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/bootstrap.o] Error 127
+make[1]: *** Waiting for unfinished jobs....
+make[1]: *** [Makefile:288: /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/channel.o] Error 127
+make[1]: /apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/g++: Command not found
+make[1]: *** [Makefile:289: /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/collectives.o] Error 127
+make[1]: /apps/ault/spack/opt/spack/linux-centos8-zen/gcc-8.4.1/gcc-10.2.0-fqf4ze2mfclmx6e7ehrjckznpoqnevmi/bin/g++: Command not found
+make[1]: *** [Makefile:289: /tmp/suet-nccl-mkhalilo-20261014/nccl/build/obj/debug.o] Error 127
+make[1]: Leaving directory '/tmp/suet-nccl-mkhalilo-20261014/nccl/src'
+make: *** [Makefile:45: src.build] Error 2
