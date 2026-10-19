@@ -2,7 +2,7 @@
 #
 # Knobs (set via environment variables):
 #   LIBFABRIC_REPO    git URL of the libfabric base  (default: ofiwg/libfabric)
-#   LIBFABRIC_REF     branch or commit to check out  (default: main)
+#   LIBFABRIC_REF     branch or commit to check out  (default: validated pin below)
 #   CHERRY_PICK_REPO  git URL holding the FI_SOURCE_ERR commits
 #                                                    (default: miharulidze/libfabric)
 #   WORKDIR           where to place the workspace   (default: ./suet-workspace)
@@ -30,7 +30,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 : "${LIBFABRIC_REPO:=https://github.com/ofiwg/libfabric.git}"
-: "${LIBFABRIC_REF:=main}"
+# Validated with the FI_SOURCE_ERR cherry-picks and both integration patches.
+# Later libfabric changed recv_flush from ssize_t to int, invalidating the
+# context in 0002-sendmsg-ev.patch. Update the pin and patches together.
+: "${LIBFABRIC_REF:=94f3b1ac6c3e08ca47804bd327f7c328b60f67d2}"
 : "${CHERRY_PICK_REPO:=https://github.com/miharulidze/libfabric.git}"
 : "${WORKDIR:=$PWD/suet-workspace}"
 : "${SUET_SRC_DIR:=$SCRIPT_DIR/suet}"
