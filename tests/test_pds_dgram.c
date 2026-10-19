@@ -21,6 +21,12 @@ void test_pds_tx_done(struct suet_domain *, struct suet_pkt_entry *, int);
 #undef suet_pds_receive
 #undef suet_pds_tx_done
 
+/* Instrument PDS too, while recording message completions in focused tests. */
+#define suet_ses_tx_done test_ses_tx_done
+void test_ses_tx_done(void *, int, int);
+#include "../suet/src/suet_pds.c"
+#undef suet_ses_tx_done
+
 static struct suet_pkt_entry *received, *completed;
 static fi_addr_t received_addr;
 static int completed_status, send_status, close_status;
@@ -31,6 +37,26 @@ static bool ep_closed, dispatch_pds_tx;
 static bool sent_ev;
 static uint16_t last_ev;
 static uint64_t *send_clock;
+static bool capture_tx_completion;
+static unsigned tx_completion_count, tx_completion_ids[8];
+static int tx_completion_error;
+
+void test_ses_tx_done(void *context, int err, int prov_errno)
+{
+	struct suet_ses_tx_entry *entry = context;
+
+	if (!capture_tx_completion) {
+		suet_ses_tx_done(context, err, prov_errno);
+		return;
+	}
+	assert(err == tx_completion_error && !prov_errno);
+	assert(tx_completion_count < 8);
+	tx_completion_ids[tx_completion_count++] = entry->tx_id;
+	/* Model releasing the SES entry and application/MR-backed payload. */
+	free(entry->iov[0].iov_base);
+	free(entry);
+}
+
 
 void test_pds_receive(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 		      fi_addr_t src_addr)
@@ -365,6 +391,7 @@ static void check_ses_retention(bool som_last, bool post_early)
 		pds->psn = 123 + (i / 2) * 2 + segment;
 		pds->local_pdcid = 7;
 		dlist_init(&pds->entry);
+		dlist_init(&pds->retry_entry);
 		memcpy(&saved[i], pds, sizeof(*pds));
 		wire = received->pkt;
 		memset(wire, 0, sizeof(*wire) + 64);
@@ -936,6 +963,254 @@ static void check_retry_credit(enum suet_rel_algorithm algorithm,
 	suet_dgram_free_pkt_entry_pools(&domain);
 }
 
+static struct suet_pds_tx_entry *submit_tx_message(struct suet_domain *domain,
+						 struct suet_ipdc *ipdc,
+						 struct suet_ep *ep,
+						 uint16_t id, uint32_t count)
+{
+	struct suet_ses_tx_entry *ses = calloc(1, sizeof(*ses));
+	struct suet_pds_tx_entry *tx = ofi_buf_alloc(domain->pds.pds_tx_pool);
+
+	assert(ses && tx);
+	ses->ep = ep;
+	ses->tx_id = id;
+	ses->num_pkts = count;
+	ses->hdr_len = sizeof(struct ses_req_hdr);
+	ses->iov_count = 1;
+	ses->iov[0].iov_len = ses->cq_entry.len = count * domain->max_pkt_sz;
+	ses->iov[0].iov_base = calloc(1, ses->iov[0].iov_len);
+	assert(ses->iov[0].iov_base);
+	ses->zc_desc[0] = (void *) 1;
+	ses_req_init(&ses->cached_hdr.ses, UET_SEND, 1, 1, 1, 0, id, 0, 0, 0, 0,
+		     0, ses->cq_entry.len);
+	memset(tx, 0, sizeof(*tx));
+	tx->domain = domain;
+	tx->ipdc = ipdc;
+	tx->context = ses;
+	ses->pds_ctx = tx;
+	dlist_insert_tail(&tx->entry, &ipdc->tx_list);
+	suet_pds_tx_submit(tx, count);
+	return tx;
+}
+
+static void inject_explicit_ack(struct suet_domain *domain, uint32_t cack,
+				uint32_t psn, uint16_t id)
+{
+	struct suet_pkt_entry *pkt = suet_dgram_pkt_alloc(domain);
+	struct suet_ack_pkt *ack = pkt->pkt;
+
+	memset(ack, 0, sizeof(*ack));
+	pds_ack_set_type(&ack->pds, PDS_ACK);
+	pds_ack_set_next_hdr(&ack->pds, UET_HDR_RESPONSE);
+	pds_ack_set_dpdcid(&ack->pds, 7);
+	pds_ack_set_spdcid(&ack->pds, 8);
+	pds_ack_set_cack_psn(&ack->pds, cack);
+	pds_ack_set_ack_psn(&ack->pds, psn);
+	ses_resp_init(&ack->ses, UET_EXPECTED, UET_DEFAULT_RESPONSE, RC_OK,
+		      id, 0);
+	pkt->pkt_size = sizeof(*ack);
+	suet_pds_receive(domain, pkt, 9);
+}
+
+static void check_tx_completion(enum suet_pdc_type type,
+				enum suet_rel_algorithm algorithm, bool local_first,
+				bool cancel, bool sack)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep ep = {.msg = &msg_ops};
+	struct suet_ep ses_ep = {0};
+	struct suet_ipdc ipdc = {0};
+	struct suet_pds_tx_entry *a, *b;
+	struct suet_pds_pkt_entry *packets[3];
+	struct suet_dgram_pkt_entry *local[3];
+	uint32_t base = UINT32_MAX - 1, i;
+	uint64_t now = 100;
+
+	domain.clock.elapsed_ms = retry_clock;
+	domain.clock.context = &now;
+	domain.dgram.ep = &ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+	domain.max_pkt_sz = 64;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	prefix_size = 0;
+	send_status = 0;
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	assert(!suet_pds_init(&domain));
+	assert(!suet_rel_tx_init(&ipdc.rel, base, 8, 100, algorithm));
+	suet_cc_init(&ipdc.cc, 8, domain.dgram.max_pkt_size);
+	suet_lb_init(&ipdc.lb, 7, 1);
+	ipdc.tx_pkts = calloc(8, sizeof(*ipdc.tx_pkts));
+	assert(ipdc.tx_pkts);
+	ipdc.type = type;
+	ipdc.local_pdcid = 7;
+	ipdc.tpdcid = 8;
+	ipdc.dgram_av_addr = 9;
+	ipdc.tx_seq_no = base;
+	ipdc.state = SUET_PDC_ESTABLISHED;
+	ipdc.last_tx_clear_psn = base - 1;
+	dlist_init(&ipdc.tx_list);
+	dlist_init(&ipdc.in_flight_pkts);
+	dlist_init(&ipdc.retry_pkts);
+	dlist_insert_tail(&ipdc.entry, &domain.pds.active_ipdc_list);
+	assert(ofi_idm_set(&domain.pds.local_pdcid_to_ipdc_idm, 7, &ipdc) >= 0);
+	ses_ep.util_ep.domain = &domain.util_domain;
+	dispatch_pds_tx = capture_tx_completion = true;
+	tx_completion_count = 0;
+	a = submit_tx_message(&domain, &ipdc, &ses_ep, 20, 1);
+	b = submit_tx_message(&domain, &ipdc, &ses_ep, 21, 2);
+	assert(a->pending_pkts == 1 && b->pending_pkts == 2);
+	for (i = 0; i < 3; i++) {
+		packets[i] = ipdc.tx_pkts[i];
+		local[i] = container_of(packets[i]->pkt,
+					struct suet_dgram_pkt_entry, pkt);
+	}
+	assert(packets[1]->tx == b && packets[2]->tx == b);
+	if (cancel) {
+		struct suet_ses_tx_entry *ses = b->context;
+		suet_pds_tx_cancel(b);
+		assert(!packets[1]->tx && !packets[2]->tx);
+		/* Keep the borrowed payload alive until local sends finish. */
+		for (i = 1; i < 3; i++)
+			suet_dgram_tx_complete(&domain, &local[i]->context, 0);
+		free(ses->iov[0].iov_base);
+		free(ses);
+	} else if (local_first) {
+		suet_dgram_tx_complete(&domain, &local[2]->context, 0);
+		suet_dgram_tx_complete(&domain, &local[1]->context, 0);
+	}
+	/* An explicit ACK for a PSN never submitted cannot complete a message. */
+	inject_explicit_ack(&domain, base - 1, base + 5, 21);
+	assert(!tx_completion_count && ipdc.cc.in_flight == 3);
+	/* All of B is SACKed, but SACK does not provide its SES responses. */
+	if (sack)
+		inject_retry_sack(&domain, base, 6);
+	assert(!tx_completion_count && ipdc.cc.in_flight == (sack ? 1 : 3));
+	if (!cancel)
+		assert(b->pending_pkts == 2);
+	inject_explicit_ack(&domain, base - 1, base + 1, 21);
+	inject_explicit_ack(&domain, base - 1, base + 1, 21);
+	assert(!tx_completion_count);
+	if (!cancel)
+		assert(b->pending_pkts == (local_first ? 1 : 2));
+	inject_explicit_ack(&domain, base - 1, base + 2, 21);
+	assert(ipdc.cc.in_flight == 1);
+	if (!cancel && !local_first) {
+		assert(!tx_completion_count && b->pending_pkts == 2);
+		suet_dgram_tx_complete(&domain, &local[2]->context, 0);
+		assert(!tx_completion_count && b->pending_pkts == 1);
+		suet_dgram_tx_complete(&domain, &local[1]->context, 0);
+	}
+	assert(tx_completion_count == (!cancel && type == SUET_PDC_RUD));
+	if (tx_completion_count)
+		assert(tx_completion_ids[0] == 21);
+	/* B's SES entry/payload may be freed, but its packet records remain.
+	 * Duplicates and timeout progress must never touch the old message. */
+	assert(ipdc.rel.tracked == 3 && suet_rel_tx_cack(&ipdc.rel) == base - 1);
+	for (i = 1; i < 3; i++) {
+		assert(ipdc.tx_pkts[i] == packets[i]);
+		assert(!packets[i]->tx && packets[i]->delivered);
+		if (!cancel)
+			assert(!packets[i]->pkt->zc_pld_iov_count);
+	}
+	inject_explicit_ack(&domain, base - 1, base + 2, 21);
+	now += 10;
+	suet_pds_progress(&domain);
+	assert(ipdc.rel.attempts[1] == 1 && ipdc.rel.attempts[2] == 1);
+	/* CACK retires B's packet records, but A still has a local borrow.
+	 * ROD must not let B complete ahead of A in either event order. */
+	inject_cack(&domain, 7, base + 2);
+	assert(!ipdc.rel.tracked && !ipdc.cc.in_flight);
+	assert(tx_completion_count == (!cancel && type == SUET_PDC_RUD));
+	suet_dgram_tx_complete(&domain, &local[0]->context, 0);
+	assert(tx_completion_count == (cancel ? 1 : 2));
+	if (!cancel && type == SUET_PDC_RUD) {
+		assert(tx_completion_ids[0] == 21 && tx_completion_ids[1] == 20);
+	} else {
+		assert(tx_completion_ids[0] == 20);
+		if (!cancel)
+			assert(tx_completion_ids[1] == 21);
+	}
+	assert(dlist_empty(&ipdc.tx_list));
+	assert(dlist_empty(&ipdc.in_flight_pkts));
+	assert(dlist_empty(&ipdc.retry_pkts));
+	dlist_remove(&ipdc.entry);
+	ofi_idm_clear(&domain.pds.local_pdcid_to_ipdc_idm, 7);
+	free(ipdc.tx_pkts);
+	suet_rel_tx_cleanup(&ipdc.rel);
+	suet_pds_cleanup(&domain);
+	suet_dgram_free_pkt_entry_pools(&domain);
+	dispatch_pds_tx = capture_tx_completion = false;
+}
+
+/* Unsent fragments count toward message completion. Teardown must also
+ * detach message ownership before freeing a PDC with borrowed packets.
+ */
+static void check_tx_completion_lifecycle(enum suet_pdc_type type)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep ep = {.msg = &msg_ops};
+	struct suet_ep ses_ep = {0};
+	struct suet_ipdc *ipdc;
+	struct suet_pds_tx_entry *tx;
+	struct suet_dgram_pkt_entry *local;
+	uint64_t now = 100;
+	uint32_t base;
+
+	domain.clock.elapsed_ms = retry_clock;
+	domain.clock.context = &now;
+	domain.dgram.ep = &ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+	domain.max_pkt_sz = 64;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	prefix_size = 0;
+	send_status = 0;
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	assert(!suet_pds_init(&domain));
+	domain.pds.next_pdcid = 7;
+	ipdc = suet_pds_allocate_ipdc(&domain, 9, type);
+	assert(ipdc && ipdc->local_pdcid == 7);
+	ipdc->state = SUET_PDC_ESTABLISHED;
+	ipdc->cc.cwnd = ipdc->cc.mtu;
+	ses_ep.util_ep.domain = &domain.util_domain;
+	dispatch_pds_tx = capture_tx_completion = true;
+	tx_completion_count = 0;
+	tx = submit_tx_message(&domain, ipdc, &ses_ep, 30, 2);
+	assert(tx->next_segment == 1 && tx->pending_pkts == 2);
+	base = tx->start_psn;
+	local = container_of(ipdc->tx_pkts[0]->pkt,
+			     struct suet_dgram_pkt_entry, pkt);
+	suet_dgram_tx_complete(&domain, &local->context, 0);
+	inject_cack(&domain, 7, base);
+	assert(!tx_completion_count && tx->next_segment == 2 && tx->pending_pkts == 1);
+	local = container_of(ipdc->tx_pkts[1]->pkt,
+			     struct suet_dgram_pkt_entry, pkt);
+	inject_cack(&domain, 7, base + 1);
+	assert(!tx_completion_count && tx->pending_pkts == 1);
+	suet_dgram_tx_complete(&domain, &local->context, 0);
+	assert(tx_completion_count == 1 && tx_completion_ids[0] == 30);
+	assert(dlist_empty(&ipdc->tx_list));
+
+	tx = submit_tx_message(&domain, ipdc, &ses_ep, 31, 2);
+	assert(tx->next_segment == 1 && tx->pending_pkts == 2);
+	local = container_of(ipdc->tx_pkts[2]->pkt,
+			     struct suet_dgram_pkt_entry, pkt);
+	tx_completion_error = FI_ECONNREFUSED;
+	suet_pds_free_ipdc(&domain, ipdc);
+	assert(tx_completion_count == 2 && tx_completion_ids[1] == 31);
+	assert(!((struct suet_pds_pkt_entry *) local->pkt.pds_ctx)->tx);
+	suet_dgram_tx_complete(&domain, &local->context, 0);
+	assert(tx_completion_count == 2);
+	assert(dlist_empty(&domain.pds.active_ipdc_list));
+	tx_completion_error = 0;
+	suet_pds_cleanup(&domain);
+	suet_dgram_free_pkt_entry_pools(&domain);
+	dispatch_pds_tx = capture_tx_completion = false;
+}
+
 static void check_trimmed_request(void)
 {
 	struct suet_domain domain = {0};
@@ -1165,7 +1440,14 @@ int main(void)
 		for (int type = SUET_PDC_ROD; type <= SUET_PDC_RUD; type++) {
 			check_retry_credit(algorithm, type, false);
 			check_retry_credit(algorithm, type, true);
+			for (int sack = 0; sack <= 1; sack++) {
+				check_tx_completion(type, algorithm, false, false, sack);
+				check_tx_completion(type, algorithm, true, false, sack);
+			}
+			check_tx_completion(type, algorithm, true, true, true);
 		}
+	check_tx_completion_lifecycle(SUET_PDC_ROD);
+	check_tx_completion_lifecycle(SUET_PDC_RUD);
 	check_trimmed_request();
 	check_deferred_response_ev();
 	check_gap_ack(false, false, 100);

@@ -69,6 +69,23 @@ trigger id 2 oneshot
                 result = run(pdc + '_sr' + sr + '_' + condition, traffic, ['-pdc', pdc, *opts])
                 if pdc == 'rud' and sr == '1' and condition == 'reorder':
                     assert int(re.search(r'sacks (\d+)', result[1])[1]) > 0, result
+    # Both messages share a PDC. Losing A's first packet must not hold B's
+    # send completion in RUD/SR; ordered delivery and GBN still wait for A.
+    completion_traffic = ('Nodes 16\nConnections 2\n'
+                          '0->13 id 1 start 0 size 8192\n'
+                          '0->13 id 2 start 0 size 512\n')
+    for pdc in ('rod', 'rud'):
+        for sr in ('0', '1'):
+            env['FI_OFI_SUET_SELECTIVE_REPEAT'] = sr
+            flows, summary = run(pdc + '_sr' + sr + '_tx_completion',
+                                 completion_traffic, ['-pdc', pdc, '-drop_first', '1'])
+            ids = [int(re.search(r' id (\d+)', f)[1]) for f in flows]
+            if pdc == 'rud' and sr == '1':
+                assert ids == [2, 1], flows
+                assert float(re.search(r'fct_us ([0-9.]+)', flows[0])[1]) < 1000, flows
+            else:
+                assert ids == [1, 2], flows
+            assert 'network_drops 1 ' in summary, summary
     for pdc in ('rod', 'rud'):
         for sr in ('0', '1'):
             env['FI_OFI_SUET_SELECTIVE_REPEAT'] = sr

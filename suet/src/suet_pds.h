@@ -46,9 +46,11 @@ struct suet_pds_pkt_entry {
 	struct dlist_entry entry;
 	struct dlist_entry retry_entry;
 	struct suet_pkt_entry *pkt;
+	struct suet_pds_tx_entry *tx; /* until ACK and local access both end */
 	uint32_t psn;
 	uint16_t local_pdcid;
-	bool acked;
+	bool acked; /* detached from the cumulative reliability window */
+	bool delivered; /* explicit ACK or CACK, independent of retirement */
 	bool cc_in_flight;
 };
 
@@ -165,6 +167,7 @@ struct suet_pds_tx_entry {
 	uint32_t start_psn;
 	uint32_t num_pkts;
 	uint32_t next_segment;
+	uint32_t pending_pkts; /* includes unsent and locally borrowed packets */
 	bool started;
 };
 

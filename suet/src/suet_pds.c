@@ -169,11 +169,41 @@ static bool suet_pds_free_ipdc_if_retry_exhausted(struct suet_domain *domain,
 static void suet_pds_ipdc_send_clear_cmd(struct suet_domain *domain,
 					 struct suet_ipdc *ipdc);
 
+/* Error/cancel paths may end a message while PDS still retains its packets. */
+static void suet_pds_tx_detach(struct suet_pds_tx_entry *tx)
+{
+	struct suet_pds_pkt_entry *pkt;
+
+	dlist_foreach_container (&tx->ipdc->in_flight_pkts,
+				 struct suet_pds_pkt_entry, pkt, entry) {
+		if (pkt->tx == tx)
+			pkt->tx = NULL;
+	}
+}
+
+/* A retained packet must not keep the completed message or its MR alive.
+ * Explicit/CACK receipt prevents retransmission; local completion ends the
+ * datagram provider's access to the application's zero-copy buffers.
+ */
+static void suet_pds_tx_pkt_done(struct suet_pds_pkt_entry *pkt)
+{
+	if (!pkt->tx || !pkt->delivered || suet_dgram_pkt_in_use(pkt->pkt))
+		return;
+	assert(pkt->tx->pending_pkts);
+	pkt->tx->pending_pkts--;
+	pkt->tx = NULL;
+	pkt->pkt->zc_pld_iov_count = 0;
+}
+
 static void suet_pds_tx_finish(struct suet_pds_tx_entry *tx, int err,
 			       int prov_errno)
 {
 	void *context = tx->context;
 
+	if (err)
+		suet_pds_tx_detach(tx);
+	else
+		assert(!tx->pending_pkts);
 	dlist_remove(&tx->entry);
 	ofi_buf_free(tx);
 	suet_ses_tx_done(context, err, prov_errno);
@@ -206,9 +236,10 @@ static void suet_pds_ipdc_progress_tx_list(struct suet_ipdc *ipdc)
 		/* check that all packets for this message are posted */
 		if (tx_entry->next_segment >= tx_entry->num_pkts) {
 			/* if yes, check if we got all ACKs for this message */
-			if (pds_psn_before(tx_entry->start_psn +
-						   (tx_entry->num_pkts - 1),
-					   head_psn)) {
+			if (!tx_entry->pending_pkts &&
+			    (ipdc->type == SUET_PDC_RUD ||
+			     pds_psn_before(tx_entry->start_psn +
+					   (tx_entry->num_pkts - 1), head_psn))) {
 				suet_pds_tx_finish(tx_entry, 0, 0);
 			}
 			continue;
@@ -570,6 +601,8 @@ static void suet_pds_queue_retry(struct suet_ipdc *ipdc,
 	struct suet_pds_pkt_entry *next;
 	struct dlist_entry *before = &ipdc->retry_pkts;
 
+	if (pkt->delivered)
+		return;
 	suet_pds_release_flight(ipdc, pkt);
 	if (!dlist_empty(&pkt->retry_entry))
 		return;
@@ -727,6 +760,8 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 		pkt_entry = ipdc->tx_pkts[slot];
 		assert(pkt_entry && pkt_entry->psn == retired.first_psn + i);
 		suet_pds_ack_pkt(ipdc, pkt_entry);
+		pkt_entry->delivered = true;
+		suet_pds_tx_pkt_done(pkt_entry);
 		ipdc->tx_pkts[slot] = NULL;
 		if (++slot == ipdc->rel.window.capacity)
 			slot = 0;
@@ -736,6 +771,20 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 			dlist_remove_init(&pkt_entry->entry);
 			suet_pds_pkt_free(pkt_entry);
 		}
+	}
+
+	/* An explicit ACK may complete a later message while CACK is held
+	 * behind an earlier gap. SACK alone does not complete SES operations.
+	 * Record receipt in reliability as well, so the retained packet can
+	 * never retransmit after its message releases zero-copy resources.
+	 */
+	uint32_t ack_psn = pds_ack_get_ack_psn(&ack->pds);
+	if (has_ses_resp && suet_rel_slot(&ipdc->rel.window, ack_psn, &slot) &&
+	    (pkt_entry = ipdc->tx_pkts[slot])) {
+		acked += suet_rel_tx_sack(&ipdc->rel, ack_psn, 1, NULL);
+		suet_pds_ack_pkt(ipdc, pkt_entry);
+		pkt_entry->delivered = true;
+		suet_pds_tx_pkt_done(pkt_entry);
 	}
 
 	suet_cc_ack(&ipdc->cc, acked,
@@ -853,6 +902,7 @@ void suet_pds_tx_done(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 		/* fallthrough */
 	case PDS_RUD_REQ:
 	case PDS_ROD_REQ:
+		suet_pds_tx_pkt_done(pkt_entry);
 		if (pkt_entry->acked) {
 			lpdcid = pkt_entry->local_pdcid;
 			ipdc = suet_pds_ipdc_get_by_local_pdcid(domain, lpdcid);
@@ -866,6 +916,11 @@ void suet_pds_tx_done(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 				/* ipdc was freed (e.g. Close ACK).
 				 * Buffer is already gone. */
 			}
+		} else if (pkt_entry->delivered) {
+			ipdc = suet_pds_ipdc_get_by_local_pdcid(
+				domain, pkt_entry->local_pdcid);
+			if (ipdc)
+				suet_pds_ipdc_progress_tx_list(ipdc);
 		} else if (status && pkt_entry->cc_in_flight) {
 			ipdc = suet_pds_ipdc_get_by_local_pdcid(
 				domain, pkt_entry->local_pdcid);
@@ -1268,6 +1323,7 @@ static struct suet_pds_pkt_entry *suet_pds_ipdc_generate_new_req_pkt(
 
 	pkt_entry->pkt->dgram_av_addr = ipdc->dgram_av_addr;
 	pkt_entry->local_pdcid = ipdc->local_pdcid;
+	pkt_entry->tx = tx;
 
 	return pkt_entry;
 }
@@ -1344,6 +1400,7 @@ void suet_pds_tx_submit(void *pds_ctx, uint32_t num_pkts)
 	struct suet_pds_tx_entry *tx = pds_ctx;
 
 	tx->num_pkts = num_pkts;
+	tx->pending_pkts = num_pkts;
 	suet_pds_send_tx(tx);
 }
 
@@ -1353,6 +1410,7 @@ void suet_pds_tx_cancel(void *pds_ctx)
 
 	if (!tx)
 		return;
+	suet_pds_tx_detach(tx);
 	dlist_remove(&tx->entry);
 	ofi_buf_free(tx);
 }

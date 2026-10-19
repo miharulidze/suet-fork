@@ -263,3 +263,13 @@ late and duplicate SACKs, cumulative ACKs across PSN wrap, timeout discovery
 while datagram still borrows a packet, local EAGAIN without retry-budget
 consumption, and retry priority over new messages. Loss releases only flight
 credit; reliability tracking remains until acknowledgement.
+
+RUD TX completion tests compile PDS directly with assertions and sanitizer
+instrumentation, replacing only the SES completion callback for focused
+cases. Two messages share a PDC across PSN wrap: explicit ACKs for the later
+message complete it before the earlier gap closes in RUD, while ROD preserves
+order. Tests cover both reliability algorithms, SACK before explicit ACKs,
+ACK-before-local and local-before-ACK completion, duplicate/invalid ACKs,
+zero-copy payload release, cancellation, unsent fragments and PDC teardown.
+The htsim suite additionally drops the first packet of A and checks that B's
+real TX/RX completions arrive first only with RUD/SR.

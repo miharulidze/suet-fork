@@ -97,11 +97,17 @@ borrowed by datagram remain on PDS's lifetime list until local completion.
 
 ROD delivery ordering stays in PDS and discards packets beyond a gap without
 retaining packet buffers. RUD dispatches admitted packets directly to SES.
+TX messages track their own pending packets: RUD can complete a later message
+once all its packets have explicit or cumulative ACKs and datagram has released
+local access. ROD also
+waits for the cumulative packet-retirement frontier. SACK alone records
+receipt, without completing a message; acknowledged packet records may remain
+in the reliability window after RUD releases the message.
 The GBN implementation discards future PSNs independently of the PDC type;
 selective repeat admits them and leaves delivery policy to PDS.
 Replacing the reliability implementation does not require a function-pointer
-table or per-packet allocation. Existing PSN-range message completion, semantic
-response replay and connection lifecycle remain in PDS.
+table or per-packet allocation. Message completion, semantic response replay
+and connection lifecycle remain in PDS.
 
 The default window remains 128 packets. GBN retains cumulative ACKs, the
 existing ACK cadence, timeout-driven recovery, and per-packet attempt
@@ -222,10 +228,9 @@ SUET is available under BSD or GPLv2 licenses, similar to the upstream libfabric
 Selective repeat can be selected independently of endpoint ordering with
 `FI_OFI_SUET_SELECTIVE_REPEAT=1` (Go-Back-N remains the default). ROD drops
 out-of-order requests without buffering; RUD processes admitted fragments by
-semantic message ID. A continuation received before its SOM is rejected and
-retried, without consuming receive-buffer space. Both algorithms preserve
-local datagram buffer lifetime and the existing cumulative message completion
-rule.
+semantic message ID. The first arriving fragment establishes receive state,
+including when it precedes SOM. Both algorithms preserve local datagram buffer
+lifetime. RUD TX completion is per message; ROD retains cumulative completion ordering.
 
 Selective repeat emits the specification's 32-byte ACK_CC header with a
 64-bit SACK bitmap, an eight-PSN-aligned base, signed offsets, and MPR. ACK_CC
