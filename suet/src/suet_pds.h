@@ -44,10 +44,12 @@
 /* PDS-only reliability state and in-flight queue membership. */
 struct suet_pds_pkt_entry {
 	struct dlist_entry entry;
+	struct dlist_entry retry_entry;
 	struct suet_pkt_entry *pkt;
 	uint32_t psn;
 	uint16_t local_pdcid;
 	bool acked;
+	bool cc_in_flight;
 };
 
 struct suet_pds_resources {
@@ -110,6 +112,7 @@ struct suet_ipdc {
 	uint32_t close_psn;
 	struct suet_rel_tx rel;
 	struct suet_cc cc;
+	struct dlist_entry retry_pkts;
 	struct suet_lb lb;
 	uint32_t peer_window;
 	uint32_t mpr_cack;

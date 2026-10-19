@@ -87,20 +87,24 @@ bool suet_rel_tx_can_track(const struct suet_rel_tx *tx, uint32_t psn, uint32_t 
 void suet_rel_tx_track(struct suet_rel_tx *tx, uint32_t slot);
 /* Track/attempt consume the slot returned by admission or retry_next.
  * The caller must not advance the window between these calls. */
-/* Preserve GBN's existing timing of attempts, including local send failure. */
+/* Record an attempt; retry eligibility alone does not consume the budget. */
 void suet_rel_tx_attempt(struct suet_rel_tx *tx, uint32_t slot, uint64_t now);
 enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 					 struct suet_rel_retired *retired);
-/* Positive receipt evidence only; zeros never revoke previous evidence. */
-uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits);
+/* Positive receipt evidence only; zeros never revoke previous evidence.
+ * Optional slots[64] receives the newly acknowledged slots, in bit order.
+ */
+uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits,
+			  uint32_t *slots);
 uint64_t suet_rel_rx_sack(const struct suet_rel_rx *rx, uint32_t base);
 uint32_t suet_rel_tx_cack(const struct suet_rel_tx *tx);
 /* Schedule a valid, not already received packet after delay_ms (zero is immediate).
  * Duplicate NACKs coalesce; positive receipt evidence takes precedence. */
 bool suet_rel_tx_nack(struct suet_rel_tx *tx, uint32_t psn, uint64_t now,
 		      uint32_t delay_ms);
-/* cursor starts at zero for each progress pass. Stop if local access prevents
- * resubmission, or if a submission fails. Finish the pass exactly once.
+/* cursor starts at zero for each discovery pass. Returned slots are eligible
+ * for retry; the caller may queue them until admission and local access allow
+ * resubmission. retry_end records whether the send pass attempted any retries.
  */
 bool suet_rel_tx_retry_next(struct suet_rel_tx *tx, uint64_t now,
 			    uint32_t *cursor, uint32_t *psn, uint32_t *slot);

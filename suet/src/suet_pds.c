@@ -48,6 +48,7 @@ static struct suet_pds_pkt_entry *suet_pds_pkt_init(struct suet_pkt_entry *pkt)
 
 	memset(entry, 0, sizeof(*entry));
 	dlist_init(&entry->entry);
+	dlist_init(&entry->retry_entry);
 	entry->pkt = pkt;
 	return entry;
 }
@@ -62,6 +63,7 @@ static struct suet_pds_pkt_entry *suet_pds_pkt_alloc(struct suet_domain *domain)
 static void suet_pds_pkt_free(struct suet_pds_pkt_entry *entry)
 {
 	assert(dlist_empty(&entry->entry));
+	assert(dlist_empty(&entry->retry_entry));
 	suet_dgram_pkt_free(entry->pkt);
 }
 
@@ -160,6 +162,8 @@ static void suet_pds_tpdc_send_ack(struct suet_domain *domain,
 static void suet_pds_send_tx(struct suet_pds_tx_entry *tx);
 static void suet_pds_ipdc_progress_tx_pkt_list(struct suet_domain *domain,
 					       struct suet_ipdc *ipdc);
+static void suet_pds_ipdc_send_retries(struct suet_domain *domain,
+				       struct suet_ipdc *ipdc);
 static bool suet_pds_free_ipdc_if_retry_exhausted(struct suet_domain *domain,
 						  struct suet_ipdc *ipdc);
 static void suet_pds_ipdc_send_clear_cmd(struct suet_domain *domain,
@@ -550,6 +554,51 @@ static void suet_pds_handle_ses_error_resp(struct suet_ipdc *ipdc,
 	}
 }
 
+/* Reliability retains the packet independently of this attempt's credit. */
+static void suet_pds_release_flight(struct suet_ipdc *ipdc,
+				    struct suet_pds_pkt_entry *pkt)
+{
+	if (pkt->cc_in_flight) {
+		pkt->cc_in_flight = false;
+		suet_cc_release(&ipdc->cc, 1);
+	}
+}
+
+static void suet_pds_queue_retry(struct suet_ipdc *ipdc,
+				 struct suet_pds_pkt_entry *pkt)
+{
+	struct suet_pds_pkt_entry *next;
+	struct dlist_entry *before = &ipdc->retry_pkts;
+
+	suet_pds_release_flight(ipdc, pkt);
+	if (!dlist_empty(&pkt->retry_entry))
+		return;
+	/* NACKs can arrive in any order. Retry the earliest PSN first so
+	 * an ordered receiver does not discard a window of later retries.
+	 */
+	if (!dlist_empty(&ipdc->retry_pkts)) {
+		next = container_of(ipdc->retry_pkts.prev,
+				    struct suet_pds_pkt_entry, retry_entry);
+		if (pds_psn_before(pkt->psn, next->psn))
+			dlist_foreach_container (&ipdc->retry_pkts,
+					 struct suet_pds_pkt_entry, next,
+					 retry_entry) {
+				if (pds_psn_before(pkt->psn, next->psn)) {
+					before = &next->retry_entry;
+					break;
+				}
+			}
+	}
+	dlist_insert_tail(&pkt->retry_entry, before);
+}
+
+static void suet_pds_ack_pkt(struct suet_ipdc *ipdc,
+			    struct suet_pds_pkt_entry *pkt)
+{
+	suet_pds_release_flight(ipdc, pkt);
+	dlist_remove_init(&pkt->retry_entry);
+}
+
 static void suet_pds_free_ipdc(struct suet_domain *domain,
 			       struct suet_ipdc *ipdc)
 {
@@ -565,6 +614,7 @@ static void suet_pds_free_ipdc(struct suet_domain *domain,
 		dlist_pop_front(&ipdc->in_flight_pkts,
 				struct suet_pds_pkt_entry, pkt_entry, entry);
 		dlist_init(&pkt_entry->entry);
+		suet_pds_ack_pkt(ipdc, pkt_entry);
 		if (suet_dgram_pkt_in_use(pkt_entry->pkt)) {
 			/* NIC still owns the buffer; we cannot free it yet.
 			 * Mark it ACKED and self-loop its entry so the TX
@@ -607,7 +657,7 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 	struct suet_rel_retired retired;
 	enum suet_rel_ack_result action;
 	struct suet_pds_pkt_entry *pkt_entry;
-	uint32_t i, slot, acked;
+	uint32_t i, slot, acked, sack_count, sack_slots[64];
 	struct suet_ipdc *ipdc;
 
 	ipdc = suet_pds_ipdc_get_by_local_pdcid(domain,
@@ -656,8 +706,12 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 	if (extended) {
 		uint32_t base =
 			cack_psn + (int16_t) ntohs(cc_ack->sack_psn_offset);
-		acked += suet_rel_tx_sack(&ipdc->rel, base,
-					  ntohll(cc_ack->sack_bitmap));
+		sack_count = suet_rel_tx_sack(&ipdc->rel, base,
+					      ntohll(cc_ack->sack_bitmap),
+					      sack_slots);
+		acked += sack_count;
+		for (i = 0; i < sack_count; i++)
+			suet_pds_ack_pkt(ipdc, ipdc->tx_pkts[sack_slots[i]]);
 		if (pds_psn_before(ipdc->mpr_cack, cack_psn)) {
 			ipdc->mpr_cack = cack_psn;
 			if (cc_ack->mpr)
@@ -666,9 +720,26 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 		}
 	}
 
-	if (acked && (ntohs(ack->pds.prologue.raw) & PDS_ACK_FLAG_M))
-		suet_cc_congestion(&ipdc->cc, false);
-	suet_cc_ack(&ipdc->cc, acked);
+	/* Consume retired slots before any progress can submit into the new
+	 * window. */
+	slot = retired.first_slot;
+	for (i = 0; i < retired.count; i++) {
+		pkt_entry = ipdc->tx_pkts[slot];
+		assert(pkt_entry && pkt_entry->psn == retired.first_psn + i);
+		suet_pds_ack_pkt(ipdc, pkt_entry);
+		ipdc->tx_pkts[slot] = NULL;
+		if (++slot == ipdc->rel.window.capacity)
+			slot = 0;
+		if (suet_dgram_pkt_in_use(pkt_entry->pkt)) {
+			pkt_entry->acked = true;
+		} else {
+			dlist_remove_init(&pkt_entry->entry);
+			suet_pds_pkt_free(pkt_entry);
+		}
+	}
+
+	suet_cc_ack(&ipdc->cc, acked,
+		    ntohs(ack->pds.prologue.raw) & PDS_ACK_FLAG_M);
 
 	/* Spec 3.5.8.3: Close ACK frees the ipdc and ends the lifecycle.
 	 * Identified by being in CLOSE_ACK_WAIT with a cack covering close_psn.
@@ -684,23 +755,7 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 		goto out;
 	}
 
-	/* Consume retired slots before any progress can submit into the new
-	 * window. */
-	slot = retired.first_slot;
-	for (i = 0; i < retired.count; i++) {
-		pkt_entry = ipdc->tx_pkts[slot];
-		assert(pkt_entry && pkt_entry->psn == retired.first_psn + i);
-		ipdc->tx_pkts[slot] = NULL;
-		if (++slot == ipdc->rel.window.capacity)
-			slot = 0;
-		if (suet_dgram_pkt_in_use(pkt_entry->pkt)) {
-			pkt_entry->acked = true;
-		} else {
-			dlist_remove_init(&pkt_entry->entry);
-			suet_pds_pkt_free(pkt_entry);
-		}
-	}
-
+	suet_pds_ipdc_send_retries(domain, ipdc);
 	suet_pds_ipdc_progress_tx_list(ipdc);
 
 	/* Spec 3.5.16.3.1: if the target asked for a clear via REQ_CLEAR and
@@ -747,8 +802,15 @@ static void suet_pds_ipdc_process_nack(struct suet_domain *domain,
 	if ((pds_nack_get_code(nack) == PDS_NACK_CODE_TRIMMED ||
 	     pds_nack_get_code(nack) == PDS_NACK_CODE_TRIMMED_LASTHOP) &&
 	    suet_rel_tx_nack(&ipdc->rel, pds_nack_get_psn(nack),
-			     suet_domain_now_ms(domain), 0))
-		suet_cc_congestion(&ipdc->cc, true);
+			     suet_domain_now_ms(domain), 0)) {
+		uint32_t slot;
+		bool valid = suet_rel_slot(&ipdc->rel.window,
+					   pds_nack_get_psn(nack), &slot);
+		assert(valid);
+		if (valid)
+			suet_pds_queue_retry(ipdc, ipdc->tx_pkts[slot]);
+		suet_cc_trim(&ipdc->cc);
+	}
 
 	FI_DBG(&suet_prov, FI_LOG_EP_CTRL,
 	       "Received NACK: code=%d nack_psn=%u dpdcid=%d\n",
@@ -804,6 +866,11 @@ void suet_pds_tx_done(struct suet_domain *domain, struct suet_pkt_entry *pkt,
 				/* ipdc was freed (e.g. Close ACK).
 				 * Buffer is already gone. */
 			}
+		} else if (status && pkt_entry->cc_in_flight) {
+			ipdc = suet_pds_ipdc_get_by_local_pdcid(
+				domain, pkt_entry->local_pdcid);
+			if (ipdc)
+				suet_pds_queue_retry(ipdc, pkt_entry);
 		}
 		break;
 	default:
@@ -1214,6 +1281,7 @@ suet_pds_ipdc_insert_unacked_pkt(struct suet_ipdc *ipdc,
 	ipdc->tx_pkts[slot] = pkt_entry;
 	suet_rel_tx_track(&ipdc->rel, slot);
 	suet_cc_track(&ipdc->cc);
+	pkt_entry->cc_in_flight = true;
 	dlist_insert_tail(&pkt_entry->entry, &ipdc->in_flight_pkts);
 }
 
@@ -1225,10 +1293,17 @@ static void suet_pds_ipdc_send_tracked_pkt(struct suet_domain *domain,
 	/* On send failure: PSN already consumed; enqueue so subsequent progress
 	 * call can retransmits. */
 	suet_pds_ipdc_insert_unacked_pkt(ipdc, pkt_entry, slot);
+	/* An adaptive window may be smaller than the receiver ACK batch. */
+	if (suet_cc_ack_requested(&ipdc->cc)) {
+		struct pds_req_hdr *pds = pkt_entry->pkt->pkt;
+		pds_prologue_set_flags(pds, pds_prologue_get_flags(pds) |
+					    PDS_FLAG_AR);
+	}
 	suet_rel_tx_attempt(&ipdc->rel, slot,
 			    suet_domain_now_ms(domain));
 	pkt_entry->pkt->ev = suet_lb_next_ev(&ipdc->lb);
-	(void) suet_pds_send_pkt(domain, pkt_entry);
+	if (suet_pds_send_pkt(domain, pkt_entry))
+		suet_pds_queue_retry(ipdc, pkt_entry);
 }
 
 static void suet_pds_send_tx(struct suet_pds_tx_entry *tx)
@@ -1237,14 +1312,15 @@ static void suet_pds_send_tx(struct suet_pds_tx_entry *tx)
 	struct suet_pds_pkt_entry *pkt_entry;
 	uint32_t slot;
 
-	if (!suet_cc_can_send(&ipdc->cc))
+	if (!dlist_empty(&ipdc->retry_pkts) || !suet_cc_can_send(&ipdc->cc))
 		return;
 	if (!tx->started) {
 		tx->started = true;
 		tx->start_psn = ipdc->tx_seq_no;
 		ipdc->tx_seq_no += tx->num_pkts;
 	}
-	while (tx->next_segment < tx->num_pkts && suet_cc_can_send(&ipdc->cc)) {
+	while (tx->next_segment < tx->num_pkts &&
+	       dlist_empty(&ipdc->retry_pkts) && suet_cc_can_send(&ipdc->cc)) {
 		if (ipdc->peer_window &&
 		    tx->start_psn + tx->next_segment -
 				    ipdc->rel.window.base_psn >=
@@ -1384,7 +1460,8 @@ static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
 	ipdc->tx_seq_no = ipdc->start_psn;
 	ipdc->peer_window = suet_env.max_unacked;
 	ipdc->mpr_cack = ipdc->start_psn - 2;
-	suet_cc_init(&ipdc->cc, suet_env.max_unacked);
+	suet_cc_init(&ipdc->cc, suet_env.max_unacked,
+		     suet_dgram_max_pkt_size(domain));
 	ipdc->cc.ecn_enabled = suet_env.ecn;
 	suet_lb_init(&ipdc->lb, (uint16_t) ipdc->start_psn,
 		     suet_env.spray_paths);
@@ -1407,6 +1484,7 @@ static struct suet_ipdc *suet_pds_allocate_ipdc(struct suet_domain *domain,
 	ipdc->close_psn = 0;
 	dlist_init(&ipdc->tx_list);
 	dlist_init(&ipdc->in_flight_pkts);
+	dlist_init(&ipdc->retry_pkts);
 
 	if (ofi_idm_set(&domain->pds.local_pdcid_to_ipdc_idm,
 			(int) ipdc->local_pdcid, ipdc) < 0)
@@ -1521,6 +1599,7 @@ static void suet_pds_ipdc_send_close_cmd(struct suet_domain *domain,
 	suet_rel_tx_attempt(&ipdc->rel, slot,
 			    suet_domain_now_ms(domain));
 	if (suet_pds_send_pkt(domain, pkt_entry)) {
+		suet_pds_queue_retry(ipdc, pkt_entry);
 		FI_WARN(&suet_prov, FI_LOG_EP_CTRL,
 			"failed to send Close Command CP for pdcid=%u; will "
 			"retry\n",
@@ -1556,31 +1635,70 @@ static void suet_pds_ipdc_progress_teardown(struct suet_domain *domain,
 	suet_pds_ipdc_send_close_cmd(domain, ipdc);
 }
 
+static void suet_pds_ipdc_send_retries(struct suet_domain *domain,
+				       struct suet_ipdc *ipdc)
+{
+	struct suet_pds_pkt_entry *pkt_entry;
+	struct dlist_entry *tmp;
+	uint32_t slot;
+	bool retry = false, valid;
+	int ret;
+
+	dlist_foreach_container_safe (&ipdc->retry_pkts,
+				      struct suet_pds_pkt_entry, pkt_entry,
+				      retry_entry, tmp) {
+		if (!suet_cc_can_send(&ipdc->cc) ||
+		    suet_dgram_pkt_in_use(pkt_entry->pkt))
+			break;
+		valid = suet_rel_slot(&ipdc->rel.window, pkt_entry->psn, &slot);
+		assert(valid && ipdc->tx_pkts[slot] == pkt_entry);
+		if (!valid)
+			break;
+		suet_cc_track(&ipdc->cc);
+		pkt_entry->cc_in_flight = true;
+		pkt_entry->pkt->ev = suet_lb_next_ev(&ipdc->lb);
+		pds_prologue_set_flags(
+			pkt_entry->pkt->pkt,
+			pds_prologue_get_flags(pkt_entry->pkt->pkt) |
+				PDS_FLAG_RETX | PDS_FLAG_AR);
+		ret = suet_pds_send_pkt(domain, pkt_entry);
+		if (ret) {
+			suet_pds_release_flight(ipdc, pkt_entry);
+			/* Backpressure is not a transmission attempt. Other
+			 * errors must still exhaust the configured retry budget. */
+			if (ret != -FI_EAGAIN) {
+				suet_rel_tx_attempt(&ipdc->rel, slot,
+					    suet_domain_now_ms(domain));
+				retry = true;
+			}
+			break;
+		}
+		dlist_remove_init(&pkt_entry->retry_entry);
+		suet_rel_tx_attempt(&ipdc->rel, slot,
+				    suet_domain_now_ms(domain));
+		retry = true;
+	}
+	suet_rel_tx_retry_end(&ipdc->rel, retry);
+}
+
 static void suet_pds_ipdc_progress_tx_pkt_list(struct suet_domain *domain,
 					       struct suet_ipdc *ipdc)
 {
 	struct suet_pds_pkt_entry *pkt_entry;
 	uint64_t current = suet_domain_now_ms(domain);
 	uint32_t cursor = 0, psn, slot;
-	bool retry = false;
 
+	/* Discover all losses before admission: stopping at the first blocked
+	 * retry could leave expired attempts holding every available credit.
+	 * Normal ACK processing only admits already queued retries; timeout
+	 * discovery follows the datagram receive batch in domain progress.
+	 */
 	while (suet_rel_tx_retry_next(&ipdc->rel, current, &cursor, &psn, &slot)) {
 		pkt_entry = ipdc->tx_pkts[slot];
 		assert(pkt_entry && pkt_entry->psn == psn);
-		if (suet_dgram_pkt_in_use(pkt_entry->pkt))
-			break;
-		retry = true;
-		pkt_entry->pkt->ev = suet_lb_next_ev(&ipdc->lb);
-		pds_prologue_set_flags(
-			pkt_entry->pkt->pkt,
-			pds_prologue_get_flags(pkt_entry->pkt->pkt) |
-				PDS_FLAG_RETX);
-		suet_rel_tx_attempt(&ipdc->rel, slot,
-				    suet_domain_now_ms(domain));
-		if (suet_pds_send_pkt(domain, pkt_entry))
-			break;
+		suet_pds_queue_retry(ipdc, pkt_entry);
 	}
-	suet_rel_tx_retry_end(&ipdc->rel, retry);
+	suet_pds_ipdc_send_retries(domain, ipdc);
 }
 
 static bool suet_pds_free_ipdc_if_retry_exhausted(struct suet_domain *domain,
@@ -1623,7 +1741,8 @@ void suet_pds_progress(struct suet_domain *domain)
 		suet_pds_ipdc_progress_tx_pkt_list(domain, ipdc);
 		if (suet_pds_free_ipdc_if_retry_exhausted(domain, ipdc))
 			continue;
-		if (dlist_empty(&ipdc->in_flight_pkts))
+		if (dlist_empty(&ipdc->in_flight_pkts) ||
+		    (dlist_empty(&ipdc->retry_pkts) && suet_cc_can_send(&ipdc->cc)))
 			suet_pds_ipdc_progress_tx_list(ipdc);
 		suet_pds_ipdc_progress_teardown(domain, ipdc);
 	}

@@ -105,31 +105,36 @@ response replay and connection lifecycle remain in PDS.
 
 The default window remains 128 packets. GBN retains cumulative ACKs, the
 existing ACK cadence, timeout-driven recovery, and per-packet attempt
-timestamps and retry limits. Trim NACKs additionally permit immediate recovery. Backoff starts at 1 ms and saturates safely at 4 seconds.
-Local send failures remain tracked for recovery and retry attempts retain the
-existing timing/accounting. Legacy request/ACK layouts are unchanged. `max_unacked` is
+timestamps and retry limits. Trim NACKs additionally make retries eligible
+immediately; CC still gates their transmission. Backoff starts at 1 ms and
+saturates safely at 4 seconds. Local send failures remain tracked for recovery;
+EAGAIN does not consume a retransmission attempt. Legacy request/ACK layouts
+are unchanged. `max_unacked` is
 clamped to 1..65535; negative retry limits become
 zero. An ACK covering an untracked PSN is rejected without retiring packets.
 
 ### Congestion-control boundary
 
-`suet_cc.h` defines direct calls for send admission, tracking a new request,
-and releasing newly acknowledged credit. `suet_cc.c` implements a fixed
-packet window, initialized from `FI_OFI_SUET_MAX_UNACKED` (default 128). Each
+`suet_cc.h` defines direct calls for send admission, tracking and releasing
+flight credit, and delivery/congestion feedback. `suet_cc.c` implements a fixed
+window by default, with optional htsim DCTCP. The initial/maximum window is
+`FI_OFI_SUET_MAX_UNACKED` (default 128 packets). Each
 initiator PDC embeds its CC context; there are no allocations or function
 pointers, and CC has no PDC-type, reliability, wire, or SES dependency.
 
 PDS checks CC credit, reliability-window space and packet-buffer availability
-before sending new data. A tracked request reserves one CC credit even if its
-first local submission fails. Retransmissions reuse that credit. Only validated,
-newly acknowledged requests release it; duplicate/invalid ACKs and local
-datagram completions do not. PDS separately retains ACKed buffers still borrowed
-by datagram. They no longer consume send-window credit: a freed reliability
-slot can hold a new packet while its previous buffer waits for local completion.
-Message completion still waits for local access to end.
+before sending new data. Each transmission attempt, including a retry,
+reserves one CC credit. ACK, declared loss, or local submission failure
+releases that attempt's credit exactly once. Reliability retains unacknowledged
+packets independently of flight accounting. Queued retries take priority over
+new messages and are sent in PSN order when CC permits them.
+Acknowledged buffers may remain borrowed by datagram without consuming flight
+credit. A late ACK can cancel a queued retry without releasing credit twice.
+Normal ACK processing admits queued retries; timeout discovery runs after the
+datagram receive batch, avoiding premature retries while ACKs are being drained.
+
 Tracked Close requests use the same credit accounting; ACK/NACK and CLEAR
-responses do not. This fixed policy adds no pacing, window adaptation or wire
-feedback fields.
+responses do not. Neither policy requires a new wire layout or pacing timer.
 
 ### Simulation clock
 
@@ -236,14 +241,25 @@ trimmed, and last-hop-trimmed flags in receive completions. Backends without
 this extension keep their existing behavior. A trimmed request produces UET
 NACK code 1 or 2 without reaching SES or advancing the receive bitmap, even
 when the SYN request was trimmed. Valid trim NACKs schedule the missing PSN
-for retry; duplicates coalesce and SACKed packets are not retransmitted by SR.
+for retry; duplicates coalesce and SACKed packets are not retransmitted by either algorithm.
 Other NACKs retain timeout recovery to avoid OOO feedback retry storms.
 Retry exhaustion is tracked per packet rather than across unrelated retries.
 
-`FI_OFI_SUET_ECN=1` enables bounded AIMD in `suet_cc`: a fresh marked ACK or
-trim NACK halves the window (minimum one), with one reduction per recovery
-flight and additive recovery up to the configured maximum. The default is
-still a fixed window. ACKs echo request CE using the UET M flag; duplicate
-feedback cannot release credit twice. This is a small experimental congestion
-response, not an implementation of UET NSCC. Native UDP currently does not
-supply the optional network metadata.
+`FI_OFI_SUET_ECN=1` enables the DCTCP variant from htsim's
+`UecSrc::updateCwndOnAck_DCTCP` / `updateCwndOnNack_DCTCP` in `suet_cc`.
+Unmarked ACKs increase the window by `acked * MTU / cwnd`; marked ACKs
+subtract `acked / 3`; a fresh trim NACK subtracts one MTU. This is htsim's
+per-mark variant, without standard DCTCP alpha smoothing or recovery-flight
+suppression. Windows use bytes to retain fractional-packet adjustments;
+each transmission attempt reserves one MTU, including short packets.
+Loss or local submission failure releases that attempt's flight credit while
+reliability retains the packet. Retries are queued in PSN order, take priority
+over new data, and must reacquire congestion-window credit before sending.
+Late ACKs cancel queued retries without releasing credit twice.
+The minimum is one packet and the maximum is `FI_OFI_SUET_MAX_UNACKED`.
+The sender sets AR when the adaptive congestion window fills, so windows
+smaller than the receiver ACK batch continue to make progress.
+The default remains a fixed window. ACKs echo CE using the UET M flag;
+duplicate ACKs cannot release credit or adjust the window twice, and
+reliability coalesces duplicate trim NACKs. This is not UET NSCC. Native UDP
+currently does not supply the optional network metadata.

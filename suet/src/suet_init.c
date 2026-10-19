@@ -215,7 +215,7 @@ SUET_INI
 			"stable EV; requires DGRAM FI_SENDMSG_EV)");
 	fi_param_define(
 		&suet_prov, "ecn", FI_PARAM_BOOL,
-		"React to ECN/trimming with bounded AIMD (default: false)");
+		"React to ECN/trimming with htsim DCTCP (default: false)");
 	fi_param_define(
 		&suet_prov, "selective_repeat", FI_PARAM_BOOL,
 		"Use selective repeat instead of Go-Back-N (default: false)");

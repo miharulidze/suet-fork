@@ -6,31 +6,34 @@
 #include <stdint.h>
 
 /* Direct-call congestion control, independent of PDC type and reliability.
- * Units are packets. The caller serializes access; no packet, wire or SES
- * state crosses this interface. Buffer lifetime remains in PDS.
+ * Outstanding credit is in packets; windows are in MTU-normalized bytes
+ * to preserve fractional-packet DCTCP adjustments. The caller serializes
+ * access; no packet, wire or SES state crosses this interface. Buffer
+ * lifetime remains in PDS.
  */
 struct suet_cc {
-	uint32_t cwnd;
-	uint32_t max_cwnd;
-	uint32_t recovery_left;
-	uint32_t increase_credit;
+	uint64_t cwnd;
+	uint64_t max_cwnd;
+	uint32_t mtu;
 	uint64_t ecn_events;
 	uint64_t trim_events;
 	bool ecn_enabled;
 	uint32_t in_flight;
 };
 
-void suet_cc_init(struct suet_cc *cc, uint32_t cwnd);
+void suet_cc_init(struct suet_cc *cc, uint32_t packets, uint32_t mtu);
 bool suet_cc_can_send(const struct suet_cc *cc);
-/* Reserve once per new tracked request, including a failed local submission.
- * Retransmissions reuse that reservation; local completion does not release it.
- */
+/* Reserve each transmission attempt, including retransmissions. */
 void suet_cc_track(struct suet_cc *cc);
-/* Only newly acknowledged requests release credit. PDS validates feedback
- * through reliability before reporting it here.
+/* PDS releases an attempt once on ACK, loss, or local submission failure. */
+void suet_cc_release(struct suet_cc *cc, uint32_t count);
+/* Delivery feedback is separate from flight credit: a late ACK may cover
+ * packets already removed from flight accounting after loss.
  */
-void suet_cc_ack(struct suet_cc *cc, uint32_t count);
+void suet_cc_ack(struct suet_cc *cc, uint32_t count, bool marked);
 
-void suet_cc_congestion(struct suet_cc *cc, bool trimmed);
+void suet_cc_trim(struct suet_cc *cc);
+/* After tracking a new packet, request feedback if the window is full. */
+bool suet_cc_ack_requested(const struct suet_cc *cc);
 
 #endif

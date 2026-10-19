@@ -207,7 +207,8 @@ enum suet_rel_ack_result suet_rel_tx_ack(struct suet_rel_tx *tx, uint32_t cack,
 	return SUET_REL_ACK_ADVANCED;
 }
 
-uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits)
+uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits,
+			  uint32_t *slots)
 {
 	uint32_t count = 0, slot, bit;
 
@@ -223,6 +224,8 @@ uint32_t suet_rel_tx_sack(struct suet_rel_tx *tx, uint32_t base, uint64_t bits)
 			suet_rel_clear(tx->nacked, slot);
 			tx->pending_nacks--;
 		}
+		if (slots)
+			slots[count] = slot;
 		count++;
 	}
 	return count;
@@ -278,9 +281,9 @@ bool suet_rel_tx_retry_next(struct suet_rel_tx *tx, uint64_t now,
 		slot = window->head + offset;
 		if (slot >= window->capacity)
 			slot -= window->capacity;
+		/* Positive receipt evidence remains final with either algorithm. */
 		if (!suet_rel_bit(window->present, slot) ||
-		    (tx->algorithm == SUET_REL_SR &&
-		     suet_rel_bit(tx->sacked, slot)))
+		    suet_rel_bit(tx->sacked, slot))
 			continue;
 		nack = suet_rel_bit(tx->nacked, slot);
 		if (nack && now < tx->attempt_time[slot])

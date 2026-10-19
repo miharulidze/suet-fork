@@ -107,7 +107,8 @@ Queues use htsim's ECN implementation with overflow drops by default.
 `-trim_queues 1` selects composite queues that trim overflowing data packets.
 CE and trimming metadata cross the DGRAM interface into SUET. UEC congestion
 control, UecNIC multi-port arbitration and PCIe modeling are not implemented.
-SUET's optional bounded AIMD response is not NSCC or UEC congestion control.
+SUET's optional ECN response uses htsim's per-mark DCTCP variant; it does
+not implement NSCC or receiver-driven congestion control.
 
 ## Time, traffic and completion
 

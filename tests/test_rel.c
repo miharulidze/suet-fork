@@ -220,11 +220,16 @@ static void check_selective_repeat(void)
 	}
 	sack = suet_rel_rx_sack(&rx, base);
 	assert(sack == (UINT64_MAX ^ 1));
-	assert(suet_rel_tx_sack(&tx, base, sack) == 63);
-	assert(suet_rel_tx_sack(&tx, base, 0) == 0);
-	assert(suet_rel_tx_sack(&tx, base, sack) == 0);
+	uint32_t slots[64], expected_slot;
+	assert(suet_rel_tx_sack(&tx, base, sack, slots) == 63);
+	for (uint32_t i = 0; i < 63; i++) {
+		assert(suet_rel_slot(&tx.window, base + i + 1, &expected_slot));
+		assert(slots[i] == expected_slot);
+	}
+	assert(suet_rel_tx_sack(&tx, base, 0, NULL) == 0);
+	assert(suet_rel_tx_sack(&tx, base, sack, NULL) == 0);
 	assert(suet_rel_tx_sack(&tx, base + 64,
-				suet_rel_rx_sack(&rx, base + 64)) == 64);
+				suet_rel_rx_sack(&rx, base + 64), NULL) == 64);
 	assert(suet_rel_tx_cack(&tx) == base - 1 && tx.tracked == 128);
 	cursor = 0;
 	assert(retry_next(&tx, 1, &cursor, &psn) && psn == base);
@@ -239,8 +244,8 @@ static void check_selective_repeat(void)
 	assert(suet_rel_tx_ack(&tx, base + 127, &retired) ==
 	       SUET_REL_ACK_ADVANCED);
 	assert(retired.count == 128 && retired.newly_acked == 1);
-	assert(suet_rel_tx_sack(&tx, base, UINT64_MAX) == 0);
-	assert(suet_rel_tx_sack(&tx, base + 128, UINT64_MAX) == 0);
+	assert(suet_rel_tx_sack(&tx, base, UINT64_MAX, NULL) == 0);
+	assert(suet_rel_tx_sack(&tx, base + 128, UINT64_MAX, NULL) == 0);
 	/* An unexpired earlier packet must not hide an expired later packet. */
 	base += 128;
 	track(&tx, base);
@@ -275,8 +280,11 @@ static void check_nack(void)
 		assert(tx.retry_count == 1 && tx.rto_round == 0);
 		cursor = 0;
 		assert(!retry_next(&tx, 10, &cursor, &psn));
-		assert(suet_rel_tx_sack(&tx, 101, 1) == 1);
+		assert(suet_rel_tx_sack(&tx, 101, 1, NULL) == 1);
 		assert(!suet_rel_tx_nack(&tx, 101, 10, 0));
+		cursor = 0;
+		assert(retry_next(&tx, 11, &cursor, &psn) && psn == 100);
+		assert(!retry_next(&tx, 11, &cursor, &psn));
 		suet_rel_tx_cleanup(&tx);
 	}
 }

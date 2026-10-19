@@ -102,6 +102,23 @@ trigger id 2 oneshot
                 assert 'data_evs 16 ' in result[1], result
             run(pdc + '_sr' + sr + '_spray_congested', incast,
                 ['-pdc', pdc, '-q', '16384', '-trim_queues', '1'])
+    # DCTCP can shrink below the normal ACK batch. Window-exhaustion AR
+    # must keep a long incast moving without millisecond recovery stalls.
+    env['FI_OFI_SUET_SELECTIVE_REPEAT'] = '1'
+    env['FI_OFI_SUET_ECN'] = '1'
+    env['FI_OFI_SUET_SPRAY_PATHS'] = '64'
+    env['FI_OFI_SUET_MAX_UNACKED'] = '128'
+    incast = 'Nodes 128\nConnections 16\n' + ''.join(
+        f'{src}->0 id {i + 1} start 0 size 1048576\n'
+        for i, src in enumerate([*range(8, 128, 8), 127]))
+    flows, summary = run('dctcp_incast', incast,
+                         ['-pdc', 'rud', '-q', str(64 * 4138), '-trim_queues', '1'])
+    assert max(float(re.search(r'fct_us ([0-9.]+)', f)[1]) for f in flows) < 10000, summary
+    assert int(re.search(r'ack_marks (\d+)', summary)[1]) > 0, summary
+    assert int(re.search(r'trim_nacks (\d+)', summary)[1]) > 0, summary
+    # Uncontrolled retries previously produced over 25,000 transmissions.
+    assert int(re.search(r'retransmits (\d+)', summary)[1]) < 8192, summary
+    env.pop('FI_OFI_SUET_MAX_UNACKED', None)
     env.pop('FI_OFI_SUET_SPRAY_PATHS', None)
     env.pop('FI_OFI_SUET_SELECTIVE_REPEAT', None)
     env.pop('FI_OFI_SUET_ECN', None)

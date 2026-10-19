@@ -215,8 +215,9 @@ ECN/trimming checks include negotiated DGRAM metadata through source-discovery
 CQ errors, byte-level trim NACKs (including SYN and last-hop cases), immediate
 NACK recovery behind an unexpired prefix, duplicate NACK coalescing, and
 per-packet retry budgets. `test_cc.c` checks fixed-window compatibility,
-exact credit accounting, recovery-flight reduction suppression, bounded
-additive growth and the one-packet minimum. Build it like `test_rel.c`, using
+exact credit accounting, htsim DCTCP marked/unmarked ACK arithmetic,
+fractional-packet windows, trim reductions, duplicate ACK suppression,
+bounded growth, and ACK requests at the one-packet minimum. Build it like `test_rel.c`, using
 `suet_cc.c`; both are also registered with htsim CTest.
 
 The receive regression also queues two complete unexpected messages with the
@@ -255,3 +256,10 @@ seven focused test programs passed with sanitizers, including directly
 compiled PDS/SES implementations with assertions enabled. Simulator runs use
 `ASAN_OPTIONS=detect_leaks=0`. Both directions of the libfabric patch apply
 cleanly, and an explicit UDP `FI_SENDMSG_EV` capability request is rejected.
+
+Retransmission admission tests exercise ROD/RUD with GBN/SR independently.
+They cover a full/shrunk congestion window, reversed and duplicate trim NACKs,
+late and duplicate SACKs, cumulative ACKs across PSN wrap, timeout discovery
+while datagram still borrows a packet, local EAGAIN without retry-budget
+consumption, and retry priority over new messages. Loss releases only flight
+credit; reliability tracking remains until acknowledgement.
