@@ -147,6 +147,7 @@ static struct fi_ops_mr test_mr_ops = {.regattr = test_mr_regattr};
 
 static void init_public_av(struct suet_av *av, struct suet_domain *domain)
 {
+	dlist_init(&av->entry_list);
 	av->util_av.domain = &domain->util_domain;
 	av->util_av.prov = &suet_prov;
 	assert(!ofi_genlock_init(&av->util_av.lock, OFI_LOCK_MUTEX));
@@ -154,8 +155,7 @@ static void init_public_av(struct suet_av *av, struct suet_domain *domain)
 
 static void cleanup_public_av(struct suet_av *av)
 {
-	ofi_idx_reset(&av->usr_av_addr_to_peer_idx);
-	ofi_idm_reset(&av->peer_idx_to_usr_av_addr, NULL);
+	suet_av_cleanup(av);
 	ofi_genlock_destroy(&av->util_av.lock);
 }
 
@@ -194,8 +194,12 @@ static void check_peers(struct suet_domain *domain)
 	int peer, errors[3], i;
 	uint32_t values[] = {11, UINT32_MAX, 22};
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < 3; i++) {
+		raw[i].version = SUET_ADDR_VERSION;
+		raw[i].num_ri = 1;
+		raw[i].raw_dgram_addrlen = sizeof(values[i]);
 		memcpy(raw[i].raw_dgram_addr, &values[i], sizeof(values[i]));
+	}
 	for (i = 0; i < 2; i++)
 		init_public_av(&av[i], domain);
 	assert(!suet_av_insert(&av[0].util_av.av_fid, NULL, 0, NULL, 0, NULL));
@@ -241,6 +245,7 @@ static void check_peers(struct suet_domain *domain)
 	 * contention. */
 	for (i = 0; i < 2; i++) {
 		args[i].av = &av[i];
+		args[i].addr = raw[0];
 		args[i].addr.raw_dgram_addr[0] = 44;
 		assert(!pthread_create(&threads[i], NULL, insert_peer,
 				       &args[i]));
@@ -250,6 +255,61 @@ static void check_peers(struct suet_domain *domain)
 	assert(args[0].peer == args[1].peer);
 	for (i = 0; i < 2; i++)
 		cleanup_public_av(&av[i]);
+}
+
+static void check_endpoint_addresses(struct suet_domain *domain)
+{
+	struct suet_av av = {0};
+	struct suet_av_addr raw[4], saved, out;
+	fi_addr_t handles[4], duplicate;
+	uint32_t physical = 55;
+	size_t len;
+	int i, peer, other_peer;
+
+	init_public_av(&av, domain);
+	memset(raw, 0, sizeof(raw));
+	raw[0].version = SUET_ADDR_VERSION;
+	raw[0].num_ri = 1;
+	raw[0].raw_dgram_addrlen = sizeof(physical);
+	memcpy(raw[0].raw_dgram_addr, &physical, sizeof(physical));
+	raw[0].pid_on_fep = 7;
+	raw[0].start_ri = 3;
+	raw[0].initiator_id = 9;
+	for (i = 1; i < 4; i++)
+		raw[i] = raw[0];
+	raw[1].start_ri++;
+	raw[2].pid_on_fep++;
+	raw[3].initiator_id++;
+	assert(suet_av_insert(&av.util_av.av_fid, raw, 4, handles, 0, NULL) == 4);
+	peer = suet_av_peer_idx_from_usr_av_addr(&av, handles[0]);
+	for (i = 0; i < 4; i++) {
+		assert(handles[i] == (fi_addr_t) i);
+		assert(!suet_av_resolve(&av, handles[i], &other_peer, &out));
+		assert(other_peer == peer && !memcmp(&out, &raw[i], sizeof(out)));
+	}
+	/* AV owns a copy; caller mutation and sibling removal cannot change it. */
+	saved = raw[0];
+	memset(&raw[0], 0xa5, sizeof(raw[0]));
+	len = sizeof(out) - 1;
+	assert(suet_av_lookup(&av.util_av.av_fid, handles[0], &out, &len) ==
+	       -FI_ETOOSMALL && len == sizeof(out));
+	assert(!suet_av_lookup(&av.util_av.av_fid, handles[0], &out, &len));
+	assert(!memcmp(&out, &saved, sizeof(out)));
+	assert(suet_av_insert(&av.util_av.av_fid, &saved, 1, &duplicate, 0, NULL) == 1);
+	assert(duplicate != handles[0]);
+	assert(!suet_av_remove(&av.util_av.av_fid, &handles[1], 1, 0));
+	assert(suet_av_resolve(&av, handles[1], NULL, &out) == -FI_EINVAL);
+	assert(!suet_av_resolve(&av, handles[2], &other_peer, &out));
+	assert(other_peer == peer && out.pid_on_fep == 8);
+	assert(suet_av_resolve(&av, FI_ADDR_UNSPEC, NULL, &out) == -FI_EINVAL);
+	assert(suet_av_resolve(&av, UINT64_C(1) << 32, NULL, &out) == -FI_EINVAL);
+	/* Numeric node/service resolution precedes the in-band name exchange. */
+	saved.pid_on_fep = saved.start_ri = saved.num_ri = 0;
+	saved.initiator_id = 0;
+	assert(suet_av_insert(&av.util_av.av_fid, &saved, 1, &duplicate, 0, NULL) == 1);
+	assert(!suet_av_resolve(&av, duplicate, &other_peer, &out));
+	assert(other_peer == peer && !out.num_ri);
+	cleanup_public_av(&av);
 }
 
 static void check_registration(struct suet_domain *domain)
@@ -307,6 +367,7 @@ int main(void)
 	domain.util_domain.threading = FI_THREAD_SAFE;
 	assert(!suet_dgram_av_init(&domain));
 	check_peers(&domain);
+	check_endpoint_addresses(&domain);
 	check_registration(&domain);
 	suet_dgram_av_cleanup(&domain);
 	assert(!domain.dgram.av && av_open_count == av_close_count);

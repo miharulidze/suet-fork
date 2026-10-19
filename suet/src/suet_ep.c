@@ -225,6 +225,7 @@ static int suet_ep_cm_getname(fid_t fid, void *raw_addr, size_t *addrlen)
 	addr->pid_on_fep = ep->pid_on_fep & SUET_PID_ON_FEP_MASK;
 	addr->start_ri = ep->resource_index & SUET_RI_MASK;
 	addr->num_ri = 1;
+	addr->initiator_id = ep->initiator_id;
 	addr->raw_dgram_addrlen =
 		(uint16_t) MIN(raw_dgram_addrlen, sizeof(raw_dgram_addr));
 	memcpy(addr->raw_dgram_addr, raw_dgram_addr, addr->raw_dgram_addrlen);
@@ -354,6 +355,10 @@ int suet_endpoint(struct fid_domain *domain, struct fi_info *info,
 		goto err2;
 	}
 	suet_domain->ep_table[suet_ep->resource_index] = suet_ep;
+	/* Directed receive may additionally match the datagram peer, so this
+	 * ID needs to distinguish resources within that FEP. */
+	suet_ep->initiator_id = ((uint32_t) suet_ep->pid_on_fep << 12) |
+				suet_ep->resource_index;
 	ofi_genlock_unlock(&suet_domain->fep_lock);
 
 	ret = suet_ep_init_res(suet_ep, info);

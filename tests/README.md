@@ -75,6 +75,39 @@ rollback and successful registration after failure. Build and run it using
 the same command above, replacing `test_ses_pds` with `test_dgram_resources`.
 No network access is needed.
 
+## Logical endpoint identity
+
+`test_endpoint_identity.c` exercises the public libfabric API over UDP loopback.
+Four endpoints in one domain share one datagram socket but have distinct AV
+handles. Sources RI 0/1 send to destinations RI 2/3. Directed receives are
+posted in the opposite order to the sends, using the same tag and physical
+peer. The test verifies posted and unexpected 65,537-byte transfers,
+wildcard receives and empty messages under explicitly selected ROD and RUD.
+
+```sh
+PREFIX=/path/to/install
+cc -g -Wall tests/test_endpoint_identity.c -I"$PREFIX/include" \
+  -L"$PREFIX/lib" -Wl,-rpath,"$PREFIX/lib" -lfabric \
+  -o /tmp/test_endpoint_identity
+/tmp/test_endpoint_identity
+```
+
+`test_dgram_resources.c` additionally checks ownership of full endpoint
+addresses, independent entries sharing a physical peer, sibling removal,
+lookup buffer sizing, invalid handles and legacy node/service bootstrap
+addresses. `test_ses_pds.c` interleaves SOM-last messages with the same
+message ID, destination and transport stream but different initiator IDs;
+each message must retain its own receive buffer. Initiator ID zero is tested
+as a valid directed source rather than a wildcard.
+
+SUET AV entries retain the complete address returned by `fi_getname`.
+Transmissions snapshot the remote PID/RI, and SES headers carry those values
+with the local endpoint's initiator ID. Directed source matching uses both
+the physical peer and initiator ID, including unexpected and peek paths.
+The packet and address layouts are unchanged. Existing numeric node/service
+resolution remains an RI 0 / unspecified-PID bootstrap route; use exchanged
+endpoint names for directed receives and communication with multiple endpoints.
+
 ## Go-Back-N reliability
 
 `test_rel.c` links only `suet_rel.c`, without libfabric or PDC/SES definitions.

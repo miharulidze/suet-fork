@@ -238,11 +238,6 @@ suet_ses_unexp_msg_pop_pkt(struct suet_ses_unexp_msg *unexp_msg)
 	return &entry->pkt;
 }
 
-static inline int suet_match_addr(int addr, int match_addr)
-{
-	return (addr == SUET_ADDR_INVALID || addr == match_addr);
-}
-
 static inline int suet_match_tag(uint64_t tag, uint64_t ignore,
 				 uint64_t match_tag)
 {
@@ -419,11 +414,11 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 {
 	struct suet_ses_tx_entry *tx_entry;
 	struct suet_domain *domain = suet_ep_domain(ep);
+	struct suet_av_addr dest;
 	int peer_idx;
 	size_t i;
 
-	peer_idx = suet_av_peer_idx_from_usr_av_addr(suet_ep_av(ep), addr);
-	if (!peer_idx)
+	if (suet_av_resolve(suet_ep_av(ep), addr, &peer_idx, &dest))
 		return NULL;
 
 	tx_entry = suet_ses_tx_entry_alloc(ep);
@@ -431,6 +426,7 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 		FI_WARN(&suet_prov, FI_LOG_EP_CTRL, "could not get tx entry\n");
 		return NULL;
 	}
+	tx_entry->dest_addr = dest;
 
 	tx_entry->pds_ctx =
 		suet_pds_tx_alloc(domain, peer_idx, tx_entry, ep->pdc_type);
@@ -487,6 +483,13 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 	return tx_entry;
 }
 
+static bool suet_ses_match_source(int posted_peer, uint32_t posted_initiator,
+				 int peer, uint32_t initiator)
+{
+	return posted_peer == SUET_ADDR_INVALID ||
+	       (posted_peer == peer && posted_initiator == initiator);
+}
+
 static int suet_ses_match_rx_entry(struct dlist_entry *item, const void *arg)
 {
 	struct suet_ses_msg_match_attr *attr =
@@ -495,7 +498,8 @@ static int suet_ses_match_rx_entry(struct dlist_entry *item, const void *arg)
 
 	rx_entry = container_of(item, struct suet_ses_rx_entry, entry);
 
-	return suet_match_addr(rx_entry->peer_idx, attr->peer_idx);
+	return suet_ses_match_source(rx_entry->peer_idx, rx_entry->initiator_id,
+				     attr->peer_idx, attr->initiator_id);
 }
 
 static int suet_ses_match_tagged_rx_entry(struct dlist_entry *item,
@@ -507,7 +511,8 @@ static int suet_ses_match_tagged_rx_entry(struct dlist_entry *item,
 
 	rx_entry = container_of(item, struct suet_ses_rx_entry, entry);
 
-	return suet_match_addr(rx_entry->peer_idx, attr->peer_idx) &&
+	return suet_ses_match_source(rx_entry->peer_idx, rx_entry->initiator_id,
+				     attr->peer_idx, attr->initiator_id) &&
 	       suet_match_tag(rx_entry->cq_entry.tag, rx_entry->ignore,
 			      attr->tag);
 }
@@ -555,7 +560,8 @@ out:
 struct suet_ses_rx_entry *
 suet_ses_rx_entry_init(struct suet_ep *ep, const struct iovec *iov,
 		       size_t iov_count, uint64_t tag, uint64_t ignore,
-		       void *context, int peer_idx, uint32_t op, uint32_t flags)
+		       void *context, int peer_idx, uint32_t initiator_id,
+		       uint32_t op, uint32_t flags)
 {
 	struct suet_ses_rx_entry *rx_entry;
 
@@ -566,6 +572,7 @@ suet_ses_rx_entry_init(struct suet_ep *ep, const struct iovec *iov,
 	}
 
 	rx_entry->peer_idx = peer_idx;
+	rx_entry->initiator_id = initiator_id;
 	rx_entry->flags = flags;
 	rx_entry->bytes_copied = 0;
 	rx_entry->pkts_received = 0;
@@ -595,7 +602,9 @@ static int suet_ses_match_unexp_msg(struct dlist_entry *item, const void *arg)
 	const struct suet_ses_rx_packet *pkt =
 		suet_ses_unexp_msg_get_first_pkt(unexp_msg);
 
-	if (!suet_match_addr(attr->peer_idx, unexp_msg->peer_idx))
+	if (!suet_ses_match_source(attr->peer_idx, attr->initiator_id,
+				    unexp_msg->peer_idx,
+				    ses_get_initiator(pkt->hdr)))
 		return 0;
 
 	if (!ses_req_opcode_is_tagged(ses_req_ctrl_get_opcode(pkt->hdr)))
@@ -606,13 +615,15 @@ static int suet_ses_match_unexp_msg(struct dlist_entry *item, const void *arg)
 }
 
 static struct suet_ses_unexp_msg *
-suet_ses_check_unexp_list(struct dlist_entry *list, int peer_idx, uint64_t tag,
+suet_ses_check_unexp_list(struct dlist_entry *list, int peer_idx,
+			  uint32_t initiator_id, uint64_t tag,
 			  uint64_t ignore)
 {
 	struct suet_ses_msg_match_attr attr;
 	struct dlist_entry *match;
 
 	attr.peer_idx = peer_idx;
+	attr.initiator_id = initiator_id;
 	attr.tag = tag;
 	attr.ignore = ignore;
 
@@ -646,6 +657,7 @@ static void suet_ses_init_rx_metadata(
 	rx_entry->message_id = ses_get_message_id(pkt->hdr);
 
 	rx_entry->peer_idx = rx->peer_idx;
+	rx_entry->initiator_id = ses_get_initiator(ses_hdr);
 
 	if (ses_req_opcode_is_tagged(ses_opcode))
 		rx_entry->cq_entry.tag = ses_get_match_bits(ses_hdr);
@@ -723,7 +735,8 @@ void suet_ses_complete_unexp_msg(struct suet_ep *ep,
 	suet_pds_response_complete(response, &resp);
 }
 
-int suet_ses_peek_recv(struct suet_ep *suet_ep, int peer_idx, uint64_t tag,
+int suet_ses_peek_recv(struct suet_ep *suet_ep, int peer_idx,
+		       uint32_t initiator_id, uint64_t tag,
 		       uint64_t ignore, void *context, uint64_t flags,
 		       struct dlist_entry *unexp_list)
 {
@@ -733,7 +746,8 @@ int suet_ses_peek_recv(struct suet_ep *suet_ep, int peer_idx, uint64_t tag,
 	suet_domain_progress(suet_ep_domain(suet_ep));
 
 	unexp_msg =
-		suet_ses_check_unexp_list(unexp_list, peer_idx, tag, ignore);
+		suet_ses_check_unexp_list(unexp_list, peer_idx, initiator_id, tag,
+					  ignore);
 	if (!unexp_msg) {
 		FI_DBG(&suet_prov, FI_LOG_EP_CTRL, "Message not found\n");
 		return ofi_cq_write_error_peek(suet_ep->util_ep.rx_cq, tag,
@@ -811,7 +825,8 @@ int suet_ses_progress_unexp_list(struct suet_ep *ep,
 
 	while (!dlist_empty(unexp_list)) {
 		unexp_msg = suet_ses_check_unexp_list(
-			unexp_list, rx_entry->peer_idx, rx_entry->cq_entry.tag,
+			unexp_list, rx_entry->peer_idx, rx_entry->initiator_id,
+			rx_entry->cq_entry.tag,
 			rx_entry->ignore);
 		if (!unexp_msg)
 			return 0;
@@ -960,6 +975,7 @@ suet_ses_match_msg_rx_entry(struct suet_ep *ep, struct suet_ses_rx_ctx *rx,
 	size_t total_size;
 
 	attr.peer_idx = rx->peer_idx;
+	attr.initiator_id = ses_get_initiator(pkt->hdr);
 
 	if (ses_req_opcode_is_tagged(ses_req_ctrl_get_opcode(pkt->hdr))) {
 		unexp_list = &ep->unexp_tag_list;
@@ -1023,7 +1039,8 @@ suet_ses_match_rma_rx_entry(struct suet_ep *ep, struct suet_ses_rx_ctx *rx,
 		return NULL;
 
 	rx_entry = suet_ses_rx_entry_init(ep, iov, 1, 0, 0, NULL, rx->peer_idx,
-					  ofi_op, 0);
+						  ses_get_initiator(ses_hdr),
+						  ofi_op, 0);
 	if (!rx_entry)
 		return NULL;
 
@@ -1099,6 +1116,15 @@ suet_ses_lookup_ep_by_ri(struct suet_domain *domain,
 		FI_WARN(&suet_prov, FI_LOG_CQ, "No EP for RI=%d\n", ri);
 		return NULL;
 	}
+	/* Legacy node/service resolution knows only the datagram address.
+	 * Its bootstrap destination is PID 0 / RI 0. Full endpoint names
+	 * carry the actual PID and are validated here. */
+	if (OFI_UNLIKELY((ri || ses_get_pid_on_fep(ses_hdr)) &&
+			ses_get_pid_on_fep(ses_hdr) !=
+			domain->ep_table[ri]->pid_on_fep)) {
+		FI_WARN(&suet_prov, FI_LOG_CQ, "Wrong destination PID for RI=%d\n", ri);
+		return NULL;
+	}
 	return domain->ep_table[ri];
 }
 
@@ -1111,8 +1137,9 @@ static void suet_ses_init_ses_hdr(struct ses_req_hdr *ses_hdr,
 		     1, tx_entry->flags & SUET_REMOTE_CQ_DATA, tx_entry->tx_id,
 		     ses_get_buffer_offset(ses_hdr),
 		     ses_get_match_bits(ses_hdr), tx_entry->cq_entry.data,
-		     (uint32_t) tx_entry->cq_entry.len, ep->pid_on_fep,
-		     ep->resource_index);
+		     (uint32_t) tx_entry->cq_entry.len,
+		     tx_entry->dest_addr.pid_on_fep, tx_entry->dest_addr.start_ri);
+	ses_set_initiator(ses_hdr, ep->initiator_id);
 }
 
 void suet_ses_init_rma_iov(const struct fi_rma_iov *rma_iov,
@@ -1181,7 +1208,8 @@ void suet_ses_receive(void *ses_ctx, void *pkt_ctx,
 	rx->curr_unexp = NULL;
 	dlist_foreach_container (&rx->rx_list, struct suet_ses_rx_entry,
 				 entry, entry) {
-		if (entry->ep == ep && entry->message_id == id) {
+		if (entry->ep == ep && entry->message_id == id &&
+		    entry->initiator_id == ses_get_initiator(pkt->hdr)) {
 			rx_entry = entry;
 			break;
 		}
@@ -1196,6 +1224,7 @@ void suet_ses_receive(void *ses_ctx, void *pkt_ctx,
 		if (rx_entry || unexp->pkts_received >= unexp->num_pkts)
 			continue;
 		if (ses_get_ri(hdr) == ses_get_ri(pkt->hdr) &&
+		    ses_get_initiator(hdr) == ses_get_initiator(pkt->hdr) &&
 		    ses_get_message_id(hdr) == id) {
 			rx->curr_unexp = unexp;
 			break;

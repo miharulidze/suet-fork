@@ -51,6 +51,8 @@ ssize_t suet_ep_generic_recvmsg(struct suet_ep *suet_ep,
 	struct dlist_entry *unexp_list, *rx_list;
 	struct suet_ses_unexp_msg *unexp_msg;
 	int peer_idx = SUET_ADDR_INVALID;
+	struct suet_av_addr source;
+	uint32_t initiator_id = 0;
 
 	if (iov_count > SUET_IOV_LIMIT)
 		return -FI_EINVAL;
@@ -76,19 +78,24 @@ ssize_t suet_ep_generic_recvmsg(struct suet_ep *suet_ep,
 
 	if (suet_ep->util_ep.caps & FI_DIRECTED_RECV &&
 	    addr != FI_ADDR_UNSPEC) {
-		peer_idx = suet_av_peer_idx_from_usr_av_addr(
-			suet_ep_av(suet_ep), addr);
+		ret = suet_av_resolve(suet_ep_av(suet_ep), addr, &peer_idx,
+				      &source);
+		if (ret)
+			goto out;
+		initiator_id = source.initiator_id;
 	}
 
 	if (flags & FI_PEEK) {
-		ret = suet_ses_peek_recv(suet_ep, peer_idx, tag, ignore, context,
+		ret = suet_ses_peek_recv(suet_ep, peer_idx, initiator_id, tag,
+					ignore, context,
 					flags, unexp_list);
 		goto out;
 	}
 	if (!(flags & FI_DISCARD)) {
 		rx_entry =
 			suet_ses_rx_entry_init(suet_ep, iov, iov_count, tag, ignore,
-					   context, peer_idx, op, suet_flags);
+					   context, peer_idx, initiator_id, op,
+					   suet_flags);
 		if (!rx_entry) {
 			ret = -FI_EAGAIN;
 		} else if (flags & FI_CLAIM) {

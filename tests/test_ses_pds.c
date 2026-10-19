@@ -208,7 +208,7 @@ static void check_ses_domain_lifecycle(void)
 	/* Closing one domain must leave the other domain's SES usable. */
 	ep.util_ep.domain = &domains[1].util_domain;
 	entry = suet_ses_rx_entry_init(&ep, &iov, 1, 0, 0, NULL,
-				       SUET_ADDR_INVALID, ofi_op_msg, 0);
+				       SUET_ADDR_INVALID, 0, ofi_op_msg, 0);
 	assert(entry);
 	assert(entry->ep == &ep);
 	suet_ses_rx_entry_free(entry);
@@ -250,7 +250,7 @@ static void check_rx_payload_view(void)
 	rx = suet_ses_rx_open(&domain, NULL, 0);
 	assert(rx);
 	entry = suet_ses_rx_entry_init(&ep, &iov, 1, 0, 0, NULL,
-				       SUET_ADDR_INVALID, ofi_op_msg, 0);
+				       SUET_ADDR_INVALID, 0, ofi_op_msg, 0);
 	assert(entry);
 	dlist_insert_tail(&entry->entry, &ep.rx_list);
 	memset(payload, 0x5a, sizeof(payload));
@@ -306,7 +306,7 @@ static void check_rx_fragment_order(uint8_t opcode, const unsigned int *order)
 		assert(!ofi_mr_map_insert(&domain.util_domain.mr_map, &attr,
 					 &key, NULL, 0));
 	} else {
-		entry = suet_ses_rx_entry_init(&ep, &iov, 1, key, 0, NULL, 5,
+		entry = suet_ses_rx_entry_init(&ep, &iov, 1, key, 0, NULL, 5, 0,
 			opcode == UET_SEND ? ofi_op_msg : ofi_op_tagged, 0);
 		assert(entry);
 		dlist_insert_tail(&entry->entry, opcode == UET_SEND ?
@@ -488,6 +488,69 @@ static void check_response_retention(void)
 	suet_ses_cleanup(&domain);
 }
 
+/* Same stream, destination RI and message ID, but distinct source endpoints.
+ * Source ID zero is valid; only an unspecified peer is a wildcard. */
+static void check_rx_source_identity(uint8_t opcode)
+{
+	struct suet_domain domain = {0};
+	struct suet_ep ep = {0}, *ep_table[] = {&ep};
+	struct suet_ses_rx_entry *entries[2];
+	struct suet_ses_rx_dispatch_result result;
+	struct ses_req_hdr hdr;
+	struct suet_ses_rx_packet pkt = {.hdr = &hdr};
+	unsigned char payload[2][73], output[2][73] = {{0}};
+	struct iovec iov;
+	uint32_t initiators[] = {0, 71};
+	void *rx;
+	int source, segment;
+
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+	domain.ep_table = ep_table;
+	ep.util_ep.domain = &domain.util_domain;
+	dlist_init(&ep.rx_list);
+	dlist_init(&ep.rx_tag_list);
+	dlist_init(&ep.unexp_list);
+	dlist_init(&ep.unexp_tag_list);
+	assert(!suet_ses_init(&domain));
+	rx = suet_ses_rx_open(&domain, NULL, 5);
+	assert(rx);
+	for (source = 0; source < 2; source++) {
+		memset(payload[source], source ? 0x71 : 0x35, sizeof(payload[source]));
+		iov = (struct iovec) {output[source], sizeof(output[source])};
+		entries[source] = suet_ses_rx_entry_init(&ep, &iov, 1, 9, 0, NULL,
+			5, initiators[source], opcode == UET_SEND ? ofi_op_msg :
+			ofi_op_tagged, 0);
+		assert(entries[source]);
+		dlist_insert_tail(&entries[source]->entry, opcode == UET_SEND ?
+				  &ep.rx_list : &ep.rx_tag_list);
+	}
+	for (segment = 1; segment >= 0; segment--) {
+		for (source = 1; source >= 0; source--) {
+			ses_req_init(&hdr, opcode, !segment, !!segment, 1, 0, 7,
+				     0, 9, 0, sizeof(payload[source]), 0, 0);
+			ses_set_initiator(&hdr, initiators[source]);
+			if (segment)
+				ses_hd_set_cont(&hdr, 64, 9);
+			pkt.payload = payload[source] + segment * 64;
+			pkt.payload_len = segment ? 9 : 64;
+			suet_ses_receive(rx, NULL, &pkt, &result);
+			assert(result.accepted && !result.pkt_retained);
+			assert(result.completion == entries[source]);
+			assert(entries[source]->initiator_id == initiators[source]);
+			/* Inspect final placement without writing an application CQ. */
+			if (segment)
+				suet_ses_rx_commit(rx, &result);
+		}
+	}
+	for (source = 0; source < 2; source++) {
+		assert(!memcmp(output[source], payload[source], sizeof(output[source])));
+		assert(entries[source]->pkts_received == 2);
+		suet_ses_rx_entry_free(entries[source]);
+	}
+	suet_ses_rx_close(rx);
+	suet_ses_cleanup(&domain);
+}
+
 int main(void)
 {
 	const unsigned int orders[][3] = {
@@ -508,6 +571,8 @@ int main(void)
 	ofi_mem_init();
 	check_ses_domain_lifecycle();
 	check_rx_payload_view();
+	check_rx_source_identity(UET_SEND);
+	check_rx_source_identity(UET_TAGGED_SEND);
 	for (i = 0; i < sizeof(orders) / sizeof(orders[0]); i++) {
 		check_rx_fragment_order(UET_SEND, orders[i]);
 		check_rx_fragment_order(UET_TAGGED_SEND, orders[i]);

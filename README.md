@@ -159,7 +159,7 @@ dependencies in the SUET provider.
 
 Many of the UET specification features are not yet supported, including but not limited to:
 - RUD PDC, SR-based reliability and endpoint congestion control
-- JobID and PIDonFEP validation
+- JobID validation and complete PIDonFEP isolation
 - TSS layer
 
 ### Test coverage:

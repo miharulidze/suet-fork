@@ -196,10 +196,16 @@ struct suet_domain {
 	struct suet_domain_perfconters counters;
 };
 
+struct suet_av_entry {
+	struct dlist_entry entry;
+	int peer_idx; /* domain-wide physical datagram peer */
+	struct suet_av_addr addr; /* complete logical destination, owned by AV */
+};
+
 struct suet_av {
 	struct util_av util_av;
-	struct indexer usr_av_addr_to_peer_idx;
-	struct index_map peer_idx_to_usr_av_addr;
+	struct indexer entries;
+	struct dlist_entry entry_list;
 };
 
 /*
@@ -250,6 +256,8 @@ suet_av_info_wrap_raw_dgram_addrs(struct fi_info *info,
 }
 
 int suet_av_peer_idx_from_usr_av_addr(struct suet_av *av, fi_addr_t addr);
+int suet_av_resolve(struct suet_av *av, fi_addr_t addr, int *peer_idx,
+		    struct suet_av_addr *dest);
 
 struct suet_cq;
 typedef int (*suet_cq_write_fn)(struct suet_cq *cq,
@@ -265,6 +273,7 @@ struct suet_ep {
 
 	uint16_t resource_index; /* assigned RI for this EP (12-bit) */
 	uint16_t pid_on_fep; /* PIDonFEP from domain */
+	uint32_t initiator_id; /* source identity within this datagram FEP */
 
 	size_t rx_size;
 	size_t tx_size;

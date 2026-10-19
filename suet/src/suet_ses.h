@@ -61,6 +61,7 @@ struct suet_ses_tx_entry {
 	struct fi_cq_tagged_entry cq_entry;
 
 	struct suet_ep *ep;
+	struct suet_av_addr dest_addr; /* snapshot, survives public AV removal */
 	void *pds_ctx; /* opaque PDS transmission */
 	size_t hdr_len; /* semantic headers only */
 
@@ -87,6 +88,7 @@ struct suet_ses_rx_entry {
 	struct fi_cq_tagged_entry cq_entry;
 	struct suet_ep *ep;
 	int peer_idx;
+	uint32_t initiator_id; /* directed source filter, then actual source */
 };
 
 struct suet_ses_unexp_msg {
@@ -124,6 +126,7 @@ struct suet_ses_rx_ctx {
 
 struct suet_ses_msg_match_attr {
 	int peer_idx;
+	uint32_t initiator_id;
 	uint64_t tag;
 	uint64_t ignore;
 };
@@ -136,7 +139,8 @@ suet_ses_tx_entry_init_common(struct suet_ep *ep, fi_addr_t addr, uint32_t op,
 			      const struct iovec *iov, void **desc,
 			      size_t iov_count, uint64_t tag, uint64_t data,
 			      uint32_t flags, void *context);
-int suet_ses_peek_recv(struct suet_ep *suet_ep, int peer_idx, uint64_t tag,
+int suet_ses_peek_recv(struct suet_ep *suet_ep, int peer_idx,
+		       uint32_t initiator_id, uint64_t tag,
 		       uint64_t ignore, void *context, uint64_t flags,
 		       struct dlist_entry *unexp_list);
 int suet_ses_discard_recv(struct suet_ep *suet_ep, void *context,
@@ -149,7 +153,8 @@ struct suet_ses_rx_entry *suet_ses_rx_entry_init(struct suet_ep *ep,
 						 const struct iovec *iov,
 						 size_t iov_count, uint64_t tag,
 						 uint64_t ignore, void *context,
-						 int peer_idx, uint32_t op,
+						 int peer_idx, uint32_t initiator_id,
+						 uint32_t op,
 						 uint32_t flags);
 void suet_ses_rx_entry_free(struct suet_ses_rx_entry *rx_entry);
 void suet_ses_complete_unexp_msg(struct suet_ep *ep,

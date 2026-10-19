@@ -36,24 +36,24 @@
 #include "suet.h"
 #include <inttypes.h>
 
-static int suet_av_set_usr_av_addr(struct suet_av *av, int peer_idx)
+static int suet_av_set_usr_av_addr(struct suet_av *av, int peer_idx,
+				 const struct suet_av_addr *addr)
 {
+	struct suet_av_entry *entry;
 	int idx;
 
-	idx = ofi_idx_insert(&(av->usr_av_addr_to_peer_idx),
-			     (void *) (uintptr_t) peer_idx);
-	if (idx < 0)
+	entry = calloc(1, sizeof(*entry));
+	if (!entry)
 		return -FI_ENOMEM;
-
-	if (ofi_idm_set(&(av->peer_idx_to_usr_av_addr), (int) peer_idx,
-			(void *) (uintptr_t) idx) < 0)
-		goto nomem;
-
+	entry->peer_idx = peer_idx;
+	entry->addr = *addr;
+	idx = ofi_idx_insert(&av->entries, entry);
+	if (idx < 0) {
+		free(entry);
+		return idx;
+	}
+	dlist_insert_tail(&entry->entry, &av->entry_list);
 	return idx;
-
-nomem:
-	ofi_idx_remove_ordered(&(av->usr_av_addr_to_peer_idx), idx);
-	return -FI_ENOMEM;
 }
 
 static int suet_av_insert(struct fid_av *av_fid, const void *raw_addr,
@@ -85,20 +85,31 @@ static int suet_av_insert(struct fid_av *av_fid, const void *raw_addr,
 	for (; i < count; i++, raw_addr = (uint8_t *) raw_addr +
 					  sizeof(struct suet_av_addr)) {
 		addr = (const struct suet_av_addr *) raw_addr;
+		if (addr->version != SUET_ADDR_VERSION ||
+		    !addr->raw_dgram_addrlen ||
+		    addr->raw_dgram_addrlen > SUET_DGRAM_AV_NAME_LENGTH ||
+		    addr->pid_on_fep > SUET_PID_ON_FEP_MASK ||
+		    addr->start_ri > SUET_RI_MASK ||
+		    addr->num_ri > SUET_RI_MASK + 1U - addr->start_ri ||
+		    (!addr->num_ri && (addr->pid_on_fep || addr->start_ri ||
+				      addr->initiator_id))) {
+			ret = -FI_EINVAL;
+			break;
+		}
 		ret = suet_dgram_av_insert(domain, addr->raw_dgram_addr,
 					   &peer_idx, flags,
 					   sync_err ? &sync_err[i] : context);
 		if (ret)
 			break;
 
-		util_addr = (int) (intptr_t) ofi_idm_lookup(
-			&av->peer_idx_to_usr_av_addr, (int) peer_idx);
-		if (!util_addr) {
-			util_addr = suet_av_set_usr_av_addr(av, peer_idx);
-			if (util_addr < 0) {
-				ret = util_addr;
-				break;
-			}
+		/* num_ri=0 is the legacy node/service bootstrap address returned
+		 * by fi_getinfo, before endpoint names are exchanged (RI 0).
+		 * FI_AV_TABLE entries identify logical endpoints. Only the lower
+		 * datagram AV deduplicates their shared physical destination. */
+		util_addr = suet_av_set_usr_av_addr(av, peer_idx, addr);
+		if (util_addr < 0) {
+			ret = util_addr;
+			break;
 		}
 		if (fi_addr)
 			fi_addr[i] = (util_addr - 1);
@@ -147,23 +158,23 @@ static int suet_av_remove(struct fid_av *av_fid, fi_addr_t *fi_addr,
 {
 	int ret = 0;
 	size_t i;
-	int peer_idx;
+	struct suet_av_entry *entry;
 	struct suet_av *av;
 
 	av = container_of(av_fid, struct suet_av, util_av.av_fid);
 	ofi_genlock_lock(&av->util_av.lock);
 	for (i = 0; i < count; i++) {
-		peer_idx = (int) (intptr_t) ofi_idx_lookup(
-			&av->usr_av_addr_to_peer_idx,
-			SUET_IDX_OFFSET((int) fi_addr[i]));
-		if (!peer_idx) {
+		entry = fi_addr[i] < OFI_IDX_MAX_INDEX ?
+			ofi_idx_lookup(&av->entries, SUET_IDX_OFFSET((int) fi_addr[i])) :
+			NULL;
+		if (!entry) {
 			ret = -FI_EINVAL;
 			continue;
 		}
 
-		ofi_idx_remove_ordered(&(av->usr_av_addr_to_peer_idx),
-				       (int) SUET_IDX_OFFSET(fi_addr[i]));
-		ofi_idm_clear(&(av->peer_idx_to_usr_av_addr), (int) peer_idx);
+		ofi_idx_remove_ordered(&av->entries, SUET_IDX_OFFSET((int) fi_addr[i]));
+		dlist_remove(&entry->entry);
+		free(entry);
 	}
 
 	if (ret)
@@ -190,7 +201,24 @@ static const char *suet_av_straddr(struct fid_av *av, const void *raw_addr,
 static int suet_av_lookup(struct fid_av *av, fi_addr_t fi_addr, void *raw_addr,
 			  size_t *addrlen)
 {
-	return -FI_ENOSYS;
+	struct suet_av *suet_av = container_of(av, struct suet_av, util_av.av_fid);
+	struct suet_av_addr addr;
+	int ret;
+
+	if (!addrlen)
+		return -FI_EINVAL;
+	ret = suet_av_resolve(suet_av, fi_addr, NULL, &addr);
+	if (ret)
+		return ret;
+	if (*addrlen < sizeof(addr)) {
+		*addrlen = sizeof(addr);
+		return -FI_ETOOSMALL;
+	}
+	if (!raw_addr)
+		return -FI_EINVAL;
+	memcpy(raw_addr, &addr, sizeof(addr));
+	*addrlen = sizeof(addr);
+	return 0;
 }
 
 static struct fi_ops_av suet_av_ops = {
@@ -203,6 +231,18 @@ static struct fi_ops_av suet_av_ops = {
 	.straddr = suet_av_straddr,
 };
 
+static void suet_av_cleanup(struct suet_av *av)
+{
+	struct suet_av_entry *entry;
+
+	while (!dlist_empty(&av->entry_list)) {
+		entry = container_of(av->entry_list.next, struct suet_av_entry, entry);
+		dlist_remove(&entry->entry);
+		free(entry);
+	}
+	ofi_idx_reset(&av->entries);
+}
+
 static int suet_av_close(struct fid *fid)
 {
 	struct suet_av *av;
@@ -214,8 +254,7 @@ static int suet_av_close(struct fid *fid)
 	if (ret)
 		return ret;
 
-	ofi_idx_reset(&(av->usr_av_addr_to_peer_idx));
-	ofi_idm_reset(&(av->peer_idx_to_usr_av_addr), NULL);
+	suet_av_cleanup(av);
 
 	free(av);
 	return 0;
@@ -251,10 +290,7 @@ int suet_av_create(struct fid_domain *domain_fid, struct fi_av_attr *attr,
 	av = calloc(1, sizeof(*av));
 	if (!av)
 		return -FI_ENOMEM;
-	memset(&(av->usr_av_addr_to_peer_idx), 0,
-	       sizeof(av->usr_av_addr_to_peer_idx));
-	memset(&(av->peer_idx_to_usr_av_addr), 0,
-	       sizeof(av->peer_idx_to_usr_av_addr));
+	dlist_init(&av->entry_list);
 
 	util_attr.addrlen = sizeof(fi_addr_t);
 	util_attr.context_len = 0;
@@ -278,13 +314,30 @@ err1:
 	return ret;
 }
 
-int suet_av_peer_idx_from_usr_av_addr(struct suet_av *av, fi_addr_t addr)
+int suet_av_resolve(struct suet_av *av, fi_addr_t addr, int *peer_idx,
+		    struct suet_av_addr *dest)
 {
-	int peer_idx;
+	struct suet_av_entry *entry;
+	int ret = -FI_EINVAL;
 
 	ofi_genlock_lock(&av->util_av.lock);
-	peer_idx = (int) (intptr_t) ofi_idx_lookup(&av->usr_av_addr_to_peer_idx,
-						   SUET_IDX_OFFSET((int) addr));
+	entry = addr < OFI_IDX_MAX_INDEX ?
+		ofi_idx_lookup(&av->entries, SUET_IDX_OFFSET((int) addr)) : NULL;
+	if (entry) {
+		if (peer_idx)
+			*peer_idx = entry->peer_idx;
+		if (dest)
+			*dest = entry->addr;
+		ret = 0;
+	}
 	ofi_genlock_unlock(&av->util_av.lock);
+	return ret;
+}
+
+int suet_av_peer_idx_from_usr_av_addr(struct suet_av *av, fi_addr_t addr)
+{
+	int peer_idx = SUET_ADDR_INVALID;
+
+	suet_av_resolve(av, addr, &peer_idx, NULL);
 	return peer_idx;
 }

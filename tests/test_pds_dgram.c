@@ -394,7 +394,7 @@ static void check_ses_retention(bool som_last, bool post_early)
 			unexp = container_of(ep.unexp_list.next,
 					     struct suet_ses_unexp_msg, entry);
 			entry = suet_ses_rx_entry_init(&ep, &iov, 1, 0, 0,
-				NULL, SUET_ADDR_INVALID, ofi_op_msg, 0);
+				NULL, SUET_ADDR_INVALID, 0, ofi_op_msg, 0);
 			assert(entry);
 			/* Exercise the real matching/retained-payload transfer.
 			 * A failed local ACK send avoids pending mock completions. */
@@ -889,7 +889,7 @@ static void check_gap_ack(bool wire_ar, bool fail_final, uint32_t base)
 	assert(tpdc.ses_ctx);
 	assert(ofi_idm_set(&domain.pds.local_pdcid_to_tpdc_idm, 8, &tpdc) >= 0);
 	entry = suet_ses_rx_entry_init(&ep, &iov, 1, 0, 0, NULL,
-		SUET_ADDR_INVALID, ofi_op_msg, SUET_NO_RX_COMP);
+		SUET_ADDR_INVALID, 0, ofi_op_msg, SUET_NO_RX_COMP);
 	assert(entry);
 	dlist_insert_tail(&entry->entry, &ep.rx_list);
 	for (i = 0; i < (fail_final ? 4 : 3); i++) {
