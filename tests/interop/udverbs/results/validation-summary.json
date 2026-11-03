@@ -1,0 +1,16 @@
+{
+  "selected_runs": 120,
+  "selected_processes": 240,
+  "matched_correctness_runs": 16,
+  "suet_basic_fabtests": 35,
+  "reference_retry_logs": {
+    "tests/interop/udverbs/results/final-comparison/../performance-equal-queues/ref-pingpong-262144-r2-server.log": 31,
+    "tests/interop/udverbs/results/final-comparison/../performance-equal-queues/ref-pingpong-262144-r2-client.log": 32
+  },
+  "reference_close_errors": 0,
+  "native_ibverbs_symbols": [],
+  "reference_retry_warnings": 63,
+  "long_control_runs": 12,
+  "tail_warmup_correction_runs": 12,
+  "all_reference_close_error_counters_zero": true
+}

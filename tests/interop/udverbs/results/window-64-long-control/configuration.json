@@ -1,0 +1,23 @@
+{
+  "root": "/root/suet-interop-20261103/udcompare",
+  "fabric": "/root/suet-interop-20261103/fix6/work/build",
+  "output": "tests/interop/udverbs/results/window-64-long-control",
+  "stage": "performance",
+  "providers": "suet,ref",
+  "tests": "bw",
+  "sizes": "1048576",
+  "samples": 3,
+  "window": 64,
+  "control_port": 31400,
+  "bandwidth_bytes": 1073741824,
+  "timeout": 120,
+  "reverse_hosts": false,
+  "hosts": [
+    "roce00.cscs.ch",
+    "roce01.cscs.ch"
+  ],
+  "ips": [
+    "10.203.44.1",
+    "10.203.44.2"
+  ]
+}

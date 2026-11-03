@@ -1,0 +1,76 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+UD_BACKEND provider=verbs domain=mlx5_0-dgram type=FI_EP_DGRAM prefix=40 source=10.203.44.1 full_reference_frames=1
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947615 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947616 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947617 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947618 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947619 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947620 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947621 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947622 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947623 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947624 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947625 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947626 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947627 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947628 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947629 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947630 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947631 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947632 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947633 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947634 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947635 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947636 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947637 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947638 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947639 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947640 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947641 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947642 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947643 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947644 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947645 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947646 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947647 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947648 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947649 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947650 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947651 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947652 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947653 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947654 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947655 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947656 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947657 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947658 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947659 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947660 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947661 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947662 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947663 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947664 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947665 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947666 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947667 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947668 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947669 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947670 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947671 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947672 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947673 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947674 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947675 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947676 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 437947677 on PDC 1 (ACK retransmit)[m
+bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+64k     128     8m          0.06s    146.89     446.17       0.00
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 9282[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+UD_BACKEND tx=702 rx=9282 tx_bytes=46440 rx_bytes=10411236
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m

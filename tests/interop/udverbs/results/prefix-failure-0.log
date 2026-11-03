@@ -1,0 +1,14 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+UD_BACKEND provider=verbs domain=mlx5_0-dgram type=FI_EP_DGRAM prefix=40 source=10.203.44.1 full_reference_frames=1
+[33m[/root/suet-interop-20261103/ref/util/uet_pkt_chk.c:138] WARN: [PDS] dest MAC mismatch[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4239] WARN: [PDS] invalid Rx packet (len=154)[m
+[33m[/root/suet-interop-20261103/ref/util/uet_pkt_chk.c:138] WARN: [PDS] dest MAC mismatch[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4239] WARN: [PDS] invalid Rx packet (len=154)[m
+[33m[/root/suet-interop-20261103/ref/util/uet_pkt_chk.c:138] WARN: [PDS] dest MAC mismatch[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4239] WARN: [PDS] invalid Rx packet (len=154)[m
+[33m[/root/suet-interop-20261103/ref/util/uet_pkt_chk.c:138] WARN: [PDS] dest MAC mismatch[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4239] WARN: [PDS] invalid Rx packet (len=154)[m
+[33m[/root/suet-interop-20261103/ref/util/uet_pkt_chk.c:138] WARN: [PDS] dest MAC mismatch[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4239] WARN: [PDS] invalid Rx packet (len=154)[m
+[33m[/root/suet-interop-20261103/ref/util/uet_pkt_chk.c:138] WARN: [PDS] dest MAC mismatch[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4239] WARN: [PDS] invalid Rx packet (len=154)[m

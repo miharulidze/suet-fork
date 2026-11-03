@@ -1,0 +1,30 @@
+[
+  {
+    "test": "bw",
+    "bytes": 262144,
+    "provider": "suet",
+    "mb_per_second": 1474.18,
+    "usec_per_transfer": 177.82
+  },
+  {
+    "test": "bw",
+    "bytes": 262144,
+    "provider": "ref",
+    "mb_per_second": 261.95,
+    "usec_per_transfer": 1000.75
+  },
+  {
+    "test": "bw",
+    "bytes": 1048576,
+    "provider": "suet",
+    "mb_per_second": 1222.45,
+    "usec_per_transfer": 857.77
+  },
+  {
+    "test": "bw",
+    "bytes": 1048576,
+    "provider": "ref",
+    "mb_per_second": 261.59,
+    "usec_per_transfer": 4008.51
+  }
+]

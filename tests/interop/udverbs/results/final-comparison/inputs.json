@@ -1,0 +1,7 @@
+{
+  "base": "tests/interop/udverbs/results/performance-equal-queues",
+  "replacements": [
+    "tests/interop/udverbs/results/tail-warmup-correction"
+  ],
+  "selection": "Replace complete test/provider/size groups, retaining all three samples"
+}

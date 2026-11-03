@@ -315,3 +315,11 @@ wire type, AR on message tails, and AR on Close Commands. The two
 compiler/library identities and source hashes matched against the compiled
 provider tree on each host. Full captures remain on the hosts; representative
 small captures are retained under `results/fixtures/`.
+
+
+## One-to-one UD-verbs comparison
+
+The [DGRAM-backed reference-provider benchmark adapter](udverbs/README.md)
+runs the same stock fabtests latency/bandwidth binaries on SUET and the
+reference stack, using libfabric `FI_EP_DGRAM` on both. It includes a matched
+1,024-byte-MTU comparison, source/build provenance, raw samples, CSV and plots.

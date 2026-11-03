@@ -1,0 +1,1 @@
+Use ../final-comparison for the reported matrix. All bandwidth points whose warmup was below two application windows were repeated in ../tail-warmup-correction and replaced as complete groups. Original logs and commands are retained here.
