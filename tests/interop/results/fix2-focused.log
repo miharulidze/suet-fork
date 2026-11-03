@@ -1,0 +1,4 @@
+PDS/datagram prefixes, completion ownership and shutdown: PASS
+	libfabric.so.1 => /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1 (0x0000721f47600000)
+	libfabric.so.1 => /root/suet-interop-20261103/base/work/build/lib/libfabric.so.1 (0x0000784a4a200000)
+8ec29d45ce9384118454a92bbc42c8cc1955233fec3a6109c493bee162c26fba  /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1

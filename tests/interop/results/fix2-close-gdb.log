@@ -1,0 +1,27 @@
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/x86_64-linux-gnu/libthread_db.so.1".
+__internal_syscall_cancel (a1=3, a2=140727306561840, a3=0, a4=0, a5=0, a6=0, nr=47) at ./nptl/cancellation.c:40
+#0  __internal_syscall_cancel (a1=3, a2=140727306561840, a3=0, a4=0, a5=0, a6=0, nr=47) at ./nptl/cancellation.c:40
+#1  __syscall_cancel (a1=3, a2=140727306561840, a3=0, a4=a4@entry=0, a5=a5@entry=0, a6=a6@entry=0, nr=47) at ./nptl/cancellation.c:75
+#2  0x0000732890f39201 in __recvmsg_syscall (fd=<optimized out>, msg=<optimized out>, flags=<optimized out>) at ../sysdeps/unix/sysv/linux/recvmsg.c:27
+#3  __libc_recvmsg (fd=<optimized out>, msg=<optimized out>, flags=<optimized out>) at ../sysdeps/unix/sysv/linux/recvmsg.c:41
+#4  0x00007328912840c4 in udpx_ep_progress () from /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1
+#5  0x000073289125190d in ofi_cq_progress () from /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1
+#6  0x0000732891250f22 in ofi_cq_readfrom () from /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1
+#7  0x00007328913404e6 in suet_dgram_progress () from /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1
+#8  0x000073289133eb12 in suet_domain_progress () from /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1
+#9  0x000073289134891d in suet_pds_drain () from /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1
+#10 0x000073289133e78e in suet_domain_close () from /root/suet-interop-20261103/fix2/work/build/lib/libfabric.so.1
+#11 0x00006179ef55ab44 in fi_close (fid=<optimized out>) at /root/suet-interop-20261103/ref/libfabric_headers/include/rdma/fabric.h:635
+#12 main (argc=<optimized out>, argv=0x7ffda11e3038) at /root/suet-interop-20261103/fix2/source/tests/interop/pingpong.c:304
+#2  0x0000732890f39201 in __recvmsg_syscall (fd=<optimized out>, msg=<optimized out>, flags=<optimized out>) at ../sysdeps/unix/sysv/linux/recvmsg.c:27
+
+warning: 40	./nptl/cancellation.c: No such file or directory
+warning: 27	../sysdeps/unix/sysv/linux/recvmsg.c: No such file or directory
+fd = <optimized out>
+msg = <optimized out>
+flags = <optimized out>
+[Inferior 1 (process 409940) detached]
+Attempt to extract a component of a value that is not a structure pointer.
+Attempt to extract a component of a value that is not a structure pointer.
+Attempt to extract a component of a value that is not a structure pointer.

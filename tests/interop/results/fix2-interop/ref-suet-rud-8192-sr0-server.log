@@ -1,0 +1,16 @@
+ENDPOINT provider=ref udp=10.203.44.1:40058 pid=0 ri=15 initiator=16 mode=rud
+CONTROL_LISTENING
+UET API: /root/suet-interop-20261103/ref/uet_api.c:3936: RX: Invalid Payload Len
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649889 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649890 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649891 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649892 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649893 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649894 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649889 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649890 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649891 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649892 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649893 on PDC 1 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2451649894 on PDC 1 (ACK retransmit)[m
+TIMEOUT receive=1 first_done=0 second_done=-1

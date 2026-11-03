@@ -672,6 +672,21 @@ static void suet_pds_free_ipdc(struct suet_domain *domain,
 	ofi_buf_free(ipdc);
 }
 
+static bool suet_pds_ipdc_close_acked(const struct suet_ipdc *ipdc,
+				    const struct pds_ack_hdr *ack)
+{
+	uint32_t cack = pds_ack_get_cack_psn(ack);
+
+	if (ipdc->state != SUET_PDC_CLOSE_ACK_WAIT ||
+	    (ntohs(ack->prologue.raw) & PDS_ACK_FLAG_P))
+		return false;
+	/* Close consumes its own PSN. A peer may keep CACK at the last data
+	 * PSN and acknowledge the control packet explicitly with ACK_PSN. */
+	return pds_psn_after_eq(cack, ipdc->close_psn) ||
+	       (cack == ipdc->close_psn - 1 &&
+		pds_ack_get_ack_psn(ack) == ipdc->close_psn);
+}
+
 static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 				      struct suet_pds_pkt_entry *ack_entry)
 {
@@ -792,11 +807,10 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 		    ntohs(ack->pds.prologue.raw) & PDS_ACK_FLAG_M);
 
 	/* Spec 3.5.8.3: Close ACK frees the ipdc and ends the lifecycle.
-	 * Identified by being in CLOSE_ACK_WAIT with a cack covering close_psn.
+	 * Recognize both cumulative and explicit acknowledgement of the CP.
 	 * After validating the ACK, end the lifecycle without feeding the
 	 * closing tx_list back into progress. */
-	if (ipdc->state == SUET_PDC_CLOSE_ACK_WAIT &&
-	    pds_psn_after_eq(cack_psn, ipdc->close_psn)) {
+	if (suet_pds_ipdc_close_acked(ipdc, &ack->pds)) {
 		FI_DBG(&suet_prov, FI_LOG_EP_CTRL,
 		       "Close ACK received for ipdc pdcid=%u close_psn=%u\n",
 		       ipdc->local_pdcid, ipdc->close_psn);

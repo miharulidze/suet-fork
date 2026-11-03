@@ -159,3 +159,19 @@ cross-provider roles validate all ten 16-byte rounds in ROD and RUD; SUET
 then hangs during close. Those four runs correctly remain failed in
 `fix1-preposted/summary.json`. Close ACK handling and common payload-MTU
 configuration are separate work, not claimed fixed here.
+
+### Fix 2: explicit Close Command ACK
+
+The reference ACKs the Close PSN through `ACK_PSN`, with `CACK_PSN` still
+covering the last data packet. SUET waited for CACK to include Close and
+retransmitted until the reference reported the already-freed PDC unknown.
+The close predicate now accepts that explicit acknowledgement, rejects
+probe ACK tokens and handles PSN wrap. A captured-wire regression passes.
+
+All 35 UDP tests and three supported UD-verbs smoke tests pass against the
+loader-verified fix2 library. Medians are 6,051.90 MB/s and 5,967.63 MB/s
+(-1.69%/-0.52% from baseline). The GDB state in `fix2-close-state2.log`
+confirms `pdc_closes_ok=1` and an empty initiator list. A target PDC remains,
+so the cross-provider runs still time out during finalization; target-driven
+close is a separate fix. Initial copied-binary validation is explicitly
+invalidated; use `fix2-verified-validation/`.

@@ -1424,8 +1424,40 @@ static void check_gap_ack(bool wire_ar, bool fail_final, uint32_t base)
 	send_status = 0;
 }
 
+static void check_explicit_close_ack(void)
+{
+	/* Reference UDP capture: CACK is last data, offset +1 ACKs Close. */
+	const unsigned char wire[] = {
+		0x38, 0x00, 0x00, 0x01, 0xa3, 0x58, 0x37, 0x73,
+		0x00, 0x02, 0x00, 0x02,
+	};
+	struct pds_ack_hdr ack;
+	struct suet_ipdc ipdc = {.state = SUET_PDC_CLOSE_ACK_WAIT,
+		.close_psn = 0xa3583774};
+
+	memcpy(&ack, wire, sizeof(ack));
+	assert(suet_pds_ipdc_close_acked(&ipdc, &ack));
+	pds_ack_set_ack_psn(&ack, ipdc.close_psn - 1);
+	assert(!suet_pds_ipdc_close_acked(&ipdc, &ack));
+	pds_ack_set_ack_psn(&ack, ipdc.close_psn);
+	ack.prologue.raw = htons(ntohs(ack.prologue.raw) | PDS_ACK_FLAG_P);
+	assert(!suet_pds_ipdc_close_acked(&ipdc, &ack));
+	memcpy(&ack, wire, sizeof(ack));
+	ipdc.state = SUET_PDC_ESTABLISHED;
+	assert(!suet_pds_ipdc_close_acked(&ipdc, &ack));
+	ipdc.state = SUET_PDC_CLOSE_ACK_WAIT;
+	pds_ack_set_cack_psn(&ack, ipdc.close_psn);
+	pds_ack_set_ack_psn(&ack, ipdc.close_psn);
+	assert(suet_pds_ipdc_close_acked(&ipdc, &ack));
+	ipdc.close_psn = 0;
+	pds_ack_set_cack_psn(&ack, UINT32_MAX);
+	pds_ack_set_ack_psn(&ack, 0);
+	assert(suet_pds_ipdc_close_acked(&ipdc, &ack));
+}
+
 int main(void)
 {
+	check_explicit_close_ack();
 	ofi_mem_init();
 	check_datagram(0, false);
 	check_datagram(8, false);
