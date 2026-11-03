@@ -22,9 +22,10 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
         for side, (host, ip) in enumerate(zip(a.hosts, a.ips)):
             env = ['env', 'LD_LIBRARY_PATH=' + a.fabric + '/lib',
                    'FI_PROVIDER_PATH=' + a.root + '/build/provider',
-                   'FI_VERBS_IFACE=ens785f0np0', 'FI_VERBS_TX_SIZE=128', 'FI_VERBS_RX_SIZE=128',
+                   'FI_VERBS_IFACE=ens785f0np0', f'FI_VERBS_TX_SIZE={a.queue_depth}', f'FI_VERBS_RX_SIZE={a.queue_depth}',
                    'FI_LOG_LEVEL=warn',
-                   'FI_OFI_SUET_PAYLOAD_MTU=1024', 'FI_OFI_SUET_SELECTIVE_REPEAT=0',
+                   f'FI_OFI_SUET_PAYLOAD_MTU={a.suet_payload_mtu}', 'FI_OFI_SUET_SELECTIVE_REPEAT=0',
+                   f'UET_BENCH_PAYLOAD_MTU={a.payload_mtu}',
                    'UET_PDS=pds', 'UET_UD_SOURCE=' + ip, 'UET_BENCH_MODE=rod']
             args = ['timeout', '-k', '3s', str(a.timeout) + 's', 'taskset', '-c', '2',
                     a.fabric + '/bin/fi_rdm_' + test, '-p',
@@ -55,7 +56,7 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
     rates = []
     for line in text.splitlines():
         fields = line.split()
-        if fields and re.fullmatch(r'\d+[kmg]?', fields[0]) and len(fields) >= 7:
+        if fields and re.fullmatch(r'\d+(?:\.\d+)?[kmg]?', fields[0]) and len(fields) >= 7:
             try:
                 rates.append(dict(mb_per_second=float(fields[4]), usec_per_transfer=float(fields[5])))
             except ValueError:
@@ -73,22 +74,26 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--root', default='/root/suet-interop-20261103/udcompare')
+    p.add_argument('--root', default='/root/suet-interop-20261103/udcompare4k')
+    p.add_argument('--profile', choices=('native4k', 'matched1k'), default='native4k')
     p.add_argument('--fabric', default='/root/suet-interop-20261103/fix6/work/build')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--stage', choices=('correctness', 'performance'), default='correctness')
     p.add_argument('--providers', default='suet,ref')
     p.add_argument('--tests', default='pingpong,bw')
-    p.add_argument('--sizes', default='8,64,256,1024,1025,4096,16384,65536,262144,1048576')
+    p.add_argument('--sizes', default='8,64,256,1024,4000,4096,16384,65536,262144,1048576')
     p.add_argument('--samples', type=int, default=3)
     p.add_argument('--window', type=int, default=64)
     p.add_argument('--control-port', type=int, default=30600)
     p.add_argument('--bandwidth-bytes', type=int, default=268435456)
-    p.add_argument('--timeout', type=int, default=120)
+    p.add_argument('--timeout', type=int, default=300)
     p.add_argument('--iterations', type=int, help='Override the automatic iteration count')
     p.add_argument('--warmup', type=int, help='Override automatic warmups for controlled experiments')
     p.add_argument('--reverse-hosts', action='store_true')
     a = p.parse_args()
+    a.payload_mtu = 4000 if a.profile == "native4k" else 1024
+    a.suet_payload_mtu = 0 if a.profile == "native4k" else 1024
+    a.queue_depth = 384 if a.profile == "native4k" else 128
     a.hosts = ['roce00.cscs.ch', 'roce01.cscs.ch']
     a.ips = ['10.203.44.1', '10.203.44.2']
     if a.reverse_hosts:
@@ -113,8 +118,10 @@ def main():
                         iterations = max(128, min(10000, 8388608 // size))
                         warmup = max(16, min(1000, iterations // 10))
                     else:
-                        iterations = max(256, min(262144, a.bandwidth_bytes // size))
-                        warmup = max(2 * a.window, min(10000, iterations // 10))
+                        iterations = max(10000 if a.profile == "native4k" else 256,
+                                         min(262144, a.bandwidth_bytes // size))
+                        warmup = (10000 if a.profile == "native4k" else
+                                  max(2 * a.window, min(10000, iterations // 10)))
                     if a.iterations is not None:
                         iterations = a.iterations
                     if a.warmup is not None:

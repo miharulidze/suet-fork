@@ -14,8 +14,14 @@ p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('results', type=Path)
 p.add_argument('--replace', type=Path, action='append', default=[], help='Replace complete size/provider/test groups with a corrected dataset')
 p.add_argument('--output', type=Path, help='Write a combined report in a fresh directory')
+p.add_argument('--profile', choices=('native4k','matched1k'), help='Override profile inference for figure labels')
 a = p.parse_args()
 source = a.results
+config_file = source / "configuration.json"
+config = json.loads(config_file.read_text()) if config_file.exists() else {}
+profile = a.profile or config.get("profile", "matched1k")
+payload = 4000 if profile == "native4k" else 1024
+queues = 384 if profile == "native4k" else 128
 output = a.output or source
 if a.output:
     output.mkdir(parents=True, exist_ok=False)
@@ -78,16 +84,25 @@ for axis, test, metric, label in zip(axes, ('pingpong', 'bw'),
         axis.errorbar(sizes, centers, yerr=([x[0]-x[1] for x in v], [x[2]-x[0] for x in v]),
                       color=color, marker='o', markersize=4, capsize=3, linewidth=1.6, label=name)
     axis.set_xscale('log', base=2)
-    axis.set_xticks([8, 64, 1024, 16384, 262144, 1048576], ['8 B', '64 B', '1 KiB', '16 KiB', '256 KiB', '1 MiB'])
+    axis.set_xticks([8, 64, 1024, 4096, 65536, 1048576] if profile == 'native4k' else [8, 64, 1024, 16384, 262144, 1048576],
+                   ['8 B', '64 B', '1 KiB', '4 KiB', '64 KiB', '1 MiB'] if profile == 'native4k' else ['8 B', '64 B', '1 KiB', '16 KiB', '256 KiB', '1 MiB'])
     axis.set_xlabel('Application message size')
     axis.set_ylabel(label)
     axis.grid(True, alpha=.22)
-    axis.axvline(1024, color='#6b7280', linestyle=':', linewidth=1)
+    axis.axvline(payload, color='#6b7280', linestyle=':', linewidth=1)
     if test == 'pingpong': axis.set_yscale('log')
     else: axis.set_ylim(bottom=0)
 axes[0].legend(fontsize=8, loc='upper left')
+if profile == 'native4k' and 4000 in sizes and 4096 in sizes:
+    for size, text, offset in ((4000, '4,000 B: 1 packet', (-75, 35)),
+                               (4096, '4,096 B: 2 packets', (25, -28))):
+        rate = values('bw', 'suet', size, 'mb_per_second')[0]
+        axes[1].annotate(text, xy=(size, rate), xytext=offset,
+                         textcoords='offset points', fontsize=8,
+                         arrowprops=dict(arrowstyle='->', color='#4b5563'),
+                         bbox=dict(boxstyle='round,pad=.25', fc='white', ec='#d1d5db'))
 fig.suptitle('SUET vs UET reference over libfabric FI_EP_DGRAM (verbs)\n'
-             'ROD · 1,024-byte payload MTU · window 64 · queues 128 · CPU 2\n'
+             f'ROD · {payload:,}-byte application payload · window 64 · queues {queues} · CPU 2\n'
              'Median of 3 samples; bars show the observed min–max', fontsize=11)
 fig.savefig(a.results / 'comparison.png', dpi=180)
 fig.savefig(a.results / 'comparison.svg')

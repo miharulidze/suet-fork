@@ -1,0 +1,23 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 7K of event 'cycles:u'
+# Event count (approx.): 114671418747
+#
+# Overhead  Symbol                                 Shared Object         IPC   [IPC Coverage]
+# ........  .....................................  ....................  ....................
+#
+    83.87%  [.] crc32c_update                      libuet_ref-fi.so      -      -
+     2.60%  [.] __memmove_evex_unaligned_erms      libc.so.6             -      -
+     1.54%  [.] pthread_mutex_unlock@@GLIBC_2.2.5  libc.so.6             -      -
+     1.31%  [.] pthread_mutex_lock@@GLIBC_2.2.5    libc.so.6             -      -
+     1.05%  [.] pthread_spin_lock@@GLIBC_2.34      libc.so.6             -      -
+     0.66%  [.] bm_shift_right                     libuet_ref-fi.so      -      -
+     0.51%  [.] uet_ep_progress_locked             libuet_ref-fi.so      -      -
+
+
+#
+# (Cannot load tips.txt file, please install perf!)
+#

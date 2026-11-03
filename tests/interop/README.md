@@ -321,5 +321,5 @@ small captures are retained under `results/fixtures/`.
 
 The [DGRAM-backed reference-provider benchmark adapter](udverbs/README.md)
 runs the same stock fabtests latency/bandwidth binaries on SUET and the
-reference stack, using libfabric `FI_EP_DGRAM` on both. It includes a matched
-1,024-byte-MTU comparison, source/build provenance, raw samples, CSV and plots.
+reference stack, using libfabric `FI_EP_DGRAM` on both. It includes the native 4 KiB UD comparison, source/build provenance, raw
+samples, CSV and plots, alongside the archived 1 KiB comparison.

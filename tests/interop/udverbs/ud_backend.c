@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0-only */
-/* Test NIC: unchanged reference frames over the libfabric verbs UD provider. */
+/* Test NIC: reference IP packets over the libfabric verbs UD provider. */
 #define _GNU_SOURCE
 #include <arpa/inet.h>
 #include <inttypes.h>
@@ -9,7 +9,7 @@
 #include "uet_api_private.h"
 #include "ud_backend.h"
 
-#define DEPTH 128
+#define MAX_DEPTH 1024
 struct slot { struct fi_context ctx; unsigned char *buf; int busy; };
 static struct {
     struct fi_info *info;
@@ -21,9 +21,9 @@ static struct {
     struct fid_mr *mr;
     void *arena;
     size_t stride, prefix, tx_prefix;
-    struct slot tx[DEPTH], rx[DEPTH];
+    struct slot tx[MAX_DEPTH], rx[MAX_DEPTH];
     struct fi_cq_data_entry ready[32];
-    size_t cursor, available, next_tx;
+    size_t cursor, available, next_tx, depth;
     fi_addr_t peer;
     uint32_t peer_ip;
     uint64_t tx_pkts, rx_pkts, tx_bytes, rx_bytes;
@@ -62,18 +62,24 @@ int ud_peer(const void *raw,uint32_t ipv4)
     return 0;
 }
 
+static void mac_for_ip(uint32_t ip,uint8_t *m);
+
 static int tx(struct uet_nic *nic,void *frame,void *ip,size_t length)
 {
     (void)nic;
     if (!ud.peer_ip || ((struct iphdr *)ip)->daddr!=htonl(ud.peer_ip)) return -EINVAL;
+    /* DGRAM supplies link-layer delivery. Carry the unchanged IP packet,
+     * including entropy and CRC, and reconstruct only Ethernet on RX. */
+    if ((const unsigned char *)ip-(const unsigned char *)frame != sizeof(struct ethhdr)) return -EINVAL;
+    length-=sizeof(struct ethhdr);
     if (length>ud.info->ep_attr->max_msg_size) return -EMSGSIZE;
     tx_progress();
     struct slot *s=&ud.tx[ud.next_tx];
     if (s->busy) return -EAGAIN;
-    memcpy(s->buf+ud.tx_prefix,frame,length);
+    memcpy(s->buf+ud.tx_prefix,ip,length);
     int rc=fi_send(ud.ep,s->buf,length+ud.tx_prefix,fi_mr_desc(ud.mr),ud.peer,&s->ctx);
     if (rc) return rc;
-    s->busy=1; ud.next_tx=(ud.next_tx+1)%DEPTH;
+    s->busy=1; ud.next_tx=(ud.next_tx+1)%ud.depth;
     ud.tx_pkts++; ud.tx_bytes+=length;
     return 0;
 }
@@ -84,9 +90,13 @@ static int rx(struct uet_nic *nic,void *frame,size_t capacity,size_t *length)
     if (!rx_progress()) return 0;
     struct fi_cq_data_entry *e=&ud.ready[ud.cursor++];
     struct slot *s=e->op_context;
-    if (e->len<ud.prefix || e->len-ud.prefix>capacity) return -EMSGSIZE;
-    *length=e->len-ud.prefix;
-    memcpy(frame,s->buf+ud.prefix,*length);
+    if (e->len<ud.prefix || e->len-ud.prefix+sizeof(struct ethhdr)>capacity) return -EMSGSIZE;
+    *length=e->len-ud.prefix+sizeof(struct ethhdr);
+    struct ethhdr *eth=frame;
+    memcpy(eth->h_dest,nic->mac_addr,ETH_ALEN);
+    mac_for_ip(ud.peer_ip,eth->h_source);
+    eth->h_proto=htons(ETH_P_IP);
+    memcpy(eth+1,s->buf+ud.prefix,e->len-ud.prefix);
     require(fi_recv(ud.ep,s->buf,ud.stride,fi_mr_desc(ud.mr),FI_ADDR_UNSPEC,&s->ctx),"repost RX");
     ud.rx_pkts++; ud.rx_bytes+=*length;
     return 1;
@@ -133,13 +143,15 @@ int __wrap_uet_nic_initialize(struct uet_nic *nic)
     if (strcmp(ud.info->fabric_attr->prov_name,"verbs") || ud.info->ep_attr->type!=FI_EP_DGRAM) return -EINVAL;
     require(fi_fabric(ud.info->fabric_attr,&ud.fabric,NULL),"fabric");
     require(fi_domain(ud.fabric,ud.info,&ud.domain,NULL),"domain");
-    struct fi_cq_attr cq={.format=FI_CQ_FORMAT_CONTEXT,.size=2*DEPTH,.wait_obj=FI_WAIT_NONE};
+    ud.depth=ud.info->tx_attr->size<ud.info->rx_attr->size?ud.info->tx_attr->size:ud.info->rx_attr->size;
+    if (!ud.depth || ud.depth>MAX_DEPTH) return -EINVAL;
+    struct fi_cq_attr cq={.format=FI_CQ_FORMAT_CONTEXT,.size=ud.depth,.wait_obj=FI_WAIT_NONE};
     require(fi_cq_open(ud.domain,&cq,&ud.txcq,NULL),"TX CQ open");
     cq.format=FI_CQ_FORMAT_DATA;
     require(fi_cq_open(ud.domain,&cq,&ud.rxcq,NULL),"RX CQ open");
     struct fi_av_attr av={.type=FI_AV_TABLE,.count=4};
     require(fi_av_open(ud.domain,&av,&ud.av,NULL),"AV open");
-    ud.info->tx_attr->size=ud.info->rx_attr->size=DEPTH;
+    ud.info->tx_attr->size=ud.info->rx_attr->size=ud.depth;
     require(fi_endpoint(ud.domain,ud.info,&ud.ep,NULL),"endpoint");
     require(fi_ep_bind(ud.ep,&ud.av->fid,0),"bind AV");
     require(fi_ep_bind(ud.ep,&ud.txcq->fid,FI_SEND),"bind TX CQ");
@@ -148,11 +160,11 @@ int __wrap_uet_nic_initialize(struct uet_nic *nic)
     ud.prefix=(ud.info->rx_attr->mode&FI_MSG_PREFIX)?ud.info->ep_attr->msg_prefix_size:0;
     ud.tx_prefix=(ud.info->tx_attr->mode&FI_MSG_PREFIX)?ud.info->ep_attr->msg_prefix_size:0;
     ud.stride=(ud.info->ep_attr->max_msg_size+ud.prefix+63)&~63ULL;
-    if (posix_memalign(&ud.arena,64,2*DEPTH*ud.stride)) return -ENOMEM;
-    require(fi_mr_reg(ud.domain,ud.arena,2*DEPTH*ud.stride,FI_SEND|FI_RECV,0,0,0,&ud.mr,NULL),"MR");
-    for (size_t i=0;i<DEPTH;i++) {
+    if (posix_memalign(&ud.arena,64,2*ud.depth*ud.stride)) return -ENOMEM;
+    require(fi_mr_reg(ud.domain,ud.arena,2*ud.depth*ud.stride,FI_SEND|FI_RECV,0,0,0,&ud.mr,NULL),"MR");
+    for (size_t i=0;i<ud.depth;i++) {
         ud.tx[i].buf=(unsigned char *)ud.arena+i*ud.stride;
-        ud.rx[i].buf=(unsigned char *)ud.arena+(DEPTH+i)*ud.stride;
+        ud.rx[i].buf=(unsigned char *)ud.arena+(ud.depth+i)*ud.stride;
         require(fi_recv(ud.ep,ud.rx[i].buf,ud.stride,fi_mr_desc(ud.mr),FI_ADDR_UNSPEC,&ud.rx[i].ctx),"post RX");
     }
     snprintf(nic->ifname,sizeof(nic->ifname),"ud-verbs");
@@ -161,12 +173,12 @@ int __wrap_uet_nic_initialize(struct uet_nic *nic)
     snprintf(nic->ipv4_addr_str,sizeof(nic->ipv4_addr_str),"%s",source);
     mac_for_ip(nic->ipv4_addr,nic->mac_addr);
     snprintf(nic->mac_addr_str,sizeof(nic->mac_addr_str),"02:00:%02x:%02x:%02x:%02x",nic->mac_addr[2],nic->mac_addr[3],nic->mac_addr[4],nic->mac_addr[5]);
-    nic->l2_hdr_size=sizeof(struct ethhdr); nic->mtu=2048;
+    nic->l2_hdr_size=sizeof(struct ethhdr); nic->mtu=ud.info->ep_attr->max_msg_size;
     nic->max_pkt_size=nic->mtu+nic->l2_hdr_size; nic->min_pkt_size=UET_MIN_PKT_SIZE;
     nic->min_ip_pkt_size=nic->min_pkt_size-nic->l2_hdr_size; nic->sock_fd=-1;
     nic->nic_getinfo=getinfo; nic->nic_tx_pkt=tx; nic->nic_rx_pkt=rx;
     nic->nic_rx_poll=poll_rx; nic->nic_finalize=finalize;
-    fprintf(stderr,"UD_BACKEND provider=%s domain=%s type=FI_EP_DGRAM prefix=%zu source=%s full_reference_frames=1\n",ud.info->fabric_attr->prov_name,ud.info->domain_attr->name,ud.prefix,source);
+    fprintf(stderr,"UD_BACKEND provider=%s domain=%s type=FI_EP_DGRAM prefix=%zu source=%s queue_depth=%zu ip_frames=1\n",ud.info->fabric_attr->prov_name,ud.info->domain_attr->name,ud.prefix,source,ud.depth);
     return 0;
 }
 int __wrap_uet_nic_resolve_ipv4_nh(struct uet_nic *nic,int fd,uint32_t ip,uint8_t *mac)

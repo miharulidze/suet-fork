@@ -6,6 +6,29 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 : "${LIBFABRIC_PREFIX:?}"
 : "${UD_BUILD:?}"
 mkdir -p "$UD_BUILD/provider" "$UD_BUILD/objects"
+
+: "${UD_REFERENCE_PAYLOAD:=4000}"
+if [[ "${UD_REUSE_CORE:-0}" == 1 && -f "$UD_BUILD/reference-payload.txt" &&
+      "$(cat "$UD_BUILD/reference-payload.txt")" != "$UD_REFERENCE_PAYLOAD" ]]; then
+    echo "Reference profile changed: rebuild without UD_REUSE_CORE" >&2
+    exit 2
+fi
+# Configure the reference's build-time payload limit in an isolated copy.
+# Protocol implementation files remain identical to the pinned source.
+python3 - "$UET_REF_SOURCE" "$UD_BUILD/reference-source" "$UD_REFERENCE_PAYLOAD" <<'PYCONFIG'
+from pathlib import Path
+import shutil,re,sys
+src,dst,payload=Path(sys.argv[1]),Path(sys.argv[2]),int(sys.argv[3])
+assert payload in (1024,4000),payload
+shutil.copytree(src,dst,dirs_exist_ok=True,ignore=shutil.ignore_patterns('.git','obj_*','*.so','__pycache__'))
+p=dst/'uet_pkt_hdr.h';s=p.read_text()
+s,n=re.subn(r'(?m)^(#define\s+UET_DEFAULT_MAX_PAYLOAD_LEN\s+)1024\b',lambda m:m[1]+str(payload),s)
+assert n==1,'Expected the pinned reference default payload definition'
+p.write_text(s)
+PYCONFIG
+UET_REF_SOURCE="$UD_BUILD/reference-source"
+printf '%s\n' "$UD_REFERENCE_PAYLOAD" > "$UD_BUILD/reference-payload.txt"
+
 sources=("$UET_REF_SOURCE"/*.c "$UET_REF_SOURCE"/util/*.c "$UET_REF_SOURCE"/imp_shim/*.c "$UET_REF_SOURCE"/nic_shim/*.c "$UET_REF_SOURCE"/crypto/*.c)
 objects=()
 for source in "${sources[@]}"; do

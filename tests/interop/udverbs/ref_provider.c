@@ -128,7 +128,10 @@ static int endpoint_open(struct fid_domain *fid,struct fi_info *info,struct fid_
     e->info->rx_attr->op_flags=FI_COMPLETION;
     e->fid.fid=(struct fid){.fclass=FI_CLASS_EP,.context=ctx,.ops=&ep_fid_ops};
     e->fid.ops=&ep_ops;e->fid.msg=&msg_ops;e->fid.cm=&cm_ops;
-    int rc=uet_endpoint(d->uet,e->info,&e->fid,ctx,&e->uet,0,0,16,0,false,false,1024);
+    const char *setting=getenv("UET_BENCH_PAYLOAD_MTU");
+    uint32_t payload=setting?(uint32_t)strtoul(setting,NULL,10):(uint32_t)uet_max_payload_len(d->uet);
+    int rc=uet_endpoint(d->uet,e->info,&e->fid,ctx,&e->uet,0,0,16,0,false,false,payload);
+    fprintf(stderr,"REF_PROFILE payload_mtu=%u\n",payload);
     if(rc){fi_freeinfo(e->info);free(e);return rc;}
     *out=&e->fid;return 0;
 }

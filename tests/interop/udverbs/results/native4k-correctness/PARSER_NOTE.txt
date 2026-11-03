@@ -1,0 +1,1 @@
+Both 4000-byte SUET processes exited zero and validation passed; its human-readable size is 3.9k. The controller initially accepted only integer size labels, so it did not parse the measurement. Decimal labels are now supported; the complete correctness rerun is native4k-correctness-verified.

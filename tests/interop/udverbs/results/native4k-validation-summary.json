@@ -1,0 +1,69 @@
+{
+  "native4k-performance": {
+    "cases": 120,
+    "passed": 120,
+    "reference_process_logs_verified": 120,
+    "warnings": {
+      "PSN retransmit": 44,
+      "duplicate PSN (ACK retransmit)": 44
+    },
+    "warning_files": {
+      "ref-pingpong-1048576-r1-server.log": 44,
+      "ref-pingpong-1048576-r1-client.log": 44
+    }
+  },
+  "native4k-correctness-verified": {
+    "cases": 20,
+    "passed": 20,
+    "reference_process_logs_verified": 20,
+    "warnings": {
+      "PSN retransmit": 532,
+      "duplicate PSN (ACK retransmit)": 246
+    },
+    "warning_files": {
+      "ref-bw-65536-r0-server.log": 16,
+      "ref-bw-65536-r0-client.log": 16,
+      "ref-bw-1048576-r0-server.log": 373,
+      "ref-bw-1048576-r0-client.log": 373
+    }
+  },
+  "native4k-suet-peak-check": {
+    "cases": 3,
+    "passed": 3,
+    "reference_process_logs_verified": 0,
+    "warnings": {},
+    "warning_files": {}
+  },
+  "basic_suet_fabtests": {
+    "passed": 35,
+    "failed": 0,
+    "backend": "UDP loopback",
+    "log": "native4k-suet-fabtests.log.gz"
+  },
+  "provenance": {
+    "roce00.cscs.ch": {
+      "verified_reference_source_files": 160,
+      "configuration_only": "UET_DEFAULT_MAX_PAYLOAD_LEN 1024 -> 4000",
+      "no_direct_ibv_symbols": true
+    },
+    "roce01.cscs.ch": {
+      "verified_reference_source_files": 160,
+      "configuration_only": "UET_DEFAULT_MAX_PAYLOAD_LEN 1024 -> 4000",
+      "no_direct_ibv_symbols": true
+    }
+  },
+  "diagnostic_profile": {
+    "bytes": 1048576,
+    "provider": "reference",
+    "exit_codes": [
+      0,
+      0
+    ],
+    "sender_crc32c_update_percent": 83.87,
+    "receiver_crc32c_update_percent": 76.37,
+    "sender_memmove_percent": 2.6,
+    "receiver_memmove_percent": 2.04,
+    "mb_per_second": 313.56,
+    "excluded_from_comparison_medians": true
+  }
+}
