@@ -218,3 +218,25 @@ same legacy/default MTU as the baseline, UD-verbs medians are 5,971.39 MB/s
 at 64 KiB and 5,938.40 MB/s at 1 MiB (-2.99%/-1.00%), within baseline sample
 variation. Those throughput results do not measure the separately configured
 1,024-byte interop profile.
+
+
+### Fix 5: request ACKs at message tails
+
+The sender requested ACKs when filling its congestion window, but omitted
+AR on a message tail that could leave the PDC idle. With a reference peer
+using coalesced ACKs, short exchanges then depended on RTO retransmission.
+Every message tail now requests an ACK, including single-packet/empty
+messages; window-driven requests remain enabled for intermediate packets.
+
+The focused PDS framing test covers ROD/RUD, copied and zero-copy data,
+empty messages and atomic framing. In the saved ten-round 16-byte trace,
+the number of original SUET packets carrying AR changes from 0/10 to 10/10;
+retransmissions change from nine to one. This does not claim to eliminate
+all retransmissions on a logging-heavy test host.
+
+All 35 UDP fabtests and three validated UD-verbs smoke tests pass. Medians
+are 6,018.83/5,998.80 MB/s at 64 KiB/1 MiB (-2.22%/+0.004% from baseline).
+The GBN matrix passes all 24 cases at 16 bytes, 1,025 bytes and 1 MiB,
+with ten rounds across all provider pairings and ROD/RUD.
+The equivalent SR matrix also passes all 24 cases, giving 48/48 with clean
+shutdown and zero close-error counters for this revision.

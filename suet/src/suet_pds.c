@@ -1358,6 +1358,12 @@ static struct suet_pds_pkt_entry *suet_pds_ipdc_generate_new_req_pkt(
 	pds_req_set_psn(pds, psn);
 	pkt_entry->psn = psn;
 	pds_req_set_spdcid(pds, ipdc->local_pdcid);
+	/* Spec 3.5.12.4.2: a message tail can leave the PDC idle. Request
+	 * its ACK rather than relying on a later packet or retransmission.
+	 * Window-driven ACK requests remain independent of this tail trigger.
+	 */
+	if (tx->next_segment + 1 == tx->num_pkts)
+		flags |= PDS_FLAG_AR;
 	pds_prologue_set_flags(pds, flags);
 
 	/* Spec 3.5.11.4.4: pds.clear_psn_offset is signed two's-complement,

@@ -473,7 +473,8 @@ cleanup:
 /* Exercise the real PDS assembler with separate SES headers/payloads, then
  * compare the emitted wire bytes on repeated sends with a provider prefix.
  */
-static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
+static void check_pds_framing(enum suet_pdc_type type, bool zero_copy,
+			      bool atomic, size_t length)
 {
 	struct suet_domain domain = {0};
 	struct fid_ep dgram_ep = {.msg = &msg_ops};
@@ -512,6 +513,7 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 	ses_req_init(&ses.cached_hdr.ses, atomic ? UET_ATOMIC : UET_SEND, 1, 1,
 		     1, 0, 17, 0, 0, 0, length, 0, 0);
 	memset(&ses.cached_hdr.amo, 0x5a, sizeof(ses.cached_hdr.amo));
+	ipdc.type = type;
 	ipdc.state = SUET_PDC_ESTABLISHED;
 	ipdc.tx_seq_no = 100;
 	suet_cc_init(&ipdc.cc, suet_env.max_unacked,
@@ -564,8 +566,10 @@ static void check_pds_framing(bool zero_copy, bool atomic, size_t length)
 		assert(!suet_dgram_send(&domain, pkt));
 		assert(ipdc.cc.in_flight == ses.num_pkts);
 		assert(sent_len == hdr_len + len);
-		assert(pds_prologue_get_type(&wire->pds) == PDS_ROD_REQ);
-		assert(!(pds_prologue_get_flags(&wire->pds) & PDS_FLAG_AR));
+		assert(pds_prologue_get_type(&wire->pds) ==
+		       (type == SUET_PDC_ROD ? PDS_ROD_REQ : PDS_RUD_REQ));
+		assert(!!(pds_prologue_get_flags(&wire->pds) & PDS_FLAG_AR) ==
+		       (segment + 1 == ses.num_pkts));
 		assert(pds_prologue_get_next_hdr(&wire->pds) ==
 		       UET_HDR_REQUEST_STD);
 		assert(pds_req_get_psn(&wire->pds) == 100 + segment);
@@ -1585,11 +1589,13 @@ int main(void)
 	check_gap_ack(true, false, 100);
 	check_gap_ack(false, true, UINT32_MAX - 1);
 	check_gap_ack(true, true, UINT32_MAX - 1);
-	check_pds_framing(false, false, 141);
-	check_pds_framing(true, false, 141);
-	check_pds_framing(false, false, 0);
-	check_pds_framing(true, false, 0);
-	check_pds_framing(false, true, 60);
+	for (int type = SUET_PDC_ROD; type <= SUET_PDC_RUD; type++) {
+		check_pds_framing(type, false, false, 141);
+		check_pds_framing(type, true, false, 141);
+		check_pds_framing(type, false, false, 0);
+		check_pds_framing(type, true, false, 0);
+		check_pds_framing(type, false, true, 60);
+	}
 	ofi_mem_fini();
 	puts("PDS/datagram prefixes, completion ownership and shutdown: PASS");
 	return 0;

@@ -1,0 +1,13 @@
+{
+  "fix4": {
+    "suet_original_data_packets": 10,
+    "originals_requesting_ack": 0,
+    "retransmissions": 9
+  },
+  "fix5": {
+    "suet_original_data_packets": 10,
+    "originals_requesting_ack": 10,
+    "retransmissions": 1
+  },
+  "tail_ack_regression_passed": true
+}
