@@ -1,0 +1,65 @@
+[
+  {
+    "test": "verbs-fi_rdm_pingpong",
+    "server_exit": 0,
+    "client_exit": 0
+  },
+  {
+    "test": "verbs-fi_rdm_tagged_pingpong",
+    "server_exit": 0,
+    "client_exit": 0
+  },
+  {
+    "test": "verbs-fi_rma_bw-write",
+    "server_exit": 0,
+    "client_exit": 0
+  },
+  {
+    "test": "verbs-bw-65536-0",
+    "server_exit": 0,
+    "client_exit": 0,
+    "megabytes_per_second": [
+      6075.74
+    ]
+  },
+  {
+    "test": "verbs-bw-65536-1",
+    "server_exit": 0,
+    "client_exit": 0,
+    "megabytes_per_second": [
+      5948.89
+    ]
+  },
+  {
+    "test": "verbs-bw-65536-2",
+    "server_exit": 0,
+    "client_exit": 0,
+    "megabytes_per_second": [
+      6045.76
+    ]
+  },
+  {
+    "test": "verbs-bw-1048576-0",
+    "server_exit": 0,
+    "client_exit": 0,
+    "megabytes_per_second": [
+      6006.79
+    ]
+  },
+  {
+    "test": "verbs-bw-1048576-1",
+    "server_exit": 0,
+    "client_exit": 0,
+    "megabytes_per_second": [
+      6017.17
+    ]
+  },
+  {
+    "test": "verbs-bw-1048576-2",
+    "server_exit": 0,
+    "client_exit": 0,
+    "megabytes_per_second": [
+      5961.15
+    ]
+  }
+]

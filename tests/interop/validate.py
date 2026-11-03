@@ -16,8 +16,18 @@ def main():
     p.add_argument('--root', required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--skip-suite', action='store_true', help='Reuse a recorded suite result for the same build')
+    p.add_argument('--bandwidth-iterations', type=int, default=2000)
+    p.add_argument('--bandwidth-warmup', type=int, default=100)
+    p.add_argument('--bandwidth-samples', type=int, default=3)
     a = p.parse_args()
+    if a.bandwidth_iterations <= 0 or a.bandwidth_warmup < 0 or a.bandwidth_samples <= 0:
+        p.error('bandwidth iterations/samples must be positive and warmup nonnegative')
     a.output.mkdir(parents=True, exist_ok=False)
+    (a.output / 'configuration.json').write_text(json.dumps(dict(
+        root=a.root, provider='verbs;ofi_suet', domain='mlx5_0-dgram', cpu=2,
+        payload_mtu='legacy/default', iterations=a.bandwidth_iterations,
+        warmup=a.bandwidth_warmup, samples=a.bandwidth_samples, window=64,
+        skip_suite=a.skip_suite), indent=2) + '\n')
     bin_dir = a.root + '/work/build/bin'
     results = []
     for host in ('roce00.cscs.ch', 'roce01.cscs.ch'):
@@ -46,11 +56,12 @@ def main():
             sr = proc.wait(timeout=70)
         results.append(dict(test=name, server_exit=sr, client_exit=rc))
     for size in (65536, 1048576):
-        for repeat in range(3):
+        for repeat in range(a.bandwidth_samples):
             name = f'verbs-bw-{size}-{repeat}'
             base = ['env', 'FI_VERBS_IFACE=ens785f0np0', 'timeout', '-k', '3s', '60s',
                     'taskset', '-c', '2', bin_dir + '/fi_rdm_bw', '-p', 'verbs;ofi_suet',
-                    '-d', 'mlx5_0-dgram', '-b', '-S', str(size), '-I', '2000', '-w', '100', '-W', '64']
+                    '-d', 'mlx5_0-dgram', '-b', '-S', str(size),
+                    '-I', str(a.bandwidth_iterations), '-w', str(a.bandwidth_warmup), '-W', '64']
             with (a.output / f'{name}-server.log').open('wb') as server, (a.output / f'{name}-client.log').open('wb') as client:
                 proc = subprocess.Popen(ssh('roce00.cscs.ch', shlex.join(base + ['-s', '10.203.44.1'])), stdout=server, stderr=subprocess.STDOUT)
                 time.sleep(.7)
@@ -58,7 +69,7 @@ def main():
                 sr = proc.wait(timeout=70)
             body = (a.output / f'{name}-client.log').read_text(errors='replace')
             rates = [float(line.split()[4]) for line in body.splitlines()
-                     if re.match(r'^(?:64k|1m)\s+2k\s+', line)]
+                     if re.match(r'^(?:64k|1m)\s+\S+\s+', line)]
             row = dict(test=name, server_exit=sr, client_exit=rc, megabytes_per_second=rates)
             results.append(row)
             print(json.dumps(row), flush=True)

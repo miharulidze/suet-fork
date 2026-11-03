@@ -1,0 +1,139 @@
+ENDPOINT provider=ref udp=10.203.44.1:49089 pid=0 ri=15 initiator=16 mode=rod
+client TX ping round=0 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228941 on PDC 2 (ACK retransmit)[m
+client RX pong round=0 bytes=8192 PASS
+client TX ping round=1 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228942 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228943 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228944 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228945 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228946 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228947 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228948 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228945 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228946 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228947 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 1609228948 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228949 on PDC 2 (ACK retransmit)[m
+client RX pong round=1 bytes=8192 PASS
+client TX ping round=2 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228950 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228951 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228952 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228953 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228954 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228955 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228956 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228949 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228950 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228951 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228952 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228953 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228954 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228955 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228956 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228957 on PDC 2 (ACK retransmit)[m
+client RX pong round=2 bytes=8192 PASS
+client TX ping round=3 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228958 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228959 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228960 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228961 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228962 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228963 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228964 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228957 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228958 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228959 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228960 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228961 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228962 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228963 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228964 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228965 on PDC 2 (ACK retransmit)[m
+client RX pong round=3 bytes=8192 PASS
+client TX ping round=4 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228966 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228967 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228968 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228969 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228970 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228971 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228972 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228965 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228966 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228967 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228968 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228969 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228970 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228971 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228972 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228973 on PDC 2 (ACK retransmit)[m
+client RX pong round=4 bytes=8192 PASS
+client TX ping round=5 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228974 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228975 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228976 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228977 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228978 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228979 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228980 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228981 on PDC 2 (ACK retransmit)[m
+client RX pong round=5 bytes=8192 PASS
+client TX ping round=6 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228982 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228983 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228984 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228985 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228986 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228987 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228988 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228989 on PDC 2 (ACK retransmit)[m
+client RX pong round=6 bytes=8192 PASS
+client TX ping round=7 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228990 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228991 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228992 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228993 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228994 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228995 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228996 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228997 on PDC 2 (ACK retransmit)[m
+client RX pong round=7 bytes=8192 PASS
+client TX ping round=8 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228998 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609228999 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229000 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229001 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229002 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229003 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229004 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229005 on PDC 2 (ACK retransmit)[m
+client RX pong round=8 bytes=8192 PASS
+client TX ping round=9 bytes=8192
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229006 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229007 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229008 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229009 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229010 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229011 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229012 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229013 on PDC 2 (ACK retransmit)[m
+client RX pong round=9 bytes=8192 PASS
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229014 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229015 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229016 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229017 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229018 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229019 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 1609229020 on PDC 2 (ACK retransmit)[m
+CLOSING
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 211[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m
+RESULT provider=ref role=client mode=rod bytes=8192 rounds=10 PASS

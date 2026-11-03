@@ -1514,6 +1514,18 @@ static void check_target_close_request(enum suet_pdc_type type, bool peer_replie
 		assert(pds_ack_get_dpdcid(ack) == 8);
 		assert(pds_ack_get_ack_psn(ack) == 105);
 		suet_dgram_tx_complete(&domain, send_context, 0);
+		/* The requested Close Command must itself request an ACK, even
+		 * when the congestion window is nowhere near full.
+		 */
+		uint32_t close_psn = ipdc->tx_seq_no;
+		suet_pds_ipdc_send_close_cmd(&domain, ipdc);
+		assert(ipdc->state == SUET_PDC_CLOSE_ACK_WAIT);
+		assert(sent_len == sizeof(*cp));
+		assert(pds_ctrl_get_ctl_type(cp) == PDS_CTL_CLOSE_CMD);
+		assert(pds_ctrl_get_flags(cp) & PDS_FLAG_AR);
+		assert(pds_ctrl_get_psn(cp) == close_psn);
+		assert(ipdc->tx_seq_no == close_psn + 1 && !cp->payload);
+		suet_dgram_tx_complete(&domain, send_context, 0);
 		suet_pds_free_ipdc(&domain, ipdc);
 	}
 	suet_pds_cleanup(&domain);

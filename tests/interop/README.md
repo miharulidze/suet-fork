@@ -15,6 +15,22 @@ reference provider's test UDP NIC backend. Polling drives provider progress
 while waiting on the control channel. Both roles are real endpoint processes,
 not a fork/socketpair simulation.
 
+## Current result
+
+The final build passes all **96/96** cases: four provider pairings, ROD/RUD,
+six sizes (16, 1,024, 1,025, 8,192, 65,537 and 1,048,576 bytes), ten rounds,
+and SUET GBN/SR. GBN uses roce00 as server; SR reverses the physical hosts.
+Payloads and receive lengths are validated, and both processes close normally
+with zero SUET close-error counters. This includes single-packet messages
+and multi-packet messages up to 1,024 segments per message.
+
+All 35 existing UDP fabtests and validated UD-verbs smoke/bandwidth checks
+were run for each committed provider revision. The final sustained bandwidth
+comparison differs from baseline by less than 0.4%; details and raw results
+are below. The validated installation is already available on both hosts at
+`/root/suet-interop-20261103/fix6`; `base` is the unfixed comparison build.
+The runner defaults to `fix6`. The build example below uses a fresh directory.
+
 ## Scope of the UDP backend
 
 The pinned reference implementation has raw IP/Ethernet NIC backends,
@@ -48,17 +64,18 @@ the next ping eligible without adding a TCP barrier to each round.
 Use an isolated directory on each host, for example:
 
 ```bash
-ROOT=/root/suet-interop-20261103
-mkdir -p "$ROOT/base"
-git clone https://github.com/miharulidze/suet-fork.git "$ROOT/base/source"
-# Check out the interop branch/commit being tested here.
+ROOT=/root/suet-interop-rebuild
+mkdir -p "$ROOT"
+git clone --branch interop/udp-pingpong-20261103 \
+  https://github.com/miharulidze/suet-fork.git "$ROOT/source"
+# Use git checkout <commit> here when reproducing an earlier revision.
 git clone https://github.com/ultraethernet/uet-ref-prov.git "$ROOT/ref"
 git -C "$ROOT/ref" checkout --detach 9effe362ec13a7c2c1fa5a79146f5846f0c898c6
-cd "$ROOT/base/source"
-WORKDIR="$ROOT/base/work" JOBS=8 bash build.sh > "$ROOT/base/build.log" 2>&1
-UET_REF_SOURCE="$ROOT/ref" LIBFABRIC_SOURCE="$ROOT/base/work/libfabric" \
-  LIBFABRIC_PREFIX="$ROOT/base/work/build" INTEROP_BUILD="$ROOT/base/interop" \
-  bash tests/interop/build.sh > "$ROOT/base/interop-build.log" 2>&1
+cd "$ROOT/source"
+WORKDIR="$ROOT/work" JOBS=8 bash build.sh > "$ROOT/build.log" 2>&1
+UET_REF_SOURCE="$ROOT/ref" LIBFABRIC_SOURCE="$ROOT/work/libfabric" \
+  LIBFABRIC_PREFIX="$ROOT/work/build" INTEROP_BUILD="$ROOT/interop" \
+  bash tests/interop/build.sh > "$ROOT/interop-build.log" 2>&1
 ```
 
 For exported reference sources, set `UET_REF_REVISION` to the pinned SHA.
@@ -70,7 +87,7 @@ backend requires Linux and GNU linker `--wrap`; no system library is replaced.
 Server on roce00, for example SUET:
 
 ```bash
-ROOT=/root/suet-interop-20261103/base
+ROOT=/root/suet-interop-rebuild
 FI_PROVIDER='udp;ofi_suet' FI_OFI_SUET_PAYLOAD_MTU=1024 UET_PDS=pds UET_PDS_TX_TIMEOUT=100 \
   timeout -k 2s 20s "$ROOT/interop/pingpong" \
   suet server 10.203.44.1 10.203.44.1 60401 rod 16 10 /tmp/server.packets
@@ -79,7 +96,7 @@ FI_PROVIDER='udp;ofi_suet' FI_OFI_SUET_PAYLOAD_MTU=1024 UET_PDS=pds UET_PDS_TX_T
 Client on roce01, for example reference:
 
 ```bash
-ROOT=/root/suet-interop-20261103/base
+ROOT=/root/suet-interop-rebuild
 FI_PROVIDER='udp;ofi_suet' FI_OFI_SUET_PAYLOAD_MTU=1024 UET_PDS=pds UET_PDS_TX_TIMEOUT=100 \
   timeout -k 2s 20s "$ROOT/interop/pingpong" \
   ref client 10.203.44.2 10.203.44.1 60401 rod 16 10 /tmp/client.packets
@@ -96,19 +113,29 @@ Timeouts, CQ errors, invalid payloads and close hangs fail the test.
 From this checkout on the controlling computer:
 
 ```bash
-python3 tests/interop/run.py --output /tmp/interop-matrix \
-  --sizes 16,1024,8192,65537 --rounds 10
-python3 tests/interop/run.py --output /tmp/interop-sr --sr 1
-python3 tests/interop/validate.py --root /root/suet-interop-20261103/base \
+# Single-packet messages, including one full payload segment.
+python3 tests/interop/run.py --root /root/suet-interop-rebuild --output /tmp/interop-single \
+  --sizes 16,1024 --rounds 10
+# Multi-packet messages: boundary + 1, 8 segments, partial tail and 1 MiB.
+python3 tests/interop/run.py --root /root/suet-interop-rebuild --output /tmp/interop-multi \
+  --sizes 1025,8192,65537,1048576 --rounds 10
+python3 tests/interop/run.py --root /root/suet-interop-rebuild --output /tmp/interop-sr --sr 1 \
+  --sizes 16,1024,1025,8192,65537,1048576 --rounds 10 \
+  --server-host roce01.cscs.ch --client-host roce00.cscs.ch \
+  --server-ip 10.203.44.2 --client-ip 10.203.44.1
+python3 tests/interop/validate.py --root /root/suet-interop-rebuild \
   --output /tmp/interop-validation
 ```
 
 `--pairs` lists server-client providers; defaults include all four pairings.
 `--modes` defaults to ROD/RUD. Use `--root` to select each revision's isolated
-remote installation. Outputs contain both process logs and an honest status
+remote installation. Choose a new output directory for each run. Outputs
+contain both process logs and an honest status
 table; the runner returns nonzero on any failure. Packet captures stay in
 the named remote results directory and can be decoded with `decode.py`.
-The runner configures a shared 1,024-byte payload MTU. `--payload-mtu 0`
+The SR option selects SUET's reliability algorithm; reference-provider code
+and configuration are otherwise unchanged. The runner configures a shared
+1,024-byte payload MTU. `--payload-mtu 0`
 deliberately probes the old transport-derived SUET size, not a compatible
 deployment. The [UET specification](https://ultraethernet.org/wp-content/uploads/sites/20/2026/01/UE-Specification-1.0.2-1.pdf)
 sections 3.3.1 and 3.4.1.11 require a consistent, out-of-band configured
@@ -123,7 +150,19 @@ validation so it does not mask transport costs; correctness is checked
 separately. Keep CPU placement,
 provider, interface and iteration counts identical for each revision. Compare
 the median of each size against the unmodified base and inspect raw samples;
-do not claim a performance regression from a single noisy sample.
+do not claim a performance regression from a single noisy sample. The 64-KiB
+short run lasts only about 20 ms. For a sustained comparison after a recorded
+correctness pass, use the same longer settings for both revisions:
+
+```bash
+python3 tests/interop/validate.py --root /root/suet-interop-20261103/fix6 \
+  --output /tmp/interop-sustained --skip-suite \
+  --bandwidth-iterations 100000 --bandwidth-warmup 10000
+```
+
+`--bandwidth-samples` defaults to three. The output records the configuration
+alongside raw samples. Run bandwidth checks without builds or interop matrices
+in parallel on these hosts.
 
 ## Baseline before provider fixes
 
@@ -240,3 +279,39 @@ The GBN matrix passes all 24 cases at 16 bytes, 1,025 bytes and 1 MiB,
 with ten rounds across all provider pairings and ROD/RUD.
 The equivalent SR matrix also passes all 24 cases, giving 48/48 with clean
 shutdown and zero close-error counters for this revision.
+
+
+### Fix 6: request an ACK for Close Command
+
+The normal Close Command path omitted AR even though specification section
+3.5.16.4 requires both close CPs to request an ACK. The reference currently
+replies regardless, but relying on that behavior leaves SUET dependent on
+a peer implementation detail. Close Command now sets AR on its first send;
+its existing retry path preserves it. The focused ROD/RUD regression checks
+the emitted control packet, fresh PSN, zero payload and close-wait state.
+
+The complete 35-case UDP suite and all three validated UD-verbs smoke tests
+pass. The short-run medians were lower, so baseline and final were also
+compared with 100,000 iterations, 10,000 warmups and three samples per size,
+with no concurrent builds or interop runs. Raw results are retained; these
+are separate configurations, not interchangeable samples:
+
+| Configuration | Baseline 64 KiB, MB/s | Final 64 KiB, MB/s | Baseline 1 MiB, MB/s | Final 1 MiB, MB/s |
+| --- | ---: | ---: | ---: | ---: |
+| Original short comparison | 6,155.64 | 5,882.15 | 5,998.56 | 5,754.37 |
+| Sustained comparison | 6,513.46 | 6,492.63 | 6,120.77 | 6,115.60 |
+
+Sustained changes are -0.32% and -0.08%; both final medians stay within
+0.4% of baseline. See `base-sustained/`, `fix6-sustained/`,
+`base-final-recheck/` and `fix6-validation/`. The short 64-KiB phase lasts
+about 20 ms and is sensitive to startup/frequency variation.
+
+The final matrices in `fix6-gbn/` and `fix6-sr-reversed/` pass 96/96 cases.
+Sixteen reference-side capture checks confirm both directions and delivery
+modes: a 1,025-byte SUET message uses 1,024 + 1 byte payloads, and a 1-MiB
+message uses 1,024 payload segments. They also verify the actual ROD/RUD
+wire type, AR on message tails, and AR on Close Commands. The two
+`fix6-*-wire-and-provenance.json` files record these counts, capture paths,
+compiler/library identities and source hashes matched against the compiled
+provider tree on each host. Full captures remain on the hosts; representative
+small captures are retained under `results/fixtures/`.

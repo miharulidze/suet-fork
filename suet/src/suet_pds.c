@@ -1703,10 +1703,12 @@ static void suet_pds_ipdc_send_close_cmd(struct suet_domain *domain,
 
 	ipdc->close_psn = ipdc->tx_seq_no++;
 	pkt_entry->psn = ipdc->close_psn;
-	/* Spec 3.5.16.4.1: Close Command CP consumes a forward PSN and
-	 * carries no payload. */
+	/* Spec 3.5.16.4: Close consumes a forward PSN and MUST request an
+	 * ACK. A peer must not need a retransmission to acknowledge it.
+	 */
 	pds_ctrl_init(&cp->pds, PDS_CTL_CLOSE_CMD, ipdc->close_psn,
 		      ipdc->local_pdcid, ipdc->tpdcid, 0);
+	pds_ctrl_set_flags(&cp->pds, pds_ctrl_get_flags(&cp->pds) | PDS_FLAG_AR);
 
 	suet_pds_ipdc_insert_unacked_pkt(ipdc, pkt_entry, slot);
 	ipdc->state = SUET_PDC_CLOSE_ACK_WAIT;

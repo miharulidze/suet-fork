@@ -20,7 +20,7 @@ def main():
     p.add_argument('--client-host', default='roce01.cscs.ch')
     p.add_argument('--server-ip', default='10.203.44.1')
     p.add_argument('--client-ip', default='10.203.44.2')
-    p.add_argument('--root', default='/root/suet-interop-20261103/base')
+    p.add_argument('--root', default='/root/suet-interop-20261103/fix6')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--pairs', default='suet-suet,ref-ref,suet-ref,ref-suet', help='server-client providers')
     p.add_argument('--modes', default='rod,rud')
