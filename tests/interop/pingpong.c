@@ -258,27 +258,35 @@ int main(int argc, char **argv)
             remote.bytes == local.bytes && remote.rounds == local.rounds);
     add_peer(&e, &remote);
     uint8_t *tx = malloc(bytes), *rx = malloc(bytes), *expected = malloc(bytes);
-    REQUIRE(tx && rx && expected);
+    struct op *receives = calloc(rounds, sizeof(*receives));
+    REQUIRE(tx && rx && expected && receives);
+    for (unsigned i = 0; i < rounds; ++i)
+        receives[i] = (struct op) {.received = true, .bytes = bytes};
+    post(&e, rx, &receives[0]);
     for (unsigned round = 0; round < rounds; ++round) {
-        struct op receive = {.received = true, .bytes = bytes}, send = {.bytes = bytes};
-        memset(rx, 0xa5, bytes);
-        post(&e, rx, &receive);
+        struct op *receive = &receives[round], send = {.bytes = bytes};
+        if (!server && round)
+            post(&e, rx, receive);
         if (!round) {
             uint8_t ready = 1, other;
             control_io(&e, control, &ready, 1, true);
             control_io(&e, control, &other, 1, false); REQUIRE(other == ready);
         }
         if (server) {
-            wait_op(&e, &receive, NULL);
+            wait_op(&e, receive, NULL);
             payload(expected, bytes, round, false); REQUIRE(!memcmp(rx, expected, bytes));
             printf("server RX ping round=%u bytes=%u PASS\n", round, bytes);
+            /* The reference has no overflow/unexpected queue. Publish the
+             * next receive before pong permits the client's next ping. */
+            if (round + 1 < rounds)
+                post(&e, rx, &receives[round + 1]);
             payload(tx, bytes, round, true); post(&e, tx, &send);
             printf("server TX pong round=%u bytes=%u\n", round, bytes);
             wait_op(&e, &send, NULL);
         } else {
             payload(tx, bytes, round, false); post(&e, tx, &send);
             printf("client TX ping round=%u bytes=%u\n", round, bytes);
-            wait_op(&e, &receive, &send);
+            wait_op(&e, receive, &send);
             payload(expected, bytes, round, true); REQUIRE(!memcmp(rx, expected, bytes));
             printf("client RX pong round=%u bytes=%u PASS\n", round, bytes);
         }
@@ -295,7 +303,7 @@ int main(int argc, char **argv)
         OK(fi_close(&e.ep->fid)); OK(fi_close(&e.cq->fid)); OK(fi_close(&e.av->fid));
         OK(fi_close(&e.domain->fid)); OK(fi_close(&e.fabric->fid));
     }
-    fi_freeinfo(e.info); free(tx); free(rx); free(expected); close(control);
+    fi_freeinfo(e.info); free(tx); free(rx); free(expected); free(receives); close(control);
     printf("RESULT provider=%s role=%s mode=%s bytes=%u rounds=%u PASS\n", argv[1], argv[2], argv[6], bytes, rounds);
     return 0;
 }

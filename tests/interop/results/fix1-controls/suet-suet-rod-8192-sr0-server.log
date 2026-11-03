@@ -1,0 +1,11 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+ENDPOINT provider=suet udp=10.203.44.1:41618 pid=2804 ri=0 initiator=11485184 mode=rod
+CONTROL_LISTENING
+server RX ping round=0 bytes=8192 PASS
+server TX pong round=0 bytes=8192
+server RX ping round=1 bytes=8192 PASS
+server TX pong round=1 bytes=8192
+server RX ping round=2 bytes=8192 PASS
+server TX pong round=2 bytes=8192
+CLOSING
+RESULT provider=suet role=server mode=rod bytes=8192 rounds=3 PASS

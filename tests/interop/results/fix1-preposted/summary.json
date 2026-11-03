@@ -1,0 +1,50 @@
+[
+  {
+    "case": "suet-ref-rod-16-sr0",
+    "passed": false,
+    "exit_codes": [
+      124,
+      0
+    ],
+    "rounds": 10,
+    "remote_capture_directory": "/root/suet-interop-20261103/fix1/results/fix1-preposted/suet-ref-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "ref-suet-rod-16-sr0",
+    "passed": false,
+    "exit_codes": [
+      0,
+      124
+    ],
+    "rounds": 10,
+    "remote_capture_directory": "/root/suet-interop-20261103/fix1/results/fix1-preposted/ref-suet-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "suet-ref-rud-16-sr0",
+    "passed": false,
+    "exit_codes": [
+      124,
+      0
+    ],
+    "rounds": 10,
+    "remote_capture_directory": "/root/suet-interop-20261103/fix1/results/fix1-preposted/suet-ref-rud-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "ref-suet-rud-16-sr0",
+    "passed": false,
+    "exit_codes": [
+      0,
+      124
+    ],
+    "rounds": 10,
+    "remote_capture_directory": "/root/suet-interop-20261103/fix1/results/fix1-preposted/ref-suet-rud-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  }
+]

@@ -20,6 +20,13 @@ def main():
     a.output.mkdir(parents=True, exist_ok=False)
     bin_dir = a.root + '/work/build/bin'
     results = []
+    for host in ('roce00.cscs.ch', 'roce01.cscs.ch'):
+        command = shlex.join(['ldd', bin_dir + '/fi_rdm_bw'])
+        loaded = subprocess.run(ssh(host, command), capture_output=True, text=True, check=True).stdout
+        (a.output / f'{host}-loader.log').write_text(loaded)
+        expected = a.root + '/work/build/lib/libfabric.so.1'
+        if expected not in loaded:
+            raise SystemExit(f'{host}: fabtests does not load {expected}; relink before validating')
     # Run the existing complete suite, retaining original iteration counts.
     cmd = shlex.join(['env', 'FI_LOG_LEVEL=warn', 'timeout', '-k', '3s', '600s', 'python3',
                      a.root + '/source/test_suet.py', '--bin-dir', bin_dir, '--timeout', '120', '--verbose'])

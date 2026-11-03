@@ -1,0 +1,1 @@
+Initial fabtests binaries retained the baseline library RPATH. These results do not validate fix1. Use ../fix1-verified-validation instead. The interop executable and focused static regression did use fix1.

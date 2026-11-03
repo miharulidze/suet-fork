@@ -1,0 +1,70 @@
+ENDPOINT provider=ref udp=10.203.44.2:46994 pid=0 ri=15 initiator=16 mode=rod
+client TX ping round=0 bytes=16
+client RX pong round=0 bytes=16 PASS
+client TX ping round=1 bytes=16
+client RX pong round=1 bytes=16 PASS
+client TX ping round=2 bytes=16
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194720 on PDC 2 (ACK retransmit)[m
+client RX pong round=2 bytes=16 PASS
+client TX ping round=3 bytes=16
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194721 on PDC 2 (ACK retransmit)[m
+client RX pong round=3 bytes=16 PASS
+client TX ping round=4 bytes=16
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194722 on PDC 2 (ACK retransmit)[m
+client RX pong round=4 bytes=16 PASS
+client TX ping round=5 bytes=16
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194723 on PDC 2 (ACK retransmit)[m
+client RX pong round=5 bytes=16 PASS
+client TX ping round=6 bytes=16
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194724 on PDC 2 (ACK retransmit)[m
+client RX pong round=6 bytes=16 PASS
+client TX ping round=7 bytes=16
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194725 on PDC 2 (ACK retransmit)[m
+client RX pong round=7 bytes=16 PASS
+client TX ping round=8 bytes=16
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194726 on PDC 2 (ACK retransmit)[m
+client RX pong round=8 bytes=16 PASS
+client TX ping round=9 bytes=16
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194727 on PDC 2 (ACK retransmit)[m
+client RX pong round=9 bytes=16 PASS
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 3061194728 on PDC 2 (ACK retransmit)[m
+CLOSING
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[31m[/root/suet-interop-20261103/ref/uet_pds.c:1161] ERROR: [PDS] invalid PDC 2 (unalloc)[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:4029] WARN: [PDS] CP type 4 for unknown PDC 2[m
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:1862] WARN: [PDS] PDC 0 TX NACK nack_code=0xe psn=3061194729 dpdcid=2[m
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 40[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m
+RESULT provider=ref role=client mode=rod bytes=16 rounds=10 PASS

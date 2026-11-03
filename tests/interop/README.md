@@ -32,6 +32,9 @@ The reference explicit endpoint API (`ENABLE_VERBS=1`) is used to select
 JobID 0, matching SUET. This is an API selection, not a verbs transport:
 all reference data goes through the UDP backend. Default reference endpoints
 authorize JobID 1, which is a different configuration and would be rejected.
+Because the reference has no overflow-list buffering, the server posts its
+next receive after validating ping and before transmitting pong. That keeps
+the next ping eligible without adding a TCP barrier to each round.
 
 ## Versions and build
 
@@ -137,3 +140,22 @@ medians without per-byte validation are **6,155.64 MB/s at 64 KiB** and
 `FI_ENODATA` (61); this provider advertises write, not read. That unsupported
 probe is retained in `base-performance/summary.json` with its actual exit
 codes, and is not part of subsequent supported-operation smoke tests.
+
+### Fix 1: default null responses
+
+`DEFAULT_RESPONSE/RC_NULL` is transport-only. SUET now ignores it as an
+operation response, while still processing the ACK's transport fields.
+It cannot match an unrelated message ID or promote an explicit semantic
+completion. Other opcodes with return code zero remain invalid.
+
+The focused SES/PDS regression passes. All 35 UDP fabtests and three
+supported UD-verbs smoke tests pass. Verified medians are 6,054.69 MB/s (64 KiB) and
+5,968.81 MB/s (1 MiB), changes of -1.64% and -0.50% from baseline.
+The first copied fabtests retained a baseline RPATH; those results are
+invalidated. The complete rerun in `fix1-verified-validation/` checks the
+loaded library on both hosts before testing. All eight
+same-provider controls still pass. With the next receive preposted, both
+cross-provider roles validate all ten 16-byte rounds in ROD and RUD; SUET
+then hangs during close. Those four runs correctly remain failed in
+`fix1-preposted/summary.json`. Close ACK handling and common payload-MTU
+configuration are separate work, not claimed fixed here.

@@ -686,7 +686,8 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 	const struct ses_resp_hdr *ses =
 		(const void *) ((const char *) ack_entry->pkt->pkt + hdr_size);
 	uint32_t cack_psn = pds_ack_get_cack_psn(&ack->pds);
-	bool has_ses_resp = pds_ack_get_next_hdr(&ack->pds) == UET_HDR_RESPONSE;
+	bool has_ses_resp = pds_ack_get_next_hdr(&ack->pds) == UET_HDR_RESPONSE &&
+			    !suet_ses_response_is_null(ses);
 	struct suet_rel_retired retired;
 	enum suet_rel_ack_result action;
 	struct suet_pds_pkt_entry *pkt_entry;

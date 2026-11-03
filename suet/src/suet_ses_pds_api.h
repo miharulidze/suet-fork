@@ -123,6 +123,7 @@ int suet_ses_prepare_tx(void *context, uint32_t segment, void *hdr,
 			size_t hdr_capacity, struct suet_ses_tx_segment *tx);
 void suet_ses_tx_done(void *context, int err, int prov_errno);
 bool suet_ses_response_is_error(const struct ses_resp_hdr *resp);
+bool suet_ses_response_is_null(const struct ses_resp_hdr *resp);
 bool suet_ses_tx_response(void *context, const struct ses_resp_hdr *resp);
 
 /* RX contexts belong to SES. pds_ctx is an opaque response route.

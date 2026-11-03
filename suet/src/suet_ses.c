@@ -1327,7 +1327,13 @@ void suet_ses_tx_done(void *context, int err, int prov_errno)
 bool suet_ses_tx_response(void *context, const struct ses_resp_hdr *resp)
 {
 	struct suet_ses_tx_entry *entry = context;
-	struct suet_domain *domain = suet_ep_domain(entry->ep);
+	struct suet_domain *domain;
+
+	/* A default RC_NULL acknowledges transport progress only. Its message
+	 * ID is not an operation response and may alias an unrelated send. */
+	if (suet_ses_response_is_null(resp))
+		return false;
+	domain = suet_ep_domain(entry->ep);
 
 	if (entry->tx_id != ses_resp_get_message_id(resp))
 		return false;
@@ -1342,5 +1348,12 @@ bool suet_ses_tx_response(void *context, const struct ses_resp_hdr *resp)
 
 bool suet_ses_response_is_error(const struct ses_resp_hdr *resp)
 {
-	return ses_resp_ctrl_get_rc(resp) != RC_OK;
+	return !suet_ses_response_is_null(resp) &&
+	       ses_resp_ctrl_get_rc(resp) != RC_OK;
+}
+
+bool suet_ses_response_is_null(const struct ses_resp_hdr *resp)
+{
+	return ses_resp_ctrl_get_opcode(resp) == UET_DEFAULT_RESPONSE &&
+	       ses_resp_ctrl_get_rc(resp) == RC_NULL;
 }

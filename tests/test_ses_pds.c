@@ -551,6 +551,23 @@ static void check_rx_source_identity(uint8_t opcode)
 	suet_ses_cleanup(&domain);
 }
 
+static void check_null_response(void)
+{
+	struct ses_resp_hdr response = {0};
+
+	ses_resp_init(&response, 0, UET_DEFAULT_RESPONSE, RC_NULL, 0, 0);
+	assert(suet_ses_response_is_null(&response));
+	assert(!suet_ses_response_is_error(&response));
+	/* A transport-only response must not even inspect a matching TX ID. */
+	assert(!suet_ses_tx_response(NULL, &response));
+	ses_resp_init(&response, 0, UET_DEFAULT_RESPONSE, RC_OK, 0, 0);
+	assert(!suet_ses_response_is_null(&response));
+	assert(!suet_ses_response_is_error(&response));
+	ses_resp_init(&response, 0, UET_RESPONSE, RC_NULL, 0, 0);
+	assert(!suet_ses_response_is_null(&response));
+	assert(suet_ses_response_is_error(&response));
+}
+
 int main(void)
 {
 	const unsigned int orders[][3] = {
@@ -560,6 +577,7 @@ int main(void)
 	size_t i;
 
 	check_segments(false, 0);
+	check_null_response();
 	check_segments(true, 0);
 	check_segments(false, 37);
 	check_segments(true, 61);
