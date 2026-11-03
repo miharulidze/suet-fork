@@ -2,6 +2,7 @@
 """Run provider client/server pairs over two SSH-accessible machines."""
 import argparse
 import json
+import re
 from pathlib import Path
 import shlex
 import subprocess
@@ -43,6 +44,8 @@ def main():
                             (a.server_host, a.client_host), (a.server_ip, a.client_ip), providers)):
                         role = 'server' if side == 0 else 'client'
                         args = ['env', 'FI_PROVIDER=udp;ofi_suet', f'FI_OFI_SUET_SELECTIVE_REPEAT={a.sr}',
+                                'FI_LOG_LEVEL=info', 'FI_LOG_PROV=ofi_suet', 'FI_LOG_SUBSYS=domain',
+                                'FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1',
                                 'UET_PDS=pds', 'UET_PDS_TX_TIMEOUT=100', 'timeout', '-k', '2s', '18s',
                                 f'{a.root}/interop/pingpong', provider, role, ip, a.server_ip,
                                 '60401', mode, str(size), str(a.rounds), f'{remote}/{role}.packets']
@@ -76,6 +79,10 @@ def main():
                            texts[0].count('server TX pong ') == a.rounds and
                            texts[1].count('client TX ping ') == a.rounds and
                            texts[1].count('client RX pong ') == a.rounds)
+                for provider, text in zip(providers, texts):
+                    if provider == 'suet':
+                        counters = re.findall(r'pdc_close_in_err=(\d+)', text)
+                        success = success and bool(counters) and all(int(n) == 0 for n in counters)
                 row = dict(case=case, passed=success, exit_codes=codes, rounds=a.rounds,
                            remote_capture_directory=remote, server_host=a.server_host, client_host=a.client_host)
                 results.append(row)

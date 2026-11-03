@@ -1424,6 +1424,101 @@ static void check_gap_ack(bool wire_ar, bool fail_final, uint32_t base)
 	send_status = 0;
 }
 
+static void check_target_close_request(enum suet_pdc_type type, bool peer_replies)
+{
+	struct suet_domain domain = {0};
+	struct fid_ep ep = {.msg = &msg_ops};
+	struct suet_tpdc *tpdc;
+	struct pds_ctrl_hdr *cp = (void *) sent;
+	uint64_t now = 100;
+	int saved_retries = suet_env.max_pkt_retry;
+
+	domain.clock.elapsed_ms = retry_clock;
+	domain.clock.context = &now;
+	domain.dgram.ep = &ep;
+	domain.dgram.max_mtu_sz = 256;
+	domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+	domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+	domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+	prefix_size = 0;
+	send_status = 0;
+	dispatch_pds_tx = true;
+	suet_env.max_pkt_retry = 2;
+	assert(!suet_dgram_init_pkt_entry_pools(&domain));
+	assert(!suet_ses_init(&domain));
+	assert(!suet_pds_init(&domain));
+	tpdc = ofi_buf_alloc(domain.pds.tpdc_pool);
+	assert(tpdc);
+	memset(tpdc, 0, sizeof(*tpdc));
+	tpdc->dgram_av_addr = 9;
+	tpdc->local_pdcid = 7;
+	tpdc->ipdcid = 8;
+	tpdc->type = type;
+	tpdc->state = SUET_PDC_ESTABLISHED;
+	tpdc->expected_rx_psn = 101;
+	tpdc->ses_ctx = suet_ses_rx_open(&domain, tpdc, 0);
+	assert(tpdc->ses_ctx);
+	assert(!suet_rel_rx_init(&tpdc->rel, 100, 128, SUET_REL_GBN));
+	dlist_init(&tpdc->gtd_del_list);
+	dlist_insert_tail(&tpdc->entry, &domain.pds.active_tpdc_list);
+	assert(ofi_idm_set(&domain.pds.local_pdcid_to_tpdc_idm, 7, tpdc) >= 0);
+	HASH_ADD(tpdc_syn_key_handle, domain.pds.tpdc_by_syn_key_ht,
+		 dgram_av_addr, sizeof(struct suet_tpdc_syn_key), tpdc);
+	tpdc->teardown_pending = true;
+	tpdc->close_req_psn = 101;
+	tpdc->close_req_last_ms = now;
+	for (int attempt = 0; attempt < 2; attempt++) {
+		now += 10;
+		suet_pds_tpdc_progress_teardown(&domain, tpdc);
+		assert(sent_len == sizeof(*cp));
+		assert(pds_ctrl_get_ctl_type(cp) == PDS_CTL_CLOSE_REQ);
+		assert(pds_ctrl_get_spdcid(cp) == 7 && pds_ctrl_get_dpdcid(cp) == 8);
+		assert(pds_ctrl_get_psn(cp) == 101);
+		assert(pds_ctrl_get_flags(cp) & PDS_FLAG_AR);
+		assert(!!(pds_ctrl_get_flags(cp) & PDS_FLAG_ISROD) == (type == SUET_PDC_ROD));
+		assert(!!(pds_ctrl_get_flags(cp) & PDS_FLAG_RETX) == !!attempt);
+		suet_dgram_tx_complete(&domain, send_context, 0);
+	}
+	if (peer_replies) {
+		struct suet_pkt_entry *pkt = suet_dgram_pkt_alloc(&domain);
+		pds_ctrl_init(pkt->pkt, PDS_CTL_CLOSE_CMD, 101, 8, 7, 0);
+		pkt->pkt_size = sizeof(*cp);
+		suet_pds_receive(&domain, pkt, 9);
+		assert(!domain.counters.pdc_close_in_err && domain.counters.pdc_closes_rx == 1);
+		suet_dgram_tx_complete(&domain, send_context, 0);
+	} else {
+		now += 10;
+		suet_pds_tpdc_progress_teardown(&domain, tpdc);
+		assert(domain.counters.pdc_close_in_err == 1);
+	}
+	assert(dlist_empty(&domain.pds.active_tpdc_list));
+	/* The opposite direction routes Close Request to the initiator map. */
+	if (peer_replies) {
+		struct suet_ipdc *ipdc = suet_pds_allocate_ipdc(&domain, 9, type);
+		struct suet_pkt_entry *pkt = suet_dgram_pkt_alloc(&domain);
+		struct pds_ack_hdr *ack = (void *) sent;
+
+		assert(ipdc);
+		ipdc->tpdcid = 8;
+		ipdc->state = SUET_PDC_ESTABLISHED;
+		pds_ctrl_init(pkt->pkt, PDS_CTL_CLOSE_REQ, 105, 8, ipdc->local_pdcid, 0);
+		pkt->pkt_size = sizeof(struct pds_ctrl_hdr);
+		suet_pds_receive(&domain, pkt, 9);
+		assert(ipdc->teardown_pending);
+		assert(sent_len == sizeof(*ack));
+		assert(pds_ack_get_type(ack) == PDS_ACK);
+		assert(pds_ack_get_dpdcid(ack) == 8);
+		assert(pds_ack_get_ack_psn(ack) == 105);
+		suet_dgram_tx_complete(&domain, send_context, 0);
+		suet_pds_free_ipdc(&domain, ipdc);
+	}
+	suet_pds_cleanup(&domain);
+	suet_ses_cleanup(&domain);
+	suet_dgram_free_pkt_entry_pools(&domain);
+	dispatch_pds_tx = false;
+	suet_env.max_pkt_retry = saved_retries;
+}
+
 static void check_explicit_close_ack(void)
 {
 	/* Reference UDP capture: CACK is last data, offset +1 ACKs Close. */
@@ -1459,6 +1554,10 @@ int main(void)
 {
 	check_explicit_close_ack();
 	ofi_mem_init();
+	check_target_close_request(SUET_PDC_ROD, true);
+	check_target_close_request(SUET_PDC_RUD, true);
+	check_target_close_request(SUET_PDC_ROD, false);
+	check_target_close_request(SUET_PDC_RUD, false);
 	check_datagram(0, false);
 	check_datagram(8, false);
 	check_datagram(0, true);

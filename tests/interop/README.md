@@ -175,3 +175,19 @@ confirms `pdc_closes_ok=1` and an empty initiator list. A target PDC remains,
 so the cross-provider runs still time out during finalization; target-driven
 close is a separate fix. Initial copied-binary validation is explicitly
 invalidated; use `fix2-verified-validation/`.
+
+### Fix 3: target-driven teardown
+
+SUET now issues Close Request CPs for target PDCs left during domain close,
+routes received Close Requests to the initiator map, and waits for the
+peer's Close Command before releasing target state. Requests retry with a
+bounded budget; an orphaned peer cannot leave domain close spinning forever.
+The focused regression covers ROD/RUD, retries, peer replies, request routing
+and orphan cleanup. The network runner requires zero `pdc_close_in_err`
+counters, so an orphan timeout cannot masquerade as a clean handshake.
+
+All eight provider-pair/mode cases pass ten 16-byte rounds and clean close,
+including both cross-provider roles. All 35 UDP fabtests and three supported
+UD-verbs smoke tests pass. Bandwidth medians are 6,037.96/5,933.71 MB/s
+(-1.91%/-1.08% from baseline), within baseline sample variation. Large-message
+interop still requires the common payload MTU described below.

@@ -712,6 +712,14 @@ static void suet_pds_ipdc_process_ack(struct suet_domain *domain,
 	ipdc = suet_pds_ipdc_get_by_local_pdcid(domain,
 						pds_ack_get_dpdcid(&ack->pds));
 	if (!ipdc) {
+		struct suet_tpdc *target = suet_pds_tpdc_get_by_local_pdcid(
+			domain, pds_ack_get_dpdcid(&ack->pds));
+		/* A target-issued Close Request is ACKed on the return PDC.
+		 * Keep waiting for the initiator's Close Command before release. */
+		if (target && target->teardown_pending && target->close_req_sent &&
+		    !(ntohs(ack->pds.prologue.raw) & PDS_ACK_FLAG_P) &&
+		    pds_ack_get_ack_psn(&ack->pds) == target->close_req_psn)
+			goto out;
 		FI_WARN(&suet_prov, FI_LOG_EP_CTRL,
 			"ACK for unknown PDCID=%d\n",
 			pds_ack_get_dpdcid(&ack->pds));
@@ -988,6 +996,36 @@ static void suet_pds_process_cp(struct suet_domain *domain,
 	uint32_t cp_psn = pds_ctrl_get_psn(cphdr);
 	uint16_t dpdcid = pds_ctrl_get_dpdcid(cphdr);
 	uint8_t ctl_type = pds_ctrl_get_ctl_type(cphdr);
+
+	if (ctl_type == PDS_CTL_CLOSE_REQ) {
+		struct suet_ipdc *ipdc =
+			suet_pds_ipdc_get_by_local_pdcid(domain, dpdcid);
+		struct suet_pds_pkt_entry *reply;
+		struct pds_ack_hdr *ack;
+
+		/* Close Request travels from target to initiator, unlike Close
+		 * Command. Looking it up in the target map loses the request. */
+		if (!ipdc || ipdc->dgram_av_addr != dgram_av_addr ||
+		    ipdc->tpdcid != pds_ctrl_get_spdcid(cphdr))
+			goto free_pkt;
+		ipdc->teardown_pending = true;
+		reply = suet_pds_pkt_alloc(domain);
+		if (!reply)
+			goto free_pkt;
+		ack = reply->pkt->pkt;
+		memset(ack, 0, sizeof(*ack));
+		pds_ack_set_type(ack, PDS_ACK);
+		pds_ack_set_next_hdr(ack, UET_HDR_NONE);
+		pds_ack_set_cack_psn(ack, cp_psn);
+		pds_ack_set_spdcid(ack, ipdc->local_pdcid);
+		pds_ack_set_dpdcid(ack, ipdc->tpdcid);
+		reply->pkt->pkt_size = sizeof(*ack);
+		reply->pkt->dgram_av_addr = dgram_av_addr;
+		reply->pkt->ev = pkt_entry->pkt->ev;
+		if (suet_pds_send_pkt(domain, reply))
+			suet_pds_pkt_free(reply);
+		goto free_pkt;
+	}
 
 	tpdc = suet_pds_tpdc_get_by_local_pdcid(domain, dpdcid);
 	if (!tpdc) {
@@ -1804,9 +1842,45 @@ void *suet_pds_tx_alloc(struct suet_domain *domain, int peer_idx, void *context,
 	return tx;
 }
 
+static void suet_pds_tpdc_progress_teardown(struct suet_domain *domain,
+					  struct suet_tpdc *tpdc)
+{
+	struct suet_pds_pkt_entry *pkt;
+	struct pds_ctrl_hdr *cp;
+	uint64_t now = suet_domain_now_ms(domain);
+
+	if (!tpdc->teardown_pending || now - tpdc->close_req_last_ms < 10)
+		return;
+	if (tpdc->close_req_attempts >= (unsigned int) MAX(1, suet_env.max_pkt_retry)) {
+		/* The peer may have exited without closing its initiator PDC.
+		 * Never leave fi_close spinning forever on that orphan. */
+		domain->counters.pdc_close_in_err++;
+		suet_pds_free_tpdc(domain, tpdc);
+		return;
+	}
+	tpdc->close_req_last_ms = now;
+	tpdc->close_req_attempts++;
+	pkt = suet_pds_pkt_alloc(domain);
+	if (!pkt)
+		return;
+	cp = pkt->pkt->pkt;
+	pds_ctrl_init(cp, PDS_CTL_CLOSE_REQ, tpdc->close_req_psn,
+		      tpdc->local_pdcid, tpdc->ipdcid, 0);
+	pds_ctrl_set_flags(cp, PDS_FLAG_AR |
+		(tpdc->type == SUET_PDC_ROD ? PDS_FLAG_ISROD : 0) |
+		(tpdc->close_req_sent ? PDS_FLAG_RETX : 0));
+	tpdc->close_req_sent = true;
+	pkt->pkt->pkt_size = sizeof(*cp);
+	pkt->pkt->dgram_av_addr = tpdc->dgram_av_addr;
+	pkt->pkt->ev = tpdc->ack_ev;
+	if (suet_pds_send_pkt(domain, pkt))
+		suet_pds_pkt_free(pkt);
+}
+
 void suet_pds_progress(struct suet_domain *domain)
 {
 	struct suet_ipdc *ipdc;
+	struct suet_tpdc *tpdc;
 	struct dlist_entry *tmp;
 
 	dlist_foreach_container_safe (&domain->pds.active_ipdc_list,
@@ -1819,16 +1893,28 @@ void suet_pds_progress(struct suet_domain *domain)
 			suet_pds_ipdc_progress_tx_list(ipdc);
 		suet_pds_ipdc_progress_teardown(domain, ipdc);
 	}
+	dlist_foreach_container_safe (&domain->pds.active_tpdc_list,
+				      struct suet_tpdc, tpdc, entry, tmp)
+		suet_pds_tpdc_progress_teardown(domain, tpdc);
 }
 
 int suet_pds_drain(struct suet_domain *domain, bool blocking)
 {
 	struct suet_ipdc *ipdc;
+	struct suet_tpdc *tpdc;
 	struct dlist_entry *tmp;
 
 	dlist_foreach_container_safe (&domain->pds.active_ipdc_list,
 				      struct suet_ipdc, ipdc, entry, tmp)
 		suet_pds_ipdc_begin_teardown(ipdc);
+	dlist_foreach_container (&domain->pds.active_tpdc_list,
+				 struct suet_tpdc, tpdc, entry) {
+		if (!tpdc->teardown_pending) {
+			tpdc->teardown_pending = true;
+			tpdc->close_req_psn = tpdc->expected_rx_psn;
+			tpdc->close_req_last_ms = suet_domain_now_ms(domain);
+		}
+	}
 
 	while (!dlist_empty(&domain->pds.active_ipdc_list) ||
 	       !dlist_empty(&domain->pds.active_tpdc_list)) {

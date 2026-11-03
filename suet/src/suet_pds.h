@@ -72,10 +72,8 @@ struct suet_pds_resources {
 /*
  * Spec-compatible PDC state (Section 3.5.8.2 / 3.5.8.3 / Figure 3-43, 3-44).
  *
- * Minimal subset without TSS and target-initiated close.
- * The initiator drives PDC lifecycle;
- * the target only ever observes ESTABLISHED -> CLOSED on receipt of a Close
- * Command CP.
+ * Minimal subset without TSS. Targets can request close; the initiator
+ * completes its messages and sends Close Command before target release.
  */
 enum suet_pdc_state {
 	SUET_PDC_OPENING, /* initiator: SYN attached to first request, no ACK
@@ -149,6 +147,11 @@ struct suet_tpdc {
 	struct suet_rel_rx rel;
 	enum suet_pdc_state state;
 	void *ses_ctx; /* opaque SES receive context */
+	bool teardown_pending;
+	bool close_req_sent;
+	uint32_t close_req_psn;
+	unsigned int close_req_attempts;
+	uint64_t close_req_last_ms;
 	struct dlist_entry
 		gtd_del_list; /* saved SES responses awaiting CLEAR_PSN;
 			       * entries may be created out of PSN order. */
