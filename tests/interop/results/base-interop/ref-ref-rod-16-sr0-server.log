@@ -1,0 +1,18 @@
+ENDPOINT provider=ref udp=10.203.44.1:54834 pid=0 ri=15 initiator=16 mode=rod
+CONTROL_LISTENING
+server RX ping round=0 bytes=16 PASS
+server TX pong round=0 bytes=16
+server RX ping round=1 bytes=16 PASS
+server TX pong round=1 bytes=16
+server RX ping round=2 bytes=16 PASS
+server TX pong round=2 bytes=16
+CLOSING
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 6[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m
+RESULT provider=ref role=server mode=rod bytes=16 rounds=3 PASS
