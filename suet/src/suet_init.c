@@ -86,6 +86,7 @@ static void suet_init_env(void)
 	fi_param_get_bool(&suet_prov, "ecn", &suet_env.ecn);
 	fi_param_get_bool(&suet_prov, "selective_repeat",
 			  &suet_env.selective_repeat);
+	fi_param_get_int(&suet_prov, "payload_mtu", &suet_env.payload_mtu);
 	if (suet_env.selective_repeat) {
 		/* ACK offsets are signed 16-bit; MPR uses 128-packet units. */
 		suet_env.max_unacked =
@@ -120,6 +121,9 @@ void suet_info_from_dgram(struct fi_info *info, uint64_t caps,
 	info->tx_attr->inject_size = MIN(max_mtu, PDS_MAX_MTU_SIZE) -
 				     (sizeof(struct pds_req_hdr) + prefix_size +
 				      sizeof(struct ses_msg_amo_hdr));
+	if (suet_env.payload_mtu > 0)
+		info->tx_attr->inject_size = MIN(info->tx_attr->inject_size,
+					       (size_t) suet_env.payload_mtu);
 
 	*info->rx_attr = *suet_info.rx_attr;
 	*info->ep_attr = *suet_info.ep_attr;
@@ -219,6 +223,10 @@ SUET_INI
 	fi_param_define(
 		&suet_prov, "selective_repeat", FI_PARAM_BOOL,
 		"Use selective repeat instead of Go-Back-N (default: false)");
+	fi_param_define(
+		&suet_prov, "payload_mtu", FI_PARAM_INT,
+		"Fabric-wide UET payload MTU: 1024, 2048, 4096 or 8192; must fit "
+		"the datagram transport (0 preserves legacy transport-derived size)");
 	fi_param_define(
 		&suet_prov, "spin_count", FI_PARAM_INT,
 		"Number of iterations to receive packets (0 - infinite)");

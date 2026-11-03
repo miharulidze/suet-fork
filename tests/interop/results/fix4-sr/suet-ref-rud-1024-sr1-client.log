@@ -1,0 +1,41 @@
+ENDPOINT provider=ref udp=10.203.44.2:47666 pid=0 ri=15 initiator=16 mode=rud
+client TX ping round=0 bytes=1024
+client RX pong round=0 bytes=1024 PASS
+client TX ping round=1 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate SYN PSN 2501944753 on PDC 2 (ACK retransmit)[m
+client RX pong round=1 bytes=1024 PASS
+client TX ping round=2 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944754 on PDC 2 (ACK retransmit)[m
+client RX pong round=2 bytes=1024 PASS
+client TX ping round=3 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944755 on PDC 2 (ACK retransmit)[m
+client RX pong round=3 bytes=1024 PASS
+client TX ping round=4 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944756 on PDC 2 (ACK retransmit)[m
+client RX pong round=4 bytes=1024 PASS
+client TX ping round=5 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944757 on PDC 2 (ACK retransmit)[m
+client RX pong round=5 bytes=1024 PASS
+client TX ping round=6 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944758 on PDC 2 (ACK retransmit)[m
+client RX pong round=6 bytes=1024 PASS
+client TX ping round=7 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944759 on PDC 2 (ACK retransmit)[m
+client RX pong round=7 bytes=1024 PASS
+client TX ping round=8 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944760 on PDC 2 (ACK retransmit)[m
+client RX pong round=8 bytes=1024 PASS
+client TX ping round=9 bytes=1024
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944761 on PDC 2 (ACK retransmit)[m
+client RX pong round=9 bytes=1024 PASS
+[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 2501944762 on PDC 2 (ACK retransmit)[m
+CLOSING
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 33[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m
+RESULT provider=ref role=client mode=rud bytes=1024 rounds=10 PASS

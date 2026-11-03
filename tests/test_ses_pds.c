@@ -551,6 +551,30 @@ static void check_rx_source_identity(uint8_t opcode)
 	suet_ses_cleanup(&domain);
 }
 
+static void check_payload_mtu(void)
+{
+	struct suet_domain domain = {0};
+	int saved = suet_env.payload_mtu;
+
+	domain.dgram.max_pkt_size = 1472;
+	suet_env.payload_mtu = 1024;
+	assert(!suet_ses_init(&domain));
+	assert(domain.max_pkt_sz == 1024);
+	assert(domain.max_inline_msg == 1024 + sizeof(struct ses_req_hdr));
+	suet_ses_cleanup(&domain);
+	suet_env.payload_mtu = 2048;
+	assert(suet_ses_init(&domain) == -FI_EMSGSIZE);
+	suet_env.payload_mtu = 1416;
+	assert(suet_ses_init(&domain) == -FI_EINVAL);
+	suet_env.payload_mtu = -1;
+	assert(suet_ses_init(&domain) == -FI_EINVAL);
+	suet_env.payload_mtu = 0;
+	assert(!suet_ses_init(&domain));
+	assert(domain.max_pkt_sz == 1472 - sizeof(struct pds_req_hdr) - sizeof(struct ses_req_hdr));
+	suet_ses_cleanup(&domain);
+	suet_env.payload_mtu = saved;
+}
+
 static void check_null_response(void)
 {
 	struct ses_resp_hdr response = {0};
@@ -587,6 +611,7 @@ int main(void)
 	/* Pool tests run without fi_getinfo, which normally initializes this.
 	 */
 	ofi_mem_init();
+	check_payload_mtu();
 	check_ses_domain_lifecycle();
 	check_rx_payload_view();
 	check_rx_source_identity(UET_SEND);

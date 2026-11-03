@@ -71,7 +71,7 @@ Server on roce00, for example SUET:
 
 ```bash
 ROOT=/root/suet-interop-20261103/base
-FI_PROVIDER='udp;ofi_suet' UET_PDS=pds UET_PDS_TX_TIMEOUT=100 \
+FI_PROVIDER='udp;ofi_suet' FI_OFI_SUET_PAYLOAD_MTU=1024 UET_PDS=pds UET_PDS_TX_TIMEOUT=100 \
   timeout -k 2s 20s "$ROOT/interop/pingpong" \
   suet server 10.203.44.1 10.203.44.1 60401 rod 16 10 /tmp/server.packets
 ```
@@ -80,7 +80,7 @@ Client on roce01, for example reference:
 
 ```bash
 ROOT=/root/suet-interop-20261103/base
-FI_PROVIDER='udp;ofi_suet' UET_PDS=pds UET_PDS_TX_TIMEOUT=100 \
+FI_PROVIDER='udp;ofi_suet' FI_OFI_SUET_PAYLOAD_MTU=1024 UET_PDS=pds UET_PDS_TX_TIMEOUT=100 \
   timeout -k 2s 20s "$ROOT/interop/pingpong" \
   ref client 10.203.44.2 10.203.44.1 60401 rod 16 10 /tmp/client.packets
 ```
@@ -108,6 +108,11 @@ python3 tests/interop/validate.py --root /root/suet-interop-20261103/base \
 remote installation. Outputs contain both process logs and an honest status
 table; the runner returns nonzero on any failure. Packet captures stay in
 the named remote results directory and can be decoded with `decode.py`.
+The runner configures a shared 1,024-byte payload MTU. `--payload-mtu 0`
+deliberately probes the old transport-derived SUET size, not a compatible
+deployment. The [UET specification](https://ultraethernet.org/wp-content/uploads/sites/20/2026/01/UE-Specification-1.0.2-1.pdf)
+sections 3.3.1 and 3.4.1.11 require a consistent, out-of-band configured
+payload MTU across communicating FEPs. ROD/RUD does not negotiate it.
 
 Validation runs the existing complete UDP fabtests suite with original
 iteration counts, three validated UD-verbs smoke tests (message/tagged
@@ -190,4 +195,26 @@ All eight provider-pair/mode cases pass ten 16-byte rounds and clean close,
 including both cross-provider roles. All 35 UDP fabtests and three supported
 UD-verbs smoke tests pass. Bandwidth medians are 6,037.96/5,933.71 MB/s
 (-1.91%/-1.08% from baseline), within baseline sample variation. Large-message
-interop still requires the common payload MTU described below.
+interop requires the common payload MTU introduced in fix 4.
+
+
+### Fix 4: common payload MTU
+
+SUET previously derived a 1,416-byte segment payload from the UDP transport,
+while the reference expects 1,024 bytes. The UET deployment must configure
+one common size; this is not an obligation for the receiver to infer arbitrary
+segmentation. `FI_OFI_SUET_PAYLOAD_MTU` now provides that configuration and
+checks that it fits the backend. Zero preserves the legacy default.
+
+The focused regression covers a valid 1,024-byte setting, a valid size too
+large for the backend, invalid values, and the unchanged default. The GBN and
+SR matrices each cover all four provider pairings, ROD/RUD, six sizes
+(16, 1,024, 1,025, 8,192, 65,537 and 1,048,576 bytes), and ten rounds.
+All 96 cases pass, including clean close with zero close-error counters.
+Results are recorded in `fix4-gbn/` and `fix4-sr/`.
+
+All 35 UDP fabtests and three validated UD-verbs smoke tests pass. With the
+same legacy/default MTU as the baseline, UD-verbs medians are 5,971.39 MB/s
+at 64 KiB and 5,938.40 MB/s at 1 MiB (-2.99%/-1.00%), within baseline sample
+variation. Those throughput results do not measure the separately configured
+1,024-byte interop profile.

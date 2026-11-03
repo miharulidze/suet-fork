@@ -98,6 +98,7 @@ struct suet_env {
 	int cq_read_batch_size;
 	int max_pkt_retry;
 	int selective_repeat;
+	int payload_mtu; /* 0: legacy transport-derived size; otherwise fabric-wide UET MTU. */
 	int ecn;
 	int spray_paths;
 	int max_gtd_del_resp_pool_size;

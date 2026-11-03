@@ -27,6 +27,8 @@ def main():
     p.add_argument('--sizes', default='16,1024,8192,65537')
     p.add_argument('--rounds', type=int, default=10)
     p.add_argument('--sr', type=int, choices=(0, 1), default=0)
+    p.add_argument('--payload-mtu', type=int, choices=(0, 1024), default=1024,
+                   help='1024 matches the reference; 0 probes legacy SUET transport sizing')
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=False)
     results = []
@@ -44,6 +46,7 @@ def main():
                             (a.server_host, a.client_host), (a.server_ip, a.client_ip), providers)):
                         role = 'server' if side == 0 else 'client'
                         args = ['env', 'FI_PROVIDER=udp;ofi_suet', f'FI_OFI_SUET_SELECTIVE_REPEAT={a.sr}',
+                                f'FI_OFI_SUET_PAYLOAD_MTU={a.payload_mtu}',
                                 'FI_LOG_LEVEL=info', 'FI_LOG_PROV=ofi_suet', 'FI_LOG_SUBSYS=domain',
                                 'FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1',
                                 'UET_PDS=pds', 'UET_PDS_TX_TIMEOUT=100', 'timeout', '-k', '2s', '18s',
@@ -84,6 +87,7 @@ def main():
                         counters = re.findall(r'pdc_close_in_err=(\d+)', text)
                         success = success and bool(counters) and all(int(n) == 0 for n in counters)
                 row = dict(case=case, passed=success, exit_codes=codes, rounds=a.rounds,
+                           payload_mtu=a.payload_mtu,
                            remote_capture_directory=remote, server_host=a.server_host, client_host=a.client_host)
                 results.append(row)
                 print(json.dumps(row), flush=True)

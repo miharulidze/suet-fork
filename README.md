@@ -268,3 +268,20 @@ The default remains a fixed window. ACKs echo CE using the UET M flag;
 duplicate ACKs cannot release credit or adjust the window twice, and
 reliability coalesces duplicate trim NACKs. This is not UET NSCC. Native UDP
 currently does not supply the optional network metadata.
+
+### Payload MTU for reference-provider interoperability
+
+Set `FI_OFI_SUET_PAYLOAD_MTU=1024` when communicating with the testbench's
+reference endpoint. UET requires all communicating FEPs to use the same
+payload MTU configured out of band (specification sections 3.3.1 and
+3.4.1.11). Supported configured values are 1024, 2048, 4096 and 8192;
+the selected size plus protocol headers must fit the underlying datagram
+transport. An invalid value or a size that does not fit fails domain setup.
+Inject limits, packetization and receive accounting use the configured size.
+
+The default value 0 preserves the existing transport-derived packet size
+and its SUET-to-SUET performance. That legacy default is not a shared UET
+payload-MTU configuration and must not be assumed interoperable with the
+reference provider. For UDP with a 1500-byte network MTU, use 1024. Larger
+configured payloads require a datagram backend/path that can carry them.
+See the [two-node interoperability testbench](tests/interop/README.md).

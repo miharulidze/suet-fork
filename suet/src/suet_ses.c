@@ -98,6 +98,14 @@ int suet_ses_init(struct suet_domain *domain)
 	if (max_ses_size <=
 	    sizeof(struct ses_req_hdr) + sizeof(struct ses_msg_amo_hdr))
 		return -FI_EMSGSIZE;
+	if (suet_env.payload_mtu) {
+		if (suet_env.payload_mtu != 1024 && suet_env.payload_mtu != 2048 &&
+		    suet_env.payload_mtu != 4096 && suet_env.payload_mtu != 8192)
+			return -FI_EINVAL;
+		if ((size_t) suet_env.payload_mtu > max_ses_size - sizeof(struct ses_req_hdr))
+			return -FI_EMSGSIZE;
+		max_ses_size = sizeof(struct ses_req_hdr) + suet_env.payload_mtu;
+	}
 	domain->max_inline_msg = max_ses_size;
 	domain->max_inline_rma = max_ses_size;
 	domain->max_pkt_sz = max_ses_size - sizeof(struct ses_req_hdr);
