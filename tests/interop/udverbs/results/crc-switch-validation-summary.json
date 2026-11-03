@@ -1,0 +1,81 @@
+{
+  "crc-switch-correctness": {
+    "cases": 30,
+    "passed": 30,
+    "reference_process_logs_verified": 40,
+    "warnings": {
+      "ref-on: PSN retransmit": 532,
+      "ref-off: PSN retransmit": 532,
+      "ref-on: duplicate PSN (ACK retransmit)": 246,
+      "ref-off: duplicate PSN (ACK retransmit)": 246
+    },
+    "warning_files": {
+      "ref-on-bw-65536-r0-server.log": 16,
+      "ref-on-bw-65536-r0-client.log": 16,
+      "ref-off-bw-65536-r0-server.log": 16,
+      "ref-off-bw-65536-r0-client.log": 16,
+      "ref-on-bw-1048576-r0-server.log": 373,
+      "ref-on-bw-1048576-r0-client.log": 373,
+      "ref-off-bw-1048576-r0-server.log": 373,
+      "ref-off-bw-1048576-r0-client.log": 373
+    }
+  },
+  "crc-switch-performance": {
+    "cases": 180,
+    "passed": 180,
+    "reference_process_logs_verified": 240,
+    "warnings": {
+      "ref-on: PSN retransmit": 59,
+      "ref-on: duplicate PSN (ACK retransmit)": 59
+    },
+    "warning_files": {
+      "ref-on-pingpong-1048576-r2-server.log": 59,
+      "ref-on-pingpong-1048576-r2-client.log": 59
+    }
+  },
+  "api_checks": {
+    "passed": 8,
+    "settings": [
+      "unset",
+      "0",
+      "1",
+      "invalid"
+    ],
+    "hosts": 2
+  },
+  "basic_suet_fabtests": {
+    "passed": 35,
+    "failed": 0,
+    "backend": "UDP loopback"
+  },
+  "patch_sha256": "1717e39bd096b82a7221f317d93304a16b317ed82afc50824ab408b4d36f5c40",
+  "reference_binary_sha256_both_hosts": "b49d32220da3f168f5c6bb0343c1e4c77a813c02b3445880e5833a7d52f4598c",
+  "native_suet_libfabric_and_fabtests_unchanged": true,
+  "one_mib_bandwidth_MBps": {
+    "suet": 6137.42,
+    "ref-on": 315.29,
+    "ref-off": 2686.51
+  },
+  "one_mib_baseline_comparison": {
+    "suet": {
+      "previous": 6100.99,
+      "current": 6137.42,
+      "percent_change": 0.5971162057305524
+    },
+    "ref-on": {
+      "previous": 315.3,
+      "current": 315.29,
+      "percent_change": -0.0031715826197209473
+    }
+  },
+  "crc_off_profile": {
+    "exit_codes": [
+      0,
+      0
+    ],
+    "sampled_crc_symbols": false,
+    "lost_samples": 0,
+    "profiled_bandwidth_MBps": 2637.16,
+    "excluded_from_performance_medians": true
+  }
+}

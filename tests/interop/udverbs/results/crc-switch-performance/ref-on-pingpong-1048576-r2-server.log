@@ -1,0 +1,74 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+UET_BENCH_CRC mode=on
+UD_BACKEND provider=verbs domain=mlx5_0-dgram type=FI_EP_DGRAM prefix=40 source=10.203.44.1 queue_depth=384 ip_frames=1
+REF_PROFILE payload_mtu=4000
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498429 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498430 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498431 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498432 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498433 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498434 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498435 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498436 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498437 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498438 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498439 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498440 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498441 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498442 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498443 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498444 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498445 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498446 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498447 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498448 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498449 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498479 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498480 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498481 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498482 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498483 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498484 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498485 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498486 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498487 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498488 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498489 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498490 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498491 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498492 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498493 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498494 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498495 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498496 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498497 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498498 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498499 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498500 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498501 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498502 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498503 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498504 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498505 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498506 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498507 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498508 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498509 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498510 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498511 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498512 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498513 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498514 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498515 retransmit[m
+[33m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:2402] WARN: [PDS] PDC 2 PSN 725498516 retransmit[m
+bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+1m      128     256m        0.85s    317.21    3305.63       0.00
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 45665[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+UD_BACKEND tx=45665 rx=45665 tx_bytes=154819316 rx_bytes=155220738
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m

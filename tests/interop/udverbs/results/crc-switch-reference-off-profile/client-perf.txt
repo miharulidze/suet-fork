@@ -1,0 +1,150 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 1K of event 'cycles:u'
+# Event count (approx.): 18905036416
+#
+# Overhead  Symbol                                 Shared Object         IPC   [IPC Coverage]
+# ........  .....................................  ....................  ....................
+#
+    17.03%  [.] __memmove_evex_unaligned_erms      libc.so.6             -      -
+     9.61%  [.] pthread_mutex_unlock@@GLIBC_2.2.5  libc.so.6             -      -
+     8.51%  [.] pthread_mutex_lock@@GLIBC_2.2.5    libc.so.6             -      -
+     8.04%  [.] pthread_spin_lock@@GLIBC_2.34      libc.so.6             -      -
+     3.42%  [.] bm_shift_right                     libuet_ref-fi.so      -      -
+     3.31%  [.] 0x0000000000000a09                 [vdso]                -      -
+     2.47%  [.] uet_pds_tx_pkt                     libuet_ref-fi.so      -      -
+     2.44%  [.] uet_ep_progress_locked             libuet_ref-fi.so      -      -
+     2.37%  [.] ofi_cq_readfrom                    libfabric.so.1.33.0   -      -
+     2.11%  [.] __libc_calloc2                     libc.so.6             -      -
+     2.05%  [.] vrb_poll_cq                        libfabric.so.1.33.0   -      -
+     2.05%  [.] vrb_cq_progress                    libfabric.so.1.33.0   -      -
+     1.65%  [.] vrb_cq_readfrom                    libfabric.so.1.33.0   -      -
+     1.53%  [.] __memset_evex_unaligned_erms       libc.so.6             -      -
+     1.48%  [.] _int_free_chunk                    libc.so.6             -      -
+     1.42%  [.] uet_pds_progress_rx                libuet_ref-fi.so      -      -
+     1.28%  [.] uet_tx_desc_ring_rotate            libuet_ref-fi.so      -      -
+     1.26%  [.] uet_parse_pkt                      libuet_ref-fi.so      -      -
+     1.10%  [.] 0x000000000002ebe8                 libmlx5.so.1.27.64.0  -      -
+     1.10%  [.] _int_malloc                        libc.so.6             -      -
+     1.03%  [.] 0x0000000000000a3f                 [vdso]                -      -
+     0.95%  [.] vrb_dgram_ep_send                  libfabric.so.1.33.0   -      -
+     0.87%  [.] tx                                 libuet_ref-fi.so      -      -
+     0.87%  [.] ofi_cq_read                        libfabric.so.1.33.0   -      -
+     0.86%  [.] __libc_calloc                      libc.so.6             -      -
+     0.79%  [.] uet_csum                           libuet_ref-fi.so      -      -
+     0.71%  [.] tx_progress                        libuet_ref-fi.so      -      -
+     0.71%  [.] 0x0000000000000a0b                 [vdso]                -      -
+     0.71%  [.] uet_gettime                        libuet_ref-fi.so      -      -
+     0.63%  [.] _int_free_merge_chunk              libc.so.6             -      -
+     0.63%  [.] cfree@GLIBC_2.2.5                  libc.so.6             -      -
+     0.63%  [.] uet_pdsm_get_msgid_pdc             libuet_ref-fi.so      -      -
+     0.46%  [.] bm_get                             libuet_ref-fi.so      -      -
+     0.40%  [.] uet_pds_ep_close_wait              libuet_ref-fi.so      -      -
+     0.39%  [.] 0x000000000002f99f                 libmlx5.so.1.27.64.0  -      -
+     0.39%  [.] uet_build_eth_hdr                  libuet_ref-fi.so      -      -
+     0.39%  [.] pthread_spin_lock@plt              libmlx5.so.1.27.64.0  -      -
+     0.39%  [.] 0x000000000002ebb8                 libmlx5.so.1.27.64.0  -      -
+     0.39%  [.] pthread_spin_unlock@@GLIBC_2.34    libc.so.6             -      -
+     0.39%  [.] 0x000000000002f1fd                 libmlx5.so.1.27.64.0  -      -
+     0.39%  [.] uet_pds_sec_tx_pkt                 libuet_ref-fi.so      -      -
+     0.39%  [.] uet_build_ses_hdr.isra.0           libuet_ref-fi.so      -      -
+     0.39%  [.] uet_pds_shift_tx_window.isra.0     libuet_ref-fi.so      -      -
+     0.39%  [.] clock_gettime@@GLIBC_2.17          libc.so.6             -      -
+     0.32%  [.] rx_progress.part.0                 libuet_ref-fi.so      -      -
+     0.32%  [.] vrb_report_wc                      libfabric.so.1.33.0   -      -
+     0.32%  [.] uet_tx_msg                         libuet_ref-fi.so      -      -
+     0.31%  [.] 0x000000000002eb1b                 libmlx5.so.1.27.64.0  -      -
+     0.31%  [.] 0x000000000002ec7d                 libmlx5.so.1.27.64.0  -      -
+     0.31%  [.] 0x000000000002f232                 libmlx5.so.1.27.64.0  -      -
+     0.24%  [.] 0x000000000002ebfb                 libmlx5.so.1.27.64.0  -      -
+     0.24%  [.] 0x0000000000000a1a                 [vdso]                -      -
+     0.24%  [.] 0x000000000002f1eb                 libmlx5.so.1.27.64.0  -      -
+     0.24%  [.] 0x000000000002f254                 libmlx5.so.1.27.64.0  -      -
+     0.24%  [.] 0x000000000002ed76                 libmlx5.so.1.27.64.0  -      -
+     0.24%  [.] 0x000000000002f7a0                 libmlx5.so.1.27.64.0  -      -
+     0.24%  [.] 0x000000000002ebd9                 libmlx5.so.1.27.64.0  -      -
+     0.24%  [.] uet_build_ipv4_hdr                 libuet_ref-fi.so      -      -
+     0.24%  [.] 0x000000000002eba2                 libmlx5.so.1.27.64.0  -      -
+     0.24%  [.] 0x000000000002f260                 libmlx5.so.1.27.64.0  -      -
+     0.23%  [.] 0x000000000002ebcf                 libmlx5.so.1.27.64.0  -      -
+     0.23%  [.] 0x000000000002edaf                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] 0x000000000002f219                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] 0x000000000002ef86                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] vrb_post_send                      libfabric.so.1.33.0   -      -
+     0.16%  [.] 0x000000000002ec0d                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] 0x000000000005a88f                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] 0x000000000005a8b3                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] unlink_chunk.isra.0                libc.so.6             -      -
+     0.16%  [.] 0x000000000002eb10                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] long long restrict                 libuet_ref-fi.so      -      -
+     0.16%  [.] free@plt                           libuet_ref-fi.so      -      -
+     0.16%  [.] 0x00000000000009b7                 [vdso]                -      -
+     0.16%  [.] vrb_dgram_ep_recv                  libfabric.so.1.33.0   -      -
+     0.16%  [.] 0x000000000005b54f                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] cq_read                            libuet_ref-fi.so      -      -
+     0.16%  [.] 0x000000000002eb00                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] vrb_post_recv_internal             libfabric.so.1.33.0   -      -
+     0.16%  [.] 0x00000000000009db                 [vdso]                -      -
+     0.16%  [.] 0x000000000002eb34                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] 0x000000000005a733                 libmlx5.so.1.27.64.0  -      -
+     0.16%  [.] pthread_mutex_unlock@plt           libfabric.so.1.33.0   -      -
+     0.16%  [.] 0x000000000002f24c                 libmlx5.so.1.27.64.0  -      -
+     0.09%  [k] 0xffffffff99c00ef0                 [unknown]             -      -
+     0.08%  [k] 0xffffffff99c00b90                 [unknown]             -      -
+     0.08%  [.] 0x0000000000000a29                 [vdso]                -      -
+     0.08%  [.] pthread_mutex_lock@plt             libfabric.so.1.33.0   -      -
+     0.08%  [.] 0x000000000005ade0                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000005a6ce                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000005bbb0                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000000a45                 [vdso]                -      -
+     0.08%  [.] imp_shim_is_enabled                libuet_ref-fi.so      -      -
+     0.08%  [.] 0x000000000002edd5                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x00000000000009fd                 [vdso]                -      -
+     0.08%  [.] 0x000000000002ed33                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] _int_free_maybe_trim               libc.so.6             -      -
+     0.08%  [.] 0x000000000002ec16                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ec56                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ef96                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] uet_get_ses_req_payload_len        libuet_ref-fi.so      -      -
+     0.08%  [.] uet_pds_to_ses_rx_rsp              libuet_ref-fi.so      -      -
+     0.08%  [.] 0x0000000000067f7e                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] uet_rtr_msg_age_common.isra.0      libuet_ref-fi.so      -      -
+     0.08%  [.] 0x000000000005ae85                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ecbd                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000005ab48                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067eb0                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] bm_set                             libuet_ref-fi.so      -      -
+     0.08%  [.] 0x000000000002ecc5                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000005a785                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000000a81                 [vdso]                -      -
+     0.08%  [.] __strstr_sse2_unaligned            libc.so.6             -      -
+     0.08%  [.] 0x0000000000000a8a                 [vdso]                -      -
+     0.08%  [.] 0x00000000000009ef                 [vdso]                -      -
+     0.08%  [.] 0x000000000005adff                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000005a6fa                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000068188                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002eddd                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002f241                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000000a7b                 [vdso]                -      -
+     0.08%  [.] uet_cq_read                        libuet_ref-fi.so      -      -
+     0.08%  [.] 0x000000000002ec69                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] uet_pdsm_unmap_msgid_pdc           libuet_ref-fi.so      -      -
+     0.08%  [.] 0x000000000002f3b3                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] calloc@plt                         libuet_ref-fi.so      -      -
+     0.08%  [.] 0x000000000005afe5                 libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000005ab52                 libmlx5.so.1.27.64.0  -      -
+     0.03%  [.] __getdelim                         libc.so.6             -      -
+     0.02%  [.] __memchr_evex                      libc.so.6             -      -
+     0.01%  [.] vrb_init                           libfabric.so.1.33.0   -      -
+     0.01%  [.] _dl_map_object_from_fd             ld-linux-x86-64.so.2  -      -
+     0.01%  [.] memcpy@@GLIBC_2.14@plt             libc.so.6             -      -
+     0.01%  [.] __strncat_chk                      libc.so.6             -      -
+     0.01%  [.] strstr@plt                         libfabric.so.1.33.0   -      -
+
+
+#
+# (Cannot load tips.txt file, please install perf!)
+#

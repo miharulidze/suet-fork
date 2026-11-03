@@ -39,9 +39,15 @@ if a.output:
 a.results = output
 assert runs and all(r['passed'] for r in runs)
 sizes = sorted({r['bytes'] for r in runs})
+providers = [x for x in ('suet', 'ref', 'ref-on', 'ref-off')
+             if any(r['provider'] == x for r in runs)]
+names = {'suet': 'SUET', 'ref': 'Reference',
+         'ref-on': 'Reference CRC on', 'ref-off': 'Reference CRC off'}
+colors = {'suet': '#2563eb', 'ref': '#d97706',
+          'ref-on': '#d97706', 'ref-off': '#16a34a'}
 groups = {}
 for test in ('pingpong', 'bw'):
-    for provider in ('suet', 'ref'):
+    for provider in providers:
         for size in sizes:
             rows = [r['measurements'][0] for r in runs if
                     (r['test'], r['provider'], r['bytes']) == (test, provider, size)]
@@ -55,34 +61,42 @@ def values(test, provider, size, metric):
 table = []
 for size in sizes:
     row = dict(bytes=size)
-    for provider in ('suet', 'ref'):
+    for provider in providers:
         for metric, test, key in [('latency', 'pingpong', 'usec_per_transfer'), ('bandwidth', 'bw', 'mb_per_second')]:
             unit = 'us' if metric == 'latency' else 'MBps'
             center, low, high = values(test, provider, size, key)
             row[f'{provider}_{metric}_{unit}'] = center
             row[f'{provider}_{metric}_min_{unit}'] = low
             row[f'{provider}_{metric}_max_{unit}'] = high
-    row['latency_ratio_ref_over_suet'] = row['ref_latency_us'] / row['suet_latency_us']
-    row['bandwidth_ratio_suet_over_ref'] = row['suet_bandwidth_MBps'] / row['ref_bandwidth_MBps']
+    for provider in providers:
+        if provider != 'suet' and 'suet' in providers:
+            row[f'latency_ratio_{provider}_over_suet'] = row[f'{provider}_latency_us'] / row['suet_latency_us']
+            row[f'bandwidth_ratio_suet_over_{provider}'] = row['suet_bandwidth_MBps'] / row[f'{provider}_bandwidth_MBps']
+    if 'ref-on' in providers and 'ref-off' in providers:
+        row['crc_off_bandwidth_speedup'] = row['ref-off_bandwidth_MBps'] / row['ref-on_bandwidth_MBps']
     table.append(row)
 with (a.results / 'comparison.csv').open('w') as f:
     writer = csv.DictWriter(f, fieldnames=list(table[0]), lineterminator="\n"); writer.writeheader(); writer.writerows(table)
 
-lines = ['| Bytes | SUET latency, µs | Reference latency, µs | SUET bandwidth, MB/s | Reference bandwidth, MB/s |',
-         '| ---: | ---: | ---: | ---: | ---: |']
+columns = [(provider, metric, unit) for metric, unit in
+           [('latency', 'us'), ('bandwidth', 'MBps')] for provider in providers]
+headers = [f'{names[provider]} {metric}, ' + ('µs' if unit == 'us' else 'MB/s')
+           for provider, metric, unit in columns]
+lines = ['| Bytes | ' + ' | '.join(headers) + ' |',
+         '| ' + ' | '.join(['---:'] * (len(columns) + 1)) + ' |']
 for r in table:
-    lines.append(f"| {r['bytes']:,} | {r['suet_latency_us']:,.2f} | {r['ref_latency_us']:,.2f} | "
-                 f"{r['suet_bandwidth_MBps']:,.2f} | {r['ref_bandwidth_MBps']:,.2f} |")
+    lines.append(f"| {r['bytes']:,} | " + ' | '.join(
+        f"{r[f'{provider}_{metric}_{unit}']:,.2f}" for provider, metric, unit in columns) + ' |')
 (a.results / 'table.md').write_text('\n'.join(lines) + '\n')
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.7), layout='constrained')
 for axis, test, metric, label in zip(axes, ('pingpong', 'bw'),
         ('usec_per_transfer', 'mb_per_second'), ('Ping-pong latency, RTT/2 (µs)', 'One-way bandwidth (MB/s)')):
-    for provider, name, color in (('suet', 'SUET', '#2563eb'), ('ref', 'UET reference + DGRAM adapter', '#d97706')):
+    for provider in providers:
         v = [values(test, provider, s, metric) for s in sizes]
         centers = [x[0] for x in v]
         axis.errorbar(sizes, centers, yerr=([x[0]-x[1] for x in v], [x[2]-x[0] for x in v]),
-                      color=color, marker='o', markersize=4, capsize=3, linewidth=1.6, label=name)
+                      color=colors[provider], marker='o', markersize=4, capsize=3, linewidth=1.6, label=names[provider])
     axis.set_xscale('log', base=2)
     axis.set_xticks([8, 64, 1024, 4096, 65536, 1048576] if profile == 'native4k' else [8, 64, 1024, 16384, 262144, 1048576],
                    ['8 B', '64 B', '1 KiB', '4 KiB', '64 KiB', '1 MiB'] if profile == 'native4k' else ['8 B', '64 B', '1 KiB', '16 KiB', '256 KiB', '1 MiB'])
@@ -95,7 +109,7 @@ for axis, test, metric, label in zip(axes, ('pingpong', 'bw'),
 axes[0].legend(fontsize=8, loc='upper left')
 if profile == 'native4k' and 4000 in sizes and 4096 in sizes:
     for size, text, offset in ((4000, '4,000 B: 1 packet', (-75, 35)),
-                               (4096, '4,096 B: 2 packets', (25, -28))):
+                               (4096, '4,096 B\n2 packets', (25, -10))):
         rate = values('bw', 'suet', size, 'mb_per_second')[0]
         axes[1].annotate(text, xy=(size, rate), xytext=offset,
                          textcoords='offset points', fontsize=8,

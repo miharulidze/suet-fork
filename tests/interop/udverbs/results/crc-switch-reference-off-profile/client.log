@@ -1,0 +1,17 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+UET_BENCH_CRC mode=off
+UD_BACKEND provider=verbs domain=mlx5_0-dgram type=FI_EP_DGRAM prefix=40 source=10.203.44.2 queue_depth=384 ip_frames=1
+REF_PROFILE payload_mtu=4000
+bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+1m      10k     9.7g        3.98s   2637.16     397.62       0.00
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 583274[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+UD_BACKEND tx=2893172 rx=583274 tx_bytes=11777356944 rx_bytes=38502276
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.058 MB /root/suet-interop-20261103/udcompare4k-crc/profile-1.data (1318 samples) ]

@@ -16,6 +16,8 @@ def ssh(host, command):
 
 
 def pair(a, provider, test, size, iterations, warmup, repeat):
+    reference = provider.startswith('ref')
+    crc = 'off' if provider == 'ref-off' else 'on'
     name = f'{provider}-{test}-{size}-r{repeat}'
     commands, processes, files = [], [], []
     try:
@@ -26,10 +28,11 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
                    'FI_LOG_LEVEL=warn',
                    f'FI_OFI_SUET_PAYLOAD_MTU={a.suet_payload_mtu}', 'FI_OFI_SUET_SELECTIVE_REPEAT=0',
                    f'UET_BENCH_PAYLOAD_MTU={a.payload_mtu}',
+                   'UET_BENCH_DISABLE_CRC=' + ('1' if crc == 'off' else '0'),
                    'UET_PDS=pds', 'UET_UD_SOURCE=' + ip, 'UET_BENCH_MODE=rod']
             args = ['timeout', '-k', '3s', str(a.timeout) + 's', 'taskset', '-c', '2',
                     a.fabric + '/bin/fi_rdm_' + test, '-p',
-                    'uet_ref' if provider == 'ref' else 'verbs;ofi_suet',
+                    'uet_ref' if reference else 'verbs;ofi_suet',
                     '-b=' + str(a.control_port + a.case_index), '-j', '0', '-S', str(size), '-I', str(iterations),
                     '-w', str(warmup), '-W', str(a.window), '-s', ip]
             if provider == 'suet':
@@ -62,24 +65,26 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
             except ValueError:
                 pass
     valid = codes == [0, 0] and len(rates) == 1
-    if provider == 'ref':
+    if reference:
         for side in ('server', 'client'):
             body = (a.output / f'{name}-{side}.log').read_text(errors='replace')
             valid &= ('UD_BACKEND provider=verbs domain=mlx5_0-dgram type=FI_EP_DGRAM' in body and
+                      f'UET_BENCH_CRC mode={crc}' in body and
                       bool(re.search(r'UD_BACKEND tx=[1-9]\d* rx=[1-9]\d*', body)))
     return dict(name=name, provider=provider, test=test, bytes=size, iterations=iterations,
+                crc=crc if reference else None,
                 warmup=warmup, repeat=repeat, exit_codes=codes, passed=bool(valid),
                 measurements=rates, commands=commands)
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--root', default='/root/suet-interop-20261103/udcompare4k')
+    p.add_argument('--root', default='/root/suet-interop-20261103/udcompare4k-crc')
     p.add_argument('--profile', choices=('native4k', 'matched1k'), default='native4k')
     p.add_argument('--fabric', default='/root/suet-interop-20261103/fix6/work/build')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--stage', choices=('correctness', 'performance'), default='correctness')
-    p.add_argument('--providers', default='suet,ref')
+    p.add_argument('--providers', default='suet,ref-on,ref-off')
     p.add_argument('--tests', default='pingpong,bw')
     p.add_argument('--sizes', default='8,64,256,1024,4000,4096,16384,65536,262144,1048576')
     p.add_argument('--samples', type=int, default=3)
@@ -111,7 +116,7 @@ def main():
                 if repeat % 2:
                     providers.reverse()
                 for provider in providers:
-                    assert provider in ('suet', 'ref')
+                    assert provider in ('suet', 'ref', 'ref-on', 'ref-off')
                     if a.stage == 'correctness':
                         iterations, warmup = 128, 16
                     elif test == 'pingpong':

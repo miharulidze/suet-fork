@@ -1,0 +1,36 @@
+{
+  "commands": [
+    [
+      "ssh",
+      "-o",
+      "BatchMode=yes",
+      "-o",
+      "ConnectTimeout=15",
+      "-J",
+      "mkhalilov@blue.inf.ethz.ch",
+      "root@roce00.cscs.ch",
+      "env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261103/udcompare4k-crc/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_DISABLE_CRC=1 UET_PDS=pds UET_UD_SOURCE=10.203.44.1 UET_BENCH_MODE=rod taskset -c 2 perf record -F 199 -e cycles:u -o /root/suet-interop-20261103/udcompare4k-crc/profile-0.data -- timeout -k 3s 150s /root/suet-interop-20261103/fix6/work/build/bin/fi_rdm_bw -p uet_ref -b=33400 -j 0 -S 1048576 -I 10000 -w 1000 -W 64 -s 10.203.44.1"
+    ],
+    [
+      "ssh",
+      "-o",
+      "BatchMode=yes",
+      "-o",
+      "ConnectTimeout=15",
+      "-J",
+      "mkhalilov@blue.inf.ethz.ch",
+      "root@roce01.cscs.ch",
+      "env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261103/udcompare4k-crc/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_DISABLE_CRC=1 UET_PDS=pds UET_UD_SOURCE=10.203.44.2 UET_BENCH_MODE=rod taskset -c 2 perf record -F 199 -e cycles:u -o /root/suet-interop-20261103/udcompare4k-crc/profile-1.data -- timeout -k 3s 150s /root/suet-interop-20261103/fix6/work/build/bin/fi_rdm_bw -p uet_ref -b=33400 -j 0 -S 1048576 -I 10000 -w 1000 -W 64 -s 10.203.44.2 10.203.44.1"
+    ]
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "event": "cycles:u",
+  "frequency_hz": 199,
+  "iterations": 10000,
+  "warmup": 1000,
+  "bytes": 1048576,
+  "note": "Separate diagnostic run under perf; excluded from performance medians"
+}

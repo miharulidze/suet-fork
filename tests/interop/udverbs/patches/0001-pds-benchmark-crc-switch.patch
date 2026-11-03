@@ -1,0 +1,73 @@
+From: SUET interoperability testbench
+Subject: [PATCH] pds: add an opt-in software-CRC bypass for benchmarking
+
+Applies to ultraethernet/uet-ref-prov 9effe362ec13a7c2c1fa5a79146f5846f0c898c6.
+UET_BENCH_DISABLE_CRC=1 skips cleartext CRC generation and validation in the
+full PDS backend, retaining the four-byte trailer and packet sizes. The
+unset/0 default preserves CRC-on behavior. Encrypted traffic is unchanged.
+Both peers must select the same mode. This is an isolated benchmark feature,
+not an interoperable replacement for the UET integrity check. The SNG backend
+is outside this switch's scope. Runtime selection is logged once at startup.
+
+--- a/uet_pds.h
++++ b/uet_pds.h
+@@ -330,0 +331 @@
++	bool benchmark_crc_disabled; /* test-only: preserve trailer, bypass CRC */
+--- a/uet_pds.c
++++ b/uet_pds.c
+@@ -461,7 +461,11 @@
+-		/* calculate the CRC (include src/dst IP and UDP) */
+-		crc_start = (pp->is_ipv6) ?
+-			    ((uint8_t *)pp->ip + 8) : /* IPv6 src offset */
+-			    ((uint8_t *)pp->ip + 12); /* IPv4 src offset */
+-		crc = crc32c(crc_start,
+-			     (pp->pkt_len -
+-			      (crc_start - (uint8_t *)pp->eth)));
++		/* Preserve framing with a zero trailer in the benchmark bypass. */
++		crc = 0;
++		if (!uet->pds.benchmark_crc_disabled) {
++			/* calculate the CRC (include src/dst IP and UDP) */
++			crc_start = (pp->is_ipv6) ?
++				    ((uint8_t *)pp->ip + 8) : /* IPv6 src offset */
++				    ((uint8_t *)pp->ip + 12); /* IPv4 src offset */
++			crc = crc32c(crc_start,
++				     (pp->pkt_len -
++				      (crc_start - (uint8_t *)pp->eth)));
++		}
+@@ -1582,0 +1587 @@
++	const char *disable_crc;
+@@ -1584,0 +1590,15 @@
++
++	/* Benchmark-only, opt-in bypass of the cleartext software CRC. Both
++	 * peers must use the same setting; retain the four-byte trailer so
++	 * packet lengths and segmentation remain identical to CRC-on.
++	 */
++	disable_crc = getenv("UET_BENCH_DISABLE_CRC");
++	if (disable_crc && strcmp(disable_crc, "0") &&
++	    strcmp(disable_crc, "1")) {
++		UET_PDS_ERR("UET_BENCH_DISABLE_CRC must be 0 or 1");
++		return -EINVAL;
++	}
++	uet->pds.benchmark_crc_disabled =
++		disable_crc && !strcmp(disable_crc, "1");
++	fprintf(stderr, "UET_BENCH_CRC mode=%s\n",
++		uet->pds.benchmark_crc_disabled ? "off" : "on");
+@@ -4251 +4271 @@
+-	if (!pp.sec) {
++	if (!pp.sec && !uet->pds.benchmark_crc_disabled) {
+--- a/uet_pds_rudi.c
++++ b/uet_pds_rudi.c
+@@ -161,2 +161,3 @@
+-		crc = crc32c(crc_start,
+-			     (pp.pkt_len - (crc_start - (uint8_t *)pp.eth)));
++		crc = uet->pds.benchmark_crc_disabled ? 0 :
++			crc32c(crc_start,
++			       (pp.pkt_len - (crc_start - (uint8_t *)pp.eth)));
+--- a/uet_pds_uud.c
++++ b/uet_pds_uud.c
+@@ -84,2 +84,3 @@
+-		crc = crc32c(crc_start,
+-			     (pp.pkt_len - (crc_start - (uint8_t *)pp.eth)));
++		crc = uet->pds.benchmark_crc_disabled ? 0 :
++			crc32c(crc_start,
++			       (pp.pkt_len - (crc_start - (uint8_t *)pp.eth)));

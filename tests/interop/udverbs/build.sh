@@ -8,9 +8,12 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 mkdir -p "$UD_BUILD/provider" "$UD_BUILD/objects"
 
 : "${UD_REFERENCE_PAYLOAD:=4000}"
-if [[ "${UD_REUSE_CORE:-0}" == 1 && -f "$UD_BUILD/reference-payload.txt" &&
-      "$(cat "$UD_BUILD/reference-payload.txt")" != "$UD_REFERENCE_PAYLOAD" ]]; then
-    echo "Reference profile changed: rebuild without UD_REUSE_CORE" >&2
+CRC_PATCH="$HERE/patches/0001-pds-benchmark-crc-switch.patch"
+CORE_CONFIG="$UD_REFERENCE_PAYLOAD $(sha256sum "$CRC_PATCH" | cut -d ' ' -f 1)"
+if [[ "${UD_REUSE_CORE:-0}" == 1 &&
+      (! -f "$UD_BUILD/core-configuration.txt" ||
+       "$(cat "$UD_BUILD/core-configuration.txt")" != "$CORE_CONFIG") ]]; then
+    echo "Reference profile or patch changed: rebuild without UD_REUSE_CORE" >&2
     exit 2
 fi
 # Configure the reference's build-time payload limit in an isolated copy.
@@ -27,6 +30,7 @@ assert n==1,'Expected the pinned reference default payload definition'
 p.write_text(s)
 PYCONFIG
 UET_REF_SOURCE="$UD_BUILD/reference-source"
+patch --batch --forward -p1 -d "$UET_REF_SOURCE" < "$CRC_PATCH"
 printf '%s\n' "$UD_REFERENCE_PAYLOAD" > "$UD_BUILD/reference-payload.txt"
 
 sources=("$UET_REF_SOURCE"/*.c "$UET_REF_SOURCE"/util/*.c "$UET_REF_SOURCE"/imp_shim/*.c "$UET_REF_SOURCE"/nic_shim/*.c "$UET_REF_SOURCE"/crypto/*.c)
@@ -53,3 +57,4 @@ cc -O2 -g -Wall -Wextra -DENABLE_VERBS=1 -fPIC -shared \
   -Wl,--wrap=uet_nic_initialize -Wl,--wrap=uet_nic_resolve_ipv4_nh \
   -Wl,-Bsymbolic -lfabric -lpthread -ldl -o "$UD_BUILD/provider/libuet_ref-fi.so"
 sha256sum "$HERE"/*.[ch] "$UD_BUILD/provider/libuet_ref-fi.so" > "$UD_BUILD/build-sha256.txt"
+printf '%s\n' "$CORE_CONFIG" > "$UD_BUILD/core-configuration.txt"

@@ -1,0 +1,15 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+UET_BENCH_CRC mode=on
+UD_BACKEND provider=verbs domain=mlx5_0-dgram type=FI_EP_DGRAM prefix=40 source=10.203.44.1 queue_depth=384 ip_frames=1
+REF_PROFILE payload_mtu=4000
+bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+4k      2k      16m         0.12s    138.54      29.57       0.03
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 6757[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+UD_BACKEND tx=6757 rx=6757 tx_bytes=9719684 rx_bytes=9814282
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m
