@@ -1,0 +1,1 @@
+The first profiling pair failed before provider initialization because roce01 had lost its isolated 10.203.44.2/30 test address. The mlx5_core driver and RDMA link remained active. The previous test address was restored, and reachability to roce00 verified. These failed logs contain no usable provider profile and are excluded from results.

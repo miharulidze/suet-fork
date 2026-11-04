@@ -1,209 +1,170 @@
-# SUET / UET reference: 4 KiB UD with CRC on and off
+# SUET / reference performance using the shared DGRAM adapter
 
-This standalone experiment is on `benchmark/ud-crc-on-off-20261103` in
-`miharulidze/suet-fork`, based on interoperability commit `d2c4951`.
-The original [CRC-on report](README-crc-on.md), commands, plots and raw results
-are preserved. Its matched sweep measured SUET at **6,533.67 MB/s at 64 KiB**
-and **6,100.99 MB/s at 1 MiB**, using one endpoint and one application core
-per peer. The earlier [1 KiB report](README-1k.md) is also retained.
+The reference FI provider and [shared DGRAM backend](../dgram_backend.c) are
+built once and loaded by both interoperability ping-pong and stock fabtests.
+Both use the same PDS/SES payload mapping and `FI_EP_DGRAM` transport; there
+is no special performance-only packet envelope. See [the interoperability
+build/run guide](../README.md) for the complete architecture and node setup.
 
-The new comparison runs SUET, reference CRC-on and reference CRC-off at every
-size. Both reference modes use the **same patched binary**, with only the
-runtime environment setting changed. The SUET provider is unchanged.
+This work is on `interop/dgram-backends-20261104`, based on `b4c3e14`.
+The original [CRC-on/off experiment](README-crc-experiment.md),
+[CRC-on report](README-crc-on.md) and [1 KiB report](README-1k.md), including
+all raw results, are preserved with their original adapter details.
 
-## Reference CRC switch patch
-
-Apply [0001-pds-benchmark-crc-switch.patch](patches/0001-pds-benchmark-crc-switch.patch)
-to `ultraethernet/uet-ref-prov` commit
-`9effe362ec13a7c2c1fa5a79146f5846f0c898c6`:
-
-```bash
-cd /path/to/uet-ref-prov
-patch -p1 < /path/to/suet/tests/interop/udverbs/patches/0001-pds-benchmark-crc-switch.patch
-```
-
-The switch is read once when the full PDS backend initializes:
-
-| Environment | Behavior |
-| --- | --- |
-| Unset or `UET_BENCH_DISABLE_CRC=0` | Generate and verify the normal software CRC. |
-| `UET_BENCH_DISABLE_CRC=1` | Write a zero four-byte trailer on TX and skip CRC calculation/validation on RX. |
-| Any other value | Reject initialization with `-EINVAL`. |
-
-Startup prints `UET_BENCH_CRC mode=on` or `mode=off`. Set the same mode on
-both peers. Packet sizes, segmentation and CRC trailer space are identical;
-the switch changes the software integrity work. UD transport integrity checks
-remain, while CRC-off bypasses the UET software integrity check. Encryption
-processing is unchanged. This switch covers the full PDS backend, including
-its ROD/RUD, RUDI and UUD transmit paths; the separate SNG backend is outside
-its scope. The comparison below tests **cleartext ROD**.
-
-The CRC patch is independent of the
-[4,000-byte reference payload configuration](reference-payload-4000.patch).
-It does not change the reference's normal 1,024-byte compile-time default.
-
-## Build on roce00 and roce01
-
-The controller connects via `mkhalilov@blue.inf.ethz.ch` to root on
-roce00 (`10.203.44.1`) and roce01 (`10.203.44.2`). Both hosts use the validated
-SUET/libfabric installation at `/root/suet-interop-20261103/fix6/work/build`:
-SUET commit `0a7b0241f29225b8ff5d2d42d566789d344741a4`, libfabric base
-`94f3b1ac` plus the existing SUET patches. The pinned reference export is
-`/root/suet-interop-20261103/ref`.
-
-Copy this directory, including `patches/`, under
-`/root/suet-interop-20261103/udcompare4k-crc/source/tests/interop/udverbs` on
-both hosts, then run from that source root:
+## Build once for both applications
 
 ```bash
 ROOT=/root/suet-interop-20261103
 UET_REF_SOURCE="$ROOT/ref" \
 LIBFABRIC_SOURCE="$ROOT/fix6/work/libfabric" \
 LIBFABRIC_PREFIX="$ROOT/fix6/work/build" \
-UD_REFERENCE_PAYLOAD=4000 UD_BUILD="$ROOT/udcompare4k-crc/build" \
-bash tests/interop/udverbs/build.sh > "$ROOT/udcompare4k-crc/build.log" 2>&1
+INTEROP_BUILD=/root/suet-interop-20261104/dgram/build \
+bash tests/interop/build.sh
 ```
 
-The builder copies the reference into `build/reference-source`, applies the
-CRC patch and configures its payload maximum to 4,000 bytes. It rebuilds all
-reference objects and the FI_MSG/DGRAM adapter with GCC and `-O2`.
-The original reference export and the previous CRC-on build are preserved.
-The plugin is `udcompare4k-crc/build/provider/libuet_ref-fi.so`.
-`UD_REUSE_CORE=1` permits adapter-only relinking; changing the payload or CRC
-patch requires a full rebuild and is checked against a configuration hash.
+The output is `/root/suet-interop-20261104/dgram/build/provider/libuet_ref-fi.so`,
+used by both test programs. The source is pinned reference `9effe362` plus
+the existing [CRC switch patch](patches/0001-pds-benchmark-crc-switch.patch)
+and the 4,000-byte payload configuration. The shared PDS/SES mapping requires
+`UET_BENCH_DISABLE_CRC=1`; CRC-on results apply to the earlier IP-frame adapter
+and are explicitly archived rather than mixed into this comparison.
 
-## Backend and measurement settings
-
-Both implementations use **libfabric `FI_EP_DGRAM`**, provider `verbs`, domain
-`mlx5_0-dgram`, interface `ens785f0np0`. The reference adapter uses libfabric
-send/receive, memory registration, address vectors and CQ polling, with no
-direct native `ibv_*` calls. It carries the unchanged reference IP/entropy/
-PDS/SES/CRC packet, stripping Ethernet on TX and reconstructing it on RX.
-
-The UD datagram limit is 4,096 bytes. SUET reserves 40 bytes for the receive
-prefix, 12 for PDS and 44 for SES, giving **4,000 application bytes per packet**.
-`FI_OFI_SUET_PAYLOAD_MTU=0` selects this native size; the reference uses the
-same 4,000-byte segments. A 4,000-byte message needs one data packet and a
-4,096-byte message needs two. Both points are labeled in the figure.
-
-Each process uses CPU 2, one endpoint, ROD, window 64, 384-entry backend TX/RX
-queues, manual progress and no inject (`-j 0`). SUET uses GBN. Both reference
-modes retain the reference's framing, buffer management and packet-copy work.
-SUET sends PDS/SES directly and does not perform the reference's additional
-software CRC/TSS processing. These measurements compare complete stacks.
-
-## Run validation and the comparison
-
-Run from the controlling computer with SSH jump access:
+## Benchmark
 
 ```bash
 python3 tests/interop/udverbs/compare.py --stage correctness --samples 1 \
-  --sizes 16,4000,4001,65536,1048576 --control-port 32500 \
-  --output /tmp/ud-crc-correctness
+  --sizes 16,4000,4001,65536,1048576 --control-port 35800 \
+  --output /tmp/shared-dgram-correctness
 python3 tests/interop/udverbs/compare.py --stage performance --samples 3 \
-  --control-port 33000 --output /tmp/ud-crc-performance
-python3 tests/interop/udverbs/check_crc_switch.py \
-  --output /tmp/ud-crc-switch-check
-python3 tests/interop/udverbs/plot.py /tmp/ud-crc-performance
+  --control-port 36000 --output /tmp/shared-dgram-performance
+python3 tests/interop/udverbs/plot.py /tmp/shared-dgram-performance
 ```
 
-Defaults are `--profile native4k`,
-`--root /root/suet-interop-20261103/udcompare4k-crc`, and
-`--providers suet,ref-on,ref-off`. Use `--providers ref-on` or `ref-off` for
-an individual mode. Each case receives a unique TCP control port; TCP carries
-setup/synchronization outside timed loops, and all data uses UD DGRAM.
-Use a fresh output directory and one benchmark controller at a time.
+Defaults are `--root /root/suet-interop-20261104/dgram`, `--backend verbs` and
+`--providers suet,ref-off`. `--backend udp` selects the exact same shared
+adapter over the UDP provider, with a 1,024-byte application payload to fit
+its 1,472-byte DGRAM limit. Verbs uses the native 4 KiB transport profile and
+4,000 application bytes per data packet.
 
-The switch check verifies that an unset environment selects CRC-on and that
-invalid settings fail initialization on both hosts.
+Each peer uses one endpoint, CPU 2, ROD, window 64, inject disabled, and
+384-entry verbs TX/RX queues. Native SUET uses GBN. Correctness uses full
+byte validation. Timed bandwidth uses at least 10,000 iterations plus 10,000
+warmups, with equal settings for both providers and three repetitions.
+Latency is RTT/2 in microseconds, and bandwidth is application payload MB/s.
+Plots show medians with observed min/max error bars.
 
-Correctness uses `-v`, 128 iterations and 16 warmups. Performance omits byte
-checking and uses equal per-size iterations/warmups across all three paths.
-Provider order reverses on alternate repetitions. Bandwidth uses at least
-10,000 timed iterations and 10,000 warmups; ping-pong uses 128–10,000 timed
-iterations. Latency is fabtests' RTT/2 in microseconds; bandwidth is application
-payload MB/s. Figures show medians of three samples with observed min/max bars.
+## Matched profiling
 
-## Original CRC profile
+```bash
+python3 tests/interop/udverbs/profile.py --samples 1 \
+  --provider-root /root/suet-interop-20261104/dgram \
+  --control-port 34100 --output /tmp/matched-dgram-profiles
+```
 
-The [CRC-on sender profile](results/native4k-reference-profile/client-perf.txt)
-at 1 MiB attributes **83.87% of user-space cycles** to `crc32c_update`;
-the [receiver profile](results/native4k-reference-profile/server-perf.txt)
-attributes **76.37%**. Its byte-at-a-time lookup loop is in
-`util/crc32c.c:116`. The CRC-off experiment isolates that cost while preserving
-the packet layout. It does not apply a hardware-accelerated CRC optimization.
+The profiler reuses the recorded 1-MiB benchmark commands, selects the shared
+provider binary, and uses 100,000 iterations plus 10,000 warmups on both
+implementations. It records both sender and receiver. `perf stat` records
+user cycles, instructions, task-clock, cache misses and context switches for
+the whole invocation; those counts include setup, warmup and teardown.
+Separate `perf record -e cycles:u -F 199 --call-graph dwarf,8192` runs collect
+call stacks. Flat and caller reports use the same 6–12 second interval after
+the first sample, excluding startup, warmup and the reference close-wait loop.
+Profiling runs are kept out of the three-sample benchmark medians.
 
 
-## Results
+## Matched profile: where the remaining gap comes from
 
-The full sweep passed **180/180 performance cases**: three implementations/
-modes, two benchmarks, ten message sizes and three repetitions. All **30/30
-payload-validation cases**, **8/8 switch API checks** and **35/35 basic SUET
-fabtests** passed. The basic suite uses UDP loopback; the comparison and
-payload-validation cases use two-host verbs DGRAM.
+With this single shared PDS/SES adapter, the counter runs measured **6,104.34
+MB/s for SUET** and **2,665.65 MB/s for reference CRC-off**, a **2.29x gap**.
+The diagnostic call-stack runs measured 6,081.03 and 2,671.60 MB/s respectively.
+No CRC routine appears in the sampled profiles; all profile jobs exited zero.
+Both peers used one endpoint/core, 4,000-byte payloads, window 64 and the same
+verbs DGRAM provider, queues and fabric installation.
 
-At 1 MiB, reference CRC-off reaches **2,686.51 MB/s**, versus **315.29 MB/s**
-with CRC on: **8.52 times the bandwidth**. SUET reaches **6,137.42 MB/s**.
-CRC-off reduces reference 1-MiB latency from **3,305.78 to 357.21 µs**;
-SUET measures **173.57 µs**. All are medians of three samples.
+| Counter, per application byte | SUET sender | Reference sender | SUET receiver | Reference receiver |
+| --- | ---: | ---: | ---: | ---: |
+| User CPU cycles | 0.486 | 1.164 | 0.538 | 1.265 |
+| Retired user instructions | 0.833 | 1.619 | 0.673 | 2.305 |
 
-The fresh CRC-on 1-MiB bandwidth is effectively unchanged from the original
-315.30 MB/s. SUET's fresh 1-MiB median is 0.60% above its original
-6,100.99 MB/s, and its 64-KiB median remains **6,501.91 MB/s**. Source/binary
-hashes confirm that the native SUET/libfabric and fabtests builds are unchanged.
+The reference consumes **2.39x sender cycles/byte** and **2.35x receiver
+cycles/byte**. It retires **3.42x receiver instructions/byte**. This matches
+the throughput gap: substantially more CPU work is performed per delivered
+byte, even after CRC removal. Counter values cover the full invocation;
+the profiles below isolate the identical steady-state interval.
 
-| Bytes | SUET latency, µs | Reference CRC on latency, µs | Reference CRC off latency, µs | SUET bandwidth, MB/s | Reference CRC on bandwidth, MB/s | Reference CRC off bandwidth, MB/s |
-| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 8 | 2.79 | 4.26 | 3.83 | 6.94 | 1.20 | 1.32 |
-| 64 | 2.79 | 4.60 | 3.82 | 55.28 | 9.22 | 10.46 |
-| 256 | 3.54 | 6.57 | 4.75 | 217.89 | 28.94 | 36.59 |
-| 1,024 | 3.81 | 10.95 | 5.15 | 859.98 | 78.42 | 140.28 |
-| 4,000 | 5.19 | 28.46 | 7.33 | 3,083.79 | 133.51 | 481.34 |
-| 4,096 | 5.80 | 29.63 | 8.21 | 1,981.16 | 129.53 | 431.28 |
-| 16,384 | 9.11 | 69.21 | 15.64 | 3,705.73 | 237.78 | 1,199.92 |
-| 65,536 | 17.66 | 223.95 | 35.54 | 6,501.91 | 302.31 | 2,399.49 |
-| 262,144 | 42.89 | 824.93 | 91.99 | 6,352.16 | 318.64 | 2,880.51 |
-| 1,048,576 | 173.57 | 3,305.78 | 357.21 | 6,137.42 | 315.29 | 2,686.51 |
+| Steady-state self-cycle samples | SUET sender | Reference sender | SUET receiver | Reference receiver |
+| --- | ---: | ---: | ---: | ---: |
+| Copies and zeroing | 0.83% | 26.47% | 41.47% | 16.77% |
+| Heap management | 7.06% | 10.39% | 3.27% | 9.82% |
+| Locking | 25.06% | 18.02% | 11.22% | 15.20% |
+| Timekeeping | 3.32% | 3.07% | 1.64% | 13.38% |
+| Reliability bitmaps | 0.00% | 5.03% | 0.00% | 6.30% |
 
-![SUET and reference CRC-on/off latency and bandwidth](results/crc-switch-performance/comparison.png)
+Percentages are within each core at different throughputs; a lower percentage
+can still mean greater cost per application byte. The caller stacks and source
+identify these concrete costs:
 
-[CSV, ranges and speedups](results/crc-switch-performance/comparison.csv),
-[SVG figure](results/crc-switch-performance/comparison.svg),
-[performance commands/exits](results/crc-switch-performance/runs.json),
-[payload-validation commands/exits](results/crc-switch-correctness/runs.json),
-[switch API checks](results/crc-switch-api-check/summary.json),
-[basic SUET suite log](results/crc-switch-suet-fabtests.log.gz).
-The [validation summary](results/crc-switch-validation-summary.json) records
-counts, warning locations, binary identity and baseline comparisons.
+- **Extra full-payload copies.** The reference PDS copies payload into its
+  allocated frame in `uet_pds_tx_pkt`; the shared asynchronous DGRAM NIC then
+  copies into its registered TX slot. On RX, the NIC copies into the reference
+  frame, and SES copies into the posted application buffer. That is two TX
+  and two RX payload copies. Native SUET's large-message TX uses registered
+  IOVs, and its receive path copies into the application buffer. The reference
+  sender's copy stacks specifically account for 15.16% in PDS packet assembly
+  and 8.05% in the NIC TX copy, versus less than 1% total copying/zeroing on the
+  native sender.
+- **Per-packet allocation and freeing.** The reference allocates a PDS packet
+  descriptor/frame in `uet_pds_tx_pkt`, allocates an RX frame in
+  `uet_pds_sec_rx_pkt`, and frees retained packets while advancing its window.
+  Native SUET reuses packet/descriptor pools. This difference is visible in
+  the calloc/free stacks and the heap-management samples above.
+- **Progress, timer and window bookkeeping.** Every `uet_cq_read` takes the
+  endpoint mutex and runs `uet_ep_progress_locked`: message aging, sync-group
+  aging, one receive packet, transmit progress and deferred sends. The reference
+  also physically shifts bitmap/pointer windows (`bm_shift_right`) as ACKs
+  advance. Native SUET drains batches and uses its circular reliability window.
+  Reference receiver timekeeping is 13.38% of samples, versus 1.64% for SUET;
+  reference bitmap work is another 6.30%.
+- **Locking is present in both stacks.** The caller reports distinguish
+  reference API/CQ locks from verbs send/CQ locks. Native sender locking is
+  itself substantial; the result does not justify attributing the whole gap
+  to a reference-only lock or to the NIC adapter alone.
 
-Reference logs report zero errored packets, zero PDC error closures and no
-CRC mismatch errors in either mode. One timed CRC-on 1-MiB ping-pong sample
-logged 59 retransmits and 59 duplicate-PSN ACK retransmits. Timed CRC-off
-samples logged neither warning. Under byte validation, each reference mode
-logged 532 retransmits and 246 duplicate-PSN warnings; those validation runs
-are excluded from the timed medians and still passed data checking.
+The FI adapter uses the reference vector entrypoint, but the reference collapses
+a single IOV to its contiguous-buffer representation. These scalar benchmarks
+do **not** execute the multi-IOV gather allocation/copy path. No scalar/vector
+optimization is claimed as an explanation for these measurements.
 
-Both hosts use the identical patched reference binary. Provenance verifies
-all 160 reference C/header files against the pinned commit, allowing only
-the CRC patch and the payload-limit configuration. Records and compressed
-build logs: [roce00 provenance](results/crc-switch-roce00.cscs.ch-provenance.json),
-[roce01 provenance](results/crc-switch-roce01.cscs.ch-provenance.json),
-[roce00 build](results/crc-switch-roce00.cscs.ch-build.log.gz),
-[roce01 build](results/crc-switch-roce01.cscs.ch-build.log.gz).
+The next performance changes to evaluate are packet-buffer pools, eliminating
+frame/registered-slot copies through an explicit asynchronous buffer-lifetime
+contract, and batching reference progress/timer/window updates. Those are
+proposed optimizations, not measured speedups. The current profile attributes
+the remaining cost across these paths; it does not establish an additive
+speedup from independently removing them.
 
-## CRC-off CPU profile
+Raw evidence: [all profiling commands/exits](results/matched-dgram-profile-20261104/runs.json),
+[counter/category analysis](results/matched-dgram-profile-20261104/analysis.json),
+[SUET sender callers](results/matched-dgram-profile-20261104/suet-record-r0-1-callers.txt),
+[reference sender callers](results/matched-dgram-profile-20261104/ref-off-record-r0-1-callers.txt),
+[SUET receiver callers](results/matched-dgram-profile-20261104/suet-record-r0-0-callers.txt),
+[reference receiver callers](results/matched-dgram-profile-20261104/ref-off-record-r0-0-callers.txt).
+Run `analyze_profile.py RESULTS_DIRECTORY` to regenerate the analysis JSON.
 
-A separate 1-MiB diagnostic on the same patched binary used
-`perf record -e cycles:u -F 199` with CRC disabled. Neither peer's profile
-contains sampled CRC routines; both report zero lost samples. Remaining
-sampled work is distributed across copies, locking, timekeeping, packet/
-queue processing and reliability bitmaps. Sender memory-copy samples account
-for 17.03% of user-space cycles, compared with 83.87% previously spent in
-`crc32c_update` with CRC on. This diagnostic is excluded from the comparison
-medians and does not quantitatively attribute the remaining SUET/reference gap.
+## Shared-adapter validation baseline
 
-[Sender profile](results/crc-switch-reference-off-profile/client-perf.txt),
-[receiver profile](results/crc-switch-reference-off-profile/server-perf.txt),
-[diagnostic commands](results/crc-switch-reference-off-profile/configuration.json),
-[sender run](results/crc-switch-reference-off-profile/client.log),
-[receiver run](results/crc-switch-reference-off-profile/server.log).
+Both hosts built the same reference adapter and libfabric-only application.
+The initial eight single-packet controls/mixed cases passed on verbs and UDP.
+With packet capture disabled, ten 1-MiB rounds passed in both mixed roles and
+both ROD/RUD modes over verbs. The native basic fabtests suite passed 35/35.
+Build/source/library provenance is recorded for
+[roce00](results/dgram-baseline-roce00.cscs.ch-provenance.json) and
+[roce01](results/dgram-baseline-roce01.cscs.ch-provenance.json).
+
+The baseline UDP 1-MiB mixed cases exposed loss-recovery bugs. SUET's ROD gap
+NACK omits Expected_PSN in its payload; the pinned reference handles ROD
+out-of-order NACKs with individual retries instead of GoBackN. Native GBN on
+RUD also reports an in-window gap as an out-of-window error. These are tracked
+as protocol fixes, with baseline failures preserved. The
+[UEC ROD requirements, section 3.5.21.1](https://ultraethernet.org/uec-1-0-spec)
+require the missing expected PSN in a ROD NACK payload and ordered GoBackN
+retransmission beginning there.

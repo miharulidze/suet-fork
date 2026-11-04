@@ -1,0 +1,5 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
+1m      100k    97g        17.24s   6081.16     172.43       0.01
+[ perf record: Woken up 130 times to write data ]
+[ perf record: Captured and wrote 32.442 MB /root/suet-interop-20261103/profiles-20261104/suet-record-r0-0.data (4035 samples) ]

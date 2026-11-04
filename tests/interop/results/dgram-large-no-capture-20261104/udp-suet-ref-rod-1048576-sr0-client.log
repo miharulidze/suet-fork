@@ -1,0 +1,466 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+UET_BENCH_CRC mode=off
+ENDPOINT provider=ref backend=udp type=FI_EP_DGRAM raw_len=16 pid=0 ri=0 initiator=16 mode=rod
+UD_BACKEND provider=udp domain=ens785f0np0 type=FI_EP_DGRAM prefix=0 source=10.203.44.2 queue_depth=384 wire=pds-ses mtu=1472
+REF_PROFILE payload_mtu=1024
+client TX ping round=0 bytes=1048576
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895987 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895988 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895989 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895990 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895991 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895992 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895993 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895994 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895995 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895996 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895997 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895998 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895999 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896000 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896001 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896002 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896003 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896004 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896005 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896006 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896007 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896008 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896009 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896010 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896011 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896012 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896013 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896014 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896015 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896016 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896017 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896018 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896019 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896020 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896021 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896022 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896023 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896024 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896025 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896026 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896027 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896028 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896029 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896030 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896031 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896032 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896033 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896034 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896035 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896036 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896037 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896038 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896039 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896040 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896041 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896042 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896043 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896044 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896045 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896046 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896047 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896048 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896049 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896050 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896051 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895987 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895988 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895989 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895990 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895991 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895992 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895993 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895994 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895995 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895996 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895997 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895998 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895999 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896000 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896001 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896002 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896003 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896004 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896005 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896006 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896007 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896008 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896009 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896010 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896011 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896012 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896013 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896014 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896015 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896016 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896017 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896018 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896019 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896020 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896021 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896022 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896023 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896024 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896025 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896026 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896027 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896028 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896029 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896030 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896031 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896032 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896033 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896034 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896035 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896036 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896037 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896038 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896039 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896040 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896041 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896042 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896043 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896044 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896045 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896046 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896047 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896048 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896049 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896050 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896051 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895987 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895988 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895989 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895990 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895991 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895992 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895993 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895994 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895995 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895996 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895997 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895998 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895999 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896000 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896001 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896002 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896003 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896004 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896005 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896006 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896007 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896008 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896009 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896010 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896011 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896012 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896013 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896014 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896015 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896016 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896017 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896018 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896019 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896020 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896021 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896022 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896023 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896024 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896025 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896026 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896027 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896028 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896029 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896030 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896031 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896032 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896033 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896034 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896035 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896036 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896037 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896038 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896039 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896040 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896041 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896042 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896043 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896044 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896045 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896046 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896047 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896048 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896049 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896050 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896051 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895987 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895988 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895989 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895990 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895991 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895992 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895993 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895994 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895995 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895996 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895997 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895998 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895999 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896000 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896001 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896002 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896003 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896004 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896005 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896006 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896007 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896008 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896009 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896010 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896011 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896012 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896013 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896014 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896015 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896016 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896017 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896018 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896019 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896020 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896021 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896022 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896023 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896024 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896025 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896026 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896027 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896028 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896029 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896030 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896031 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896032 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896033 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896034 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896035 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896036 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896037 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896038 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896039 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896040 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896041 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896042 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896043 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896044 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896045 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896046 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896047 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896048 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896049 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896050 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896051 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895987 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895988 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895989 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895990 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895991 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895992 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895993 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895994 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895995 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895996 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895997 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895998 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895999 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896000 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896001 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896002 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896003 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896004 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896005 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896006 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896007 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896008 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896009 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896010 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896011 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896012 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896013 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896014 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896015 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896016 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896017 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896018 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896019 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896020 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896021 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896022 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896023 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896024 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896025 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896026 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896027 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896028 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896029 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896030 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896031 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896032 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896033 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896034 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896035 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896036 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896037 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896038 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896039 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896040 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896041 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896042 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896043 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896044 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896045 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896046 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896047 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896048 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896049 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896050 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788896051 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895987 spdcid=1)[m
+[31m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3565] ERROR: [PDS] PDC 1 PSN 788895987 NACK retries exhausted[m
+[31m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3427] ERROR: [PDS] PDC 1 closing in error[m
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+UET API: /root/suet-interop-20261104/dgram/build/reference-source/uet_api.c:5333: SES got indication of unrecoverable error from PDS
+[31m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:1520] ERROR: [PDS] PDC 1 failed to send close command[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3518] WARN: [PDS] PDC 1 received NACK (code=0xd psn=788895988 spdcid=1)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3552] WARN: [PDS] NACK PSN 788895988 on PDC 1 packet not found[m
+CQ_ERROR provider=ref err=5 prov_errno=0 Input/output error

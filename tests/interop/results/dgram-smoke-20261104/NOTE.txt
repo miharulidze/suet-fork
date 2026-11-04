@@ -1,0 +1,1 @@
+Initial application configuration used an invalid explicit SUET payload_mtu=4000. The provider accepts its supported explicit sizes or 0 for transport-derived sizing. The corrected verbs setting is 0 (effective 4000-byte payload). This was a test configuration failure; dgram-smoke-v3-20261104 passed all eight transport/pair controls.

@@ -3,7 +3,7 @@
 #define INTEROP_UD_BACKEND_H
 #include <stdint.h>
 #include <stddef.h>
-/* One peer per process. The NIC transports the reference's complete frames. */
+/* One peer per process. Opaque FI_EP_DGRAM address, PDS/SES payload. */
 int ud_name(void *raw, size_t *length);
 int ud_peer(const void *raw, uint32_t ipv4);
 #endif

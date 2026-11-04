@@ -27,15 +27,15 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
                    'FI_VERBS_IFACE=ens785f0np0', f'FI_VERBS_TX_SIZE={a.queue_depth}', f'FI_VERBS_RX_SIZE={a.queue_depth}',
                    'FI_LOG_LEVEL=warn',
                    f'FI_OFI_SUET_PAYLOAD_MTU={a.suet_payload_mtu}', 'FI_OFI_SUET_SELECTIVE_REPEAT=0',
-                   f'UET_BENCH_PAYLOAD_MTU={a.payload_mtu}',
+                   f'UET_BENCH_PAYLOAD_MTU={a.payload_mtu}', 'UET_DGRAM_PROVIDER=' + a.backend,
                    'UET_BENCH_DISABLE_CRC=' + ('1' if crc == 'off' else '0'),
                    'UET_PDS=pds', 'UET_UD_SOURCE=' + ip, 'UET_BENCH_MODE=rod']
             args = ['timeout', '-k', '3s', str(a.timeout) + 's', 'taskset', '-c', '2',
                     a.fabric + '/bin/fi_rdm_' + test, '-p',
-                    'uet_ref' if reference else 'verbs;ofi_suet',
+                    'uet_ref' if reference else a.backend + ';ofi_suet',
                     '-b=' + str(a.control_port + a.case_index), '-j', '0', '-S', str(size), '-I', str(iterations),
                     '-w', str(warmup), '-W', str(a.window), '-s', ip]
-            if provider == 'suet':
+            if provider == 'suet' and a.backend == 'verbs':
                 args += ['-d', 'mlx5_0-dgram']
             if a.stage == 'correctness':
                 args += ['-v']
@@ -68,7 +68,7 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
     if reference:
         for side in ('server', 'client'):
             body = (a.output / f'{name}-{side}.log').read_text(errors='replace')
-            valid &= ('UD_BACKEND provider=verbs domain=mlx5_0-dgram type=FI_EP_DGRAM' in body and
+            valid &= (f'UD_BACKEND provider={a.backend} ' in body and 'type=FI_EP_DGRAM' in body and 'wire=pds-ses' in body and
                       f'UET_BENCH_CRC mode={crc}' in body and
                       bool(re.search(r'UD_BACKEND tx=[1-9]\d* rx=[1-9]\d*', body)))
     return dict(name=name, provider=provider, test=test, bytes=size, iterations=iterations,
@@ -79,12 +79,13 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--root', default='/root/suet-interop-20261103/udcompare4k-crc')
+    p.add_argument('--root', default='/root/suet-interop-20261104/dgram')
+    p.add_argument('--backend', choices=('verbs','udp'), default='verbs')
     p.add_argument('--profile', choices=('native4k', 'matched1k'), default='native4k')
     p.add_argument('--fabric', default='/root/suet-interop-20261103/fix6/work/build')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--stage', choices=('correctness', 'performance'), default='correctness')
-    p.add_argument('--providers', default='suet,ref-on,ref-off')
+    p.add_argument('--providers', default='suet,ref-off')
     p.add_argument('--tests', default='pingpong,bw')
     p.add_argument('--sizes', default='8,64,256,1024,4000,4096,16384,65536,262144,1048576')
     p.add_argument('--samples', type=int, default=3)
@@ -94,13 +95,17 @@ def main():
     p.add_argument('--timeout', type=int, default=300)
     p.add_argument('--iterations', type=int, help='Override the automatic iteration count')
     p.add_argument('--warmup', type=int, help='Override automatic warmups for controlled experiments')
+    p.add_argument('--server-ip', default='10.203.44.1')
+    p.add_argument('--client-ip', default='10.203.44.2')
     p.add_argument('--reverse-hosts', action='store_true')
     a = p.parse_args()
-    a.payload_mtu = 4000 if a.profile == "native4k" else 1024
-    a.suet_payload_mtu = 0 if a.profile == "native4k" else 1024
+    if any(x not in ('suet','ref-off') for x in a.providers.split(',')):
+        p.error('The shared PDS/SES DGRAM backend uses reference CRC-off; CRC-on results are archived at b4c3e14')
+    a.payload_mtu = 4000 if a.profile == "native4k" and a.backend == "verbs" else 1024
+    a.suet_payload_mtu = 0 if a.profile == "native4k" and a.backend == "verbs" else 1024
     a.queue_depth = 384 if a.profile == "native4k" else 128
     a.hosts = ['roce00.cscs.ch', 'roce01.cscs.ch']
-    a.ips = ['10.203.44.1', '10.203.44.2']
+    a.ips = [a.server_ip, a.client_ip]
     if a.reverse_hosts:
         a.hosts.reverse(); a.ips.reverse()
     a.output.mkdir(parents=True, exist_ok=False)

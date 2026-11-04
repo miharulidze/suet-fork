@@ -1,0 +1,9 @@
+[
+  {
+    "test": "pingpong",
+    "bytes": 16,
+    "provider": "suet",
+    "mb_per_second": 4.41,
+    "usec_per_transfer": 3.62
+  }
+]

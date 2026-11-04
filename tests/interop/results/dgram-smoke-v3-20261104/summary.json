@@ -1,0 +1,306 @@
+[
+  {
+    "case": "verbs-suet-suet-rod-16-sr0",
+    "passed": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "rounds": 3,
+    "payload_mtu": 4000,
+    "backend": "verbs",
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-suet-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=0 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong suet server 10.203.44.1 10.203.44.1 35200 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-suet-rod-16-sr0/server.packets verbs"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-suet-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=0 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong suet client 10.203.44.2 10.203.44.1 35200 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-suet-rod-16-sr0/client.packets verbs"
+      ]
+    ],
+    "remote_capture_directory": "/root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-suet-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "verbs-ref-ref-rod-16-sr0",
+    "passed": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "rounds": 3,
+    "payload_mtu": 4000,
+    "backend": "verbs",
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-ref-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=0 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong ref server 10.203.44.1 10.203.44.1 35201 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-ref-rod-16-sr0/server.packets verbs"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-ref-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=0 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong ref client 10.203.44.2 10.203.44.1 35201 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-ref-rod-16-sr0/client.packets verbs"
+      ]
+    ],
+    "remote_capture_directory": "/root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-ref-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "verbs-suet-ref-rod-16-sr0",
+    "passed": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "rounds": 3,
+    "payload_mtu": 4000,
+    "backend": "verbs",
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-ref-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=0 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong suet server 10.203.44.1 10.203.44.1 35202 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-ref-rod-16-sr0/server.packets verbs"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-ref-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=0 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong ref client 10.203.44.2 10.203.44.1 35202 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-ref-rod-16-sr0/client.packets verbs"
+      ]
+    ],
+    "remote_capture_directory": "/root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-suet-ref-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "verbs-ref-suet-rod-16-sr0",
+    "passed": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "rounds": 3,
+    "payload_mtu": 4000,
+    "backend": "verbs",
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-suet-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=0 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong ref server 10.203.44.1 10.203.44.1 35203 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-suet-rod-16-sr0/server.packets verbs"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-suet-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=0 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong suet client 10.203.44.2 10.203.44.1 35203 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-suet-rod-16-sr0/client.packets verbs"
+      ]
+    ],
+    "remote_capture_directory": "/root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/verbs-ref-suet-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "udp-suet-suet-rod-16-sr0",
+    "passed": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "rounds": 3,
+    "payload_mtu": 1024,
+    "backend": "udp",
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-suet-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=1024 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=udp UET_BENCH_PAYLOAD_MTU=1024 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong suet server 10.203.44.1 10.203.44.1 35204 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-suet-rod-16-sr0/server.packets udp"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-suet-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=1024 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=udp UET_BENCH_PAYLOAD_MTU=1024 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong suet client 10.203.44.2 10.203.44.1 35204 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-suet-rod-16-sr0/client.packets udp"
+      ]
+    ],
+    "remote_capture_directory": "/root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-suet-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "udp-ref-ref-rod-16-sr0",
+    "passed": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "rounds": 3,
+    "payload_mtu": 1024,
+    "backend": "udp",
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-ref-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=1024 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=udp UET_BENCH_PAYLOAD_MTU=1024 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong ref server 10.203.44.1 10.203.44.1 35205 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-ref-rod-16-sr0/server.packets udp"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-ref-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=1024 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=udp UET_BENCH_PAYLOAD_MTU=1024 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong ref client 10.203.44.2 10.203.44.1 35205 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-ref-rod-16-sr0/client.packets udp"
+      ]
+    ],
+    "remote_capture_directory": "/root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-ref-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "udp-suet-ref-rod-16-sr0",
+    "passed": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "rounds": 3,
+    "payload_mtu": 1024,
+    "backend": "udp",
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-ref-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=1024 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=udp UET_BENCH_PAYLOAD_MTU=1024 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong suet server 10.203.44.1 10.203.44.1 35206 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-ref-rod-16-sr0/server.packets udp"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-ref-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=1024 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=udp UET_BENCH_PAYLOAD_MTU=1024 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong ref client 10.203.44.2 10.203.44.1 35206 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-ref-rod-16-sr0/client.packets udp"
+      ]
+    ],
+    "remote_capture_directory": "/root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-suet-ref-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  },
+  {
+    "case": "udp-ref-suet-rod-16-sr0",
+    "passed": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "rounds": 3,
+    "payload_mtu": 1024,
+    "backend": "udp",
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-suet-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=1024 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=udp UET_BENCH_PAYLOAD_MTU=1024 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong ref server 10.203.44.1 10.203.44.1 35207 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-suet-rod-16-sr0/server.packets udp"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-suet-rod-16-sr0 && exec env LD_LIBRARY_PATH=/root/suet-interop-20261103/fix6/work/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_OFI_SUET_PAYLOAD_MTU=1024 FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=info FI_LOG_PROV=ofi_suet FI_LOG_SUBSYS=domain FI_OFI_SUET_PRINT_DOMAIN_COUNTERS=1 UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=udp UET_BENCH_PAYLOAD_MTU=1024 UET_BENCH_MODE=rod UET_PDS_TX_TIMEOUT=100 timeout -k 3s 40s /root/suet-interop-20261104/dgram/build/pingpong suet client 10.203.44.2 10.203.44.1 35207 rod 16 3 /root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-suet-rod-16-sr0/client.packets udp"
+      ]
+    ],
+    "remote_capture_directory": "/root/suet-interop-20261104/dgram/results/dgram-smoke-v3-20261104/udp-ref-suet-rod-16-sr0",
+    "server_host": "roce00.cscs.ch",
+    "client_host": "roce01.cscs.ch"
+  }
+]

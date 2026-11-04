@@ -49,12 +49,13 @@ for source in "${sources[@]}"; do
     objects+=("$object")
 done
 cc -O2 -g -Wall -Wextra -DENABLE_VERBS=1 -fPIC -shared \
+  -I"$HERE/.." \
   -I"$LIBFABRIC_SOURCE" -I"$LIBFABRIC_SOURCE/include" \
   -I"$UET_REF_SOURCE" -I"$UET_REF_SOURCE/util" -I"$UET_REF_SOURCE/nic_shim" \
   -I"$UET_REF_SOURCE/imp_shim" -I"$UET_REF_SOURCE/crypto" \
-  "$HERE/ref_provider.c" "$HERE/ud_backend.c" "${objects[@]}" \
+  "$HERE/ref_provider.c" "$HERE/../dgram_backend.c" "${objects[@]}" \
   -L"$LIBFABRIC_PREFIX/lib" -Wl,-rpath,"$LIBFABRIC_PREFIX/lib" \
   -Wl,--wrap=uet_nic_initialize -Wl,--wrap=uet_nic_resolve_ipv4_nh \
   -Wl,-Bsymbolic -lfabric -lpthread -ldl -o "$UD_BUILD/provider/libuet_ref-fi.so"
-sha256sum "$HERE"/*.[ch] "$UD_BUILD/provider/libuet_ref-fi.so" > "$UD_BUILD/build-sha256.txt"
+sha256sum "$HERE/ref_provider.c" "$HERE/../dgram_backend.c" "$HERE/../dgram_backend.h" "$HERE/../ref_address.h" "$UD_BUILD/provider/libuet_ref-fi.so" > "$UD_BUILD/build-sha256.txt"
 printf '%s\n' "$CORE_CONFIG" > "$UD_BUILD/core-configuration.txt"

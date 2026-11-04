@@ -7,15 +7,15 @@
 #include <stdio.h>
 #include <rdma/providers/fi_prov.h>
 #include "uet_api.h"
-#include "ud_backend.h"
+#include "dgram_backend.h"
+#include "ref_address.h"
 
 #define NAME "uet_ref"
-#define MAGIC 0x55455455u
-struct address { uint32_t magic, raw_len; struct uet_addr uet; unsigned char raw[64]; };
+#define MAGIC REF_ADDRESS_MAGIC
 struct fabric { struct fid_fabric fid; uet_handle_t uet; };
 struct domain { struct fid_domain fid; struct fabric *fabric; struct fi_info *info; uet_domain_handle_t uet; };
 struct cq { struct fid_cq fid; struct fi_cq_attr attr; uet_cq_handle_t uet; };
-struct av { struct fid_av fid; struct domain *domain; uet_addr_handle_t peer; struct address name; };
+struct av { struct fid_av fid; struct domain *domain; uet_addr_handle_t peer; struct ref_address name; };
 struct endpoint { struct fid_ep fid; struct domain *domain; struct av *av; struct fi_info *info; uet_ep_handle_t uet; };
 static int no_bind(struct fid *a,struct fid *b,uint64_t f) { (void)a;(void)b;(void)f;return -FI_ENOSYS; }
 static int no_control(struct fid *a,int cmd,void *p) { (void)a;(void)cmd;(void)p;return -FI_ENOSYS; }
@@ -48,7 +48,7 @@ static int av_close(fid_t fid)
 { struct av *a=(void *)fid;int rc=a->peer?uet_av_remove(a->peer):0;if(!rc)free(a);return rc; }
 static int av_insert(struct fid_av *fid,const void *addresses,size_t count,fi_addr_t *handles,uint64_t flags,void *ctx)
 {
-    (void)flags;(void)ctx;struct av *a=(void *)fid;const struct address *n=addresses;
+    (void)flags;(void)ctx;struct av *a=(void *)fid;const struct ref_address *n=addresses;
     if(count!=1 || n->magic!=MAGIC || n->raw_len>sizeof(n->raw))return -FI_EINVAL;
     if(a->peer)return -FI_ENOSYS;
     int rc=ud_peer(n->raw,n->uet.fa.v4);if(rc)return rc;
@@ -104,8 +104,8 @@ static ssize_t sendmsg_(struct fid_ep *fid,const struct fi_msg *m,uint64_t flags
 }
 static int getname(fid_t fid,void *buf,size_t *len)
 {
-    if(*len<sizeof(struct address)){*len=sizeof(struct address);return -FI_ETOOSMALL;}
-    struct address a={.magic=MAGIC,.raw_len=sizeof(a.raw)};
+    if(*len<sizeof(struct ref_address)){*len=sizeof(struct ref_address);return -FI_ETOOSMALL;}
+    struct ref_address a={.magic=MAGIC,.raw_len=sizeof(a.raw)};
     int rc=uet_getname(((struct endpoint *)fid)->uet,&a.uet);if(rc)return rc;
     size_t raw_len=sizeof(a.raw);rc=ud_name(a.raw,&raw_len);if(rc)return rc;a.raw_len=raw_len;
     memcpy(buf,&a,sizeof(a));*len=sizeof(a);return 0;
