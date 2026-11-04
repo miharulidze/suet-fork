@@ -1,0 +1,32 @@
+{
+  "root": "/root/suet-interop-20261104/dgram",
+  "backend": "verbs",
+  "profile": "native4k",
+  "fabric": "/root/suet-interop-20261104/native-gap/build",
+  "output": "tests/interop/udverbs/results/native-gap-bandwidth-20261104",
+  "stage": "performance",
+  "providers": "suet",
+  "tests": "bw",
+  "sizes": "65536,1048576",
+  "samples": 3,
+  "window": 64,
+  "control_port": 37500,
+  "bandwidth_bytes": 268435456,
+  "timeout": 300,
+  "iterations": null,
+  "warmup": null,
+  "server_ip": "10.203.44.1",
+  "client_ip": "10.203.44.2",
+  "reverse_hosts": false,
+  "payload_mtu": 4000,
+  "suet_payload_mtu": 0,
+  "queue_depth": 384,
+  "hosts": [
+    "roce00.cscs.ch",
+    "roce01.cscs.ch"
+  ],
+  "ips": [
+    "10.203.44.1",
+    "10.203.44.2"
+  ]
+}

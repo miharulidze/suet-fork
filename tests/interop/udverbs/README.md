@@ -16,8 +16,8 @@ all raw results, are preserved with their original adapter details.
 ```bash
 ROOT=/root/suet-interop-20261103
 UET_REF_SOURCE="$ROOT/ref" \
-LIBFABRIC_SOURCE="$ROOT/fix6/work/libfabric" \
-LIBFABRIC_PREFIX="$ROOT/fix6/work/build" \
+LIBFABRIC_SOURCE=/root/suet-interop-20261104/native-gap/libfabric \
+LIBFABRIC_PREFIX=/root/suet-interop-20261104/native-gap/build \
 INTEROP_BUILD=/root/suet-interop-20261104/dgram/build \
 bash tests/interop/build.sh
 ```
@@ -58,6 +58,7 @@ Plots show medians with observed min/max error bars.
 ```bash
 python3 tests/interop/udverbs/profile.py --samples 1 \
   --provider-root /root/suet-interop-20261104/dgram \
+  --fabric /root/suet-interop-20261104/native-gap/build \
   --control-port 34100 --output /tmp/matched-dgram-profiles
 ```
 

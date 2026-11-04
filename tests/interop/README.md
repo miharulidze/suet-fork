@@ -32,18 +32,28 @@ is preserved in [its archived report](udverbs/README-crc-experiment.md).
 
 ## Build on both roce machines
 
-Use the existing SUET install at `/root/suet-interop-20261103/fix6/work/build`
-(SUET `0a7b0241`, libfabric base `94f3b1ac` plus its existing patches) and the
-reference export at `/root/suet-interop-20261103/ref` (`9effe362`). Copy this
+Use the isolated SUET install at `/root/suet-interop-20261104/native-gap/build`
+(the branch's gap-NACK fix on top of `0a7b0241`, libfabric base `94f3b1ac`
+plus its existing patches) and the reference export at `/root/suet-interop-20261103/ref` (`9effe362`). Copy this
 source tree to `/root/suet-interop-20261104/dgram/source`, then run there:
 
 ```bash
 ROOT=/root/suet-interop-20261103
 UET_REF_SOURCE="$ROOT/ref" \
-LIBFABRIC_SOURCE="$ROOT/fix6/work/libfabric" \
-LIBFABRIC_PREFIX="$ROOT/fix6/work/build" \
+LIBFABRIC_SOURCE=/root/suet-interop-20261104/native-gap/libfabric \
+LIBFABRIC_PREFIX=/root/suet-interop-20261104/native-gap/build \
 INTEROP_BUILD=/root/suet-interop-20261104/dgram/build \
 bash tests/interop/build.sh
+```
+
+To reproduce the native install from a clean checkout, run the repository's
+normal builder in a fresh workspace first; it pins libfabric and applies the
+required source-address/entropy patches:
+
+```bash
+WORKDIR=/root/suet-interop-20261104/fresh JOBS=8 bash build.sh
+# Then set LIBFABRIC_SOURCE=$WORKDIR/libfabric and
+# LIBFABRIC_PREFIX=$WORKDIR/build for the interop build above.
 ```
 
 This builds both `build/pingpong` and `build/provider/libuet_ref-fi.so`.
@@ -103,3 +113,30 @@ python3 tests/interop/decode.py /path/to/server.packets --limit 20
 See [the shared-backend benchmark and profiling guide](udverbs/README.md).
 Historical socket-UDP interoperability results remain in
 [the legacy report](README-udp-legacy.md) and their existing result directories.
+
+## Native gap-NACK correction
+
+The shared UDP tests exposed incorrect native gap feedback. ROD now puts the
+later offending PSN in `nack_psn`, the missing expected PSN in `payload`, and
+copies the triggering request's RETX flag. RUD with GBN now sends Receiver
+Inferred Loss (`0x1a`) for the missing PSN when it discards a later in-window
+packet; a true out-of-window packet still gets `0x0b`. Repeated reports for the
+same RUD gap are coalesced, and a failed NACK submission does not suppress the
+next attempt. Retry limits are unchanged.
+
+The wire regression tests cover both modes, PSN wrap, request RETX, real
+out-of-window packets, duplicate gap reports and transport backpressure.
+On both hosts the original implementation fails the new Expected_PSN assertion;
+the corrected implementation passes the complete PDS/datagram test. See
+[build/unit logs and source/library hashes](results/native-gap-regression-20261104/).
+Ten fully validated 1-MiB UDP RUD rounds now pass in
+[both mixed roles with native GBN](results/native-gap-udp-rud-20261104/summary.json).
+The separate reference ROD replay issue is documented in the performance report.
+
+After this fix, [basic fabtests](udverbs/results/native-gap-fabtests-20261104.log.gz)
+passed **35/35**. Three-run native UD bandwidth medians were **6,503.65 MB/s at
+64 KiB** and **6,084.46 MB/s at 1 MiB**, using one endpoint/core, native 4-KiB
+transport, window 64, and 10,000 warmups plus 10,000 measured iterations.
+[Commands, exits and samples](udverbs/results/native-gap-bandwidth-20261104/runs.json)
+are retained. The pre-fix 1-MiB profiling controls were 6,104.34 and 6,081.03 MB/s;
+these checks retain the approximately 6-GB/s native throughput.

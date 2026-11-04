@@ -23,7 +23,7 @@ def main():
     p.add_argument('--root', default='/root/suet-interop-20261104/dgram')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--backends', default='verbs,udp')
-    p.add_argument('--fabric', default='/root/suet-interop-20261103/fix6/work/build')
+    p.add_argument('--fabric', default='/root/suet-interop-20261104/native-gap/build')
     p.add_argument('--control-port', type=int, default=35000)
     p.add_argument('--pairs', default='suet-suet,ref-ref,suet-ref,ref-suet', help='server-client providers')
     p.add_argument('--modes', default='rod,rud')

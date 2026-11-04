@@ -142,6 +142,8 @@ struct suet_tpdc {
 	uint16_t ack_ev; /* triggering request entropy */
 	uint8_t ack_flags; /* feedback for the current dispatch */
 	uint32_t expected_rx_psn; /* next expected PSN */
+	uint32_t gap_nack_psn; /* missing RUD PSN last reported by GBN */
+	bool gap_nack_sent;
 	uint32_t last_rx_clear_psn; /* highest CLEAR_PSN received in
 				     * forward direction */
 	struct suet_rel_rx rel;

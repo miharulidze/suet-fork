@@ -82,7 +82,7 @@ def main():
     p.add_argument('--root', default='/root/suet-interop-20261104/dgram')
     p.add_argument('--backend', choices=('verbs','udp'), default='verbs')
     p.add_argument('--profile', choices=('native4k', 'matched1k'), default='native4k')
-    p.add_argument('--fabric', default='/root/suet-interop-20261103/fix6/work/build')
+    p.add_argument('--fabric', default='/root/suet-interop-20261104/native-gap/build')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--stage', choices=('correctness', 'performance'), default='correctness')
     p.add_argument('--providers', default='suet,ref-off')

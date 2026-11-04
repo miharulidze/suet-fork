@@ -10,6 +10,7 @@ import time
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--provider-root', help='Override only the reference FI_PROVIDER_PATH for a shared-backend build')
+p.add_argument('--fabric', help='Override libfabric prefix and fabtests binaries together')
 p.add_argument('--baseline', type=Path, default=Path(__file__).parent/'results/crc-switch-performance/runs.json')
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--remote', default='/root/suet-interop-20261103/profiles-20261104')
@@ -32,6 +33,9 @@ for phase in ('stat', 'record'):
                 args = shlex.split(command[-1])
                 if a.provider_root:
                     args = ['FI_PROVIDER_PATH='+a.provider_root+'/build/provider' if s.startswith('FI_PROVIDER_PATH=') else s for s in args]
+                if a.fabric:
+                    args = ['LD_LIBRARY_PATH='+a.fabric+'/lib' if s.startswith('LD_LIBRARY_PATH=') else
+                            a.fabric+'/bin/'+Path(s).name if '/bin/fi_rdm_' in s else s for s in args]
                 for flag, value in (('-I', a.iterations), ('-w', a.warmup)):
                     args[args.index(flag)+1] = str(value)
                 args = [f'-b={a.control_port+len(records)}' if s.startswith('-b=') else s for s in args]

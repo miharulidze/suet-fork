@@ -1566,10 +1566,89 @@ static void check_explicit_close_ack(void)
 	assert(suet_pds_ipdc_close_acked(&ipdc, &ack));
 }
 
+/* Gap feedback must interoperate with a sender using the UET NACK rules,
+ * not just with SUET's own retransmission implementation. */
+static void check_gap_nack(enum suet_pdc_type type, bool retry,
+                           uint32_t base, bool outside, bool fail_first)
+{
+    struct suet_domain domain = {0};
+    struct fid_ep ep = {.msg = &msg_ops};
+    struct suet_tpdc tpdc = {.type = type, .dgram_av_addr = 9,
+        .local_pdcid = 8, .ipdcid = 7, .expected_rx_psn = base};
+    domain.dgram.ep = &ep;
+    domain.dgram.max_mtu_sz = 256;
+    domain.dgram.max_pkt_size = sizeof(struct suet_req_pkt) + 64;
+    domain.max_pkt_sz = 64;
+    domain.dgram.pds_pkt_size = sizeof(struct suet_pds_pkt_entry);
+    domain.dgram.ses_pkt_size = sizeof(struct suet_ses_pkt_entry);
+    prefix_size = 0;
+    dispatch_pds_tx = true;
+    assert(!suet_dgram_init_pkt_entry_pools(&domain));
+    assert(!suet_pds_init(&domain));
+    assert(!suet_rel_rx_init(&tpdc.rel, base, 128, SUET_REL_GBN));
+    dlist_init(&tpdc.gtd_del_list);
+    assert(ofi_idm_set(&domain.pds.local_pdcid_to_tpdc_idm, 8, &tpdc) >= 0);
+    for (unsigned attempt = 0; attempt < 2; attempt++) {
+        struct suet_pkt_entry *pkt = suet_dgram_pkt_alloc(&domain);
+        struct suet_req_pkt *wire = pkt->pkt;
+        uint32_t psn = base + (outside ? 128 : 1) + attempt;
+        bool suppressed = attempt && !fail_first && !outside && type == SUET_PDC_RUD;
+        memset(wire, 0, sizeof(*wire) + 64);
+        pds_prologue_set_type(&wire->pds, type == SUET_PDC_ROD ? PDS_ROD_REQ : PDS_RUD_REQ);
+        pds_prologue_set_next_hdr(&wire->pds, UET_HDR_REQUEST_STD);
+        pds_prologue_set_flags(&wire->pds, retry ? PDS_FLAG_RETX : 0);
+        pds_req_set_psn(&wire->pds, psn);
+        pds_req_set_clear_psn(&wire->pds, base - 1);
+        pds_req_set_spdcid(&wire->pds, 7);
+        pds_req_set_dpdcid(&wire->pds, 8);
+        ses_req_init(&wire->ses, UET_SEND, 1, 0, 1, 0, 17, 0, 0, 0, 128, 0, 0);
+        pkt->pkt_size = sizeof(*wire) + 64;
+        send_status = fail_first && !attempt ? -FI_EAGAIN : 0;
+        sent_len = 0;
+        suet_pds_receive(&domain, pkt, 9);
+        assert(tpdc.expected_rx_psn == base);
+        if (suppressed) {
+            assert(!sent_len);
+            continue;
+        }
+        struct pds_nack_hdr *nack = (void *) sent;
+        assert(sent_len == sizeof(*nack));
+        assert(pds_nack_get_spdcid(nack) == 8 && pds_nack_get_dpdcid(nack) == 7);
+        if (type == SUET_PDC_ROD) {
+            assert(pds_nack_get_code(nack) == 0x0d);
+            assert(pds_nack_get_psn(nack) == psn);
+            assert(pds_nack_get_payload(nack) == base);
+            assert(!!(pds_nack_get_flags(nack) & 0x10) == retry);
+        } else if (outside) {
+            assert(pds_nack_get_code(nack) == 0x0b);
+            assert(pds_nack_get_psn(nack) == psn);
+        } else {
+            assert(pds_nack_get_code(nack) == 0x1a);
+            assert(pds_nack_get_psn(nack) == base);
+            assert(!pds_nack_get_flags(nack));
+            assert(tpdc.gap_nack_sent == !send_status);
+        }
+        if (!send_status) suet_dgram_tx_complete(&domain, send_context, 0);
+    }
+    send_status = 0;
+    ofi_idm_clear(&domain.pds.local_pdcid_to_tpdc_idm, 8);
+    suet_rel_rx_cleanup(&tpdc.rel);
+    suet_pds_cleanup(&domain);
+    suet_dgram_free_pkt_entry_pools(&domain);
+    dispatch_pds_tx = false;
+}
+
 int main(void)
 {
 	check_explicit_close_ack();
 	ofi_mem_init();
+    for (int type = SUET_PDC_ROD; type <= SUET_PDC_RUD; type++)
+        for (int retry = 0; retry < 2; retry++) {
+            check_gap_nack(type, retry, 333, false, false);
+            check_gap_nack(type, retry, UINT32_MAX, false, false);
+            check_gap_nack(type, retry, 333, true, false);
+            check_gap_nack(type, retry, 333, false, true);
+        }
 	check_target_close_request(SUET_PDC_ROD, true);
 	check_target_close_request(SUET_PDC_RUD, true);
 	check_target_close_request(SUET_PDC_ROD, false);

@@ -1,0 +1,60 @@
+[
+  {
+    "kind": "baseline",
+    "exit": -6,
+    "compile": [
+      "cc",
+      "-g",
+      "-Wall",
+      "-DHAVE_CONFIG_H",
+      "-D_GNU_SOURCE",
+      "-I/root/suet-interop-20261104/native-gap/libfabric",
+      "-I/root/suet-interop-20261104/native-gap/libfabric/include",
+      "-I/root/suet-interop-20261104/native-gap/libfabric/include/linux",
+      "-I/root/suet-interop-20261104/native-gap/source/suet/src",
+      "/root/suet-interop-20261104/native-gap/source/tests/test_pds_dgram_baseline.c",
+      "/root/suet-interop-20261104/native-gap/build/lib/libfabric.a",
+      "-L/root/suet-interop-20261104/native-gap/build/lib",
+      "-lrdmacm",
+      "-libverbs",
+      "-lefa",
+      "-lnl-3",
+      "-lnl-route-3",
+      "-latomic",
+      "-lpthread",
+      "-ldl",
+      "-o",
+      "/root/suet-interop-20261104/native-gap/test_pds_dgram_baseline"
+    ],
+    "expected_failure": true
+  },
+  {
+    "kind": "fixed",
+    "exit": 0,
+    "compile": [
+      "cc",
+      "-g",
+      "-Wall",
+      "-DHAVE_CONFIG_H",
+      "-D_GNU_SOURCE",
+      "-I/root/suet-interop-20261104/native-gap/libfabric",
+      "-I/root/suet-interop-20261104/native-gap/libfabric/include",
+      "-I/root/suet-interop-20261104/native-gap/libfabric/include/linux",
+      "-I/root/suet-interop-20261104/native-gap/source/suet/src",
+      "/root/suet-interop-20261104/native-gap/source/tests/test_pds_dgram.c",
+      "/root/suet-interop-20261104/native-gap/build/lib/libfabric.a",
+      "-L/root/suet-interop-20261104/native-gap/build/lib",
+      "-lrdmacm",
+      "-libverbs",
+      "-lefa",
+      "-lnl-3",
+      "-lnl-route-3",
+      "-latomic",
+      "-lpthread",
+      "-ldl",
+      "-o",
+      "/root/suet-interop-20261104/native-gap/test_pds_dgram_fixed"
+    ],
+    "expected_failure": false
+  }
+]

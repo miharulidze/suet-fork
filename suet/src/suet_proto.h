@@ -617,6 +617,7 @@ enum pds_nack_code {
 
 /* NACK prologue: same bit layout as ACK/REQ (type in [15:11], next_hdr [10:7],
  * flags [6:0]). nack_type is flags bit [3] (0=RUD_ROD, 1=RUDI). */
+#define PDS_NACK_FLAG_RETX (1 << 4) /* triggering request was a retry */
 #define PDS_NACK_FLAG_NACK_TYPE (1 << 3)
 
 static inline uint8_t pds_nack_get_type(const struct pds_nack_hdr *h)

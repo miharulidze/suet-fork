@@ -395,10 +395,11 @@ void suet_pds_response_complete(struct suet_pds_ses_resp_entry *response,
 			       resp->ses_rc, resp->list, response->ev);
 }
 
-static void suet_pds_send_nack(struct suet_domain *domain,
+static bool suet_pds_send_nack_payload(struct suet_domain *domain,
 			       fi_addr_t dgram_av_addr, uint8_t nack_code,
 			       uint32_t nack_psn, uint16_t spdcid,
-			       uint16_t dpdcid, uint16_t ev)
+			       uint16_t dpdcid, uint16_t ev,
+			       uint32_t payload, uint8_t flags)
 {
 	struct suet_pds_pkt_entry *pkt_entry;
 	struct pds_nack_hdr *nack;
@@ -406,7 +407,7 @@ static void suet_pds_send_nack(struct suet_domain *domain,
 	pkt_entry = suet_pds_pkt_alloc(domain);
 	if (!pkt_entry) {
 		FI_WARN(&suet_prov, FI_LOG_EP_CTRL, "Unable to send nack\n");
-		return;
+		return false;
 	}
 
 	nack = (struct pds_nack_hdr *) pkt_entry->pkt->pkt;
@@ -415,12 +416,25 @@ static void suet_pds_send_nack(struct suet_domain *domain,
 	pkt_entry->pkt->ev = ev;
 
 	pds_nack_init(nack, nack_code, nack_psn, spdcid, dpdcid);
+	pds_nack_set_payload(nack, payload);
+	pds_nack_set_flags(nack, flags);
 
 	if (suet_pds_send_pkt(domain, pkt_entry)) {
 		suet_pds_pkt_free(pkt_entry);
+		return false;
 	} else {
 		domain->counters.nacks_tx++;
 	}
+	return true;
+}
+
+static void suet_pds_send_nack(struct suet_domain *domain,
+                               fi_addr_t dgram_av_addr, uint8_t nack_code,
+                               uint32_t nack_psn, uint16_t spdcid,
+                               uint16_t dpdcid, uint16_t ev)
+{
+    suet_pds_send_nack_payload(domain, dgram_av_addr, nack_code, nack_psn,
+                               spdcid, dpdcid, ev, 0, 0);
 }
 
 static int
@@ -448,6 +462,7 @@ suet_pds_dispatch_req_to_ses_in_order(struct suet_domain *domain,
 	}
 	if (result.accepted) {
 		suet_ses_rx_commit(tpdc->ses_ctx, &result);
+		tpdc->gap_nack_sent = false;
 		suet_rel_rx_commit(&tpdc->rel, pds_req_get_psn(pds));
 		tpdc->expected_rx_psn = suet_rel_rx_cack(&tpdc->rel) + 1;
 	}
@@ -519,16 +534,41 @@ static void suet_pds_dispatch_req_to_ses_ooo(
 		goto free_pkt;
 	}
 
-	if (action == SUET_REL_RX_GAP)
-		/* Reliability reports a gap; PDS chooses the ROD wire code. */
-		suet_pds_send_nack(domain, tpdc->dgram_av_addr,
-				   tpdc->type == SUET_PDC_ROD ?
-					   PDS_NACK_CODE_ROD_OOO :
-					   PDS_NACK_CODE_PSN_OOR_WINDOW,
-				   pds_req_get_psn(pds_hdr), tpdc->local_pdcid,
-				   tpdc->ipdcid, pkt_entry->pkt->ev);
-	else
+	if (action == SUET_REL_RX_GAP) {
+		uint32_t psn = pds_req_get_psn(pds_hdr), slot;
+		uint8_t flags = pds_prologue_get_flags(pds_hdr) & PDS_FLAG_RETX ?
+				PDS_NACK_FLAG_RETX : 0;
+		if (tpdc->type == SUET_PDC_ROD) {
+			/* ROD NACK identifies both the offending packet and the
+			 * expected PSN from which the peer must restart GoBackN. */
+			suet_pds_send_nack_payload(domain, tpdc->dgram_av_addr,
+				PDS_NACK_CODE_ROD_OOO, psn, tpdc->local_pdcid,
+				tpdc->ipdcid, pkt_entry->pkt->ev,
+				tpdc->expected_rx_psn, flags);
+		} else if (suet_rel_slot(&tpdc->rel.window, psn, &slot)) {
+			/* GBN discarded an in-window RUD packet. Ask for the
+			 * missing packet, not a retry of this later packet. One
+			 * report per gap avoids consuming the peer's retry budget
+			 * repeatedly before the first repair can arrive. */
+			if (!tpdc->gap_nack_sent ||
+			    tpdc->gap_nack_psn != tpdc->expected_rx_psn) {
+				if (suet_pds_send_nack_payload(domain, tpdc->dgram_av_addr,
+					PDS_NACK_CODE_RCVR_INFER_LOSS,
+					tpdc->expected_rx_psn, tpdc->local_pdcid,
+					tpdc->ipdcid, pkt_entry->pkt->ev, 0, 0)) {
+					tpdc->gap_nack_sent = true;
+					tpdc->gap_nack_psn = tpdc->expected_rx_psn;
+				}
+			}
+		} else {
+			suet_pds_send_nack_payload(domain, tpdc->dgram_av_addr,
+				PDS_NACK_CODE_PSN_OOR_WINDOW, psn,
+				tpdc->local_pdcid, tpdc->ipdcid,
+				pkt_entry->pkt->ev, 0, flags);
+		}
+	} else {
 		domain->counters.dup_drops++;
+	}
 free_pkt:
 	suet_pds_pkt_free(pkt_entry);
 }
