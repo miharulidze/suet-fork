@@ -40,13 +40,13 @@ for provider in ('suet','ref-off'):
       try:values[x[2]]=float(x[0])
       except ValueError:pass
    cycles.append(values['cycles:u']);instructions.append(values['instructions:u']);taskms.append(values['task-clock'])
-  bytes_total=(stats[0]['iterations']+stats[0]['warmup'])*1048576
+  bytes_total=(stats[0]['iterations']+stats[0]['warmup'])*stats[0].get('bytes',1048576)
   data['receiver' if side==0 else 'sender']=dict(categories_percent=dict(totals),top_symbols=parsed[:20],
      median_user_cycles_per_application_byte=statistics.median(cycles)/bytes_total,
      median_instructions_per_application_byte=statistics.median(instructions)/bytes_total,
      median_task_ms=statistics.median(taskms),
      stat_scope='Entire invocation including setup/warmup/teardown',
-     sample_scope='User cycles, identical 6..12 second steady-state window')
+     sample_scope=f"User cycles, identical {stats[0].get('sample_start_seconds',6):g}..{stats[0].get('sample_start_seconds',6)+stats[0].get('sample_seconds',6):g} second steady-state window")
  summary[provider]=data
 (p/'analysis.json').write_text(json.dumps(summary,indent=2)+'\n')
 print(json.dumps(summary,indent=2))

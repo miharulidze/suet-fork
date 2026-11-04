@@ -1,0 +1,484 @@
+{
+  "suet": {
+    "bandwidth_MBps": 6110.84,
+    "receiver": {
+      "categories_percent": {
+        "Copies and zeroing": 40.129999999999995,
+        "Protocol/API": 19.12,
+        "DGRAM/driver/CQ": 25.69999999999996,
+        "Locking": 10.14,
+        "Heap management": 3.36,
+        "Timekeeping": 1.3300000000000003,
+        "Other/application/runtime": 0.08
+      },
+      "top_symbols": [
+        {
+          "percent": 40.05,
+          "symbol": "__memmove_evex_unaligned_erms",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 10.98,
+          "symbol": "suet_pds_receive",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 7.05,
+          "symbol": "vrb_dgram_av_reverse_lookup_ep_name",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 4.53,
+          "symbol": "pthread_spin_lock@@GLIBC_2.34",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 4.02,
+          "symbol": "vrb_poll_cq",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 3.36,
+          "symbol": "suet_dgram_pkt_free",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 2.84,
+          "symbol": "pthread_mutex_unlock@@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 2.68,
+          "symbol": "vrb_report_wc",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 2.43,
+          "symbol": "pthread_mutex_lock@@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 1.76,
+          "symbol": "suet_ses_receive",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.68,
+          "symbol": "suet_rel_rx_commit",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.01,
+          "symbol": "ofi_cq_readfrom",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 0.85,
+          "symbol": "0x0000000000000a09",
+          "dso": "[vdso]"
+        },
+        {
+          "percent": 0.84,
+          "symbol": "suet_dgram_progress",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 0.84,
+          "symbol": "suet_dgram_rx_complete",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 0.67,
+          "symbol": "0x000000000002ebe8",
+          "dso": "libmlx5.so.1.27.64.0"
+        },
+        {
+          "percent": 0.59,
+          "symbol": "vrb_post_recv_internal",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 0.59,
+          "symbol": "suet_ses_rx_parse",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 0.59,
+          "symbol": "suet_dgram_ep_recv_pkt",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 0.5,
+          "symbol": "vrb_dgram_ep_recvmsg",
+          "dso": "libfabric.so.1.33.0"
+        }
+      ],
+      "median_user_cycles_per_application_byte": 0.5382165665626526,
+      "median_instructions_per_application_byte": 0.6726204105550593,
+      "median_task_ms": 20298.85,
+      "stat_scope": "Entire invocation including setup/warmup/teardown",
+      "sample_scope": "User cycles, identical 6..12 second steady-state window"
+    },
+    "sender": {
+      "categories_percent": {
+        "Locking": 25.809999999999995,
+        "Protocol/API": 42.21,
+        "Heap management": 7.71,
+        "DGRAM/driver/CQ": 19.26999999999993,
+        "Timekeeping": 3.3300000000000005,
+        "Copies and zeroing": 0.7599999999999999,
+        "Other/application/runtime": 0.6699999999999999
+      },
+      "top_symbols": [
+        {
+          "percent": 20.36,
+          "symbol": "pthread_mutex_unlock@@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 14.83,
+          "symbol": "suet_pds_ipdc_progress_tx_list",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 12.24,
+          "symbol": "suet_pds_send_tx",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 4.53,
+          "symbol": "suet_cc_can_send",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 2.77,
+          "symbol": "pthread_spin_lock@@GLIBC_2.34",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 2.52,
+          "symbol": "pthread_mutex_lock@@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 2.43,
+          "symbol": "suet_pds_tx_done",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 2.35,
+          "symbol": "suet_dgram_pkt_free",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 2.26,
+          "symbol": "vrb_poll_cq",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.84,
+          "symbol": "0x0000000000000a09",
+          "dso": "[vdso]"
+        },
+        {
+          "percent": 1.76,
+          "symbol": "vrb_dgram_ep_sendmsg",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.68,
+          "symbol": "suet_ses_prepare_tx",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.68,
+          "symbol": "vrb_send_iov",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.67,
+          "symbol": "suet_dgram_send",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.59,
+          "symbol": "__libc_calloc2",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 1.17,
+          "symbol": "vrb_post_send",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.09,
+          "symbol": "_int_free_chunk",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 1.01,
+          "symbol": "_int_malloc",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 0.92,
+          "symbol": "__libc_calloc",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 0.75,
+          "symbol": "vrb_report_wc",
+          "dso": "libfabric.so.1.33.0"
+        }
+      ],
+      "median_user_cycles_per_application_byte": 0.4877340220971541,
+      "median_instructions_per_application_byte": 0.8363015262690457,
+      "median_task_ms": 19307.97,
+      "stat_scope": "Entire invocation including setup/warmup/teardown",
+      "sample_scope": "User cycles, identical 6..12 second steady-state window"
+    }
+  },
+  "ref-off": {
+    "bandwidth_MBps": 2651.95,
+    "receiver": {
+      "categories_percent": {
+        "Copies and zeroing": 17.25,
+        "Timekeeping": 11.870000000000001,
+        "Locking": 17.159999999999997,
+        "Reliability bitmaps": 6.38,
+        "Heap management": 8.309999999999999,
+        "Protocol/API": 21.889999999999997,
+        "DGRAM/driver/CQ": 13.94,
+        "Other/application/runtime": 1.4200000000000002,
+        "Reference NIC adapter/other": 1.6700000000000002
+      },
+      "top_symbols": [
+        {
+          "percent": 14.99,
+          "symbol": "__memmove_evex_unaligned_erms",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 5.95,
+          "symbol": "0x0000000000000a09",
+          "dso": "[vdso]"
+        },
+        {
+          "percent": 5.95,
+          "symbol": "pthread_mutex_lock@@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 5.44,
+          "symbol": "pthread_mutex_unlock@@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 5.37,
+          "symbol": "bm_shift_right",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 5.28,
+          "symbol": "pthread_spin_lock@@GLIBC_2.34",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 3.78,
+          "symbol": "_int_free_chunk",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 3.36,
+          "symbol": "uet_pds_to_ses_rx_req",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 2.77,
+          "symbol": "uet_csum",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 2.6,
+          "symbol": "vrb_poll_cq",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 2.43,
+          "symbol": "__libc_calloc",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 2.35,
+          "symbol": "uet_parse_pkt",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 2.26,
+          "symbol": "__memset_evex_unaligned_erms",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 2.1,
+          "symbol": "uet_rx_msg_hash_lookup",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 1.68,
+          "symbol": "uet_pds_progress_rx",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 1.51,
+          "symbol": "0x000000000002ebe8",
+          "dso": "libmlx5.so.1.27.64.0"
+        },
+        {
+          "percent": 1.51,
+          "symbol": "ofi_cq_readfrom",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 1.42,
+          "symbol": "uet_gettime",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 1.17,
+          "symbol": "uet_pds_progress_tx",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 1.09,
+          "symbol": "cfree@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        }
+      ],
+      "median_user_cycles_per_application_byte": 1.2685642623988065,
+      "median_instructions_per_application_byte": 2.3378065869591453,
+      "median_task_ms": 46845.97,
+      "stat_scope": "Entire invocation including setup/warmup/teardown",
+      "sample_scope": "User cycles, identical 6..12 second steady-state window"
+    },
+    "sender": {
+      "categories_percent": {
+        "Copies and zeroing": 24.64,
+        "Locking": 19.040000000000003,
+        "Reliability bitmaps": 5.61,
+        "Protocol/API": 19.939999999999998,
+        "Heap management": 9.48,
+        "DGRAM/driver/CQ": 13.850000000000001,
+        "Reference NIC adapter/other": 2.6,
+        "Timekeeping": 3.0800000000000005,
+        "Other/application/runtime": 1.5899999999999999
+      },
+      "top_symbols": [
+        {
+          "percent": 21.95,
+          "symbol": "__memmove_evex_unaligned_erms",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 10.24,
+          "symbol": "pthread_mutex_unlock@@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 5.19,
+          "symbol": "pthread_mutex_lock@@GLIBC_2.2.5",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 5.11,
+          "symbol": "bm_shift_right",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 4.61,
+          "symbol": "uet_pds_tx_pkt",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 3.61,
+          "symbol": "uet_ep_progress_locked",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 3.35,
+          "symbol": "__libc_calloc2",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 3.19,
+          "symbol": "pthread_spin_lock@@GLIBC_2.34",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 2.68,
+          "symbol": "uet_parse_pkt",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 2.52,
+          "symbol": "_int_free_chunk",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 2.52,
+          "symbol": "__memset_evex_unaligned_erms",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 2.35,
+          "symbol": "uet_csum",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 2.09,
+          "symbol": "vrb_dgram_ep_send",
+          "dso": "libfabric.so.1.33.0"
+        },
+        {
+          "percent": 2.02,
+          "symbol": "tx",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 1.51,
+          "symbol": "0x0000000000000a09",
+          "dso": "[vdso]"
+        },
+        {
+          "percent": 1.34,
+          "symbol": "__libc_calloc",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 1.26,
+          "symbol": "0x000000000002ebe8",
+          "dso": "libmlx5.so.1.27.64.0"
+        },
+        {
+          "percent": 1.09,
+          "symbol": "uet_pdsm_get_msgid_pdc",
+          "dso": "libuet_ref-fi.so"
+        },
+        {
+          "percent": 1.09,
+          "symbol": "_int_malloc",
+          "dso": "libc.so.6"
+        },
+        {
+          "percent": 1.01,
+          "symbol": "_int_free_merge_chunk",
+          "dso": "libc.so.6"
+        }
+      ],
+      "median_user_cycles_per_application_byte": 1.1736828125260093,
+      "median_instructions_per_application_byte": 1.619872323400324,
+      "median_task_ms": 45850.63,
+      "stat_scope": "Entire invocation including setup/warmup/teardown",
+      "sample_scope": "User cycles, identical 6..12 second steady-state window"
+    }
+  }
+}

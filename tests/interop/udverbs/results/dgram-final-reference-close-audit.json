@@ -1,0 +1,11 @@
+{
+  "reference_endpoints": {
+    "dgram-final-correctness-verbs-20261104": 20,
+    "dgram-final-correctness-udp-20261104": 20,
+    "dgram-final-performance-20261104": 120,
+    "dgram-final-profile-20261104": 4,
+    "dgram-final-profile-4000-20261104": 4,
+    "dgram-final-window1-20261104": 6
+  },
+  "all_error_close_counters_zero": true
+}

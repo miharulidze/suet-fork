@@ -14,6 +14,9 @@ p.add_argument('--fabric', help='Override libfabric prefix and fabtests binaries
 p.add_argument('--baseline', type=Path, default=Path(__file__).parent/'results/crc-switch-performance/runs.json')
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--remote', default='/root/suet-interop-20261103/profiles-20261104')
+p.add_argument('--bytes', type=int, default=1048576)
+p.add_argument('--sample-start', type=float, default=6)
+p.add_argument('--sample-seconds', type=float, default=6)
 p.add_argument('--iterations', type=int, default=100000)
 p.add_argument('--warmup', type=int, default=10000)
 p.add_argument('--samples', type=int, default=3)
@@ -25,7 +28,7 @@ records = []
 for phase in ('stat', 'record'):
     for repeat in range(a.samples if phase == 'stat' else 1):
         for provider in (('suet', 'ref-off') if repeat % 2 == 0 else ('ref-off', 'suet')):
-            row = next(r for r in baseline if r['provider'] == provider and r['test'] == 'bw' and r['bytes'] == 1048576)
+            row = next(r for r in baseline if r['provider'] == provider and r['test'] == 'bw' and r['bytes'] == a.bytes)
             name = f'{provider}-{phase}-r{repeat}'
             commands, processes, streams = [], [], []
             for side, original in enumerate(row['commands']):
@@ -60,9 +63,14 @@ for phase in ('stat', 'record'):
                     if proc.poll() is None: proc.kill();proc.wait()
                 for stream in streams: stream.close()
             text = (a.output/f'{name}-1.log').read_text()
-            rates = [float(line.split()[4]) for line in text.splitlines() if re.match(r'^1m\s',line)]
+            rates = []
+            for line in text.splitlines():
+                fields = line.split()
+                if len(fields) >= 7 and re.fullmatch(r'\d+(?:\.\d+)?[kmg]?', fields[0]):
+                    rates.append(float(fields[4]))
             result = dict(name=name,provider=provider,phase=phase,repeat=repeat,commands=commands,
-                          exit_codes=codes,MBps=rates,iterations=a.iterations,warmup=a.warmup)
+                          exit_codes=codes,MBps=rates,iterations=a.iterations,warmup=a.warmup,bytes=a.bytes,
+                          sample_start_seconds=a.sample_start,sample_seconds=a.sample_seconds)
             result['passed'] = codes == [0,0] and len(rates) == 1
             records.append(result)
             (a.output/'runs.json').write_text(json.dumps(records,indent=2)+'\n')
@@ -79,12 +87,15 @@ for phase in ('stat', 'record'):
                     code = """import json,re,subprocess,sys
 data=sys.argv[1]
 s=subprocess.check_output(['perf','script','-i',data,'--max-stack','1','-F','time'],stderr=subprocess.DEVNULL,text=True)
-first=float(re.search(r'(?m)^\\s*(\\d+\\.\\d+):',s)[1]);window=f'{first+6:.9f},{first+12:.9f}'
+times=[float(x) for x in re.findall(r'(?m)^\\s*(\\d+\\.\\d+):',s)]
+first=min(times);start=float(sys.argv[2]);seconds=float(sys.argv[3])
+assert max(times)>=first+start+seconds,'Steady-state sample interval exceeds run duration'
+window=f'{first+start:.9f},{first+start+seconds:.9f}'
 for kind,extra in [('flat',['--no-children','-g','none','--percent-limit','0']),('callers',['--children','-g','graph,0.5,caller'])]:
  out=subprocess.check_output(['perf','report','-i',data,'--stdio','--no-inline','--time',window,'--sort','symbol,dso']+extra,stderr=subprocess.STDOUT,text=True)
  print(json.dumps({'kind':kind,'window':window,'text':out}))
 """
-                    output=subprocess.check_output(command[:-1]+['python3 -c '+shlex.quote(code)+' '+shlex.quote(target+'.data')])
+                    output=subprocess.check_output(command[:-1]+['python3 -c '+shlex.quote(code)+' '+shlex.quote(target+'.data')+' '+str(a.sample_start)+' '+str(a.sample_seconds)])
                     for line in output.decode().splitlines():
                         item=json.loads(line)
                         (a.output/f'{name}-{side}-{item["kind"]}.txt').write_text('\n'.join(s.rstrip() for s in item['text'].splitlines())+'\n')

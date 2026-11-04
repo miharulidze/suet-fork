@@ -1,0 +1,18 @@
+{
+  "command": [
+    "ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectTimeout=15",
+    "-J",
+    "mkhalilov@blue.inf.ethz.ch",
+    "root@roce00.cscs.ch",
+    "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_OFI_SUET_PAYLOAD_MTU=1024 FI_LOG_LEVEL=warn python3 /root/suet-interop-20261103/fix6/source/test_suet.py --bin-dir /root/suet-interop-20261104/native-gap/build/bin --provider \"udp;ofi_suet\" -v"
+  ],
+  "exit_code": 0,
+  "passed": 35,
+  "failed": 0,
+  "native_commit": "03f9f4d",
+  "note": "Repeated after reference GoBackN patch; timing stages start only after suite exits"
+}

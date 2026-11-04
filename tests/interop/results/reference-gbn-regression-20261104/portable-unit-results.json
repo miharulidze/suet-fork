@@ -1,0 +1,38 @@
+{
+  "results": [
+    {
+      "host": "local-macOS",
+      "exit_code": 0,
+      "result": "ROD GoBackN: ordered replay, wrap, coalescing, backpressure, holes and errors PASS",
+      "reference_source": "/tmp/uet-ref-gbn-20261104"
+    },
+    {
+      "host": "roce00.cscs.ch",
+      "exit_code": 0,
+      "result": "ROD GoBackN: ordered replay, wrap, coalescing, backpressure, holes and errors PASS",
+      "reference_source": "/root/suet-interop-20261104/dgram/build/reference-source"
+    },
+    {
+      "host": "roce01.cscs.ch",
+      "exit_code": 0,
+      "result": "ROD GoBackN: ordered replay, wrap, coalescing, backpressure, holes and errors PASS",
+      "reference_source": "/root/suet-interop-20261104/dgram/build/reference-source"
+    }
+  ],
+  "checks": [
+    "ordered PSN replay",
+    "PSN wrap",
+    "duplicate and RETX NACK coalescing",
+    "NIC EAGAIN with cursor resumption",
+    "ACK window advancement",
+    "higher Expected_PSN loss",
+    "missing/acknowledged slots",
+    "retry limit and hard error"
+  ],
+  "sha256": {
+    "check_rod_gbn.py": "8c5e3f906dd4fc1af231a59fd9e2acc01fabc88efd97491bc832bef3791da365",
+    "rod_gbn_probe.c": "ed1b8e07f34a125940a9f5c36e97c91c83bb217c25c3b2f0e28fa09a6996b72a",
+    "patches/0002-pds-rod-gobackn.patch": "a79e2f61c31bb534c5738c4ca4368476ac8dc8b84640702570493e786036562b"
+  },
+  "patch_format": "Zero-context diff, matching 0001 style; applying both patches reproduces all 160 tested reference source/header hashes exactly"
+}

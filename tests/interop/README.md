@@ -51,16 +51,20 @@ normal builder in a fresh workspace first; it pins libfabric and applies the
 required source-address/entropy patches:
 
 ```bash
-WORKDIR=/root/suet-interop-20261104/fresh JOBS=8 bash build.sh
-# Then set LIBFABRIC_SOURCE=$WORKDIR/libfabric and
-# LIBFABRIC_PREFIX=$WORKDIR/build for the interop build above.
+export WORKDIR=/root/suet-interop-20261104/fresh
+JOBS=8 bash build.sh
+export LIBFABRIC_SOURCE="$WORKDIR/libfabric"
+export LIBFABRIC_PREFIX="$WORKDIR/build"
+# Use these values in place of the native-gap paths in the interop build.
+# Pass --fabric "$LIBFABRIC_PREFIX" to run.py and udverbs/compare.py.
 ```
 
 This builds both `build/pingpong` and `build/provider/libuet_ref-fi.so`.
 The same `.so` is used by `fi_rdm_pingpong` and `fi_rdm_bw`; there is no
 separate copy of the reference NIC or reference core in `pingpong`.
 The builder configures a 4,000-byte reference payload maximum in an isolated
-source copy and applies [the CRC switch patch](udverbs/patches/0001-pds-benchmark-crc-switch.patch).
+source copy and applies [the CRC switch patch](udverbs/patches/0001-pds-benchmark-crc-switch.patch)
+and [ROD GoBackN correction](udverbs/patches/0002-pds-rod-gobackn.patch).
 The original reference export and previous benchmark installations are preserved.
 
 ## Run the two-node test matrix
@@ -140,3 +144,49 @@ transport, window 64, and 10,000 warmups plus 10,000 measured iterations.
 [Commands, exits and samples](udverbs/results/native-gap-bandwidth-20261104/runs.json)
 are retained. The pre-fix 1-MiB profiling controls were 6,104.34 and 6,081.03 MB/s;
 these checks retain the approximately 6-GB/s native throughput.
+
+## Reference ROD replay correction
+
+The pinned reference retries only `nack_psn` for `ROD_OOO`, even though that
+identifies a later discarded packet. The missing packet remains missing and
+repeated NACKs exhaust the retry limit. The separate
+[reference patch](udverbs/patches/0002-pds-rod-gobackn.patch) starts replay at
+`payload = Expected_PSN`, submits outstanding packets in PSN order, blocks
+new data until recovery feedback, retains its cursor on NIC backpressure, and
+coalesces NACKs for the same loss event. Retry limits are unchanged. This
+implements the ROD out-of-order NACK rules in
+[UEC section 3.5.21.1](https://ultraethernet.org/uec-1-0-spec).
+
+The portable replay regression executes the actual patched C functions with
+mock transport/bitmap hooks. It covers ordered replay, PSN wrap, duplicate
+and RETX feedback, distinct losses, window advancement, backpressure, holes
+and retry/hard-error handling; it passes locally and on both Linux hosts:
+
+```bash
+python3 tests/interop/udverbs/check_rod_gbn.py \
+  /root/suet-interop-20261104/dgram/build/reference-source
+```
+
+The formerly failing [1-MiB UDP ROD mixed cases](results/reference-gbn-udp-rod-20261104/summary.json)
+now complete ten rounds in each role, with full payload validation and clean
+shutdown. This fixes the observed gap-recovery failures; it is not a claim of
+complete UET conformance.
+
+## Completed shared-backend interoperability matrix
+
+- [GBN matrix](results/dgram-final-matrix-20261104/summary.json): **112/112**
+  cases passed, covering both transports, both modes, all four provider
+  server/client pairings, seven sizes through 1 MiB, and ten rounds per case.
+- [Additional native SR matrix](results/dgram-final-sr-20261104/summary.json):
+  **24/24** mixed-provider cases passed over both transports and modes, using
+  16-byte, 4,001-byte and 1-MiB messages, with ten rounds per case.
+- Both peers' PDC error-close counters are zero in every case; the
+  [GBN audit](results/dgram-final-matrix-20261104/close-counter-audit.json) and
+  [SR audit](results/dgram-final-sr-20261104/close-counter-audit.json) cover all
+  272 endpoint runs. Large diagnostic logs are gzip-compressed without
+  changing their contents.
+
+[Reference replay unit results](results/reference-gbn-regression-20261104/portable-unit-results.json)
+record the tested patch/probe hashes and results on macOS and both Linux hosts.
+[The performance report](udverbs/README.md) records the stock-fabtests
+comparison and matched CPU profiles using the identical shared module.

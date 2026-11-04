@@ -1,0 +1,47 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+UET_BENCH_CRC mode=off
+ENDPOINT provider=ref backend=udp type=FI_EP_DGRAM raw_len=16 pid=0 ri=0 initiator=16 mode=rud
+client TX ping round=0 bytes=4001
+UD_BACKEND provider=udp domain=ens785f0np0 type=FI_EP_DGRAM prefix=0 source=10.203.44.2 queue_depth=384 wire=pds-ses mtu=1472
+REF_PROFILE payload_mtu=1024
+client RX pong round=0 bytes=4001 PASS
+client TX ping round=1 bytes=4001
+client RX pong round=1 bytes=4001 PASS
+client TX ping round=2 bytes=4001
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034874 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034875 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034876 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034877 on PDC 2 (ACK retransmit)[m
+client RX pong round=2 bytes=4001 PASS
+client TX ping round=3 bytes=4001
+client RX pong round=3 bytes=4001 PASS
+client TX ping round=4 bytes=4001
+client RX pong round=4 bytes=4001 PASS
+client TX ping round=5 bytes=4001
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034886 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034887 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034888 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034889 on PDC 2 (ACK retransmit)[m
+client RX pong round=5 bytes=4001 PASS
+client TX ping round=6 bytes=4001
+client RX pong round=6 bytes=4001 PASS
+client TX ping round=7 bytes=4001
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034898 on PDC 2 (ACK retransmit)[m
+client RX pong round=7 bytes=4001 PASS
+client TX ping round=8 bytes=4001
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034899 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3511034900 on PDC 2 (ACK retransmit)[m
+client RX pong round=8 bytes=4001 PASS
+client TX ping round=9 bytes=4001
+client RX pong round=9 bytes=4001 PASS
+CLOSING
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 74[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m
+RESULT provider=ref role=client mode=rud bytes=4001 rounds=10 PASS
+UD_BACKEND tx=67 rx=74 tx_bytes=42866 rx_bytes=54464

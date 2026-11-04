@@ -98,6 +98,8 @@ def main():
                         if provider == 'ref':
                             success = success and f'UD_BACKEND provider={backend} ' in text and 'wire=pds-ses' in text
                             success = success and bool(re.search(r'UD_BACKEND tx=[1-9]\d* rx=[1-9]\d*',text))
+                            counters = re.findall(r'pdc_close_in_err_cnt\s*:\s*(\d+)', text)
+                            success = success and bool(counters) and all(int(n) == 0 for n in counters)
                         if provider == 'suet':
                             counters = re.findall(r'pdc_close_in_err=(\d+)', text)
                             success = success and bool(counters) and all(int(n) == 0 for n in counters)

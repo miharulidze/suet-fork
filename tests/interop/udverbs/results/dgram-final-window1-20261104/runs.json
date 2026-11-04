@@ -1,0 +1,272 @@
+[
+  {
+    "name": "suet-bw-4000-r0",
+    "provider": "suet",
+    "test": "bw",
+    "bytes": 4000,
+    "iterations": 100000,
+    "crc": null,
+    "warmup": 10000,
+    "repeat": 0,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "passed": true,
+    "measurements": [
+      {
+        "mb_per_second": 521.36,
+        "usec_per_transfer": 7.67
+      }
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=0 UET_PDS=pds UET_UD_SOURCE=10.203.44.1 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p 'verbs;ofi_suet' -b=38600 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.1 -d mlx5_0-dgram"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=0 UET_PDS=pds UET_UD_SOURCE=10.203.44.2 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p 'verbs;ofi_suet' -b=38600 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.2 -d mlx5_0-dgram 10.203.44.1"
+      ]
+    ]
+  },
+  {
+    "name": "ref-off-bw-4000-r0",
+    "provider": "ref-off",
+    "test": "bw",
+    "bytes": 4000,
+    "iterations": 100000,
+    "crc": "off",
+    "warmup": 10000,
+    "repeat": 0,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "passed": true,
+    "measurements": [
+      {
+        "mb_per_second": 403.92,
+        "usec_per_transfer": 9.9
+      }
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=1 UET_PDS=pds UET_UD_SOURCE=10.203.44.1 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p uet_ref -b=38601 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.1"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=1 UET_PDS=pds UET_UD_SOURCE=10.203.44.2 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p uet_ref -b=38601 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.2 10.203.44.1"
+      ]
+    ]
+  },
+  {
+    "name": "ref-off-bw-4000-r1",
+    "provider": "ref-off",
+    "test": "bw",
+    "bytes": 4000,
+    "iterations": 100000,
+    "crc": "off",
+    "warmup": 10000,
+    "repeat": 1,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "passed": true,
+    "measurements": [
+      {
+        "mb_per_second": 404.21,
+        "usec_per_transfer": 9.9
+      }
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=1 UET_PDS=pds UET_UD_SOURCE=10.203.44.1 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p uet_ref -b=38602 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.1"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=1 UET_PDS=pds UET_UD_SOURCE=10.203.44.2 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p uet_ref -b=38602 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.2 10.203.44.1"
+      ]
+    ]
+  },
+  {
+    "name": "suet-bw-4000-r1",
+    "provider": "suet",
+    "test": "bw",
+    "bytes": 4000,
+    "iterations": 100000,
+    "crc": null,
+    "warmup": 10000,
+    "repeat": 1,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "passed": true,
+    "measurements": [
+      {
+        "mb_per_second": 519.42,
+        "usec_per_transfer": 7.7
+      }
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=0 UET_PDS=pds UET_UD_SOURCE=10.203.44.1 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p 'verbs;ofi_suet' -b=38603 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.1 -d mlx5_0-dgram"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=0 UET_PDS=pds UET_UD_SOURCE=10.203.44.2 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p 'verbs;ofi_suet' -b=38603 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.2 -d mlx5_0-dgram 10.203.44.1"
+      ]
+    ]
+  },
+  {
+    "name": "suet-bw-4000-r2",
+    "provider": "suet",
+    "test": "bw",
+    "bytes": 4000,
+    "iterations": 100000,
+    "crc": null,
+    "warmup": 10000,
+    "repeat": 2,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "passed": true,
+    "measurements": [
+      {
+        "mb_per_second": 517.01,
+        "usec_per_transfer": 7.74
+      }
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=0 UET_PDS=pds UET_UD_SOURCE=10.203.44.1 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p 'verbs;ofi_suet' -b=38604 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.1 -d mlx5_0-dgram"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=0 UET_PDS=pds UET_UD_SOURCE=10.203.44.2 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p 'verbs;ofi_suet' -b=38604 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.2 -d mlx5_0-dgram 10.203.44.1"
+      ]
+    ]
+  },
+  {
+    "name": "ref-off-bw-4000-r2",
+    "provider": "ref-off",
+    "test": "bw",
+    "bytes": 4000,
+    "iterations": 100000,
+    "crc": "off",
+    "warmup": 10000,
+    "repeat": 2,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "passed": true,
+    "measurements": [
+      {
+        "mb_per_second": 403.68,
+        "usec_per_transfer": 9.91
+      }
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=1 UET_PDS=pds UET_UD_SOURCE=10.203.44.1 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p uet_ref -b=38605 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.1"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_LOG_LEVEL=warn FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 UET_BENCH_PAYLOAD_MTU=4000 UET_DGRAM_PROVIDER=verbs UET_BENCH_DISABLE_CRC=1 UET_PDS=pds UET_UD_SOURCE=10.203.44.2 UET_BENCH_MODE=rod timeout -k 3s 300s taskset -c 2 /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_bw -p uet_ref -b=38605 -j 0 -S 4000 -I 100000 -w 10000 -W 1 -s 10.203.44.2 10.203.44.1"
+      ]
+    ]
+  }
+]

@@ -1,0 +1,517 @@
+libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
+UET_BENCH_CRC mode=off
+ENDPOINT provider=ref backend=udp type=FI_EP_DGRAM raw_len=16 pid=0 ri=0 initiator=16 mode=rod
+client TX ping round=0 bytes=65537
+UD_BACKEND provider=udp domain=ens785f0np0 type=FI_EP_DGRAM prefix=0 source=10.203.44.2 queue_depth=384 wire=pds-ses mtu=1472
+REF_PROFILE payload_mtu=1024
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091579 on PDC 2 (ACK retransmit)[m
+client RX pong round=0 bytes=65537 PASS
+client TX ping round=1 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091580 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091581 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091582 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091583 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091584 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091585 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091586 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091587 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091588 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091589 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091590 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091591 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091592 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091593 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091594 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091595 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091596 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091597 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091598 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091599 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091600 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091601 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091602 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091603 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091604 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091605 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091606 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091607 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091608 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091609 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091610 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091611 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091612 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091613 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091614 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091615 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091616 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091617 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091618 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091619 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091620 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091621 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091622 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091582 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091583 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091584 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091585 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091586 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091587 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091588 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091589 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091590 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091591 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091592 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091593 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091594 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091595 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091596 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091597 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091598 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091599 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091600 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091601 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091602 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091603 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091604 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091605 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091606 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091607 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091608 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091609 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091637 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091590 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091591 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091592 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091593 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091594 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091595 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091596 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091597 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091598 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091599 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091600 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091601 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091602 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091603 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091604 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091605 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091606 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091607 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091608 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091609 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091610 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091611 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091612 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091613 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091614 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091615 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate SYN PSN 3466091616 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091645 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091646 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091647 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091648 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091649 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091650 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091651 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091652 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091653 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091654 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091655 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091656 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091657 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091658 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091659 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091660 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091661 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091662 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091663 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091664 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091665 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091666 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091667 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091668 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091669 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091670 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091671 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091654 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091655 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091656 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091657 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091658 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091659 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091660 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091661 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091662 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091663 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091664 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091665 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091666 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091667 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091668 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091669 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091670 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091671 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091672 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091673 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091674 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091675 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091676 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091677 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091678 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091679 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091680 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091681 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091682 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091683 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091684 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091685 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091686 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091687 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091688 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091689 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091690 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091691 on PDC 2 (ACK retransmit)[m
+client RX pong round=1 bytes=65537 PASS
+client TX ping round=2 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091702 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091692 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091693 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091694 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091695 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091696 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091697 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091698 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091699 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091700 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091701 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091702 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091703 on PDC 2 (ACK retransmit)[m
+client RX pong round=2 bytes=65537 PASS
+client TX ping round=3 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091704 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091705 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091706 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091707 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091708 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091709 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091710 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091711 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091712 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091713 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091714 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091715 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091716 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091717 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091718 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091719 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091720 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091721 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091722 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091723 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091724 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091725 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091726 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091727 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091728 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091729 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091730 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091731 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091732 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091733 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091734 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091735 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091736 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091737 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091738 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091739 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091740 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091741 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091742 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091743 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091744 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091745 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091746 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091747 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091748 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091749 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091750 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091751 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091752 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091753 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091754 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091755 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091756 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091757 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091758 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091759 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091760 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091761 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091762 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091763 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091764 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091765 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091766 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091767 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091768 on PDC 2 (ACK retransmit)[m
+client RX pong round=3 bytes=65537 PASS
+client TX ping round=4 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091769 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091770 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091771 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091772 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091773 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091774 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091775 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091776 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091777 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091778 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091779 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091780 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091781 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091782 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091783 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091784 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091785 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091786 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091787 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091788 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091789 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091790 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091791 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091792 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091793 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091794 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091795 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091796 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091797 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091798 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091799 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091800 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091801 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091802 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091803 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091804 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091805 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091806 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091807 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091808 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091809 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091810 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091811 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091812 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091813 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091814 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091815 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091816 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091817 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091818 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091819 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091820 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091821 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091822 on PDC 2 (ACK retransmit)[m
+client RX pong round=4 bytes=65537 PASS
+client TX ping round=5 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091833 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091834 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091835 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091836 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091837 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091838 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091839 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091840 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091841 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091842 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091843 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091844 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091845 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091846 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091898 on PDC 2 (ACK retransmit)[m
+client RX pong round=5 bytes=65537 PASS
+client TX ping round=6 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091899 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091900 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091901 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091902 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091903 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091904 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091905 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091906 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091907 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091908 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091909 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091910 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091911 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091912 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091913 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091914 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091915 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091916 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091917 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091918 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091919 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091920 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091921 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091922 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091923 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091924 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091925 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091926 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091927 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091928 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091929 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091930 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091931 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091932 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091933 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091934 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091935 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091936 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091937 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091938 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091939 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091940 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091941 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091942 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091943 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091944 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091945 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091946 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091947 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091948 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091949 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091950 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091951 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091952 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091953 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091954 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091955 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091956 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091957 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091958 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091959 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091960 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091961 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466091962 on PDC 2 (ACK retransmit)[m
+client RX pong round=6 bytes=65537 PASS
+client TX ping round=7 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092011 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092012 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092013 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092014 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092015 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092016 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092017 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092018 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092019 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092020 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092021 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092022 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092023 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092024 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092025 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092026 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092027 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092028 on PDC 2 (ACK retransmit)[m
+client RX pong round=7 bytes=65537 PASS
+client TX ping round=8 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092029 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092030 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092031 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092032 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092033 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092034 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092035 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092036 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092037 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092038 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092039 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092040 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092041 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092042 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092043 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092044 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092045 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092046 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092047 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092048 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092049 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092050 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092051 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092052 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092053 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092054 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092055 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092056 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092057 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092058 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092059 on PDC 2 (ACK retransmit)[m
+client RX pong round=8 bytes=65537 PASS
+client TX ping round=9 bytes=65537
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092125 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092126 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092127 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092128 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092129 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092130 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092131 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092132 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092133 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092134 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092135 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092136 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092137 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092138 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092139 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092140 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092141 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092142 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092143 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092144 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092145 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092146 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092147 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092148 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092149 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092150 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092151 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092152 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092153 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092154 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092155 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092156 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092157 on PDC 2 (ACK retransmit)[m
+client RX pong round=9 bytes=65537 PASS
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092158 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092159 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092160 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092161 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092162 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092163 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092164 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092165 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092166 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092167 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092168 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092169 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092170 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092171 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092172 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092173 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092174 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092175 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092176 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092177 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092178 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092179 on PDC 2 (ACK retransmit)[m
+[33m[/root/suet-interop-20261104/dgram/build/reference-source/uet_pds.c:3211] WARN: [PDS] duplicate PSN 3466092180 on PDC 2 (ACK retransmit)[m
+CLOSING
+[32mINFO: [TSS] PORT stats:[m
+[32mINFO: [TSS]     in_errored_pkts                : 0[m
+[32mINFO: [TSS]     out_errored_pkts               : 0[m
+[32mINFO: [TSS]     in_rx_encryption_bypass_pkts   : 1153[m
+[32mINFO: [TSS]     out_rx_encryption_bypass_pkts  : 0[m
+[35mINFO: [PDS] new_pdc_timeout_cnt            : 0[m
+[35mINFO: [PDS] psn_range_close_cnt            : 0[m
+[35mINFO: [PDS] pdc_close_in_err_cnt           : 0[m
+RESULT provider=ref role=client mode=rod bytes=65537 rounds=10 PASS
+UD_BACKEND tx=1253 rx=1153 tx_bytes=706210 rx_bytes=1204589

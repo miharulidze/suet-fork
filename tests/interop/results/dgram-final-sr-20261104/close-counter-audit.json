@@ -1,0 +1,6 @@
+{
+  "cases": 24,
+  "reference_endpoints": 24,
+  "native_endpoints": 24,
+  "all_error_close_counters_zero": true
+}

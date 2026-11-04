@@ -1,0 +1,126 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 1K of event 'cycles:u' (time slices: 586902.777351000,586908.777351000)
+# Event count (approx.): 19012046536
+#
+# Overhead  Symbol                                   Shared Object         IPC   [IPC Coverage]
+# ........  .......................................  ....................  ....................
+#
+    40.05%  [.] __memmove_evex_unaligned_erms        libc.so.6             -      -
+    10.98%  [.] suet_pds_receive                     libfabric.so.1.33.0   -      -
+     7.05%  [.] vrb_dgram_av_reverse_lookup_ep_name  libfabric.so.1.33.0   -      -
+     4.53%  [.] pthread_spin_lock@@GLIBC_2.34        libc.so.6             -      -
+     4.02%  [.] vrb_poll_cq                          libfabric.so.1.33.0   -      -
+     3.36%  [.] suet_dgram_pkt_free                  libfabric.so.1.33.0   -      -
+     2.84%  [.] pthread_mutex_unlock@@GLIBC_2.2.5    libc.so.6             -      -
+     2.68%  [.] vrb_report_wc                        libfabric.so.1.33.0   -      -
+     2.43%  [.] pthread_mutex_lock@@GLIBC_2.2.5      libc.so.6             -      -
+     1.76%  [.] suet_ses_receive                     libfabric.so.1.33.0   -      -
+     1.68%  [.] suet_rel_rx_commit                   libfabric.so.1.33.0   -      -
+     1.01%  [.] ofi_cq_readfrom                      libfabric.so.1.33.0   -      -
+     0.85%  [.] 0x0000000000000a09                   [vdso]                -      -
+     0.84%  [.] suet_dgram_progress                  libfabric.so.1.33.0   -      -
+     0.84%  [.] suet_dgram_rx_complete               libfabric.so.1.33.0   -      -
+     0.67%  [.] 0x000000000002ebe8                   libmlx5.so.1.27.64.0  -      -
+     0.59%  [.] vrb_post_recv_internal               libfabric.so.1.33.0   -      -
+     0.59%  [.] suet_ses_rx_parse                    libfabric.so.1.33.0   -      -
+     0.59%  [.] suet_dgram_ep_recv_pkt               libfabric.so.1.33.0   -      -
+     0.50%  [.] vrb_dgram_ep_recvmsg                 libfabric.so.1.33.0   -      -
+     0.50%  [.] vrb_post_recv                        libfabric.so.1.33.0   -      -
+     0.42%  [.] vrb_cq_readfrom                      libfabric.so.1.33.0   -      -
+     0.42%  [.] 0x000000000002f347                   libmlx5.so.1.27.64.0  -      -
+     0.42%  [.] 0x000000000002ec7d                   libmlx5.so.1.27.64.0  -      -
+     0.34%  [.] 0x000000000002ed21                   libmlx5.so.1.27.64.0  -      -
+     0.34%  [.] suet_rel_rx_record                   libfabric.so.1.33.0   -      -
+     0.25%  [.] vrb_send_iov                         libfabric.so.1.33.0   -      -
+     0.25%  [.] suet_rel_rx_ack_needed               libfabric.so.1.33.0   -      -
+     0.25%  [.] 0x0000000000067f1c                   libmlx5.so.1.27.64.0  -      -
+     0.25%  [.] vrb_dgram_ep_recv                    libfabric.so.1.33.0   -      -
+     0.17%  [.] 0x000000000002ed15                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] suet_domain_progress                 libfabric.so.1.33.0   -      -
+     0.17%  [.] 0x000000000002edc0                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] 0x0000000000067fe2                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] vrb_cq_progress                      libfabric.so.1.33.0   -      -
+     0.17%  [.] 0x000000000002ec81                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] ofi_cq_read                          libfabric.so.1.33.0   -      -
+     0.17%  [.] suet_ses_rx_commit                   libfabric.so.1.33.0   -      -
+     0.17%  [.] 0x000000000002ec77                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] 0x000000000002eb00                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] suet_ses_rx_entry_complete           libfabric.so.1.33.0   -      -
+     0.17%  [.] 0x000000000002f373                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] pthread_spin_unlock@plt              libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] 0x000000000002ec7a                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] 0x0000000000068195                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] 0x000000000002f219                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] suet_pds_progress                    libfabric.so.1.33.0   -      -
+     0.17%  [.] 0x000000000002ecfb                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] pthread_spin_unlock@@GLIBC_2.34      libc.so.6             -      -
+     0.17%  [.] util_cq_read_msg                     libfabric.so.1.33.0   -      -
+     0.17%  [.] suet_pds_ipdc_progress_tx_pkt_list   libfabric.so.1.33.0   -      -
+     0.17%  [.] 0x000000000002eb1b                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] 0x000000000002ec94                   libmlx5.so.1.27.64.0  -      -
+     0.17%  [.] 0x0000000000068016                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067f27                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ed33                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002f362                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067ff6                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ecc5                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ecda                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] suet_pds_ipdc_progress_tx_list       libfabric.so.1.33.0   -      -
+     0.08%  [.] 0x000000000002ecf1                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ec8d                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ecc1                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067eb0                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067f6b                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ecbd                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ebd9                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002f1eb                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067ecb                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] suet_rel_rx_cack                     libfabric.so.1.33.0   -      -
+     0.08%  [.] suet_pds_pkt_alloc                   libfabric.so.1.33.0   -      -
+     0.08%  [.] 0x000000000002eb05                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] vrb_dgram_ep_sendmsg                 libfabric.so.1.33.0   -      -
+     0.08%  [.] ofi_ibuf_is_lower                    libfabric.so.1.33.0   -      -
+     0.08%  [.] 0x000000000002eddd                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ec98                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067f0f                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067ef7                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x00000000000009be                   [vdso]                -      -
+     0.08%  [.] 0x000000000002eb0c                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ec0d                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] suet_rel_tx_cack                     libfabric.so.1.33.0   -      -
+     0.08%  [.] 0x000000000002ed76                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ed2a                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] ft_read_cq                           fi_rdm_bw             -      -
+     0.08%  [.] 0x0000000000000a0b                   [vdso]                -      -
+     0.08%  [.] 0x000000000002ec28                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067f3f                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000067da8                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ebcf                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] suet_ep_generic_recvmsg              libfabric.so.1.33.0   -      -
+     0.08%  [.] memcpy@plt                           libfabric.so.1.33.0   -      -
+     0.08%  [.] 0x0000000000000a81                   [vdso]                -      -
+     0.08%  [.] ofi_cq_progress                      libfabric.so.1.33.0   -      -
+     0.08%  [.] clock_gettime@plt                    libfabric.so.1.33.0   -      -
+     0.08%  [.] 0x000000000002ec3e                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ec8f                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000005b513                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002f205                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002eba2                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x00000000000009b0                   [vdso]                -      -
+     0.08%  [.] 0x000000000002f1fd                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] clock_gettime@@GLIBC_2.17            libc.so.6             -      -
+     0.08%  [.] 0x0000000000067db1                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002f399                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x0000000000068040                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ef7c                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002ebb8                   libmlx5.so.1.27.64.0  -      -
+     0.08%  [.] 0x000000000002f3a5                   libmlx5.so.1.27.64.0  -      -
+
+
+#
+# (Cannot load tips.txt file, please install perf!)
+#

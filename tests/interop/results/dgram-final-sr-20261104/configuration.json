@@ -1,0 +1,17 @@
+{
+  "server_host": "roce00.cscs.ch",
+  "client_host": "roce01.cscs.ch",
+  "server_ip": "10.203.44.1",
+  "client_ip": "10.203.44.2",
+  "root": "/root/suet-interop-20261104/dgram",
+  "output": "tests/interop/results/dgram-final-sr-20261104",
+  "backends": "verbs,udp",
+  "fabric": "/root/suet-interop-20261104/native-gap/build",
+  "control_port": 37900,
+  "pairs": "suet-ref,ref-suet",
+  "modes": "rod,rud",
+  "sizes": "16,4001,1048576",
+  "rounds": 10,
+  "capture": false,
+  "sr": 1
+}
