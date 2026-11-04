@@ -14,27 +14,31 @@ explicitly superseded; its passing matrices are not results for the original
 reference protocol. The original [CRC-on/off experiment](README-crc-experiment.md)
 and its raw results remain available.
 
-## Comparison: ROD and RUD, one endpoint per node
+## Comparison: ROD, one endpoint per node
 
-All **120/120 ROD** and **108/108 RUD** timing jobs passed. Each point is the
-median of three repetitions. Both modes use **one application endpoint per
-node**, one process per node, CPU 2, and the same packet sizes, queues, window,
-warmups and iteration counts. Native SUET uses GBN in both modes.
+All **120/120 ROD** timing jobs passed. Each point is the median of three
+repetitions. Both providers use **one application endpoint per node**, one
+process per node, CPU 2, and the same packet sizes, queues, window, warmups
+and iteration counts. Native SUET uses GBN. This figure was regenerated from
+the saved ROD samples; no experiments were rerun.
 
-| Message size | SUET ROD MB/s | Reference ROD MB/s | SUET RUD MB/s | Reference RUD MB/s |
-| --- | ---: | ---: | ---: | ---: |
-| 4 KiB | 1,981.35 | 430.35 | 1,974.68 | 983.54 |
-| 64 KiB | 6,501.07 | 2,378.03 | 6,487.88 | 1,884.11 |
-| 1 MiB | 6,086.63 | 2,655.08 | 6,126.11 | 1,863.98 |
+| Message size | SUET ROD MB/s | Reference ROD MB/s |
+| --- | ---: | ---: |
+| 4 KiB | 1,981.35 | 430.35 |
+| 64 KiB | 6,501.07 | 2,378.03 |
+| 1 MiB | 6,086.63 | 2,655.08 |
 
-![ROD and RUD: one endpoint per node](results/dgram-original-protocol-rod-rud-comparison-20261104/comparison.png)
+![ROD: one endpoint per node](results/dgram-original-protocol-performance-20261104/comparison.png)
 
 The reference has CRC disabled. The figure includes **4 KiB (4,096 bytes)**
-and omits the 4,000-byte message-size point. [Bandwidth table](results/dgram-original-protocol-rod-rud-comparison-20261104/table.md),
-[CSV with latency/bandwidth ranges](results/dgram-original-protocol-rod-rud-comparison-20261104/comparison.csv),
-[SVG](results/dgram-original-protocol-rod-rud-comparison-20261104/comparison.svg),
-[ROD samples](results/dgram-original-protocol-performance-20261104/runs.json), and
-[RUD samples](results/dgram-original-protocol-rud-performance-20261104/runs.json).
+and omits the 4,000-byte message-size point. [Latency/bandwidth table](results/dgram-original-protocol-performance-20261104/table.md),
+[CSV with latency/bandwidth ranges](results/dgram-original-protocol-performance-20261104/comparison.csv),
+[SVG](results/dgram-original-protocol-performance-20261104/comparison.svg), and
+[ROD samples](results/dgram-original-protocol-performance-20261104/runs.json).
+
+The earlier [combined ROD/RUD figure](results/dgram-original-protocol-rod-rud-comparison-20261104/comparison.png)
+and [RUD samples](results/dgram-original-protocol-rud-performance-20261104/runs.json)
+remain available; all **108/108 RUD** timing jobs passed.
 
 [RUD validation](results/dgram-original-protocol-rud-validation.json) checks the
 matched iteration/warmup counts, unordered endpoint contract and zero reference
@@ -59,6 +63,17 @@ Verbs uses its 4-KiB DGRAM limit with 4,000 application bytes per packet;
 UDP uses 1,024 application bytes to fit its 1,472-byte DGRAM limit.
 
 ## Run and plot
+
+To regenerate only the ROD figure from the saved measurements, without running
+any benchmarks:
+
+```bash
+python3 tests/interop/udverbs/plot.py \
+  tests/interop/udverbs/results/dgram-original-protocol-performance-20261104 \
+  --exclude-size 4000
+```
+
+To collect new measurements:
 
 ```bash
 python3 tests/interop/udverbs/compare.py --stage correctness --samples 1 \
