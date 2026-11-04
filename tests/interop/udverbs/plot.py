@@ -124,7 +124,7 @@ if profile == 'native4k' and 4000 in plot_sizes and 4096 in plot_sizes:
                          bbox=dict(boxstyle='round,pad=.25', fc='white', ec='#d1d5db'))
 packet_profile = '4 KiB DGRAM limit' if profile == 'native4k' else f'{payload:,}-byte packet payload'
 fig.suptitle('SUET vs UET reference over libfabric FI_EP_DGRAM (verbs)\n'
-             f'{mode} · {packet_profile} · 1 endpoint per node · window 64 · queues {queues} · CPU 2\n'
+             f'{mode} · {packet_profile} · 1 endpoint per node · window 64 · TX/RX depth {queues} each · CPU 2\n'
              'Median of 3 samples; bars show the observed min–max', fontsize=11)
 fig.savefig(a.results / 'comparison.png', dpi=180)
 fig.savefig(a.results / 'comparison.svg')

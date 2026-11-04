@@ -14,25 +14,32 @@ explicitly superseded; its passing matrices are not results for the original
 reference protocol. The original [CRC-on/off experiment](README-crc-experiment.md)
 and its raw results remain available.
 
-## Comparison: one endpoint per node
+## Comparison: ROD and RUD, one endpoint per node
 
-All **120/120** timing jobs passed using the rebuilt original reference protocol.
-Both peers use one application endpoint and one process, with no aggregation
-across multiple endpoints. Native SUET is the unchanged `03f9f4d` install.
+All **120/120 ROD** and **108/108 RUD** timing jobs passed. Each point is the
+median of three repetitions. Both modes use **one application endpoint per
+node**, one process per node, CPU 2, and the same packet sizes, queues, window,
+warmups and iteration counts. Native SUET uses GBN in both modes.
 
-| Message size | SUET bandwidth, MB/s | Reference CRC-off bandwidth, MB/s | Ratio |
+| Message size | SUET ROD MB/s | Reference ROD MB/s | SUET RUD MB/s | Reference RUD MB/s |
 | --- | ---: | ---: | ---: | ---: |
-| 4 KiB | 1,981.35 | 430.35 | 4.60x |
-| 64 KiB | 6,501.07 | 2,378.03 | 2.73x |
-| 1 MiB | 6,086.63 | 2,655.08 | 2.29x |
+| 4 KiB | 1,981.35 | 430.35 | 1,974.68 | 983.54 |
+| 64 KiB | 6,501.07 | 2,378.03 | 6,487.88 | 1,884.11 |
+| 1 MiB | 6,086.63 | 2,655.08 | 6,126.11 | 1,863.98 |
 
-![One endpoint per node: latency and bandwidth](results/dgram-original-protocol-performance-20261104/comparison.png)
+![ROD and RUD: one endpoint per node](results/dgram-original-protocol-rod-rud-comparison-20261104/comparison.png)
 
-The 4,000-byte message-size point is omitted; the figure includes 4 KiB
-(4,096 bytes). [Full table](results/dgram-original-protocol-performance-20261104/table.md),
-[CSV with ranges](results/dgram-original-protocol-performance-20261104/comparison.csv),
-[SVG](results/dgram-original-protocol-performance-20261104/comparison.svg), and
-[all commands and samples](results/dgram-original-protocol-performance-20261104/runs.json).
+The reference has CRC disabled. The figure includes **4 KiB (4,096 bytes)**
+and omits the 4,000-byte message-size point. [Bandwidth table](results/dgram-original-protocol-rod-rud-comparison-20261104/table.md),
+[CSV with latency/bandwidth ranges](results/dgram-original-protocol-rod-rud-comparison-20261104/comparison.csv),
+[SVG](results/dgram-original-protocol-rod-rud-comparison-20261104/comparison.svg),
+[ROD samples](results/dgram-original-protocol-performance-20261104/runs.json), and
+[RUD samples](results/dgram-original-protocol-rud-performance-20261104/runs.json).
+
+[RUD validation](results/dgram-original-protocol-rud-validation.json) checks the
+matched iteration/warmup counts, unordered endpoint contract and zero reference
+error-close counters. The [single-endpoint source evidence](results/dgram-original-protocol-endpoint-setup.json)
+shows the benchmark creates one endpoint per process, with one process on each node.
 
 ## Build once for interop and benchmarking
 
@@ -87,12 +94,12 @@ source and binary hashes, and node metadata are recorded for
 The [interop guide](../README.md) describes address exchange and the shared
 backend. Reruns with the original reference protocol are recorded in
 [the current interop matrix](../results/dgram-original-protocol-interop-20261104/summary.json).
-Any failed mixed-provider cases are reported with their logs; the reference
-protocol is not modified to make them pass.
+Failed mixed-provider cases are recorded in structured summaries, with raw
+logs outside Git; the reference protocol is not modified to make them pass.
 
 ## Current correctness results
 
-Stock fabtests with full byte validation passed **20/20 cases on verbs** and
+ROD stock fabtests with full byte validation passed **20/20 cases on verbs** and
 **20/20 cases on UDP**, covering native SUET and reference ping-pong/bandwidth
 through 1 MiB. Commands and exits:
 [verbs](results/dgram-original-protocol-correctness-verbs-20261104/runs.json),
@@ -204,3 +211,28 @@ python3 tests/interop/udverbs/compare.py --mode rud --stage performance --sample
   --sizes 8,64,256,1024,4096,16384,65536,262144,1048576 \
   --control-port 41400 --output /tmp/original-protocol-rud-performance
 ```
+
+## Reproduce the combined ROD/RUD figure
+
+Run the two timed sweeps sequentially, using the same binaries and providers:
+
+```bash
+python3 tests/interop/udverbs/compare.py --mode rod --stage performance --samples 3 \
+  --control-port 40400 --output /tmp/original-protocol-rod
+python3 tests/interop/udverbs/compare.py --mode rud --stage performance --samples 3 \
+  --sizes 8,64,256,1024,4096,16384,65536,262144,1048576 \
+  --control-port 41400 --output /tmp/original-protocol-rud
+python3 tests/interop/udverbs/plot_modes.py \
+  /tmp/original-protocol-rod /tmp/original-protocol-rud \
+  --output /tmp/original-protocol-rod-rud-figure
+```
+
+The combined plot excludes 4,000-byte messages by default. Individual mode
+plots remain available through `plot.py RESULTS --exclude-size 4000`.
+
+The post-run [roce00 provenance](results/rud-final-roce00.cscs.ch-provenance.json)
+and [roce01 provenance](results/rud-final-roce01.cscs.ch-provenance.json) confirm
+that ROD and RUD used the same native library and reference module. All 160
+reference source/header files still match the pin plus only the approved CRC
+switch and payload configuration. The discovery helper is a separate test
+component; the reference protocol binary was not rebuilt or modified for RUD.

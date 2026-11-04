@@ -1,0 +1,12 @@
+{
+  "rod": "../dgram-original-protocol-performance-20261104",
+  "rud": "../dgram-original-protocol-rud-performance-20261104",
+  "excluded_message_sizes": [
+    4000
+  ],
+  "endpoints_per_node": 1,
+  "queue_depth": 384,
+  "window": 64,
+  "backend": "verbs",
+  "native_reliability": "GBN"
+}
