@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+"""Export the completed matched fabtests comparison to CSV, Markdown and plots."""
+import argparse
+import csv
+import json
+from pathlib import Path
+import statistics
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+p = argparse.ArgumentParser(description=__doc__)
+p.add_argument('results', type=Path)
+p.add_argument('--exclude-size', type=int, action='append', default=[4000],
+               help='Omit a message size from the figure, retaining it in CSV, tables and raw results')
+a = p.parse_args()
+source = a.results
+config_file = source / "configuration.json"
+config = json.loads(config_file.read_text()) if config_file.exists() else {}
+mode = config.get('mode', 'rod').upper()
+backend = config.get('backend', 'verbs')
+payload = config.get('payload_mtu', 4000 if backend == 'verbs' else 1024)
+queues = config.get('queue_depth', 384)
+samples = config.get('samples', 3)
+runs = json.loads((source / 'runs.json').read_text())
+assert runs and all(r['passed'] for r in runs)
+sizes = sorted({r['bytes'] for r in runs})
+plot_sizes = [size for size in sizes if size not in a.exclude_size]
+if not plot_sizes:
+    p.error('No message sizes remain to plot')
+providers = [x for x in ('suet', 'ref-off')
+             if any(r['provider'] == x for r in runs)]
+names = {'suet': 'SUET', 'ref-off': 'Reference CRC off'}
+colors = {'suet': '#2563eb', 'ref-off': '#16a34a'}
+groups = {}
+for test in ('pingpong', 'bw'):
+    for provider in providers:
+        for size in sizes:
+            rows = [r['measurements'][0] for r in runs if
+                    (r['test'], r['provider'], r['bytes']) == (test, provider, size)]
+            assert len(rows) == samples, (test, provider, size, len(rows))
+            groups[test, provider, size] = rows
+
+def values(test, provider, size, metric):
+    v = [r[metric] for r in groups[test, provider, size]]
+    return statistics.median(v), min(v), max(v)
+
+table = []
+for size in sizes:
+    row = dict(bytes=size)
+    for provider in providers:
+        for metric, test, key in [('latency', 'pingpong', 'usec_per_transfer'), ('bandwidth', 'bw', 'mb_per_second')]:
+            unit = 'us' if metric == 'latency' else 'MBps'
+            center, low, high = values(test, provider, size, key)
+            row[f'{provider}_{metric}_{unit}'] = center
+            row[f'{provider}_{metric}_min_{unit}'] = low
+            row[f'{provider}_{metric}_max_{unit}'] = high
+    for provider in providers:
+        if provider != 'suet' and 'suet' in providers:
+            row[f'latency_ratio_{provider}_over_suet'] = row[f'{provider}_latency_us'] / row['suet_latency_us']
+            row[f'bandwidth_ratio_suet_over_{provider}'] = row['suet_bandwidth_MBps'] / row[f'{provider}_bandwidth_MBps']
+    table.append(row)
+with (a.results / 'comparison.csv').open('w') as f:
+    writer = csv.DictWriter(f, fieldnames=list(table[0]), lineterminator="\n"); writer.writeheader(); writer.writerows(table)
+
+columns = [(provider, metric, unit) for metric, unit in
+           [('latency', 'us'), ('bandwidth', 'MBps')] for provider in providers]
+headers = [f'{names[provider]} {metric}, ' + ('µs' if unit == 'us' else 'MB/s')
+           for provider, metric, unit in columns]
+lines = ['| Bytes | ' + ' | '.join(headers) + ' |',
+         '| ' + ' | '.join(['---:'] * (len(columns) + 1)) + ' |']
+for r in table:
+    lines.append(f"| {r['bytes']:,} | " + ' | '.join(
+        f"{r[f'{provider}_{metric}_{unit}']:,.2f}" for provider, metric, unit in columns) + ' |')
+(a.results / 'table.md').write_text('\n'.join(lines) + '\n')
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.7), layout='constrained')
+for axis, test, metric, label in zip(axes, ('pingpong', 'bw'),
+        ('usec_per_transfer', 'mb_per_second'), ('Ping-pong latency, RTT/2 (µs)', 'One-way bandwidth (MB/s)')):
+    for provider in providers:
+        v = [values(test, provider, s, metric) for s in plot_sizes]
+        centers = [x[0] for x in v]
+        axis.errorbar(plot_sizes, centers, yerr=([x[0]-x[1] for x in v], [x[2]-x[0] for x in v]),
+                      color=colors[provider], marker='o', markersize=4, capsize=3, linewidth=1.6, label=names[provider])
+    axis.set_xscale('log', base=2)
+    axis.set_xticks([8, 64, 1024, 4096, 65536, 1048576],
+                   ['8 B', '64 B', '1 KiB', '4 KiB', '64 KiB', '1 MiB'])
+    axis.set_xlabel('Application message size')
+    axis.set_ylabel(label)
+    axis.grid(True, alpha=.22)
+    if test == 'pingpong': axis.set_yscale('log')
+    else: axis.set_ylim(bottom=0)
+axes[0].legend(fontsize=8, loc='upper left')
+packet_profile = '4 KiB DGRAM limit' if backend == 'verbs' else f'{payload:,}-byte packet payload'
+fig.suptitle(f'SUET vs UET reference over libfabric FI_EP_DGRAM ({backend})\n'
+             f'{mode} · {packet_profile} · 1 endpoint per node · window {config.get("window", 64)} · TX/RX depth {queues} each · CPU 2\n'
+             f'Median of {samples} samples; bars show the observed min–max', fontsize=11)
+fig.savefig(a.results / 'comparison.png', dpi=180)
+fig.savefig(a.results / 'comparison.svg')
+
+# Normalize generated XML whitespace for repository checks.
+svg = a.results / 'comparison.svg'
+svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines()) + '\n')

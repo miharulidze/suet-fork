@@ -1,190 +1,171 @@
-# SUET / reference interoperability through libfabric DGRAM
+# SUET / reference interoperability over libfabric DGRAM
 
-Ping-pong and performance tests use the **same loadable `uet_ref` provider**,
-with the same [dgram_backend.c](dgram_backend.c), packet format, queues and
-completion code. `UET_DGRAM_PROVIDER=verbs` or `udp` selects the underlying
-libfabric `FI_EP_DGRAM` provider. The former custom UDP socket adapter has
-been removed. The application uses libfabric FI_MSG calls for both providers.
-TCP exchanges endpoint identities and synchronization records; payload data
-always uses DGRAM.
+Ping-pong and stock fabtests load the same `uet_ref` module and use the same
+[dgram_backend.c](dgram_backend.c). Select `verbs` or `udp` as the underlying
+`FI_EP_DGRAM` provider. SUET uses its native DGRAM backend. The reference uses
+its original PDS/SES implementation at commit
+`9effe362ec13a7c2c1fa5a79146f5846f0c898c6`, with only the
+[CRC switch](reference-crc-switch.patch) and a 4,000-byte maximum-payload
+configuration. No reference reliability, NACK or ordering changes are applied.
 
-```mermaid
-flowchart LR
-  P[pingpong] --> FI[libfabric FI_MSG]
-  B[stock fabtests] --> FI
-  FI --> S[ofi_suet]
-  FI --> R[uet_ref FI adapter]
-  R --> U[reference PDS/SES]
-  U --> A[shared dgram_backend.c]
-  A --> D[FI_EP_DGRAM: verbs or udp]
-  S --> D
-```
+All source and tools live directly in this directory:
 
-The DGRAM payload is unchanged **PDS/SES bytes**, matching native SUET.
-The reference NIC API still expects an internal Ethernet/IP/entropy envelope;
-the shared backend removes that envelope and its zero CRC trailer on TX,
-then reconstructs it on RX. There is one mapping for both applications and
-both transports, with no IP-frame benchmarking mode. The reference uses
-`UET_BENCH_DISABLE_CRC=1`, supplied by the recorded reference patch, because
-this DGRAM profile has no UET software-CRC trailer on the wire. Underlying
-transport integrity checks remain. The original CRC-on/off IP-frame experiment
-is preserved in [its archived report](udverbs/README-crc-experiment.md).
+| Files | Purpose |
+| --- | --- |
+| `pingpong.c`, `run.py` | Validated ping/pong with either provider as client or server |
+| `ref_provider.c`, `ref_address.h` | Reference-provider libfabric FI_MSG adapter and address format |
+| `dgram_backend.c`, `dgram_backend.h` | Shared reference NIC backend for verbs and UDP DGRAM |
+| `build.sh`, `reference-crc-switch.patch` | Build the adapter, application and RUD setup helper |
+| `endpoint_order.c` | Select an unordered endpoint contract for stock RUD fabtests |
+| `compare.py`, `plot.py` | Matched fabtests correctness, latency and bandwidth comparison |
+| `profile.py`, `analyze_profile.py` | CPU profiling of the same benchmark commands |
+| `decode.py` | Decode optional DGRAM packet captures |
+
+Generated results, plots, logs and captures belong outside the checkout; pass
+an external `--output`, such as `/tmp/suet-interop-run`. Raw logs default to a
+separate temporary directory, recorded as `log_directory`; `--log-dir` overrides
+it. The old `results` directories and obsolete experiment helpers have been
+removed. Earlier measurements remain in
+[Git history](https://github.com/miharulidze/suet-fork/tree/57c6b0a4519885189542bce74e3338f56f4f60cd/tests/interop).
 
 ## Build on both roce machines
 
-Use the isolated SUET install at `/root/suet-interop-20261104/native-gap/build`
-(the branch's gap-NACK fix on top of `0a7b0241`, libfabric base `94f3b1ac`
-plus its existing patches) and the reference export at `/root/suet-interop-20261103/ref` (`9effe362`). Copy this
-source tree to `/root/suet-interop-20261104/dgram/source`, then run there:
+Connect using:
 
 ```bash
-ROOT=/root/suet-interop-20261103
-UET_REF_SOURCE="$ROOT/ref" \
+ssh -J mkhalilov@blue.inf.ethz.ch root@roce00.cscs.ch
+ssh -J mkhalilov@blue.inf.ethz.ch root@roce01.cscs.ch
+```
+
+Use the SUET install at `/root/suet-interop-20261104/native-gap/build`
+(libfabric base `94f3b1ac` plus the repository patches) and the reference export
+at `/root/suet-interop-20261103/ref` (`9effe362`). To build a fresh native SUET
+install, run the repository's root `build.sh` with an external `WORKDIR` first;
+it builds libfabric, SUET and fabtests. Substitute that install and libfabric
+source path below and pass its prefix through `--fabric` to the controllers.
+
+From this checkout on each machine:
+
+```bash
+UET_REF_SOURCE=/root/suet-interop-20261103/ref \
 LIBFABRIC_SOURCE=/root/suet-interop-20261104/native-gap/libfabric \
 LIBFABRIC_PREFIX=/root/suet-interop-20261104/native-gap/build \
 INTEROP_BUILD=/root/suet-interop-20261104/dgram/build \
 bash tests/interop/build.sh
 ```
 
-To reproduce the native install from a clean checkout, run the repository's
-normal builder in a fresh workspace first; it pins libfabric and applies the
-required source-address/entropy patches:
+The single builder produces `pingpong`, `provider/libuet_ref-fi.so` and
+`endpoint_order.so` under `INTEROP_BUILD`. It patches only a private reference
+source copy. Ping-pong and stock fabtests load that same provider module;
+there is no separate reference core or custom UDP socket backend in ping-pong.
+Build on Linux with a C compiler, libfabric headers/libraries, reference build
+dependencies, Python 3, `patch` and `sha256sum` installed.
+
+## Run interoperability tests
+
+The controller defaults to roce00 as server and roce01 as client. Data addresses
+are `10.203.44.1` and `10.203.44.2` on `ens785f0np0`. Assign these addresses and
+ensure the RDMA links are active before testing verbs.
 
 ```bash
-export WORKDIR=/root/suet-interop-20261104/fresh
-JOBS=8 bash build.sh
-export LIBFABRIC_SOURCE="$WORKDIR/libfabric"
-export LIBFABRIC_PREFIX="$WORKDIR/build"
-# Use these values in place of the native-gap paths in the interop build.
-# Pass --fabric "$LIBFABRIC_PREFIX" to run.py and udverbs/compare.py.
+python3 tests/interop/run.py \
+  --pairs suet-ref,ref-suet --modes rod,rud --backends verbs,udp \
+  --sizes 16,4001,1048576 --rounds 10 \
+  --output /tmp/suet-interop-run
+
+python3 tests/interop/run.py --sr 1 --modes rud \
+  --pairs suet-ref,ref-suet --sizes 16,1048576 \
+  --control-port 35500 --output /tmp/suet-interop-rud-sr
 ```
 
-This builds both `build/pingpong` and `build/provider/libuet_ref-fi.so`.
-The same `.so` is used by `fi_rdm_pingpong` and `fi_rdm_bw`; there is no
-separate copy of the reference NIC or reference core in `pingpong`.
-The builder configures a 4,000-byte reference payload maximum in an isolated
-source copy and applies only [the CRC switch patch](udverbs/patches/0001-pds-benchmark-crc-switch.patch).
-The reference protocol implementation otherwise remains at `9effe362`; no
-reference reliability, NACK or ordering changes are applied.
-The original reference export and previous benchmark installations are preserved.
+Pair names are `server-client`: `suet-ref` means SUET server and reference
+client. Each client sends ping; the server validates it and sends pong; the
+client validates pong. Both print the operations. The full byte pattern,
+length and round number are checked. `--server-host`, `--client-host`,
+`--server-ip` and `--client-ip` change the physical direction. `--root` selects
+the parent of the shared `build` directory; `--fabric` selects the SUET install.
+`--sr 0` uses native GBN and `--sr 1` selects native SR.
 
-## Run the two-node test matrix
+TCP exchanges endpoint identities and synchronizes the peers. Data always uses
+DGRAM. Addresses come from `fi_getname`; the application translates only the
+out-of-band logical PID/RI/initiator fields needed for AV insertion. It does not
+translate UET packet headers.
 
-The controller uses `ssh -J mkhalilov@blue.inf.ethz.ch root@roce00.cscs.ch`
-and the equivalent command for roce01. Data addresses are `10.203.44.1` and
-`10.203.44.2` on `ens785f0np0`. Both interfaces need their isolated test IPv4
-addresses assigned and the RDMA links active for verbs testing.
+The shared backend carries PDS/SES bytes. It removes the reference NIC's
+internal Ethernet/IP envelope and disabled CRC trailer on TX, reconstructing
+the envelope on RX. Both transports use `UET_BENCH_DISABLE_CRC=1`. Verbs uses a
+4 KiB DGRAM limit, leaving 4,000 application bytes per request. UDP uses 1,024
+application bytes to fit its 1,472-byte DGRAM limit. Both providers therefore
+use matching segmentation for each backend.
+
+Captures are off by default. For a small diagnostic run, add
+`--capture --sizes 16,4001 --rounds 3`. Remote captures go under
+`/tmp/suet-interop`, and their directory is recorded in the summary. Decode a
+copied capture with:
 
 ```bash
-python3 tests/interop/run.py --control-port 35300 \
-  --output /tmp/dgram-interop
-python3 tests/interop/run.py --sr 1 --pairs suet-ref,ref-suet \
-  --sizes 16,4001,1048576 --control-port 35500 \
-  --output /tmp/dgram-interop-sr
+python3 tests/interop/decode.py /tmp/server.packets --limit 20
 ```
 
-The default matrix covers verbs/UDP, ROD/RUD, all four server/client pairings
-(`suet-suet`, `ref-ref`, `suet-ref`, `ref-suet`), ten rounds, and sizes
-16, 1,024, 1,025, 4,000, 4,001, 65,537 and 1,048,576 bytes. `--sr 0` uses
-SUET GBN; `--sr 1` selects SR. `--backends`, `--modes`, `--pairs`, `--sizes`
-and `--rounds` narrow the matrix. `--server-host`, `--client-host` and the
-corresponding `--server-ip` / `--client-ip` options reverse the physical direction.
+## Fabtests correctness and performance
 
-The verbs profile uses the native 4 KiB UD limit, giving 4,000 application
-bytes per request. SUET selects this with `FI_OFI_SUET_PAYLOAD_MTU=0`, and
-the reference selects 4,000. UDP's provider limit is 1,472 bytes, so both
-providers select a 1,024-byte application payload for UDP interoperability.
-Thus each transport includes single-packet and multi-packet messages with
-matching segmentation between providers.
-
-Each client sends ping, the server validates it and sends pong, and the client
-validates pong. Both print each operation. The entire byte pattern, message
-length and round number are checked. Receives are posted before the peer can
-send its next message. Endpoint addresses use opaque DGRAM address bytes;
-only the out-of-band logical PID/RI/initiator fields are translated.
-
-`summary.json` records commands, exits and pass counts. Packet capture is
-disabled by default in both interoperability and performance tests. For a
-small diagnostic run, add `--capture --sizes 16,4001 --rounds 3`; reference-side
-captures under the printed remote directory contain exact DGRAM PDS/SES bytes.
-Full text capture of large messages can stall progress and trigger retransmits.
+Both implementations use the same stock `fi_rdm_pingpong` and `fi_rdm_bw`
+binaries, with one endpoint and one process per node, CPU 2, window 64 and
+384-entry TX/RX DGRAM queues. Native SUET uses GBN. The reference has CRC off.
 
 ```bash
-python3 tests/interop/decode.py /path/to/server.packets --limit 20
+python3 tests/interop/compare.py --mode rod --backend verbs \
+  --stage correctness --samples 1 --sizes 16,4000,4001,65536,1048576 \
+  --output /tmp/suet-fabtests-correctness
+
+python3 tests/interop/compare.py --mode rod --backend verbs \
+  --stage performance --samples 3 --control-port 40400 \
+  --output /tmp/suet-fabtests-performance
+
+python3 tests/interop/plot.py /tmp/suet-fabtests-performance
 ```
 
-## Performance and profiling
+Use `--mode rud` to test unordered delivery or `--backend udp` to change the
+transport. For RUD, `endpoint_order.so` changes only the returned FI_MSG endpoint
+ordering contract during discovery; it refuses explicit ordering requirements
+and RMA/atomic tests. It does not intercept data-path calls or modify protocols.
 
-See [the shared-backend benchmark and profiling guide](udverbs/README.md).
-Historical socket-UDP interoperability results remain in
-[the legacy report](README-udp-legacy.md) and their existing result directories.
+Correctness runs enable fabtests byte validation. Performance runs use matched
+iterations/warmups for both providers. Bandwidth uses at least 10,000 warmups
+and 10,000 measured iterations. Plotting needs Python's `matplotlib` package
+and reads only existing measurements; it does not run experiments. The figure
+omits the 4,000-byte application message point and retains 4 KiB (4,096 bytes).
+Tables and CSV retain every measured size.
 
-## Native gap-NACK correction
+Latency is fabtests' `usec/xfer` column unchanged: fabtests already divides the
+round-trip time by two. The plot adds no further division. Each point is the
+median across repetitions; error bars show the observed minimum and maximum.
+Bandwidth is application-payload MB/s.
 
-The shared UDP tests exposed incorrect native gap feedback. ROD now puts the
-later offending PSN in `nack_psn`, the missing expected PSN in `payload`, and
-copies the triggering request's RETX flag. RUD with GBN now sends Receiver
-Inferred Loss (`0x1a`) for the missing PSN when it discards a later in-window
-packet; a true out-of-window packet still gets `0x0b`. Repeated reports for the
-same RUD gap are coalesced, and a failed NACK submission does not suppress the
-next attempt. Retry limits are unchanged.
+## Profile the same workload
 
-The wire regression tests cover both modes, PSN wrap, request RETX, real
-out-of-window packets, duplicate gap reports and transport backpressure.
-On both hosts the original implementation fails the new Expected_PSN assertion;
-the corrected implementation passes the complete PDS/datagram test. See
-[regression summaries and source/library hashes](results/native-gap-regression-20261104/).
-Ten fully validated 1-MiB UDP RUD rounds now pass in
-[both mixed roles with native GBN](results/native-gap-udp-rud-20261104/summary.json).
-The reference ROD replay issue is reported in the performance report; its
-protocol is not changed to work around that issue.
+Use an external `runs.json` from `compare.py` as the baseline. Both peers need
+`perf` and permission to access its counters.
 
-After this fix, basic fabtests
-passed **35/35**. Three-run native UD bandwidth medians were **6,503.65 MB/s at
-64 KiB** and **6,084.46 MB/s at 1 MiB**, using one endpoint/core, native 4-KiB
-transport, window 64, and 10,000 warmups plus 10,000 measured iterations.
-[Commands, exits and samples](udverbs/results/native-gap-bandwidth-20261104/runs.json)
-are retained. The pre-fix 1-MiB profiling controls were 6,104.34 and 6,081.03 MB/s;
-these checks retain the approximately 6-GB/s native throughput.
+```bash
+python3 tests/interop/profile.py \
+  --baseline /tmp/suet-fabtests-performance/runs.json \
+  --provider-root /root/suet-interop-20261104/dgram \
+  --fabric /root/suet-interop-20261104/native-gap/build \
+  --samples 1 --control-port 40600 --output /tmp/suet-profile
+python3 tests/interop/analyze_profile.py /tmp/suet-profile
+```
 
-## Reference protocol scope
+## Known interoperability limitation
 
-The additional reference ROD GoBackN patch and its helper tests have been
-removed. The shared adapter uses the original pinned reference protocol,
-with only the approved CRC bypass and requested 4,000-byte payload setting.
-All SUET-side gap-NACK changes remain in SUET.
+The recorded original-protocol mixed-provider matrix passed 31/32 cases.
+Single-packet ping-pong passed for ROD and RUD over both backends in both
+roles. RUD passed all 20 cases, including native GBN/SR coverage. ROD passed
+6/6 verbs cases and 5/6 UDP cases.
 
-The earlier 112-case/24-case passing matrices used the now-withdrawn reference
-protocol patch. They are retained as clearly superseded evidence, and do not
-establish those results for the original reference protocol. The performance
-report and interoperability reruns use the rebuilt original protocol.
-
-See [the current performance and validation report](udverbs/README.md) and
-[the superseded experiment](udverbs/README-protocol-patch-superseded.md).
-
-## Original-protocol rerun
-
-The rebuilt original reference protocol completed **31/32** mixed-provider
-cases successfully, with ten rounds per case. Both transports and provider
-roles were tested with ROD/RUD at 16 bytes, 4,001 bytes and 1 MiB; an additional
-eight RUD cases used native SR. See the
-[case summary](results/dgram-original-protocol-interop-20261104/summary.json),
-[coverage table](results/dgram-original-protocol-interop-20261104/table.md), and
-[zero error-close audit for the passed cases](results/dgram-original-protocol-interop-20261104/close-counter-audit.json).
-
-The remaining failure is `udp-suet-ref-rod-1048576-sr0`: the reference client
-exhausts its NACK retry budget and reports a CQ I/O error; SUET times out waiting
-for ping. The pinned reference retries the later `nack_psn` on `ROD_OOO` rather
-than replaying from the missing Expected_PSN carried in the NACK payload. No
-reference protocol change or SUET workaround is applied. Its
-reference-client log
-and SUET-server log
-are retained. Gap recovery failed in this case; the other large UDP ROD role passed.
-
-## Raw output outside Git
-
-Raw build/test logs, packet captures and perf text output are excluded from the
-repository. Structured results and source/binary hashes remain versioned. New
-controller runs create raw-log directories under the system temporary directory;
-`--log-dir` selects an explicit external location. Each run records its
-`log_directory`. Existing raw output was archived outside the checkout.
+The remaining failure was a 1 MiB UDP ROD ping from the reference client to
+the SUET server. Reference exhausted its NACK retry budget and reported a CQ
+I/O error; SUET timed out receiving the complete ping. Its pinned ROD sender
+retransmits the later `nack_psn` rather than replaying from Expected_PSN in the
+`ROD_OOO` NACK payload. The initial packet gap's loss/reordering cause was not
+established. No reference protocol change or SUET workaround is applied.

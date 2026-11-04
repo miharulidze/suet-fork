@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Decode unchanged PDS/standard-SES bytes from reference UDP shim captures."""
+"""Decode PDS/standard-SES bytes from shared DGRAM backend captures."""
 import argparse
 import gzip
 import json

@@ -1,1 +1,0 @@
-The unset check passed; independent fabtests servers both waited for TCP OOB setup before opening the provider and timed out. This socket harness was replaced by crc_switch_probe.c, which calls fi_domain directly. Verified switch-option results are in crc-switch-api-check.

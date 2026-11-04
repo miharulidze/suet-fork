@@ -1,1 +1,0 @@
-Preliminary latency runs stopped before completing the matrix. SUET used the verbs default queue depth 384, while the test adapter used 128. Excluded from the final comparison. Use performance-equal-queues, where both backends use FI_VERBS_TX_SIZE=128 and FI_VERBS_RX_SIZE=128.

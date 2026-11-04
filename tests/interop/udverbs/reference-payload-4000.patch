@@ -1,5 +1,0 @@
---- a/uet_pkt_hdr.h
-+++ b/uet_pkt_hdr.h
-@@ -42 +42 @@
--#define UET_DEFAULT_MAX_PAYLOAD_LEN	1024
-+#define UET_DEFAULT_MAX_PAYLOAD_LEN	4000

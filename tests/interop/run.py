@@ -51,7 +51,7 @@ def main():
                 assert len(providers) == 2 and all(x in ('suet', 'ref') for x in providers)
                 for size in map(int, a.sizes.split(',')):
                     case = f'{backend}-{pair}-{mode}-{size}-sr{a.sr}'
-                    remote = f'{a.root}/results/{a.output.name}/{case}'
+                    remote = f'/tmp/suet-interop/{a.output.name}/{case}'
                     handles, processes, commands = [], [], []
                     try:
                         for side, (host, ip, provider) in enumerate(zip(
@@ -69,7 +69,9 @@ def main():
                                 'UET_PDS_TX_TIMEOUT=100', 'timeout', '-k', '3s', '40s',
                                 f'{a.root}/build/pingpong', provider, role, ip, a.server_ip,
                                 str(a.control_port+len(results)),mode,str(size),str(a.rounds),f'{remote}/{role}.packets' if a.capture else '-',backend]
-                            command = f'mkdir -p {shlex.quote(remote)} && exec {shlex.join(args)}'
+                            command = shlex.join(args)
+                            if a.capture:
+                                command = f'mkdir -p {shlex.quote(remote)} && exec {command}'
                             stream = (a.log_dir / f'{case}-{role}.log').open('wb')
                             handles.append(stream)
                             commands.append(ssh(host,command))
@@ -111,7 +113,8 @@ def main():
                             success = success and bool(counters) and all(int(n) == 0 for n in counters)
                     row = dict(case=case, passed=success, exit_codes=codes, rounds=a.rounds,
                                payload_mtu=payload_mtu, backend=backend, commands=commands,
-                               remote_capture_directory=remote, server_host=a.server_host, client_host=a.client_host,
+                               remote_capture_directory=remote if a.capture else None,
+                               server_host=a.server_host, client_host=a.client_host,
                                log_directory=str(a.log_dir))
                     results.append(row)
                     print(json.dumps({k:v for k,v in row.items() if k!='commands'}),flush=True)

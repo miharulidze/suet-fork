@@ -1,1 +1,0 @@
-Copied fabtests still loaded baseline. Use ../fix2-verified-validation for the actual fix2 checks.

@@ -1,1 +1,0 @@
-This attempt collided with the control port of the interrupted preliminary benchmark. It is not a data-correctness result. The controller now assigns a separate control port to every pair. Use correctness-equal-queues.

@@ -1,9 +1,0 @@
-[
-  {
-    "test": "bw",
-    "bytes": 1048576,
-    "provider": "suet",
-    "mb_per_second": 6113.75,
-    "usec_per_transfer": 171.51
-  }
-]
