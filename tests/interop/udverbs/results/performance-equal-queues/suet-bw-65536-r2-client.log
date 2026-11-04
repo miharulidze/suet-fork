@@ -1,3 +1,0 @@
-libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
-bytes   iters   total       time     MB/sec    usec/xfer   Mxfers/sec
-64k     4k      256m        0.16s   1690.12      38.78       0.03

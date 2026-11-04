@@ -1,0 +1,142 @@
+[
+  {
+    "test": "pingpong",
+    "bytes": 16,
+    "provider": "suet",
+    "mb_per_second": 0.42,
+    "usec_per_transfer": 38.16
+  },
+  {
+    "test": "pingpong",
+    "bytes": 16,
+    "provider": "ref-off",
+    "mb_per_second": 0.35,
+    "usec_per_transfer": 45.6
+  },
+  {
+    "test": "pingpong",
+    "bytes": 1024,
+    "provider": "suet",
+    "mb_per_second": 29.84,
+    "usec_per_transfer": 34.31
+  },
+  {
+    "test": "pingpong",
+    "bytes": 1024,
+    "provider": "ref-off",
+    "mb_per_second": 12.21,
+    "usec_per_transfer": 83.86
+  },
+  {
+    "test": "pingpong",
+    "bytes": 1025,
+    "provider": "suet",
+    "mb_per_second": 14.3,
+    "usec_per_transfer": 71.66
+  },
+  {
+    "test": "pingpong",
+    "bytes": 1025,
+    "provider": "ref-off",
+    "mb_per_second": 11.15,
+    "usec_per_transfer": 91.91
+  },
+  {
+    "test": "pingpong",
+    "bytes": 65536,
+    "provider": "suet",
+    "mb_per_second": 114.34,
+    "usec_per_transfer": 573.19
+  },
+  {
+    "test": "pingpong",
+    "bytes": 65536,
+    "provider": "ref-off",
+    "mb_per_second": 127.33,
+    "usec_per_transfer": 514.7
+  },
+  {
+    "test": "pingpong",
+    "bytes": 1048576,
+    "provider": "suet",
+    "mb_per_second": 124.68,
+    "usec_per_transfer": 8410.34
+  },
+  {
+    "test": "pingpong",
+    "bytes": 1048576,
+    "provider": "ref-off",
+    "mb_per_second": 178.07,
+    "usec_per_transfer": 5888.59
+  },
+  {
+    "test": "bw",
+    "bytes": 16,
+    "provider": "suet",
+    "mb_per_second": 0.25,
+    "usec_per_transfer": 64.57
+  },
+  {
+    "test": "bw",
+    "bytes": 16,
+    "provider": "ref-off",
+    "mb_per_second": 0.25,
+    "usec_per_transfer": 64.24
+  },
+  {
+    "test": "bw",
+    "bytes": 1024,
+    "provider": "suet",
+    "mb_per_second": 15.91,
+    "usec_per_transfer": 64.36
+  },
+  {
+    "test": "bw",
+    "bytes": 1024,
+    "provider": "ref-off",
+    "mb_per_second": 15.53,
+    "usec_per_transfer": 65.95
+  },
+  {
+    "test": "bw",
+    "bytes": 1025,
+    "provider": "suet",
+    "mb_per_second": 12.45,
+    "usec_per_transfer": 82.34
+  },
+  {
+    "test": "bw",
+    "bytes": 1025,
+    "provider": "ref-off",
+    "mb_per_second": 11.39,
+    "usec_per_transfer": 89.98
+  },
+  {
+    "test": "bw",
+    "bytes": 65536,
+    "provider": "suet",
+    "mb_per_second": 133.43,
+    "usec_per_transfer": 491.17
+  },
+  {
+    "test": "bw",
+    "bytes": 65536,
+    "provider": "ref-off",
+    "mb_per_second": 93.52,
+    "usec_per_transfer": 700.74
+  },
+  {
+    "test": "bw",
+    "bytes": 1048576,
+    "provider": "suet",
+    "mb_per_second": 148.55,
+    "usec_per_transfer": 7058.52
+  },
+  {
+    "test": "bw",
+    "bytes": 1048576,
+    "provider": "ref-off",
+    "mb_per_second": 152.21,
+    "usec_per_transfer": 6889.2
+  }
+]

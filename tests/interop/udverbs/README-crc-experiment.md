@@ -128,9 +128,9 @@ payload MB/s. Figures show medians of three samples with observed min/max bars.
 
 ## Original CRC profile
 
-The [CRC-on sender profile](results/native4k-reference-profile/client-perf.txt)
+The CRC-on sender profile
 at 1 MiB attributes **83.87% of user-space cycles** to `crc32c_update`;
-the [receiver profile](results/native4k-reference-profile/server-perf.txt)
+the receiver profile
 attributes **76.37%**. Its byte-at-a-time lookup loop is in
 `util/crc32c.c:116`. The CRC-off experiment isolates that cost while preserving
 the packet layout. It does not apply a hardware-accelerated CRC optimization.
@@ -174,7 +174,7 @@ hashes confirm that the native SUET/libfabric and fabtests builds are unchanged.
 [performance commands/exits](results/crc-switch-performance/runs.json),
 [payload-validation commands/exits](results/crc-switch-correctness/runs.json),
 [switch API checks](results/crc-switch-api-check/summary.json),
-[basic SUET suite log](results/crc-switch-suet-fabtests.log.gz).
+basic SUET suite log.
 The [validation summary](results/crc-switch-validation-summary.json) records
 counts, warning locations, binary identity and baseline comparisons.
 
@@ -190,8 +190,8 @@ all 160 reference C/header files against the pinned commit, allowing only
 the CRC patch and the payload-limit configuration. Records and compressed
 build logs: [roce00 provenance](results/crc-switch-roce00.cscs.ch-provenance.json),
 [roce01 provenance](results/crc-switch-roce01.cscs.ch-provenance.json),
-[roce00 build](results/crc-switch-roce00.cscs.ch-build.log.gz),
-[roce01 build](results/crc-switch-roce01.cscs.ch-build.log.gz).
+roce00 build,
+roce01 build.
 
 ## CRC-off CPU profile
 
@@ -204,8 +204,8 @@ for 17.03% of user-space cycles, compared with 83.87% previously spent in
 `crc32c_update` with CRC on. This diagnostic is excluded from the comparison
 medians and does not quantitatively attribute the remaining SUET/reference gap.
 
-[Sender profile](results/crc-switch-reference-off-profile/client-perf.txt),
-[receiver profile](results/crc-switch-reference-off-profile/server-perf.txt),
+Sender profile,
+receiver profile,
 [diagnostic commands](results/crc-switch-reference-off-profile/configuration.json),
-[sender run](results/crc-switch-reference-off-profile/client.log),
-[receiver run](results/crc-switch-reference-off-profile/server.log).
+sender run,
+receiver run.

@@ -51,14 +51,14 @@ JobID/PID isolation implementation.
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| Original endpoint probe, macOS | Distinct names alias to AV handle 0; expected exit 1 | [Baseline probe](logs/2026-10-14-endpoint-fix/mac-endpoint-probe-baseline.log) |
-| Fixed endpoint probe, macOS and Ault | Distinct names return handles 0 and 1; exit 0 | [macOS](logs/2026-10-14-endpoint-fix/mac-endpoint-probe-fixed.log), [Ault](logs/2026-10-14-endpoint-fix/endpoint-probe.log) |
-| Four endpoints sharing one UDP socket | RIs 0/1 reach RIs 2/3; directed, unexpected, wildcard and empty transfers pass under ROD and RUD | [macOS](logs/2026-10-14-endpoint-fix/mac-endpoint-identity.log), [Ault](logs/2026-10-14-endpoint-fix/endpoint-test.log) |
-| Focused AV, SES/PDS, PDS/datagram and clock regressions | Pass; AV and directly compiled SES also pass ASan/UBSan | [Focused log](logs/2026-10-14-endpoint-fix/mac-focused.log) |
-| Existing UDP fabtests | 35 passed, 0 failed; original iteration counts retained | [Fabtests](logs/2026-10-14-endpoint-fix/mac-fabtests.log) |
-| htsim CTests | All 5 passed against the corrected library | [htsim log](logs/2026-10-14-endpoint-fix/mac-htsim.log) |
-| NCCL all-reduce, 2 GPUs | Exit 0; all sizes validate, `Out of bounds values : 0 OK` | [2-GPU log](logs/2026-10-14-endpoint-fix/nccl-fixed-2gpu.log) |
-| NCCL all-reduce, 4 GPUs | Exit 0; all sizes validate, `Out of bounds values : 0 OK` | [4-GPU log](logs/2026-10-14-endpoint-fix/nccl-fixed-4gpu.log) |
+| Original endpoint probe, macOS | Distinct names alias to AV handle 0; expected exit 1 | Baseline probe |
+| Fixed endpoint probe, macOS and Ault | Distinct names return handles 0 and 1; exit 0 | macOS, Ault |
+| Four endpoints sharing one UDP socket | RIs 0/1 reach RIs 2/3; directed, unexpected, wildcard and empty transfers pass under ROD and RUD | macOS, Ault |
+| Focused AV, SES/PDS, PDS/datagram and clock regressions | Pass; AV and directly compiled SES also pass ASan/UBSan | Focused log |
+| Existing UDP fabtests | 35 passed, 0 failed; original iteration counts retained | Fabtests |
+| htsim CTests | All 5 passed against the corrected library | htsim log |
+| NCCL all-reduce, 2 GPUs | Exit 0; all sizes validate, `Out of bounds values : 0 OK` | 2-GPU log |
+| NCCL all-reduce, 4 GPUs | Exit 0; all sizes validate, `Out of bounds values : 0 OK` | 4-GPU log |
 
 The public API regression is [test_endpoint_identity.c](../test_endpoint_identity.c).
 The AV and SES tests also cover address ownership/removal and interleaved
@@ -82,13 +82,13 @@ NCCL remains commit `3e46c089f4ae4732722a419eb6096aead7e47a30` (2.32.3),
 the OFI plugin remains `745b951f443511bbc79beb0868cd8a967907eb42`, and
 nccl-tests remains `afd59abab774a6a4b492eb344bd0c845a0b7bb4d` (2.21.1).
 SUET is the uncommitted fix on `refactor` HEAD `05120e5`.
-The [source checksums](logs/2026-10-14-endpoint-fix/source-sha256.txt)
+The [source checksums](repro/2026-10-14-endpoint-fix/source-sha256.txt)
 identify the provider files and integration regression actually tested.
 
 The first GPU rerun still failed because the original plugin had ELF
 `DT_RPATH` pointing at the baseline libfabric. `LD_LIBRARY_PATH` did not
-override it. The [original dynamic section](logs/2026-10-14-endpoint-fix/plugin-original-dynamic.log)
-and [loader trace](logs/2026-10-14-endpoint-fix/loaded-provider-2gpu.log)
+override it. The original dynamic section
+and loader trace
 prove that this rerun loaded the old provider; it does not assess the fix.
 Those logs are retained as `nccl-2gpu.log` / `nccl-4gpu.log`.
 
@@ -160,6 +160,6 @@ packed toolchain and NCCL/nccl-tests artifacts described in the baseline
 retry report. The plugin's embedded RPATH must resolve to the corrected install.
 
 Allocation `892469` was released after archiving, with elapsed time 26:38.
-[Allocation cleanup](logs/2026-10-14-endpoint-fix/allocation-final.log) and
-[stage exit codes](logs/2026-10-14-endpoint-fix/status.txt) are preserved.
+Allocation cleanup and
+stage exit codes are preserved.
 No source commit or push was made.

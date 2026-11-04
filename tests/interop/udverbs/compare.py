@@ -7,6 +7,7 @@ import re
 import shlex
 import statistics
 import subprocess
+import tempfile
 import time
 
 
@@ -29,7 +30,10 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
                    f'FI_OFI_SUET_PAYLOAD_MTU={a.suet_payload_mtu}', 'FI_OFI_SUET_SELECTIVE_REPEAT=0',
                    f'UET_BENCH_PAYLOAD_MTU={a.payload_mtu}', 'UET_DGRAM_PROVIDER=' + a.backend,
                    'UET_BENCH_DISABLE_CRC=' + ('1' if crc == 'off' else '0'),
-                   'UET_PDS=pds', 'UET_UD_SOURCE=' + ip, 'UET_BENCH_MODE=rod']
+                   'UET_PDS=pds', 'UET_UD_SOURCE=' + ip, 'UET_BENCH_MODE=' + a.mode]
+            if a.mode == 'rud':
+                env += ['LD_PRELOAD=' + a.root + '/build/endpoint_order.so',
+                        'SUET_BENCH_ENDPOINT_MODE=rud']
             args = ['timeout', '-k', '3s', str(a.timeout) + 's', 'taskset', '-c', '2',
                     a.fabric + '/bin/fi_rdm_' + test, '-p',
                     'uet_ref' if reference else a.backend + ';ofi_suet',
@@ -43,7 +47,7 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
                 args += [a.ips[0]]
             command = ssh(host, env + args)
             commands.append(command)
-            out = (a.output / (name + ('-client.log' if side else '-server.log'))).open('wb')
+            out = (a.log_dir / (name + ('-client.log' if side else '-server.log'))).open('wb')
             files.append(out)
             processes.append(subprocess.Popen(command, stdout=out, stderr=subprocess.STDOUT))
             if side == 0:
@@ -55,7 +59,7 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
                 p.kill(); p.wait()
         for f in files:
             f.close()
-    text = (a.output / (name + '-client.log')).read_text(errors='replace')
+    text = (a.log_dir / (name + '-client.log')).read_text(errors='replace')
     rates = []
     for line in text.splitlines():
         fields = line.split()
@@ -65,25 +69,31 @@ def pair(a, provider, test, size, iterations, warmup, repeat):
             except ValueError:
                 pass
     valid = codes == [0, 0] and len(rates) == 1
+    if a.mode == 'rud':
+        for side in ('server', 'client'):
+            body = (a.log_dir / f'{name}-{side}.log').read_text(errors='replace')
+            valid &= 'mode=rud tx=0 rx=0 requested_tx=0 requested_rx=0' in body
     if reference:
         for side in ('server', 'client'):
-            body = (a.output / f'{name}-{side}.log').read_text(errors='replace')
+            body = (a.log_dir / f'{name}-{side}.log').read_text(errors='replace')
             valid &= (f'UD_BACKEND provider={a.backend} ' in body and 'type=FI_EP_DGRAM' in body and 'wire=pds-ses' in body and
                       f'UET_BENCH_CRC mode={crc}' in body and
                       bool(re.search(r'UD_BACKEND tx=[1-9]\d* rx=[1-9]\d*', body)))
-    return dict(name=name, provider=provider, test=test, bytes=size, iterations=iterations,
+    return dict(name=name, provider=provider, mode=a.mode, test=test, bytes=size, iterations=iterations,
                 crc=crc if reference else None,
                 warmup=warmup, repeat=repeat, exit_codes=codes, passed=bool(valid),
-                measurements=rates, commands=commands)
+                measurements=rates, commands=commands, log_directory=str(a.log_dir))
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', default='/root/suet-interop-20261104/dgram')
     p.add_argument('--backend', choices=('verbs','udp'), default='verbs')
+    p.add_argument('--mode', choices=('rod','rud'), default='rod')
     p.add_argument('--profile', choices=('native4k', 'matched1k'), default='native4k')
     p.add_argument('--fabric', default='/root/suet-interop-20261104/native-gap/build')
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--log-dir', type=Path, help='Raw logs directory; defaults to a new directory under the system temporary directory')
     p.add_argument('--stage', choices=('correctness', 'performance'), default='correctness')
     p.add_argument('--providers', default='suet,ref-off')
     p.add_argument('--tests', default='pingpong,bw')
@@ -104,11 +114,17 @@ def main():
     a.payload_mtu = 4000 if a.profile == "native4k" and a.backend == "verbs" else 1024
     a.suet_payload_mtu = 0 if a.profile == "native4k" and a.backend == "verbs" else 1024
     a.queue_depth = 384 if a.profile == "native4k" else 128
+    a.endpoints_per_node = 1
+    a.processes_per_node = 1
     a.hosts = ['roce00.cscs.ch', 'roce01.cscs.ch']
     a.ips = [a.server_ip, a.client_ip]
     if a.reverse_hosts:
         a.hosts.reverse(); a.ips.reverse()
     a.output.mkdir(parents=True, exist_ok=False)
+    if a.log_dir is None:
+        a.log_dir = Path(tempfile.mkdtemp(prefix='suet-fabtests-'))
+    else:
+        a.log_dir.mkdir(parents=True, exist_ok=False)
     (a.output / 'configuration.json').write_text(json.dumps(
         {k: str(v) if isinstance(v, Path) else v for k, v in vars(a).items()}, indent=2) + '\n')
     results = []

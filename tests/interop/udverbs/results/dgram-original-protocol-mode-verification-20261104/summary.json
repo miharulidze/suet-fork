@@ -1,0 +1,160 @@
+[
+  {
+    "provider": "suet",
+    "mode": "rod",
+    "exit_codes": [
+      0,
+      0
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/mode-verification/suet-rod && env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_LOG_LEVEL=warn UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_UD_SOURCE=10.203.44.1 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod timeout -k 3s 45s /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_pingpong -p 'verbs;ofi_suet' -b=41300 -j 0 -S 16 -I 16 -w 4 -W 1 -v -s 10.203.44.1 -d mlx5_0-dgram"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/mode-verification/suet-rod && env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_LOG_LEVEL=warn UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_UD_SOURCE=10.203.44.2 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod timeout -k 3s 45s gdb -q -batch -x /root/suet-interop-20261104/dgram/mode-verification/suet-rod/verify.gdb --args /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_pingpong -p 'verbs;ofi_suet' -b=41300 -j 0 -S 16 -I 16 -w 4 -W 1 -v -s 10.203.44.2 -d mlx5_0-dgram 10.203.44.1"
+      ]
+    ],
+    "log_directory": "/tmp/suet-benchmark-mode-verification-20261104",
+    "observed_request_type": 3,
+    "passed": true,
+    "inspection": {
+      "function": "suet_dgram_send",
+      "abi": "x86_64 SysV; second argument in RSI",
+      "payload_pointer_offset": 24,
+      "expression": "((unsigned char *)*(void **)($rsi + 24))[0] >> 3"
+    }
+  },
+  {
+    "provider": "suet",
+    "mode": "rud",
+    "exit_codes": [
+      0,
+      0
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/mode-verification/suet-rud && env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_LOG_LEVEL=warn UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_UD_SOURCE=10.203.44.1 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rud LD_PRELOAD=/root/suet-interop-20261104/dgram/build/endpoint_order.so SUET_BENCH_ENDPOINT_MODE=rud timeout -k 3s 45s /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_pingpong -p 'verbs;ofi_suet' -b=41301 -j 0 -S 16 -I 16 -w 4 -W 1 -v -s 10.203.44.1 -d mlx5_0-dgram"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/mode-verification/suet-rud && env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_LOG_LEVEL=warn UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_UD_SOURCE=10.203.44.2 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rud LD_PRELOAD=/root/suet-interop-20261104/dgram/build/endpoint_order.so SUET_BENCH_ENDPOINT_MODE=rud timeout -k 3s 45s gdb -q -batch -x /root/suet-interop-20261104/dgram/mode-verification/suet-rud/verify.gdb --args /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_pingpong -p 'verbs;ofi_suet' -b=41301 -j 0 -S 16 -I 16 -w 4 -W 1 -v -s 10.203.44.2 -d mlx5_0-dgram 10.203.44.1"
+      ]
+    ],
+    "log_directory": "/tmp/suet-benchmark-mode-verification-20261104",
+    "observed_request_type": 2,
+    "passed": true,
+    "inspection": {
+      "function": "suet_dgram_send",
+      "abi": "x86_64 SysV; second argument in RSI",
+      "payload_pointer_offset": 24,
+      "expression": "((unsigned char *)*(void **)($rsi + 24))[0] >> 3"
+    }
+  },
+  {
+    "provider": "ref-off",
+    "mode": "rod",
+    "exit_codes": [
+      0,
+      0
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/mode-verification/ref-off-rod && env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_LOG_LEVEL=warn UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_UD_SOURCE=10.203.44.1 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod UET_DGRAM_CAPTURE=/root/suet-interop-20261104/dgram/mode-verification/ref-off-rod/server.packets timeout -k 3s 45s /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_pingpong -p uet_ref -b=41302 -j 0 -S 16 -I 16 -w 4 -W 1 -v -s 10.203.44.1"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/mode-verification/ref-off-rod && env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_LOG_LEVEL=warn UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_UD_SOURCE=10.203.44.2 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rod timeout -k 3s 45s /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_pingpong -p uet_ref -b=41302 -j 0 -S 16 -I 16 -w 4 -W 1 -v -s 10.203.44.2 10.203.44.1"
+      ]
+    ],
+    "log_directory": "/tmp/suet-benchmark-mode-verification-20261104",
+    "request_types_by_direction": {
+      "RX:3": 20,
+      "TX:3": 20
+    },
+    "passed": true
+  },
+  {
+    "provider": "ref-off",
+    "mode": "rud",
+    "exit_codes": [
+      0,
+      0
+    ],
+    "commands": [
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce00.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/mode-verification/ref-off-rud && env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_LOG_LEVEL=warn UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_UD_SOURCE=10.203.44.1 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rud LD_PRELOAD=/root/suet-interop-20261104/dgram/build/endpoint_order.so SUET_BENCH_ENDPOINT_MODE=rud UET_DGRAM_CAPTURE=/root/suet-interop-20261104/dgram/mode-verification/ref-off-rud/server.packets timeout -k 3s 45s /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_pingpong -p uet_ref -b=41303 -j 0 -S 16 -I 16 -w 4 -W 1 -v -s 10.203.44.1"
+      ],
+      [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=15",
+        "-J",
+        "mkhalilov@blue.inf.ethz.ch",
+        "root@roce01.cscs.ch",
+        "mkdir -p /root/suet-interop-20261104/dgram/mode-verification/ref-off-rud && env LD_LIBRARY_PATH=/root/suet-interop-20261104/native-gap/build/lib FI_PROVIDER_PATH=/root/suet-interop-20261104/dgram/build/provider FI_VERBS_IFACE=ens785f0np0 FI_VERBS_TX_SIZE=384 FI_VERBS_RX_SIZE=384 FI_OFI_SUET_PAYLOAD_MTU=0 FI_OFI_SUET_SELECTIVE_REPEAT=0 FI_LOG_LEVEL=warn UET_PDS=pds UET_BENCH_DISABLE_CRC=1 UET_DGRAM_PROVIDER=verbs UET_UD_SOURCE=10.203.44.2 UET_BENCH_PAYLOAD_MTU=4000 UET_BENCH_MODE=rud LD_PRELOAD=/root/suet-interop-20261104/dgram/build/endpoint_order.so SUET_BENCH_ENDPOINT_MODE=rud timeout -k 3s 45s /root/suet-interop-20261104/native-gap/build/bin/fi_rdm_pingpong -p uet_ref -b=41303 -j 0 -S 16 -I 16 -w 4 -W 1 -v -s 10.203.44.2 10.203.44.1"
+      ]
+    ],
+    "log_directory": "/tmp/suet-benchmark-mode-verification-20261104",
+    "request_types_by_direction": {
+      "RX:2": 20,
+      "TX:2": 20
+    },
+    "passed": true
+  }
+]

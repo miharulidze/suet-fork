@@ -1,1 +1,14 @@
 /suet-workspace/
+
+# Raw build/test output is kept outside Git; retain structured summaries/plots.
+*.log
+*.log.*
+*.out
+*.err
+*.packets
+*.stat
+*-flat.txt
+*-callers.txt
+*-perf.txt
+*-window.txt
+**/logs/

@@ -6,9 +6,13 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 : "${LIBFABRIC_PREFIX:?}"
 : "${UD_BUILD:?}"
 mkdir -p "$UD_BUILD/provider" "$UD_BUILD/objects"
+cc -O2 -g -Wall -Wextra -fPIC -shared -I"$LIBFABRIC_PREFIX/include" \
+  "$HERE/endpoint_order.c" -ldl -o "$UD_BUILD/endpoint_order.so"
 
 : "${UD_REFERENCE_PAYLOAD:=4000}"
-PATCHES=("$HERE"/patches/*.patch)
+# The reference protocol stays pinned and unchanged. Only the approved CRC
+# switch is applied; do not discover additional protocol patches here.
+PATCHES=("$HERE/patches/0001-pds-benchmark-crc-switch.patch")
 CORE_CONFIG="$UD_REFERENCE_PAYLOAD $(cat "${PATCHES[@]}" | sha256sum | cut -d ' ' -f 1)"
 if [[ "${UD_REUSE_CORE:-0}" == 1 &&
       (! -f "$UD_BUILD/core-configuration.txt" ||
@@ -17,7 +21,7 @@ if [[ "${UD_REUSE_CORE:-0}" == 1 &&
     exit 2
 fi
 # Configure the reference's build-time payload limit in an isolated copy.
-# Apply the checked-in protocol patches only to this private source copy.
+# Apply the approved CRC switch only to this private source copy.
 python3 - "$UET_REF_SOURCE" "$UD_BUILD/reference-source" "$UD_REFERENCE_PAYLOAD" <<'PYCONFIG'
 from pathlib import Path
 import shutil,re,sys
@@ -33,7 +37,6 @@ UET_REF_SOURCE="$UD_BUILD/reference-source"
 for patch_file in "${PATCHES[@]}"; do
     patch --batch --forward -p1 -d "$UET_REF_SOURCE" < "$patch_file"
 done
-python3 "$HERE/check_rod_gbn.py" "$UET_REF_SOURCE"
 printf '%s\n' "$UD_REFERENCE_PAYLOAD" > "$UD_BUILD/reference-payload.txt"
 
 sources=("$UET_REF_SOURCE"/*.c "$UET_REF_SOURCE"/util/*.c "$UET_REF_SOURCE"/imp_shim/*.c "$UET_REF_SOURCE"/nic_shim/*.c "$UET_REF_SOURCE"/crypto/*.c)

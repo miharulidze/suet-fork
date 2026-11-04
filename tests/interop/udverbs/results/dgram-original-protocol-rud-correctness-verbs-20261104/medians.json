@@ -1,0 +1,114 @@
+[
+  {
+    "test": "pingpong",
+    "bytes": 16,
+    "provider": "suet",
+    "mb_per_second": 4.76,
+    "usec_per_transfer": 3.36
+  },
+  {
+    "test": "pingpong",
+    "bytes": 16,
+    "provider": "ref-off",
+    "mb_per_second": 2.0,
+    "usec_per_transfer": 7.98
+  },
+  {
+    "test": "pingpong",
+    "bytes": 4096,
+    "provider": "suet",
+    "mb_per_second": 298.4,
+    "usec_per_transfer": 13.73
+  },
+  {
+    "test": "pingpong",
+    "bytes": 4096,
+    "provider": "ref-off",
+    "mb_per_second": 188.32,
+    "usec_per_transfer": 21.75
+  },
+  {
+    "test": "pingpong",
+    "bytes": 65536,
+    "provider": "suet",
+    "mb_per_second": 629.3,
+    "usec_per_transfer": 104.14
+  },
+  {
+    "test": "pingpong",
+    "bytes": 65536,
+    "provider": "ref-off",
+    "mb_per_second": 526.51,
+    "usec_per_transfer": 124.47
+  },
+  {
+    "test": "pingpong",
+    "bytes": 1048576,
+    "provider": "suet",
+    "mb_per_second": 684.01,
+    "usec_per_transfer": 1532.98
+  },
+  {
+    "test": "pingpong",
+    "bytes": 1048576,
+    "provider": "ref-off",
+    "mb_per_second": 604.78,
+    "usec_per_transfer": 1733.8
+  },
+  {
+    "test": "bw",
+    "bytes": 16,
+    "provider": "suet",
+    "mb_per_second": 0.6,
+    "usec_per_transfer": 26.83
+  },
+  {
+    "test": "bw",
+    "bytes": 16,
+    "provider": "ref-off",
+    "mb_per_second": 0.9,
+    "usec_per_transfer": 17.72
+  },
+  {
+    "test": "bw",
+    "bytes": 4096,
+    "provider": "suet",
+    "mb_per_second": 147.85,
+    "usec_per_transfer": 27.7
+  },
+  {
+    "test": "bw",
+    "bytes": 4096,
+    "provider": "ref-off",
+    "mb_per_second": 110.12,
+    "usec_per_transfer": 37.2
+  },
+  {
+    "test": "bw",
+    "bytes": 65536,
+    "provider": "suet",
+    "mb_per_second": 423.28,
+    "usec_per_transfer": 154.83
+  },
+  {
+    "test": "bw",
+    "bytes": 65536,
+    "provider": "ref-off",
+    "mb_per_second": 396.38,
+    "usec_per_transfer": 165.34
+  },
+  {
+    "test": "bw",
+    "bytes": 1048576,
+    "provider": "suet",
+    "mb_per_second": 524.0,
+    "usec_per_transfer": 2001.12
+  },
+  {
+    "test": "bw",
+    "bytes": 1048576,
+    "provider": "ref-off",
+    "mb_per_second": 499.15,
+    "usec_per_transfer": 2100.72
+  }
+]

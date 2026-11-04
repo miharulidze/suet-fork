@@ -1,3 +1,0 @@
-libibverbs: Warning: couldn't load driver 'libionic-rdmav64.so': libionic-rdmav64.so: cannot open shared object file: No such file or directory
-[31m[/root/suet-interop-20261103/udcompare4k-crc/build/reference-source/uet_pds.c:1598] ERROR: [PDS] UET_BENCH_DISABLE_CRC must be 0 or 1[m
-DOMAIN_RESULT=-22

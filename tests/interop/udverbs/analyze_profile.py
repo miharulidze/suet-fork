@@ -4,8 +4,11 @@ from pathlib import Path
 import argparse
 parser=argparse.ArgumentParser(description='Summarize matched perf counters and steady-state flat samples')
 parser.add_argument('results',type=Path)
-p=parser.parse_args().results
+parser.add_argument('--logs',type=Path,help='Raw perf/log directory; defaults to the recorded log_directory')
+args=parser.parse_args()
+p=args.results
 rows=json.loads((p/'runs.json').read_text())
+logs=args.logs or Path(rows[0].get('log_directory',str(p)))
 summary={}
 def category(symbol,dso):
  if re.search(r'memcpy|memmove|memset',symbol):return 'Copies and zeroing'
@@ -22,7 +25,7 @@ for provider in ('suet','ref-off'):
  stats=[r for r in rows if r['provider']==provider and r['phase']=='stat']
  data['bandwidth_MBps']=statistics.median(r['MBps'][0] for r in stats)
  for side in (0,1):
-  filename=p/f'{provider}-record-r0-{side}-flat.txt';text=filename.read_text()
+  filename=logs/f'{provider}-record-r0-{side}-flat.txt';text=filename.read_text()
   parsed=[];totals=defaultdict(float)
   for line in text.splitlines():
    m=re.match(r'\s*([\d.]+)%\s+\[.\]\s+(\S+)\s+(\S+)',line)
@@ -34,7 +37,7 @@ for provider in ('suet','ref-off'):
   cycles=[];instructions=[];taskms=[]
   for r in stats:
    values={}
-   with (p/f'{r["name"]}-{side}.stat').open() as f:
+   with (logs/f'{r["name"]}-{side}.stat').open() as f:
     for x in csv.reader(f,delimiter=';'):
      if len(x)>2 and x[0].strip() and not x[0].startswith('#'):
       try:values[x[2]]=float(x[0])

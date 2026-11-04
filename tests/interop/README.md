@@ -63,8 +63,9 @@ This builds both `build/pingpong` and `build/provider/libuet_ref-fi.so`.
 The same `.so` is used by `fi_rdm_pingpong` and `fi_rdm_bw`; there is no
 separate copy of the reference NIC or reference core in `pingpong`.
 The builder configures a 4,000-byte reference payload maximum in an isolated
-source copy and applies [the CRC switch patch](udverbs/patches/0001-pds-benchmark-crc-switch.patch)
-and [ROD GoBackN correction](udverbs/patches/0002-pds-rod-gobackn.patch).
+source copy and applies only [the CRC switch patch](udverbs/patches/0001-pds-benchmark-crc-switch.patch).
+The reference protocol implementation otherwise remains at `9effe362`; no
+reference reliability, NACK or ordering changes are applied.
 The original reference export and previous benchmark installations are preserved.
 
 ## Run the two-node test matrix
@@ -132,12 +133,13 @@ The wire regression tests cover both modes, PSN wrap, request RETX, real
 out-of-window packets, duplicate gap reports and transport backpressure.
 On both hosts the original implementation fails the new Expected_PSN assertion;
 the corrected implementation passes the complete PDS/datagram test. See
-[build/unit logs and source/library hashes](results/native-gap-regression-20261104/).
+[regression summaries and source/library hashes](results/native-gap-regression-20261104/).
 Ten fully validated 1-MiB UDP RUD rounds now pass in
 [both mixed roles with native GBN](results/native-gap-udp-rud-20261104/summary.json).
-The separate reference ROD replay issue is documented in the performance report.
+The reference ROD replay issue is reported in the performance report; its
+protocol is not changed to work around that issue.
 
-After this fix, [basic fabtests](udverbs/results/native-gap-fabtests-20261104.log.gz)
+After this fix, basic fabtests
 passed **35/35**. Three-run native UD bandwidth medians were **6,503.65 MB/s at
 64 KiB** and **6,084.46 MB/s at 1 MiB**, using one endpoint/core, native 4-KiB
 transport, window 64, and 10,000 warmups plus 10,000 measured iterations.
@@ -145,48 +147,44 @@ transport, window 64, and 10,000 warmups plus 10,000 measured iterations.
 are retained. The pre-fix 1-MiB profiling controls were 6,104.34 and 6,081.03 MB/s;
 these checks retain the approximately 6-GB/s native throughput.
 
-## Reference ROD replay correction
+## Reference protocol scope
 
-The pinned reference retries only `nack_psn` for `ROD_OOO`, even though that
-identifies a later discarded packet. The missing packet remains missing and
-repeated NACKs exhaust the retry limit. The separate
-[reference patch](udverbs/patches/0002-pds-rod-gobackn.patch) starts replay at
-`payload = Expected_PSN`, submits outstanding packets in PSN order, blocks
-new data until recovery feedback, retains its cursor on NIC backpressure, and
-coalesces NACKs for the same loss event. Retry limits are unchanged. This
-implements the ROD out-of-order NACK rules in
-[UEC section 3.5.21.1](https://ultraethernet.org/uec-1-0-spec).
+The additional reference ROD GoBackN patch and its helper tests have been
+removed. The shared adapter uses the original pinned reference protocol,
+with only the approved CRC bypass and requested 4,000-byte payload setting.
+All SUET-side gap-NACK changes remain in SUET.
 
-The portable replay regression executes the actual patched C functions with
-mock transport/bitmap hooks. It covers ordered replay, PSN wrap, duplicate
-and RETX feedback, distinct losses, window advancement, backpressure, holes
-and retry/hard-error handling; it passes locally and on both Linux hosts:
+The earlier 112-case/24-case passing matrices used the now-withdrawn reference
+protocol patch. They are retained as clearly superseded evidence, and do not
+establish those results for the original reference protocol. The performance
+report and interoperability reruns use the rebuilt original protocol.
 
-```bash
-python3 tests/interop/udverbs/check_rod_gbn.py \
-  /root/suet-interop-20261104/dgram/build/reference-source
-```
+See [the current performance and validation report](udverbs/README.md) and
+[the superseded experiment](udverbs/README-protocol-patch-superseded.md).
 
-The formerly failing [1-MiB UDP ROD mixed cases](results/reference-gbn-udp-rod-20261104/summary.json)
-now complete ten rounds in each role, with full payload validation and clean
-shutdown. This fixes the observed gap-recovery failures; it is not a claim of
-complete UET conformance.
+## Original-protocol rerun
 
-## Completed shared-backend interoperability matrix
+The rebuilt original reference protocol completed **31/32** mixed-provider
+cases successfully, with ten rounds per case. Both transports and provider
+roles were tested with ROD/RUD at 16 bytes, 4,001 bytes and 1 MiB; an additional
+eight RUD cases used native SR. See the
+[case summary](results/dgram-original-protocol-interop-20261104/summary.json),
+[coverage table](results/dgram-original-protocol-interop-20261104/table.md), and
+[zero error-close audit for the passed cases](results/dgram-original-protocol-interop-20261104/close-counter-audit.json).
 
-- [GBN matrix](results/dgram-final-matrix-20261104/summary.json): **112/112**
-  cases passed, covering both transports, both modes, all four provider
-  server/client pairings, seven sizes through 1 MiB, and ten rounds per case.
-- [Additional native SR matrix](results/dgram-final-sr-20261104/summary.json):
-  **24/24** mixed-provider cases passed over both transports and modes, using
-  16-byte, 4,001-byte and 1-MiB messages, with ten rounds per case.
-- Both peers' PDC error-close counters are zero in every case; the
-  [GBN audit](results/dgram-final-matrix-20261104/close-counter-audit.json) and
-  [SR audit](results/dgram-final-sr-20261104/close-counter-audit.json) cover all
-  272 endpoint runs. Large diagnostic logs are gzip-compressed without
-  changing their contents.
+The remaining failure is `udp-suet-ref-rod-1048576-sr0`: the reference client
+exhausts its NACK retry budget and reports a CQ I/O error; SUET times out waiting
+for ping. The pinned reference retries the later `nack_psn` on `ROD_OOO` rather
+than replaying from the missing Expected_PSN carried in the NACK payload. No
+reference protocol change or SUET workaround is applied. Its
+reference-client log
+and SUET-server log
+are retained. Gap recovery failed in this case; the other large UDP ROD role passed.
 
-[Reference replay unit results](results/reference-gbn-regression-20261104/portable-unit-results.json)
-record the tested patch/probe hashes and results on macOS and both Linux hosts.
-[The performance report](udverbs/README.md) records the stock-fabtests
-comparison and matched CPU profiles using the identical shared module.
+## Raw output outside Git
+
+Raw build/test logs, packet captures and perf text output are excluded from the
+repository. Structured results and source/binary hashes remain versioned. New
+controller runs create raw-log directories under the system temporary directory;
+`--log-dir` selects an explicit external location. Each run records its
+`log_directory`. Existing raw output was archived outside the checkout.

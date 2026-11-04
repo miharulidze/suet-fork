@@ -1,3 +1,0 @@
-ENDPOINT provider=ref udp=10.203.44.2:54580 pid=0 ri=15 initiator=16 mode=rod
-client TX ping round=0 bytes=8192
-TIMEOUT receive=1 first_done=0 second_done=1

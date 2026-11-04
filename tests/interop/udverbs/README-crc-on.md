@@ -163,9 +163,9 @@ binary/source hashes and all 160 pinned reference C/header files on each host:
 [roce01](results/native4k-roce01.cscs.ch-provenance.json).
 The isolated reference copy differs only in the documented payload constant.
 Complete compressed build logs:
-[roce00](results/native4k-roce00.cscs.ch-build.log.gz),
-[roce01](results/native4k-roce01.cscs.ch-build.log.gz).
-The [basic-suite log](results/native4k-suet-fabtests.log.gz) is also preserved.
+roce00,
+roce01.
+The basic-suite log is also preserved.
 
 ## Why the reference path is slower
 
@@ -195,8 +195,8 @@ with identical output, using the available x86 CRC instructions or a suitable
 optimized library. It should retain the checksum and pass the existing
 validation cases. No CRC optimization or protocol change was made here.
 
-Diagnostic evidence: [sender profile](results/native4k-reference-profile/client-perf.txt),
-[receiver profile](results/native4k-reference-profile/server-perf.txt),
+Diagnostic evidence: sender profile,
+receiver profile,
 [commands](results/native4k-reference-profile/configuration.json),
-[sender run](results/native4k-reference-profile/client.log),
-[receiver run](results/native4k-reference-profile/server.log).
+sender run,
+receiver run.

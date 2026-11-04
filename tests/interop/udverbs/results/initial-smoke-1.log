@@ -1,1 +1,0 @@
-ft_sock_recv(): common/shared.c:4384, ret=-107 (Transport endpoint is not connected)

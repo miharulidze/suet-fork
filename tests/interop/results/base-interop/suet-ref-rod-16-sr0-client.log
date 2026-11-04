@@ -1,8 +1,0 @@
-ENDPOINT provider=ref udp=10.203.44.2:45449 pid=0 ri=15 initiator=16 mode=rod
-client TX ping round=0 bytes=16
-client RX pong round=0 bytes=16 PASS
-client TX ping round=1 bytes=16
-client RX pong round=1 bytes=16 PASS
-client TX ping round=2 bytes=16
-[33m[/root/suet-interop-20261103/ref/uet_pds.c:3088] WARN: [PDS] duplicate PSN 240681573 on PDC 2 (ACK retransmit)[m
-TIMEOUT receive=1 first_done=0 second_done=1

@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import shlex
 import subprocess
+import tempfile
 import time
 
 p = argparse.ArgumentParser(description=__doc__)
@@ -13,6 +14,7 @@ p.add_argument('--provider-root', help='Override only the reference FI_PROVIDER_
 p.add_argument('--fabric', help='Override libfabric prefix and fabtests binaries together')
 p.add_argument('--baseline', type=Path, default=Path(__file__).parent/'results/crc-switch-performance/runs.json')
 p.add_argument('--output', type=Path, required=True)
+p.add_argument('--log-dir', type=Path, help='Raw perf/log directory; defaults to a new directory under the system temporary directory')
 p.add_argument('--remote', default='/root/suet-interop-20261103/profiles-20261104')
 p.add_argument('--bytes', type=int, default=1048576)
 p.add_argument('--sample-start', type=float, default=6)
@@ -23,6 +25,10 @@ p.add_argument('--samples', type=int, default=3)
 p.add_argument('--control-port', type=int, default=34000)
 a = p.parse_args()
 a.output.mkdir(parents=True, exist_ok=False)
+if a.log_dir is None:
+    a.log_dir = Path(tempfile.mkdtemp(prefix='suet-perf-'))
+else:
+    a.log_dir.mkdir(parents=True, exist_ok=False)
 baseline = json.loads(a.baseline.read_text())
 records = []
 for phase in ('stat', 'record'):
@@ -53,7 +59,7 @@ for phase in ('stat', 'record'):
                     perf = ['perf','record','-F','199','-e','cycles:u','--call-graph','dwarf,8192','-o',target+'.data','--']
                 command[-1] = 'mkdir -p '+shlex.quote(a.remote)+' && exec '+shlex.join(env+['taskset','-c','2']+perf+app)
                 commands.append(command)
-                stream = (a.output/f'{name}-{side}.log').open('wb');streams.append(stream)
+                stream = (a.log_dir/f'{name}-{side}.log').open('wb');streams.append(stream)
                 processes.append(subprocess.Popen(command,stdout=stream,stderr=subprocess.STDOUT))
                 if side == 0: time.sleep(.8)
             try:
@@ -62,7 +68,7 @@ for phase in ('stat', 'record'):
                 for proc in processes:
                     if proc.poll() is None: proc.kill();proc.wait()
                 for stream in streams: stream.close()
-            text = (a.output/f'{name}-1.log').read_text()
+            text = (a.log_dir/f'{name}-1.log').read_text()
             rates = []
             for line in text.splitlines():
                 fields = line.split()
@@ -70,7 +76,8 @@ for phase in ('stat', 'record'):
                     rates.append(float(fields[4]))
             result = dict(name=name,provider=provider,phase=phase,repeat=repeat,commands=commands,
                           exit_codes=codes,MBps=rates,iterations=a.iterations,warmup=a.warmup,bytes=a.bytes,
-                          sample_start_seconds=a.sample_start,sample_seconds=a.sample_seconds)
+                          sample_start_seconds=a.sample_start,sample_seconds=a.sample_seconds,
+                          log_directory=str(a.log_dir))
             result['passed'] = codes == [0,0] and len(rates) == 1
             records.append(result)
             (a.output/'runs.json').write_text(json.dumps(records,indent=2)+'\n')
@@ -80,7 +87,7 @@ for phase in ('stat', 'record'):
                 target=f'{a.remote}/{name}-{side}'
                 if phase == 'stat':
                     output=subprocess.check_output(command[:-1]+['cat '+shlex.quote(target+'.stat')])
-                    (a.output/f'{name}-{side}.stat').write_bytes(output)
+                    (a.log_dir/f'{name}-{side}.stat').write_bytes(output)
                 else:
                     # Use an identical steady-state interval after both warmups,
                     # excluding startup and the reference's close-wait loop.
@@ -98,5 +105,5 @@ for kind,extra in [('flat',['--no-children','-g','none','--percent-limit','0']),
                     output=subprocess.check_output(command[:-1]+['python3 -c '+shlex.quote(code)+' '+shlex.quote(target+'.data')+' '+str(a.sample_start)+' '+str(a.sample_seconds)])
                     for line in output.decode().splitlines():
                         item=json.loads(line)
-                        (a.output/f'{name}-{side}-{item["kind"]}.txt').write_text('\n'.join(s.rstrip() for s in item['text'].splitlines())+'\n')
-                        (a.output/f'{name}-{side}-window.txt').write_text(item['window']+'\n')
+                        (a.log_dir/f'{name}-{side}-{item["kind"]}.txt').write_text('\n'.join(s.rstrip() for s in item['text'].splitlines())+'\n')
+                        (a.log_dir/f'{name}-{side}-window.txt').write_text(item['window']+'\n')

@@ -29,13 +29,13 @@ patching; no additional compatibility patches were introduced.
 | Stage | Result | Evidence |
 | --- | --- | --- |
 | Allocate `ault23` | Rejected: node `IDLE+DRAIN`, reason `check fs` | `scontrol show node ault23`; immediate `salloc` attempt |
-| Allocate approved replacement `ault24` | Successful: direct allocation `892393`, four V100 GPUs visible; released after diagnosis | [GPU inventory and source provenance](logs/2026-10-14-ault24/orchestration.log) |
-| Build NVIDIA NCCL | Failed, `make` exit 2: inherited C++ compiler path absent; CUDA toolkit path also absent | [Corrected NCCL command and output](logs/2026-10-14-ault24/nccl-build.log) |
-| Build SUET/libfabric | Failed, exit 1: entropy-extension patch rejected before autogen/configure/compilation | [SUET build log](logs/2026-10-14-ault24/suet-build.log) |
-| Build AWS OFI NCCL | Autogen succeeded; configure failed, exit 77: inherited C compiler path absent | [Plugin build log](logs/2026-10-14-ault24/plugin-build.log), [config.log](logs/2026-10-14-ault24/plugin-config.log) |
-| Discover `udp;ofi_suet` | Not run: no installed SUET/libfabric | [Status](logs/2026-10-14-ault24/status.txt) |
-| NCCL all-reduce, 2 GPUs | Blocked by build failures; not run | [Status](logs/2026-10-14-ault24/status.txt) |
-| NCCL all-reduce, 4 GPUs | Blocked by build failures; not run | [Status](logs/2026-10-14-ault24/status.txt) |
+| Allocate approved replacement `ault24` | Successful: direct allocation `892393`, four V100 GPUs visible; released after diagnosis | GPU inventory and source provenance |
+| Build NVIDIA NCCL | Failed, `make` exit 2: inherited C++ compiler path absent; CUDA toolkit path also absent | Corrected NCCL command and output |
+| Build SUET/libfabric | Failed, exit 1: entropy-extension patch rejected before autogen/configure/compilation | SUET build log |
+| Build AWS OFI NCCL | Autogen succeeded; configure failed, exit 77: inherited C compiler path absent | Plugin build log, config.log |
+| Discover `udp;ofi_suet` | Not run: no installed SUET/libfabric | Status |
+| NCCL all-reduce, 2 GPUs | Blocked by build failures; not run | Status |
+| NCCL all-reduce, 4 GPUs | Blocked by build failures; not run | Status |
 
 ## Source revisions
 
@@ -105,7 +105,7 @@ Their files were unavailable on the compute node. In particular, `CC` and
 `gcc --version` resolved to system GCC 8.4.1, but the builds honored the
 inherited absolute `CC`/`CXX` instead. `command -v nvcc` returned no executable.
 Autoconf 2.69, Automake 1.16.1 and Libtool 2.4.6 were available locally.
-See [filesystem and environment evidence](logs/2026-10-14-ault24/diagnosis.log).
+See filesystem and environment evidence.
 
 ## Build commands and observed failures
 
@@ -140,8 +140,8 @@ cd "$ROOT/aws-ofi-nccl"
 The initial harness accidentally appended `+` to the NCCL `sm_70` value.
 Only that invocation typo was corrected, and NCCL was rerun with unchanged
 sources and toolchain. It still failed on the missing C++ compiler. The
-[initial output](logs/2026-10-14-ault24/nccl-build-first.log) and
-[original harness](logs/2026-10-14-ault24/run-builds-initial.sh) are retained
+initial output and
+[original harness](repro/2026-10-14-ault24/run-builds-initial.sh) are retained
 as historical evidence; the latter is not a recommended build script.
 
 NCCL's corrected attempt returned `make` exit 2 after the inherited
@@ -180,7 +180,7 @@ int (*recv_flush)(struct fid_ep *ep, uint64_t flags);
 
 Upstream commit
 [`3a2484ccf5b766cf8a9b371f06dcdaf3101f8b13`](https://github.com/ofiwg/libfabric/commit/3a2484ccf5b766cf8a9b371f06dcdaf3101f8b13)
-made that change. The [failure-details log](logs/2026-10-14-ault24/failure-details.log)
+made that change. The failure-details log
 includes its diff and the failed read-only `git apply --check` output.
 SUET therefore did not reach compiler invocation or produce `fi_info`.
 
@@ -188,7 +188,7 @@ The change belongs to libfabric core's **2.8.0a1 development**, after the
 2.7.0 release. Version 2.7.0 had no `recv_flush` member; core added it on
 2026-10-01 and changed its return type on 2026-10-08. No release tag contains
 the return-type change as of this experiment. See the
-[verified version history](logs/2026-10-14-ault24-retry/libfabric-version-history.log).
+verified version history.
 
 ## Proposed remedies — not applied
 
@@ -246,7 +246,7 @@ substituted. Those conditions were not reached on 2026-10-14. With the
 unmodified plugin ordering hints, this procedure would exercise ROD on the
 RUD-capable branch, not actual RUD delivery.
 
-All raw build logs are in [logs/2026-10-14-ault24/](logs/2026-10-14-ault24/).
+All raw build logs are in logs/2026-10-14-ault24/.
 The evidence archive was also saved on the login node at
 `/users/mkhalilo/Development/suet-nccl-20261014/ault24-evidence.tar.gz`.
 Allocation `892393` was cancelled after evidence capture, and `squeue`

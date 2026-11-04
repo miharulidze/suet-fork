@@ -15,11 +15,14 @@ p.add_argument('results', type=Path)
 p.add_argument('--replace', type=Path, action='append', default=[], help='Replace complete size/provider/test groups with a corrected dataset')
 p.add_argument('--output', type=Path, help='Write a combined report in a fresh directory')
 p.add_argument('--profile', choices=('native4k','matched1k'), help='Override profile inference for figure labels')
+p.add_argument('--exclude-size', type=int, action='append', default=[],
+               help='Omit a message size from the figure, retaining it in CSV, tables and raw results')
 a = p.parse_args()
 source = a.results
 config_file = source / "configuration.json"
 config = json.loads(config_file.read_text()) if config_file.exists() else {}
 profile = a.profile or config.get("profile", "matched1k")
+mode = config.get('mode', 'rod').upper()
 payload = 4000 if profile == "native4k" else 1024
 queues = 384 if profile == "native4k" else 128
 output = a.output or source
@@ -39,6 +42,9 @@ if a.output:
 a.results = output
 assert runs and all(r['passed'] for r in runs)
 sizes = sorted({r['bytes'] for r in runs})
+plot_sizes = [size for size in sizes if size not in a.exclude_size]
+if not plot_sizes:
+    p.error('No message sizes remain to plot')
 providers = [x for x in ('suet', 'ref', 'ref-on', 'ref-off')
              if any(r['provider'] == x for r in runs)]
 names = {'suet': 'SUET', 'ref': 'Reference',
@@ -93,9 +99,9 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 4.7), layout='constrained')
 for axis, test, metric, label in zip(axes, ('pingpong', 'bw'),
         ('usec_per_transfer', 'mb_per_second'), ('Ping-pong latency, RTT/2 (µs)', 'One-way bandwidth (MB/s)')):
     for provider in providers:
-        v = [values(test, provider, s, metric) for s in sizes]
+        v = [values(test, provider, s, metric) for s in plot_sizes]
         centers = [x[0] for x in v]
-        axis.errorbar(sizes, centers, yerr=([x[0]-x[1] for x in v], [x[2]-x[0] for x in v]),
+        axis.errorbar(plot_sizes, centers, yerr=([x[0]-x[1] for x in v], [x[2]-x[0] for x in v]),
                       color=colors[provider], marker='o', markersize=4, capsize=3, linewidth=1.6, label=names[provider])
     axis.set_xscale('log', base=2)
     axis.set_xticks([8, 64, 1024, 4096, 65536, 1048576] if profile == 'native4k' else [8, 64, 1024, 16384, 262144, 1048576],
@@ -103,11 +109,12 @@ for axis, test, metric, label in zip(axes, ('pingpong', 'bw'),
     axis.set_xlabel('Application message size')
     axis.set_ylabel(label)
     axis.grid(True, alpha=.22)
-    axis.axvline(payload, color='#6b7280', linestyle=':', linewidth=1)
+    if payload in plot_sizes:
+        axis.axvline(payload, color='#6b7280', linestyle=':', linewidth=1)
     if test == 'pingpong': axis.set_yscale('log')
     else: axis.set_ylim(bottom=0)
 axes[0].legend(fontsize=8, loc='upper left')
-if profile == 'native4k' and 4000 in sizes and 4096 in sizes:
+if profile == 'native4k' and 4000 in plot_sizes and 4096 in plot_sizes:
     for size, text, offset in ((4000, '4,000 B: 1 packet', (-75, 35)),
                                (4096, '4,096 B\n2 packets', (25, -10))):
         rate = values('bw', 'suet', size, 'mb_per_second')[0]
@@ -115,8 +122,9 @@ if profile == 'native4k' and 4000 in sizes and 4096 in sizes:
                          textcoords='offset points', fontsize=8,
                          arrowprops=dict(arrowstyle='->', color='#4b5563'),
                          bbox=dict(boxstyle='round,pad=.25', fc='white', ec='#d1d5db'))
+packet_profile = '4 KiB DGRAM limit' if profile == 'native4k' else f'{payload:,}-byte packet payload'
 fig.suptitle('SUET vs UET reference over libfabric FI_EP_DGRAM (verbs)\n'
-             f'ROD · {payload:,}-byte application payload · window 64 · queues {queues} · CPU 2\n'
+             f'{mode} · {packet_profile} · 1 endpoint per node · window 64 · queues {queues} · CPU 2\n'
              'Median of 3 samples; bars show the observed min–max', fontsize=11)
 fig.savefig(a.results / 'comparison.png', dpi=180)
 fig.savefig(a.results / 'comparison.svg')

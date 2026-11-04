@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 import shlex
 import subprocess
+import tempfile
 import time
 
 
@@ -22,6 +23,7 @@ def main():
     p.add_argument('--client-ip', default='10.203.44.2')
     p.add_argument('--root', default='/root/suet-interop-20261104/dgram')
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--log-dir', type=Path, help='Raw logs directory; defaults to a new directory under the system temporary directory')
     p.add_argument('--backends', default='verbs,udp')
     p.add_argument('--fabric', default='/root/suet-interop-20261104/native-gap/build')
     p.add_argument('--control-port', type=int, default=35000)
@@ -33,6 +35,10 @@ def main():
     p.add_argument('--sr', type=int, choices=(0, 1), default=0)
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=False)
+    if a.log_dir is None:
+        a.log_dir = Path(tempfile.mkdtemp(prefix='suet-interop-'))
+    else:
+        a.log_dir.mkdir(parents=True, exist_ok=False)
     results = []
     (a.output/'configuration.json').write_text(json.dumps({k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},indent=2)+'\n')
     for backend in a.backends.split(','):
@@ -64,14 +70,14 @@ def main():
                                 f'{a.root}/build/pingpong', provider, role, ip, a.server_ip,
                                 str(a.control_port+len(results)),mode,str(size),str(a.rounds),f'{remote}/{role}.packets' if a.capture else '-',backend]
                             command = f'mkdir -p {shlex.quote(remote)} && exec {shlex.join(args)}'
-                            stream = (a.output / f'{case}-{role}.log').open('wb')
+                            stream = (a.log_dir / f'{case}-{role}.log').open('wb')
                             handles.append(stream)
                             commands.append(ssh(host,command))
                             processes.append(subprocess.Popen(ssh(host, command), stdout=stream, stderr=subprocess.STDOUT))
                             if side == 0:
                                 deadline = time.monotonic() + 12
                                 while processes[0].poll() is None:
-                                    if 'CONTROL_LISTENING' in (a.output / f'{case}-server.log').read_text(errors='replace'):
+                                    if 'CONTROL_LISTENING' in (a.log_dir / f'{case}-server.log').read_text(errors='replace'):
                                         break
                                     if time.monotonic() >= deadline:
                                         break
@@ -88,7 +94,7 @@ def main():
                                 proc.kill(); proc.wait()
                         for stream in handles:
                             stream.close()
-                    texts = [(a.output / f'{case}-{role}.log').read_text(errors='replace') for role in ('server', 'client')]
+                    texts = [(a.log_dir / f'{case}-{role}.log').read_text(errors='replace') for role in ('server', 'client')]
                     success = (codes == [0, 0] and all('RESULT ' in text for text in texts) and
                                texts[0].count('server RX ping ') == a.rounds and
                                texts[0].count('server TX pong ') == a.rounds and
@@ -105,7 +111,8 @@ def main():
                             success = success and bool(counters) and all(int(n) == 0 for n in counters)
                     row = dict(case=case, passed=success, exit_codes=codes, rounds=a.rounds,
                                payload_mtu=payload_mtu, backend=backend, commands=commands,
-                               remote_capture_directory=remote, server_host=a.server_host, client_host=a.client_host)
+                               remote_capture_directory=remote, server_host=a.server_host, client_host=a.client_host,
+                               log_directory=str(a.log_dir))
                     results.append(row)
                     print(json.dumps({k:v for k,v in row.items() if k!='commands'}),flush=True)
                     (a.output / 'summary.json').write_text(json.dumps(results, indent=2) + '\n')
